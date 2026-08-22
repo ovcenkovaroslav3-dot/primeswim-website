@@ -1,0 +1,228 @@
+{
+  "$comment": "Реестр медиаматериалов. Все файлы перенесены с primeswim.ru и из папки заказчика 'Рабочий стол/прайм'. Статусы: imported | needs-review | approved | replace | removed | new-required.",
+  "generatedAt": "2026-08-23",
+  "sources": {
+    "tilda": "https://static.tildacdn.com — исходники с действующего сайта",
+    "disk": "C:/Users/yarus/Desktop/прайм — оригиналы, предоставленные владельцем"
+  },
+  "originals": {
+    "$comment": "Неизменённые исходники. Не редактировать.",
+    "fromTilda": "public/media/originals/from-tilda",
+    "fromDisk": "public/media/originals/from-disk"
+  },
+  "items": [
+    {
+      "file": "brand/prime-swim-logo.jpg",
+      "sourceOrigin": "disk",
+      "sourceFile": "photo_2026-08-11_13-17-32.jpg",
+      "tildaUrl": "https://static.tildacdn.com/tild6165-3638-4966-b165-376130366434/photo_2026-08-11_13-.jpg",
+      "oldPlacement": "Логотип на текущем сайте (Tilda отдавала версию 700x700)",
+      "newPlacement": "Пока не используется: логотип свёрстан текстом. Файл сохранён как источник фирменных цветов.",
+      "resolution": "2560x2560",
+      "sizeKb": 119,
+      "format": "jpg",
+      "alt": "Логотип школы плавания PRIME SWIM",
+      "quality": "high",
+      "status": "needs-review",
+      "comment": "Нужен логотип в векторе (SVG) с прозрачным фоном. Растровый квадрат с фиолетовой заливкой не годится для шапки. Фирменные цвета извлечены: #4F017B и #C7FE03."
+    },
+    {
+      "file": "coaches/ovchenkov-yaroslav.png",
+      "sourceOrigin": "tilda",
+      "sourceFile": "noroot.png",
+      "oldPlacement": "Блок «Тренеры» на главной",
+      "newPlacement": "Секция «Кто ведёт занятия»",
+      "resolution": "1036x1051",
+      "sizeKb": 1342,
+      "format": "png",
+      "alt": "Ярослав Сергеевич Овченков — тренер и основатель школы плавания PRIME SWIM, на фоне бассейна",
+      "quality": "medium",
+      "status": "needs-review",
+      "comment": "Единственная версия — с Tilda, оригинала на диске нет. PNG весит 1.3 МБ при небольшом разрешении. Желательно исходное фото в JPG от 1500px по короткой стороне."
+    },
+    {
+      "file": "hero/kids-in-pool.jpg",
+      "sourceOrigin": "disk",
+      "sourceFile": "mOY1C_uoyTV_paCdhneAZ94TKDTIZwcWA4LyhK0OyfLaj12NDbpBmD0WupS7sc-k7amhhhhcJ_MicWRKTD-rLEpw.jpg",
+      "oldPlacement": "Один из блоков главной (Tilda отдавала 700x933)",
+      "newPlacement": "Первый экран, главное изображение",
+      "resolution": "1920x2560",
+      "sizeKb": 2715,
+      "format": "jpg",
+      "alt": "Дети в шапочках и очках для плавания стоят в воде у бортика бассейна и тянут руки вверх на занятии PRIME SWIM",
+      "quality": "high",
+      "status": "needs-review",
+      "comment": "Взят диск: в 2,7 раза больше по стороне, чем версия на Tilda. На фото видны лица детей — требуется подтверждение согласия на публикацию (Документ 5 из пакета)."
+    },
+    {
+      "file": "pool/mgik-pool-lanes.jpg",
+      "sourceOrigin": "tilda",
+      "sourceFile": "photo_1_2026-08-16_1.jpg",
+      "oldPlacement": "Галерея «Prime Swim в жизни»",
+      "newPlacement": "Секция «Где проходят тренировки», главное фото; также Open Graph",
+      "resolution": "1920x2560",
+      "sizeKb": 817,
+      "format": "jpg",
+      "alt": "Чаша бассейна МГИК с разделительными дорожками и стартовыми тумбами, панорамное остекление зала",
+      "quality": "high",
+      "status": "imported",
+      "comment": "Людей в кадре нет — согласие не требуется. Предложено как замена AI-картинке в Open Graph."
+    },
+    {
+      "file": "pool/mgik-pool-starting-blocks.jpg",
+      "sourceOrigin": "tilda",
+      "sourceFile": "photo_3_2026-08-16_1.jpg",
+      "oldPlacement": "Галерея «Prime Swim в жизни»",
+      "newPlacement": "Секция «Где проходят тренировки»",
+      "resolution": "1920x2560",
+      "sizeKb": 748,
+      "format": "jpg",
+      "alt": "Ряд стартовых тумб вдоль бортика бассейна МГИК, отражение в спокойной воде",
+      "quality": "high",
+      "status": "imported",
+      "comment": "Людей в кадре нет."
+    },
+    {
+      "file": "pool/mgik-pool-flags.jpg",
+      "sourceOrigin": "tilda",
+      "sourceFile": "photo_2_2026-08-16_1.jpg",
+      "oldPlacement": "Галерея «Prime Swim в жизни»",
+      "newPlacement": "Секция «Где проходят тренировки»",
+      "resolution": "1920x2560",
+      "sizeKb": 995,
+      "format": "jpg",
+      "alt": "Зал бассейна МГИК с флажками поворота над водой и электронным табло",
+      "quality": "high",
+      "status": "imported",
+      "comment": "Людей в кадре нет."
+    },
+    {
+      "file": "pool/mgik-pool-window-view.jpg",
+      "sourceOrigin": "disk",
+      "sourceFile": "4nPFvnxEeAtX8d8Cu_NL7ZOndzGNbRDLi6L94RY9L-NNPLJk7zcU8Pk73lGiJslEepkRw2sFhACONNpUPu3e9aqW.jpg",
+      "oldPlacement": "Блок на главной",
+      "newPlacement": "Галерея «PRIME SWIM в жизни»",
+      "resolution": "960x1280",
+      "sizeKb": 770,
+      "format": "jpg",
+      "alt": "Вид на дорожки бассейна МГИК через стеклянную стену во время групповых занятий",
+      "quality": "medium",
+      "status": "needs-review",
+      "comment": "Самое низкое разрешение среди фото бассейна, снято через стекло с бликами. Кандидат на замену."
+    },
+    {
+      "file": "pool/mgik-entrance-gate.jpg",
+      "sourceOrigin": "disk",
+      "sourceFile": "photo_2026-08-11_10-21-57.jpg",
+      "tildaUrl": "https://static.tildacdn.com/tild3231-6437-4761-b732-653037643465/photo_1_2026-08-11_1.jpg",
+      "oldPlacement": "Блок с адресом (Tilda отдавала кадрированную версию 1680x755)",
+      "newPlacement": "Секция «Где проходят тренировки»",
+      "resolution": "2222x1000",
+      "sizeKb": 375,
+      "format": "jpg",
+      "alt": "Вход на территорию Московского государственного института культуры в Химках",
+      "quality": "high",
+      "status": "imported",
+      "comment": "Взят диск — некадрированный оригинал."
+    },
+    {
+      "file": "pool/mgik-building.jpg",
+      "sourceOrigin": "disk",
+      "sourceFile": "photo_2026-08-11_10-22-03.jpg",
+      "tildaUrl": "https://static.tildacdn.com/tild6331-6235-4738-b663-643534366566/photo_2_2026-08-11_1.jpg",
+      "oldPlacement": "Блок с адресом",
+      "newPlacement": "Секция «Где проходят тренировки»",
+      "resolution": "1600x900",
+      "sizeKb": 254,
+      "format": "jpg",
+      "alt": "Здание бассейна МГИК в Химках: белый корпус с синей отделкой и арочной крышей",
+      "quality": "high",
+      "status": "imported",
+      "comment": "Помогает родителю узнать здание. Людей в кадре нет."
+    },
+    {
+      "file": "gallery/award-handshake.jpg",
+      "sourceOrigin": "disk",
+      "sourceFile": "IMG_1704_resized.jpg",
+      "tildaUrl": "https://static.tildacdn.com/tild6138-3132-4062-b662-373830653537/IMG_1704_resized.jpg",
+      "oldPlacement": "Галерея (Tilda отдавала 700x1049)",
+      "newPlacement": "Галерея «PRIME SWIM в жизни»",
+      "resolution": "1707x2560",
+      "sizeKb": 400,
+      "format": "jpg",
+      "alt": "Тренер пожимает руку юному пловцу с медалью после соревнований",
+      "quality": "high",
+      "status": "needs-review",
+      "comment": "Взят диск: в 2,4 раза больше. Крупно видно лицо ребёнка — требуется подтверждение согласия на публикацию."
+    },
+    {
+      "file": "gallery/award-medals.jpg",
+      "sourceOrigin": "disk",
+      "sourceFile": "IMG_1733_resized.jpg",
+      "tildaUrl": "https://static.tildacdn.com/tild3962-3862-4636-b539-303931313337/IMG_1733_resized.jpg",
+      "oldPlacement": "Галерея (Tilda отдавала 700x1049)",
+      "newPlacement": "Галерея «PRIME SWIM в жизни»",
+      "resolution": "1707x2560",
+      "sizeKb": 537,
+      "format": "jpg",
+      "alt": "Тренер надевает медаль девочке в шапочке для плавания на награждении",
+      "quality": "high",
+      "status": "needs-review",
+      "comment": "Взят диск. В кадре двое детей в купальниках крупным планом — обязательно подтвердить согласие родителей на публикацию."
+    },
+    {
+      "file": "gallery/award-diplomas.jpg",
+      "sourceOrigin": "disk",
+      "sourceFile": "QdKtARcZ4_gNaPmm0tyVzMF2ig_MVWIenD6VoVhtMQ06auatg41Ae-mzHXuK-0tr31Q9pUeOJ2shjW3DbsxhYc6_.jpg",
+      "tildaUrl": "https://static.tildacdn.com/tild6664-3666-4837-b634-323431343537/QdKtARcZ4_gNaPmm0tyV.jpg",
+      "oldPlacement": "Галерея (Tilda отдавала 700x525)",
+      "newPlacement": "Галерея «PRIME SWIM в жизни»",
+      "resolution": "1280x960",
+      "sizeKb": 311,
+      "format": "jpg",
+      "alt": "Группа юных пловцов с дипломами и тренер после соревнований в бассейне",
+      "quality": "high",
+      "status": "needs-review",
+      "comment": "Взят диск: в 1,8 раза больше. В кадре несколько детей — требуется подтверждение согласий."
+    },
+    {
+      "file": "review-required/og-image-ai-tilda.png",
+      "sourceOrigin": "tilda",
+      "sourceFile": "ChatGPT_Image_10__20.png",
+      "oldPlacement": "Open Graph текущего сайта (og:image)",
+      "newPlacement": "НЕ ИСПОЛЬЗУЕТСЯ",
+      "resolution": "1672x941",
+      "sizeKb": 1677,
+      "format": "png",
+      "alt": null,
+      "quality": "n/a",
+      "status": "replace",
+      "comment": "Изображение сгенерировано нейросетью, а не снято в школе. В превью для соцсетей заменено на реальное фото бассейна pool/mgik-pool-lanes.jpg. Требуется ваше решение."
+    }
+  ],
+  "notUsedFromTilda": [
+    {
+      "file": "prime-favicon-32-v3.ico",
+      "comment": "Иконка сайта 32x32. Нужен исходник большего размера или SVG для нового favicon. Статус: new-required."
+    }
+  ],
+  "notImported": {
+    "$comment": "Намеренно НЕ перенесено.",
+    "aiGeneratedOnDisk": [
+      "ChatGPT Image 10 авг. 2026 г., 14_20_22.png",
+      "ChatGPT Image 10 авг. 2026 г., 17_22_57.png",
+      "Изображение Codex 18 авг. 2026 г., 15_34_50.png",
+      "Изображение Codex 18 авг. 2026 г., 17_08_29.png",
+      "exec-462e2287-66bc-4697-86c7-3280f0fbed23.png",
+      "exec-81206ae1-b116-430a-876d-2611cf17e0ac.png"
+    ],
+    "reasonAi": "Сгенерированы нейросетью. Нельзя выдавать за фотографии школы, бассейна или тренеров.",
+    "otherSchool": "Папка 'Рабочий стол/видео и фото шк плавания' относится к другой школе (Swim Champions School, scswim.ru) — не использована во избежание смешения фактов.",
+    "video": "Видео на текущем сайте primeswim.ru отсутствует. В папке 'прайм' есть файлы .MOV (IMG_1582, IMG_1739, IMG_2930, IMG_3741, IMG_3915, IMG_4143) — не переносились: нужно ваше решение по способу хранения и подтверждение согласий на съёмку."
+  },
+  "optimization": {
+    "$comment": "Отдельные WebP/AVIF-файлы не создаются намеренно.",
+    "approach": "Оптимизация выполняется компонентом next/image на лету: он сам отдаёт AVIF/WebP, подбирает размер под экран и ставит width/height, чтобы макет не прыгал.",
+    "priority": "Только hero/kids-in-pool.jpg грузится с приоритетом. Все остальные — loading=lazy."
+  }
+}

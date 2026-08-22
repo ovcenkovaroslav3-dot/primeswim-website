@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+/*
+  Дизайн-система PRIME SWIM.
+  Фирменные цвета взяты из логотипа школы: фиолетовый #4F017B и лайм #C7FE03.
+*/
+@theme {
+  --color-brand-50: #f6ecfd;
+  --color-brand-100: #ead4fa;
+  --color-brand-200: #d5a9f2;
+  --color-brand-300: #b96fe6;
+  --color-brand-400: #9a3fd2;
+  --color-brand-500: #7a19b4;
+  --color-brand-600: #4f017b;
+  --color-brand-700: #420168;
+  --color-brand-800: #340150;
+  --color-brand-900: #24003a;
+  --color-brand-950: #150022;
+
+  --color-lime-brand: #c7fe03;
+  --color-lime-brand-dark: #9ecb00;
+  --color-lime-brand-deep: #5f7a00;
+
+  --color-water-100: #e0f4fb;
+  --color-water-300: #8bd6ee;
+  --color-water-500: #22a7d0;
+  --color-water-700: #10688a;
+
+  --color-ink: #191524;
+  --color-ink-soft: #4d4757;
+  --color-ink-muted: #6f6980;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f7f5fa;
+  --color-hairline: #e6e2ee;
+
+  --font-display: var(--font-unbounded), "Segoe UI", system-ui, sans-serif;
+  --font-sans: var(--font-inter), "Segoe UI", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Якорные ссылки не должны прятать заголовок под липкой шапкой */
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Заметный фокус для клавиатурной навигации */
+:focus-visible {
+  outline: 3px solid var(--color-brand-600);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
