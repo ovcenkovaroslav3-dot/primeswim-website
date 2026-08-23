@@ -1,5 +1,4 @@
-import Image from 'next/image';
-
+import { CoachPortrait } from '../CoachPortrait';
 import { Section, SectionHeading } from '../ui';
 import { coaches } from '@/content/coaches';
 
@@ -18,21 +17,14 @@ export function Coaches() {
             key={coach.id}
             className="grid gap-8 rounded-3xl border border-hairline bg-white p-6 sm:p-8 lg:grid-cols-[320px_1fr] lg:items-start"
           >
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-surface-alt">
-              <Image
-                src={coach.photo.src}
-                alt={coach.photo.alt}
-                fill
-                sizes="(max-width: 1024px) 100vw, 320px"
-                className="object-cover"
-              />
-            </div>
+            {/* фотографии пока нет: передадим photo, когда пройдёт съёмка */}
+            <CoachPortrait name={coach.name} />
 
             <div>
               <h3 className="text-2xl font-light text-ink sm:text-3xl">
                 {coach.name}
               </h3>
-              <p className="mt-2 font-medium text-brand-600">{coach.role}</p>
+              <p className="mt-2 font-medium text-aqua-600">{coach.role}</p>
 
               {coach.bio.map((paragraph) => (
                 <p
@@ -50,7 +42,7 @@ export function Coaches() {
                 {coach.specialities.map((item) => (
                   <li
                     key={item}
-                    className="rounded-full bg-brand-50 px-4 py-2 text-sm font-medium text-brand-700"
+                    className="rounded-full bg-aqua-100 px-4 py-2 text-sm font-medium text-aqua-700"
                   >
                     {item}
                   </li>

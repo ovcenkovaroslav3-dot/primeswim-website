@@ -4,7 +4,6 @@ import { Section, SectionHeading } from '../ui';
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
 import { poolImages, venueImages } from '@/content/media';
-import { lessonFlow } from '@/content/programs';
 
 export function Pool() {
   const [mainPhoto, ...restPhotos] = poolImages;
@@ -77,24 +76,6 @@ export function Pool() {
         ))}
       </dl>
 
-      <h3 className="mt-16 text-2xl font-extralight text-ink sm:text-3xl">
-        Как проходит занятие
-      </h3>
-      <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {lessonFlow.map((item) => (
-          <li key={item.step} className="border-t border-hairline pt-5">
-            <p className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
-              Шаг {item.step}
-            </p>
-            <h4 className="mt-2 text-lg font-light text-ink">
-              {item.title}
-            </h4>
-            <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-              {item.description}
-            </p>
-          </li>
-        ))}
-      </ol>
     </Section>
   );
 }
