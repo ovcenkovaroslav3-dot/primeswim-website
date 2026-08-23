@@ -33,7 +33,7 @@ export function LeadForm() {
   if (state.status === 'success') {
     return (
       <div className="rounded-3xl bg-white p-8 text-center sm:p-12">
-          <div className="mx-auto grid size-14 place-items-center rounded-full bg-lime-brand">
+          <div className="mx-auto grid size-14 place-items-center rounded-full bg-aqua-400">
             <svg width="26" height="20" viewBox="0 0 26 20" fill="none" aria-hidden="true">
               <path
                 d="M2 10.5 9.5 18 24 2"

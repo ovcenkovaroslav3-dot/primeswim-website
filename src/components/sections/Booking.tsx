@@ -19,7 +19,7 @@ function MessengerCard({
       target="_blank"
       rel="noopener noreferrer"
       data-goal={goal}
-      className="group flex min-h-24 flex-col justify-center rounded-xl bg-white/8 p-6 ring-1 ring-white/15 transition-colors hover:bg-white/15 hover:ring-lime-brand"
+      className="group flex min-h-24 flex-col justify-center rounded-xl bg-white/8 p-6 ring-1 ring-white/15 transition-colors hover:bg-white/15 hover:ring-aqua-300"
     >
       <span className="flex items-center gap-2 text-xl font-light text-white">
         {title}
@@ -57,7 +57,7 @@ export function Booking() {
   */
 
   return (
-    <Section id="booking" labelledBy="booking-title" className="bg-brand-900">
+    <Section id="booking" labelledBy="booking-title" className="on-dark bg-abyss-900">
       <div
         className="mx-auto max-w-3xl text-center"
       >
@@ -103,7 +103,7 @@ export function Booking() {
             <a
               href={contacts.phone.href}
               data-goal="click_phone"
-              className="text-lg font-light text-lime-brand underline-offset-4 hover:underline"
+              className="text-lg font-light text-aqua-300 underline-offset-4 hover:underline"
             >
               {contacts.phone.display}
             </a>

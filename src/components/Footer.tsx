@@ -9,7 +9,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-brand-900 text-white">
+    <footer className="on-dark bg-abyss-900 text-white">
       <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
@@ -27,7 +27,7 @@ export function Footer() {
               <li>
                 <a
                   href={contacts.phone.href}
-                  className="font-medium text-white transition-colors hover:text-lime-brand"
+                  className="font-medium text-white transition-colors hover:text-aqua-300"
                 >
                   {contacts.phone.display}
                 </a>
@@ -38,7 +38,7 @@ export function Footer() {
                   href={contacts.address.yandexMaps}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline underline-offset-4 transition-colors hover:text-lime-brand"
+                  className="underline underline-offset-4 transition-colors hover:text-aqua-300"
                 >
                   Посмотреть на Яндекс Картах
                 </a>
@@ -57,7 +57,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/#schedule"
-                  className="transition-colors hover:text-lime-brand"
+                  className="transition-colors hover:text-aqua-300"
                 >
                   Расписание
                 </Link>
@@ -65,7 +65,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/#prices"
-                  className="transition-colors hover:text-lime-brand"
+                  className="transition-colors hover:text-aqua-300"
                 >
                   Стоимость занятий
                 </Link>
@@ -73,7 +73,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/#booking"
-                  className="transition-colors hover:text-lime-brand"
+                  className="transition-colors hover:text-aqua-300"
                 >
                   Запись на тренировку
                 </Link>
@@ -81,7 +81,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/policy"
-                  className="transition-colors hover:text-lime-brand"
+                  className="transition-colors hover:text-aqua-300"
                 >
                   Политика обработки персональных данных
                 </Link>

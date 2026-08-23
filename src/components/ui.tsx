@@ -8,9 +8,11 @@ const base =
   'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-brand-600 text-white hover:bg-brand-700',
-  secondary:
-    'bg-lime-brand text-brand-900 hover:bg-lime-brand-dark hover:text-brand-950',
+  // главное действие: аква на тёмном и на светлом одинаково заметна
+  primary:
+    'bg-aqua-400 text-abyss-950 hover:bg-aqua-300 shadow-[0_14px_40px_-16px_var(--color-aqua-500)]',
+  // для действия поверх насыщенной заливки — белая плашка
+  secondary: 'bg-white text-abyss-900 hover:bg-aqua-100',
   ghost:
     'border border-hairline bg-transparent text-ink-soft hover:bg-surface-alt',
 };

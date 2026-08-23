@@ -18,7 +18,7 @@ const links = [
 
 export function SocialLinks({ inverted = false }: { inverted?: boolean }) {
   const itemClass = inverted
-    ? 'border-white/30 text-white hover:border-lime-brand hover:text-lime-brand'
+    ? 'border-white/30 text-white hover:border-aqua-300 hover:text-aqua-300'
     : 'border-hairline text-ink-soft hover:border-brand-600 hover:text-brand-600';
 
   return (

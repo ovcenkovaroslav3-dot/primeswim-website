@@ -1,10 +1,33 @@
 @import "tailwindcss";
 
 /*
-  Дизайн-система PRIME SWIM.
-  Фирменные цвета взяты из логотипа школы: фиолетовый #4F017B и лайм #C7FE03.
+  ДИЗАЙН-СИСТЕМА PRIME SWIM
+
+  Визуальный язык: вода, глубина, скорость, свет.
+
+  Основа тёмных экранов — не чистый фиолетовый, а сине-чёрная «толща»
+  (abyss). Фиолетовый из логотипа работает как второй свет в глубине,
+  акцент — аква. Лайм остаётся только в знаке: как акцент он жёлто-зелёный
+  и тянет макет в сторону детской секции.
 */
 @theme {
+  /* ── толща воды: основа тёмных секций ── */
+  --color-abyss-950: #03070f;
+  --color-abyss-900: #061124;
+  --color-abyss-800: #0a1c39;
+  --color-abyss-700: #102a4e;
+  --color-abyss-600: #17406e;
+
+  /* ── аква: главный акцент, свет сквозь воду ── */
+  --color-aqua-100: #dcf5ff;
+  --color-aqua-200: #b6ebff;
+  --color-aqua-300: #7adcff;
+  --color-aqua-400: #38c6f4;
+  --color-aqua-500: #12a5db;
+  --color-aqua-600: #0b7fae;
+  --color-aqua-700: #095f83;
+
+  /* ── фиолетовый из логотипа: второй свет, глубина ── */
   --color-brand-50: #f6ecfd;
   --color-brand-100: #ead4fa;
   --color-brand-200: #d5a9f2;
@@ -17,57 +40,142 @@
   --color-brand-900: #24003a;
   --color-brand-950: #150022;
 
+  /* ── знак ── */
   --color-lime-brand: #c7fe03;
   --color-lime-brand-dark: #9ecb00;
   --color-lime-brand-deep: #5f7a00;
 
-  --color-water-100: #e0f4fb;
-  --color-water-300: #8bd6ee;
-  --color-water-500: #22a7d0;
-  --color-water-700: #10688a;
-
-  --color-ink: #191524;
-  --color-ink-soft: #4d4757;
-  --color-ink-muted: #6f6980;
+  /* ── светлые поверхности ── */
+  --color-ink: #0d1526;
+  --color-ink-soft: #40506a;
+  --color-ink-muted: #6b7a92;
   --color-surface: #ffffff;
-  --color-surface-alt: #f7f5fa;
-  --color-hairline: #e6e2ee;
+  --color-surface-alt: #f4f8fc;
+  --color-surface-deep: #e9f1f8;
+  --color-hairline: #dde7f0;
 
   --font-display: var(--font-unbounded), "Segoe UI", system-ui, sans-serif;
   --font-sans: var(--font-inter), "Segoe UI", system-ui, sans-serif;
+
+  /* ── ритм и форма ── */
+  --radius-card: 20px;
+  --radius-control: 10px;
+
+  /* ── движение: одна кривая на весь сайт, три длительности ── */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 220ms;
+  --dur-base: 420ms;
+  --dur-slow: 900ms;
 }
 
-html {
-  scroll-behavior: smooth;
-  /* Якорные ссылки не должны прятать заголовок под липкой шапкой */
-  scroll-padding-top: 5.5rem;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* якорные ссылки не должны прятать заголовок под липкой шапкой */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* заголовки не должны оставлять висячее слово в последней строке */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  /*
+    Заметный фокус для клавиатурной навигации.
+    Цвет задаётся отдельным свойством, а не сокращённой записью outline:
+    в сокращённой записи он подменялся на currentColor, из-за чего у белых
+    кнопок обводка становилась белой и пропадала на светлом фоне.
+  */
+  :focus-visible {
+    outline-style: solid;
+    outline-width: 3px;
+    outline-color: var(--color-aqua-500);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* на тёмной толще нужен более светлый контур */
+  .on-dark :focus-visible {
+    outline-color: var(--color-aqua-300);
+  }
 }
 
-body {
-  background: var(--color-surface);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
+@layer components {
+  /*
+    Стекло. Используется поверх тёмной сцены: подложка почти прозрачная,
+    держится за счёт светлой кромки сверху, а не за счёт заливки.
+  */
+  .glass {
+    background: color-mix(in oklab, var(--color-abyss-800) 38%, transparent);
+    border: 1px solid color-mix(in oklab, white 14%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, white 12%, transparent),
+      0 24px 48px -24px color-mix(in oklab, var(--color-abyss-950) 80%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  .glass-light {
+    background: color-mix(in oklab, white 68%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-aqua-600) 12%, transparent);
+    backdrop-filter: blur(12px) saturate(120%);
+  }
+
+  /* мягкое свечение под ключевыми элементами */
+  .glow-aqua {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-aqua-400) 30%, transparent),
+      0 18px 60px -18px color-mix(in oklab, var(--color-aqua-400) 55%, transparent);
+  }
 }
 
-/*
-  Заметный фокус для клавиатурной навигации.
-  Цвет задаётся отдельным свойством, а не сокращённой записью outline:
-  в сокращённой записи он подменялся на currentColor, из-за чего у белых
-  кнопок обводка становилась белой и пропадала на светлом фоне.
-*/
-:focus-visible {
-  outline-style: solid;
-  outline-width: 3px;
-  outline-color: var(--color-brand-600);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+@layer utilities {
+  /*
+    Появление секций. Элемент ждёт класса .is-in, который вешает наблюдатель
+    пересечений — без него ничего не двигается, поэтому контент виден даже
+    если JavaScript не выполнился.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity var(--dur-slow) var(--ease-out-soft),
+        transform var(--dur-slow) var(--ease-out-soft);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
 
-/* На тёмном фоне фиолетовая обводка неразличима — там она лаймовая */
-.bg-brand-900 :focus-visible,
-.bg-brand-800 :focus-visible {
-  outline-color: var(--color-lime-brand);
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* текст, проявляющийся из-под маски — для крупных заголовков */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-mask > * {
+      display: block;
+      transform: translateY(102%);
+      transition: transform var(--dur-slow) var(--ease-out-soft);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .reveal-mask.is-in > * {
+      transform: none;
+    }
+  }
+
+  .reveal-mask {
+    overflow: hidden;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

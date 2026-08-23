@@ -49,14 +49,16 @@ export function Header() {
           >
             {contacts.phone.display}
           </a>
-          <ButtonLink
-            href="/#booking"
-            variant="primary"
-            data-goal="cta_booking"
-            className="hidden sm:inline-flex"
-          >
-            Записаться
-          </ButtonLink>
+          {/*
+            Прячем обёрткой, а не самой кнопкой: у ButtonLink в базовых классах
+            уже есть inline-flex, и он перебивал hidden — кнопка оставалась
+            видимой на узких экранах и разрывала шапку.
+          */}
+          <span className="hidden sm:block">
+            <ButtonLink href="/#booking" variant="primary" data-goal="cta_booking">
+              Записаться
+            </ButtonLink>
+          </span>
           <MobileMenu />
         </div>
       </div>
