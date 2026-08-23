@@ -28,6 +28,7 @@ export function Contacts() {
             href={contacts.address.yandexMaps}
             external
             variant="ghost"
+            data-goal="click_route"
             className="mt-6"
           >
             Построить маршрут на Яндекс Картах
@@ -45,6 +46,7 @@ export function Contacts() {
 
           <a
             href={contacts.phone.href}
+            data-goal="click_phone"
             className="mt-3 inline-block font-display text-2xl font-bold text-brand-600 underline-offset-4 hover:underline sm:text-3xl"
           >
             {contacts.phone.display}

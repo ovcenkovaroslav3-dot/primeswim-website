@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 
-import { Section } from '../ui';
 import { buttonClass } from '../ui';
 import { contacts } from '@/content/contacts';
 import { initialLeadState } from '@/lib/lead-schema';
@@ -33,8 +32,7 @@ export function LeadForm() {
 
   if (state.status === 'success') {
     return (
-      <Section id="booking" labelledBy="booking-title" className="bg-brand-900">
-        <div className="mx-auto max-w-2xl rounded-3xl bg-white p-8 text-center sm:p-12">
+      <div className="rounded-3xl bg-white p-8 text-center sm:p-12">
           <div className="mx-auto grid size-14 place-items-center rounded-full bg-lime-brand">
             <svg width="26" height="20" viewBox="0 0 26 20" fill="none" aria-hidden="true">
               <path
@@ -46,12 +44,9 @@ export function LeadForm() {
               />
             </svg>
           </div>
-          <h2
-            id="booking-title"
-            className="mt-6 font-display text-2xl font-bold text-ink sm:text-3xl"
-          >
+          <p className="mt-6 font-display text-2xl font-bold text-ink sm:text-3xl">
             Заявка отправлена
-          </h2>
+          </p>
           <p className="mt-4 leading-relaxed text-ink-soft">
             Мы получили вашу заявку и свяжемся по указанному номеру, чтобы
             подобрать группу и ответить на вопросы.
@@ -65,55 +60,11 @@ export function LeadForm() {
               {contacts.phone.display}
             </a>
           </p>
-        </div>
-      </Section>
+      </div>
     );
   }
 
   return (
-    <Section id="booking" labelledBy="booking-title" className="bg-brand-900">
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <div className="text-white">
-          <h2
-            id="booking-title"
-            className="font-display text-3xl leading-tight font-bold sm:text-4xl"
-          >
-            Запишите ребёнка на пробное занятие
-          </h2>
-          <p className="mt-5 leading-relaxed text-white/80">
-            Оставьте имя и телефон — перезвоним, подберём группу по возрасту и
-            уровню подготовки и расскажем, что взять с собой.
-          </p>
-
-          <div className="mt-8 space-y-3 text-white/80">
-            <p className="text-sm">Можно записаться и напрямую:</p>
-            <div className="flex flex-wrap gap-3">
-              <a
-                href={contacts.phone.href}
-                className={buttonClass(
-                  'ghost',
-                  'md',
-                  'border-white/40 text-white hover:bg-white/10',
-                )}
-              >
-                {contacts.phone.display}
-              </a>
-              <a
-                href={contacts.social.telegramBooking}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonClass(
-                  'ghost',
-                  'md',
-                  'border-white/40 text-white hover:bg-white/10',
-                )}
-              >
-                Telegram
-              </a>
-            </div>
-          </div>
-        </div>
-
         <form
           action={formAction}
           noValidate
@@ -269,7 +220,7 @@ export function LeadForm() {
                   aria-describedby={
                     state.errors.consent ? 'lead-consent-error' : undefined
                   }
-                  className="mt-0.5 size-5 shrink-0 accent-brand-600"
+                  className="mt-0.5 size-6 shrink-0 accent-brand-600"
                 />
                 <span>
                   Я согласен(а) на{' '}
@@ -292,7 +243,5 @@ export function LeadForm() {
             <SubmitButton />
           </div>
         </form>
-      </div>
-    </Section>
   );
 }

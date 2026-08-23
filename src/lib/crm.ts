@@ -77,6 +77,25 @@ function getLeadTransport(): LeadTransport | null {
   return isProduction ? null : mockTransport;
 }
 
+/**
+ * Есть ли куда доставить заявку.
+ * Пока канал не настроен, форма на странице не показывается вовсе — запись идёт
+ * через мессенджеры, и посетитель не отправляет заявку в никуда.
+ *
+ * Проверяется только явная настройка, а не запасной mock: иначе форма
+ * появлялась бы при разработке и пропадала в production, и мы бы видели
+ * локально не то, что уйдёт на боевой сайт.
+ */
+export function isLeadDeliveryConfigured(): boolean {
+  if (process.env.LEAD_WEBHOOK_URL) return true;
+
+  // Разработчик может включить форму вручную, чтобы поработать над ней.
+  return (
+    process.env.LEAD_TRANSPORT === 'mock' &&
+    process.env.NODE_ENV !== 'production'
+  );
+}
+
 export async function deliverLead(lead: Lead): Promise<LeadDeliveryResult> {
   const transport = getLeadTransport();
 

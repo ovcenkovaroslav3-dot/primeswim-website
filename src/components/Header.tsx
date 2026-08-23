@@ -44,6 +44,7 @@ export function Header() {
         <div className="ml-auto flex items-center gap-3 lg:ml-0">
           <a
             href={contacts.phone.href}
+            data-goal="click_phone"
             className="hidden text-sm font-semibold whitespace-nowrap text-ink transition-colors hover:text-brand-600 md:inline"
           >
             {contacts.phone.display}
@@ -51,6 +52,7 @@ export function Header() {
           <ButtonLink
             href="/#booking"
             variant="primary"
+            data-goal="cta_booking"
             className="hidden sm:inline-flex"
           >
             Записаться

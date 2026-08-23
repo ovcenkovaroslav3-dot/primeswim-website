@@ -50,12 +50,18 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <ButtonLink href="#booking" variant="secondary" size="lg">
+            <ButtonLink
+              href="#booking"
+              variant="secondary"
+              size="lg"
+              data-goal="cta_booking"
+            >
               {site.cta.primary}
             </ButtonLink>
             <ButtonLink
               href="#schedule"
               size="lg"
+              data-goal="cta_schedule"
               className="border-2 border-white/40 bg-transparent text-white hover:border-white hover:bg-white/10"
             >
               {site.cta.schedule}

@@ -43,3 +43,6 @@ next-env.d.ts
 # сгенерированное превью (собирается командой scripts/make-preview.mjs)
 /preview.html
 /public/preview.html
+
+# graphify (генерируется скилом graphify)
+graphify-out/

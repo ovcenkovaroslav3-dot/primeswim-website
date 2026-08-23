@@ -14,7 +14,7 @@ export function Gallery() {
       />
 
       {/* Сетка вместо карусели: всё видно сразу, ничего не нужно листать */}
-      <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {galleryImages.map((photo) => (
           <li
             key={photo.src}
@@ -25,7 +25,7 @@ export function Gallery() {
               alt={photo.alt}
               fill
               loading="lazy"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover"
             />
           </li>
