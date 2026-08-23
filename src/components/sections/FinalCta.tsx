@@ -1,3 +1,4 @@
+import { LeadForm } from './LeadForm';
 import { WaterScene } from '../WaterScene';
 import { contacts } from '@/content/contacts';
 
@@ -13,9 +14,9 @@ import { contacts } from '@/content/contacts';
 
   Якорь `booking` сохранён — на него ведут все кнопки записи со страницы.
 
-  Форма заявки временно отключена: сайт собирается в статику, а серверных
-  экшенов там нет. Разметка формы сохранена в LeadForm.tsx и вернётся,
-  когда появится обработчик заявок.
+  Форма работает без сервера: проверяет поля в браузере и открывает Telegram
+  с готовым сообщением. Мессенджеры рядом — для тех, кому проще написать
+  сразу, без формы.
 */
 
 function MessengerCard({
@@ -92,8 +93,8 @@ export function FinalCta() {
           className="reveal mx-auto mt-6 max-w-[48ch] text-lg leading-relaxed text-white/75"
           style={{ ['--reveal-delay' as string]: '180ms' }}
         >
-          Напишите нам — подберём группу по возрасту и уровню подготовки,
-          назовём ближайшее свободное время и расскажем, что взять с собой.
+          Заполните форму или напишите в мессенджер — подберём группу по возрасту
+          и уровню подготовки и назовём ближайшее свободное время.
         </p>
 
         <div
@@ -114,15 +115,12 @@ export function FinalCta() {
           />
         </div>
 
-        <p
-          className="reveal mt-8 text-sm leading-relaxed text-white/65"
+        <div
+          className="reveal mt-10 text-left"
           style={{ ['--reveal-delay' as string]: '340ms' }}
         >
-          Чтобы ответить сразу по делу, укажите в сообщении{' '}
-          <span className="text-white">возраст ребёнка</span>,{' '}
-          <span className="text-white">опыт занятий в бассейне</span> и{' '}
-          <span className="text-white">удобные дни</span>.
-        </p>
+          <LeadForm />
+        </div>
 
         <p className="reveal mt-8 border-t border-white/15 pt-8 text-white/75">
           Удобнее голосом? Позвоните{' '}

@@ -6,6 +6,8 @@
 export type LeadInput = {
   name: string;
   phone: string;
+  /** Возрастной диапазон ребёнка — определяет группу */
+  age: string;
   program: string;
   comment: string;
   consent: boolean;
@@ -18,7 +20,7 @@ export type LeadErrors = Partial<Record<keyof LeadInput, string>>;
 /** Что вернуть в поля после неудачной отправки, чтобы не вводить заново. */
 export type LeadValues = Pick<
   LeadInput,
-  'name' | 'phone' | 'program' | 'comment' | 'consent'
+  'name' | 'phone' | 'age' | 'program' | 'comment' | 'consent'
 >;
 
 export type LeadFormState = {
@@ -32,6 +34,7 @@ export type LeadFormState = {
 export const emptyLeadValues: LeadValues = {
   name: '',
   phone: '',
+  age: '',
   program: '',
   comment: '',
   consent: false,
@@ -56,6 +59,7 @@ export function normalizePhone(value: string): string {
 export function validateLead(
   input: LeadInput,
   validPrograms: ReadonlySet<string>,
+  validAges: ReadonlySet<string>,
 ): LeadErrors {
   const errors: LeadErrors = {};
 
@@ -71,6 +75,10 @@ export function validateLead(
     errors.phone = 'Укажите номер телефона, чтобы мы могли перезвонить.';
   } else if (digits.length < 10 || digits.length > 15) {
     errors.phone = 'Проверьте номер: в российском номере 11 цифр.';
+  }
+
+  if (!validAges.has(input.age)) {
+    errors.age = 'Выберите возраст ребёнка.';
   }
 
   if (!validPrograms.has(input.program)) {

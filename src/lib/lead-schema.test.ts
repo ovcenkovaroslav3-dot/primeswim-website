@@ -9,11 +9,13 @@ import assert from 'node:assert/strict';
 import { validateLead, normalizePhone, type LeadInput } from './lead-schema.ts';
 
 const validPrograms = new Set(['', 'beginners', 'technique', 'sport']);
+const validAges = new Set(['under-7', '7-8', '9-10', '11-12', '13-14', '15+']);
 
 function makeLead(overrides: Partial<LeadInput> = {}): LeadInput {
   return {
     name: 'Мария',
     phone: '+7 991 229-99-77',
+    age: '7-8',
     program: 'beginners',
     comment: '',
     consent: true,
@@ -22,7 +24,7 @@ function makeLead(overrides: Partial<LeadInput> = {}): LeadInput {
   };
 }
 
-const check = (input: LeadInput) => validateLead(input, validPrograms);
+const check = (input: LeadInput) => validateLead(input, validPrograms, validAges);
 
 test('корректная заявка проходит проверку', () => {
   assert.deepEqual(check(makeLead()), {});
@@ -70,4 +72,12 @@ test('пустое направление допустимо — человек 
 test('слишком длинный комментарий отклоняется', () => {
   const errors = check(makeLead({ comment: 'a'.repeat(601) }));
   assert.ok(errors.comment);
+});
+
+test('без возраста заявка не проходит: без него не подобрать группу', () => {
+  assert.equal(check(makeLead({ age: '' })).age, 'Выберите возраст ребёнка.');
+});
+
+test('возраст вне списка не принимается', () => {
+  assert.ok(check(makeLead({ age: '99' })).age);
 });

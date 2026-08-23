@@ -47,3 +47,23 @@ export const validProgramIds: ReadonlySet<string> = new Set(
 );
 
 
+
+/**
+ * Возраст ребёнка. Отдельным полем, а не строкой в комментарии: именно
+ * возраст определяет группу, и без него всё равно пришлось бы перезванивать.
+ *
+ * «Младше 7» оставлен намеренно — школа набирает с семи лет, но родителю
+ * честнее показать это в форме, чем отсеять его молча.
+ */
+export const ageOptions = [
+  { value: 'under-7', label: 'Младше 7 лет' },
+  { value: '7-8', label: '7–8 лет' },
+  { value: '9-10', label: '9–10 лет' },
+  { value: '11-12', label: '11–12 лет' },
+  { value: '13-14', label: '13–14 лет' },
+  { value: '15+', label: '15 лет и старше' },
+];
+
+export const validAgeIds: ReadonlySet<string> = new Set(
+  ageOptions.map((o) => o.value),
+);
