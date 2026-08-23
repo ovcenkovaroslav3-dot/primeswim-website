@@ -20,3 +20,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 }
+
+// сайт собирается в статику: файл должен быть посчитан на сборке
+export const dynamic = 'force-static';

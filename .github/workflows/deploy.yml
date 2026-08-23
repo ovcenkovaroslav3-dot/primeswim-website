@@ -1,0 +1,67 @@
+name: Сборка и публикация на GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Pages разворачивается токеном самого воркфлоу
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# параллельные публикации не нужны: важен только последний коммит,
+# но начатую публикацию не обрываем, чтобы не оставить Pages в полусостоянии
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # адрес проектной страницы содержит имя репозитория — отсюда basePath.
+      # при переезде на свой домен обе переменные меняются на пустую и https://primeswim.ru
+      NEXT_PUBLIC_BASE_PATH: /primeswim-website
+      NEXT_PUBLIC_SITE_URL: https://ovcenkovaroslav3-dot.github.io/primeswim-website
+      # индексацию держим выключенной, пока сайт живёт на техническом адресе:
+      # иначе он начнёт конкурировать с primeswim.ru в поиске
+      NEXT_PUBLIC_ALLOW_INDEXING: 'false'
+      # номер счётчика Метрики не секрет — он и так виден в исходнике страницы
+      NEXT_PUBLIC_YANDEX_METRIKA_ID: '111745879'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Проверка типов
+        run: npm run typecheck
+
+      - name: Линтер
+        run: npm run lint
+
+      - name: Сборка статики
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

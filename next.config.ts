@@ -1,7 +1,23 @@
 import type { NextConfig } from 'next';
 
+/*
+  Сайт собирается в статику и живёт на GitHub Pages.
+  basePath нужен, пока адрес вида user.github.io/primeswim-website — при
+  переезде на собственный домен достаточно очистить NEXT_PUBLIC_BASE_PATH.
+*/
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 const nextConfig: NextConfig = {
+  output: 'export',
+  basePath,
+  // хвостовой слеш даёт папку с index.html на каждый маршрут — так Pages
+  // отдаёт /policy/ без ручной настройки перезаписей
+  trailingSlash: true,
   images: {
+    // на статике оптимизировать нечем; свой загрузчик нужен только чтобы
+    // приклеить basePath — встроенный этого не делает
+    loader: 'custom',
+    loaderFile: './src/lib/image-loader.ts',
     /*
       AVIF сжимает фотографии заметно лучше WebP. Браузер сам выбирает формат,
       который понимает: сначала пробуется AVIF, затем WebP, иначе исходный JPEG.

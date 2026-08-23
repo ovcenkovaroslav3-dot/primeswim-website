@@ -21,3 +21,6 @@ export default function robots(): MetadataRoute.Robots {
     host: site.url,
   };
 }
+
+// сайт собирается в статику: файл должен быть посчитан на сборке
+export const dynamic = 'force-static';

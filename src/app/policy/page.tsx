@@ -40,10 +40,10 @@ export default function PolicyPage() {
           {legal.ogrnip ? `, ОГРНИП ${legal.ogrnip}` : ''} — далее «Оператор»,
           владелец сайта primeswim.ru.
         </p>
-        {!legal.inn || !legal.ogrnip || !legal.registrationAddress ? (
+        {!legal.inn || !legal.ogrnip ? (
           <p className="mt-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900">
             <strong>[ТРЕБУЕТ УТОЧНЕНИЯ]</strong> Не заполнены реквизиты
-            оператора: ИНН, ОГРНИП и адрес регистрации. Заполните их в файле{' '}
+            оператора: ИНН и ОГРНИП. Заполните их в файле{' '}
             <code className="rounded bg-amber-100 px-1">
               src/content/contacts.ts
             </code>{' '}

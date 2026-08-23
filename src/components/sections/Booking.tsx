@@ -1,7 +1,5 @@
 import { Section } from '../ui';
-import { LeadForm } from './LeadForm';
 import { contacts } from '@/content/contacts';
-import { isLeadDeliveryConfigured } from '@/lib/crm';
 
 /** Крупная кнопка мессенджера: основной способ записи. */
 function MessengerCard({
@@ -51,20 +49,17 @@ function MessengerCard({
 
 export function Booking() {
   /*
-    Форма показывается только тогда, когда заявке действительно есть куда уйти.
-    Пока канал доставки не настроен, запись идёт напрямую в мессенджеры —
-    так посетитель не отправляет заявку «в никуда».
+    Сайт собирается в статику (GitHub Pages), а серверных экшенов там нет,
+    поэтому форма заявки временно отключена: запись идёт в мессенджеры и по
+    телефону. Разметка формы и правила проверки сохранены в LeadForm.tsx,
+    lead-schema.ts и actions/submit-lead.ts — вернём их, когда появится
+    обработчик заявок (свой эндпоинт или хостинг с сервером).
   */
-  const showForm = isLeadDeliveryConfigured();
 
   return (
     <Section id="booking" labelledBy="booking-title" className="bg-brand-900">
       <div
-        className={
-          showForm
-            ? 'grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start'
-            : 'mx-auto max-w-3xl text-center'
-        }
+        className="mx-auto max-w-3xl text-center"
       >
         <div className="text-white">
           <h2
@@ -80,9 +75,7 @@ export function Booking() {
           </p>
 
           <div
-            className={`mt-8 grid gap-4 sm:grid-cols-2 ${
-              showForm ? '' : 'text-left'
-            }`}
+            className="mt-8 grid gap-4 text-left sm:grid-cols-2"
           >
             <MessengerCard
               href={contacts.social.telegramBooking}
@@ -116,8 +109,6 @@ export function Booking() {
             </a>
           </p>
         </div>
-
-        {showForm ? <LeadForm /> : null}
       </div>
     </Section>
   );

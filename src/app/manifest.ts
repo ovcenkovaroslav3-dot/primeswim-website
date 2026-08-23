@@ -15,3 +15,6 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: 'ru',
   };
 }
+
+// сайт собирается в статику: файл должен быть посчитан на сборке
+export const dynamic = 'force-static';
