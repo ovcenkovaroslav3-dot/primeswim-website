@@ -73,10 +73,10 @@ export function Training() {
         <div className="mt-14 lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           {/* залипающая панель: только на широком экране */}
           <div className="hidden lg:sticky lg:top-28 lg:block lg:h-fit">
-            <div className="relative overflow-hidden rounded-[20px] bg-abyss-900 p-8 text-white">
+            <div className="relative overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-20 -right-16 size-56 rounded-full bg-aqua-500/25 blur-3xl"
+                className="parallax pointer-events-none absolute -top-20 -right-16 size-56 rounded-full bg-aqua-500/25 blur-3xl"
               />
               <div className="relative">
                 <p className="text-6xl leading-none font-extralight tabular-nums text-aqua-300">
@@ -91,7 +91,7 @@ export function Training() {
                   Доля занятия
                 </p>
                 <div
-                  className="mt-3 flex h-2 gap-1 overflow-hidden rounded-full"
+                  className="mt-3 flex h-2 gap-1 overflow-clip rounded-full"
                   role="img"
                   aria-label={`Шаг ${active + 1} из ${trainingSteps.length}: ${current.title}, около ${current.share}% занятия`}
                 >

@@ -1,4 +1,4 @@
-import { stages } from '@/content/method';
+import { stages } from "@/content/method";
 
 /*
   Чему научится ребёнок.
@@ -15,16 +15,24 @@ export function Progress() {
     <section
       id="progress"
       aria-labelledby="progress-title"
-      className="on-dark relative overflow-hidden bg-abyss-900 px-4 py-20 text-white sm:px-6 md:py-28"
+      className="on-dark relative overflow-clip bg-abyss-900 px-4 py-20 text-white sm:px-6 md:py-28"
     >
       {/* свет в глубине: два мягких пятна вместо плоской заливки */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/4 size-[32rem] rounded-full bg-brand-500/20 blur-3xl"
+        className="parallax pointer-events-none absolute -top-40 left-1/4 size-[32rem] rounded-full bg-brand-500/20 blur-3xl"
+        style={{
+          ["--parallax-from" as string]: "14%",
+          ["--parallax-to" as string]: "-14%",
+        }}
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-20 -bottom-40 size-[28rem] rounded-full bg-aqua-500/15 blur-3xl"
+        className="parallax pointer-events-none absolute -right-20 -bottom-40 size-[28rem] rounded-full bg-aqua-500/15 blur-3xl"
+        style={{
+          ["--parallax-from" as string]: "-10%",
+          ["--parallax-to" as string]: "10%",
+        }}
       />
 
       <div className="relative mx-auto w-full max-w-6xl">
@@ -56,7 +64,7 @@ export function Progress() {
             <li
               key={stage.id}
               className="reveal relative pl-9 md:pt-10 md:pl-0"
-              style={{ ['--reveal-delay' as string]: `${i * 110}ms` }}
+              style={{ ["--reveal-delay" as string]: `${i * 110}ms` }}
             >
               <span
                 aria-hidden="true"

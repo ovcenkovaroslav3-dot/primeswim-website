@@ -27,7 +27,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-title"
-      className="on-dark relative isolate min-h-[100svh] overflow-hidden bg-abyss-950 text-white"
+      className="on-dark relative isolate min-h-[100svh] overflow-clip bg-abyss-950 text-white"
     >
       <div className="absolute inset-0 -z-10">
         <WaterScene />
@@ -39,7 +39,7 @@ export function Hero() {
         className="absolute inset-0 -z-10 bg-linear-to-b from-abyss-950/85 via-abyss-950/45 to-abyss-950/80 md:bg-linear-to-r md:from-abyss-950/92 md:via-abyss-950/35 md:to-transparent"
       />
 
-      <div className="mx-auto flex min-h-[100svh] w-full max-w-6xl flex-col justify-center px-5 pt-26 pb-20 sm:px-6 md:pt-28 md:pb-24">
+      <div className="hero-depart mx-auto flex min-h-[100svh] w-full max-w-6xl flex-col justify-center px-5 pt-26 pb-20 sm:px-6 md:pt-28 md:pb-24">
         <p
           className="reveal text-xs font-medium tracking-[0.28em] text-aqua-300 uppercase"
           style={{ ['--reveal-delay' as string]: '80ms' }}

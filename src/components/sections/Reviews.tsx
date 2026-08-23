@@ -28,11 +28,11 @@ export function Reviews() {
 
       <ul className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <li
-          className="reveal relative flex flex-col overflow-hidden rounded-[20px] bg-abyss-900 p-8 text-white md:col-span-2 lg:row-span-2 lg:p-10"
+          className="reveal relative flex flex-col overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white md:col-span-2 lg:row-span-2 lg:p-10"
         >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -top-24 -right-20 size-64 rounded-full bg-aqua-500/20 blur-3xl"
+            className="parallax pointer-events-none absolute -top-24 -right-20 size-64 rounded-full bg-aqua-500/20 blur-3xl"
           />
           <div className="relative flex flex-1 flex-col">
             {/* кавычка набрана основным шрифтом: в Unbounded она геометрическая

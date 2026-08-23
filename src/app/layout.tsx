@@ -62,7 +62,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru" className={`${unbounded.variable} ${inter.variable} h-full`}>
-      <body className="flex min-h-full flex-col overflow-x-hidden">
+      <body className="flex min-h-full flex-col overflow-x-clip">
         <a
           href="#main"
           className="sr-only rounded-lg bg-aqua-600 px-4 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100"

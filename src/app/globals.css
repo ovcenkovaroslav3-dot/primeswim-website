@@ -76,6 +76,14 @@
   }
 
   body {
+    /*
+      Именно clip, а не hidden. Hidden принудительно включает overflow-y: auto
+      и делает body контейнером прокрутки, который при этом никогда не
+      прокручивается — реально скроллится html. Из-за этого scroll-driven
+      анимации цеплялись за мёртвый контейнер и стояли на месте.
+      Clip обрезает по горизонтали, не создавая контейнера прокрутки.
+    */
+    overflow-x: clip;
     background: var(--color-surface);
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -158,6 +166,70 @@
 
     .zoom-frame:hover img {
       transform: scale(1.04);
+    }
+  }
+
+
+  /*
+    Параллакс на прокрутке.
+
+    Сделан на нативной scroll-driven анимации: браузер считает её вне
+    основного потока, поэтому обработчика scroll и requestAnimationFrame
+    здесь нет вообще — ни одного килобайта JavaScript.
+
+    Всё закрыто проверкой @supports: где animation-timeline не поддержан
+    (сейчас это Firefox), элементы просто остаются на месте. Деградация
+    молчаливая и безопасная — параллакс декоративен.
+
+    Смещения намеренно маленькие. Пятна света сдвигаются на проценты
+    своего размера, а не экрана: крупное свечение и так читается мягко,
+    и большой сдвиг превратил бы его в дёрганье.
+  */
+  @keyframes parallax-drift {
+    from {
+      transform: translate3d(0, var(--parallax-from, 12%), 0);
+    }
+    to {
+      transform: translate3d(0, var(--parallax-to, -12%), 0);
+    }
+  }
+
+  /*
+    Первая половина шкалы намеренно неподвижна. Диапазон задать нельзя —
+    минификатор ломает animation-range, — поэтому «ничего не происходит,
+    пока экран не начал уходить» выражено самими кадрами: при загрузке
+    страницы прогресс около половины, и контент стоит нетронутым.
+  */
+  @keyframes hero-depart {
+    0%,
+    52% {
+      transform: none;
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(0, -14%, 0);
+      opacity: 0.25;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .parallax {
+        animation: parallax-drift linear both;
+        animation-timeline: view();
+        /* диапазон не задаём намеренно: по умолчанию анимация идёт от входа
+           элемента в экран до полного выхода — для параллакса это и нужно.
+           Любая явная запись animation-range сворачивалась минификатором
+           в битое `entry exit 0%`, и движение обрывалось на первом кадре. */
+        will-change: transform;
+      }
+
+      /* содержимое первого экрана мягко уходит вверх, уступая место следующему */
+      .hero-depart {
+        animation: hero-depart linear both;
+        animation-timeline: view();
+        will-change: transform, opacity;
+      }
     }
   }
 

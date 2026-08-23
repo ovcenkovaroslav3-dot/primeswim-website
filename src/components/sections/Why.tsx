@@ -1,5 +1,5 @@
-import { Section, SectionHeading } from '../ui';
-import { advantages } from '@/content/method';
+import { Section, SectionHeading } from "../ui";
+import { advantages } from "@/content/method";
 
 /*
   Почему PRIME SWIM.
@@ -23,16 +23,24 @@ export function Why() {
       <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {/* главный пункт: тёмная плашка с подсветкой, занимает две колонки */}
         <li
-          className="reveal relative overflow-hidden rounded-[20px] bg-abyss-900 p-8 text-white sm:col-span-2 sm:p-10"
-          style={{ ['--reveal-delay' as string]: '60ms' }}
+          className="reveal relative overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white sm:col-span-2 sm:p-10"
+          style={{ ["--reveal-delay" as string]: "60ms" }}
         >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -top-24 -right-16 size-64 rounded-full bg-aqua-500/25 blur-3xl"
+            className="parallax pointer-events-none absolute -top-24 -right-16 size-64 rounded-full bg-aqua-500/25 blur-3xl"
+            style={{
+              ["--parallax-from" as string]: "10%",
+              ["--parallax-to" as string]: "-10%",
+            }}
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -bottom-28 -left-10 size-56 rounded-full bg-brand-500/25 blur-3xl"
+            className="parallax pointer-events-none absolute -bottom-28 -left-10 size-56 rounded-full bg-brand-500/25 blur-3xl"
+            style={{
+              ["--parallax-from" as string]: "-14%",
+              ["--parallax-to" as string]: "14%",
+            }}
           />
           <div className="relative">
             <h3 className="max-w-[18ch] text-2xl leading-tight font-light sm:text-3xl">
@@ -48,7 +56,7 @@ export function Why() {
           <li
             key={item.id}
             className="reveal flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7"
-            style={{ ['--reveal-delay' as string]: `${120 + i * 70}ms` }}
+            style={{ ["--reveal-delay" as string]: `${120 + i * 70}ms` }}
           >
             {item.metric ? (
               <p className="mb-5 flex items-baseline gap-2">

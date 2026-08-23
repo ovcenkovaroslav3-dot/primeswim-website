@@ -1,5 +1,5 @@
-import { CoachPortrait } from '../CoachPortrait';
-import { coaches } from '@/content/coaches';
+import { CoachPortrait } from "../CoachPortrait";
+import { coaches } from "@/content/coaches";
 
 /*
   Тренер.
@@ -20,15 +20,23 @@ export function Coaches() {
     <section
       id="trainers"
       aria-labelledby="trainers-title"
-      className="on-dark relative overflow-hidden bg-abyss-900 px-4 py-20 text-white sm:px-6 md:py-28"
+      className="on-dark relative overflow-clip bg-abyss-900 px-4 py-20 text-white sm:px-6 md:py-28"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-32 right-0 size-[30rem] rounded-full bg-aqua-600/18 blur-3xl"
+        className="parallax pointer-events-none absolute -top-32 right-0 size-[30rem] rounded-full bg-aqua-600/18 blur-3xl"
+        style={{
+          ["--parallax-from" as string]: "16%",
+          ["--parallax-to" as string]: "-16%",
+        }}
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 -left-24 size-[26rem] rounded-full bg-brand-600/25 blur-3xl"
+        className="parallax pointer-events-none absolute -bottom-40 -left-24 size-[26rem] rounded-full bg-brand-600/25 blur-3xl"
+        style={{
+          ["--parallax-from" as string]: "-12%",
+          ["--parallax-to" as string]: "12%",
+        }}
       />
 
       <div className="relative mx-auto w-full max-w-6xl">

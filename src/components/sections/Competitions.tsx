@@ -1,4 +1,4 @@
-import { competitionPillars } from '@/content/journey';
+import { competitionPillars } from "@/content/journey";
 
 /*
   Соревнования и развитие.
@@ -19,15 +19,23 @@ export function Competitions() {
     <section
       id="competitions"
       aria-labelledby="competitions-title"
-      className="on-dark relative overflow-hidden bg-abyss-950 px-4 py-20 text-white sm:px-6 md:py-28"
+      className="on-dark relative overflow-clip bg-abyss-950 px-4 py-20 text-white sm:px-6 md:py-28"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-32 -left-24 size-[30rem] rounded-full bg-brand-600/25 blur-3xl"
+        className="parallax pointer-events-none absolute -top-32 -left-24 size-[30rem] rounded-full bg-brand-600/25 blur-3xl"
+        style={{
+          ["--parallax-from" as string]: "-12%",
+          ["--parallax-to" as string]: "12%",
+        }}
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-28 bottom-0 size-[26rem] rounded-full bg-aqua-600/20 blur-3xl"
+        className="parallax pointer-events-none absolute -right-28 bottom-0 size-[26rem] rounded-full bg-aqua-600/20 blur-3xl"
+        style={{
+          ["--parallax-from" as string]: "16%",
+          ["--parallax-to" as string]: "-16%",
+        }}
       />
 
       <div className="relative mx-auto w-full max-w-6xl">
@@ -48,7 +56,7 @@ export function Competitions() {
 
           <p
             className="reveal max-w-[52ch] leading-relaxed text-white/70"
-            style={{ ['--reveal-delay' as string]: '100ms' }}
+            style={{ ["--reveal-delay" as string]: "100ms" }}
           >
             Не каждому ребёнку нужен спортивный путь, и мы никого туда не
             толкаем. Но если появляется интерес и получается — школа умеет вести
@@ -62,13 +70,13 @@ export function Competitions() {
               key={p.id}
               className="reveal glass flex flex-col rounded-[20px] p-7 sm:p-8"
               style={{
-                ['--reveal-delay' as string]: `${i * 100}ms`,
+                ["--reveal-delay" as string]: `${i * 100}ms`,
                 // ступени: каждая следующая опора выше предыдущей
                 marginTop: `calc(var(--step, 0px) * ${2 - i})`,
               }}
             >
               <span className="text-sm font-medium tabular-nums text-aqua-300">
-                {String(i + 1).padStart(2, '0')}
+                {String(i + 1).padStart(2, "0")}
               </span>
 
               <h3 className="mt-4 text-xl font-light text-white">{p.title}</h3>
@@ -77,15 +85,12 @@ export function Competitions() {
               </p>
 
               {/* полоса заполнения: показывает, какая это ступень из трёх */}
-              <span
-                aria-hidden="true"
-                className="mt-7 flex gap-1.5"
-              >
+              <span aria-hidden="true" className="mt-7 flex gap-1.5">
                 {[0, 1, 2].map((seg) => (
                   <span
                     key={seg}
                     className={`h-0.5 flex-1 rounded-full ${
-                      seg <= i ? 'bg-aqua-400' : 'bg-white/15'
+                      seg <= i ? "bg-aqua-400" : "bg-white/15"
                     }`}
                   />
                 ))}
