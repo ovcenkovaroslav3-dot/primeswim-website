@@ -11,7 +11,6 @@ import { Coaches } from '@/components/sections/Coaches';
 import { Reviews } from '@/components/sections/Reviews';
 import { Gallery } from '@/components/sections/Gallery';
 import { Faq } from '@/components/sections/Faq';
-import { Booking } from '@/components/sections/Booking';
 import { Contacts } from '@/components/sections/Contacts';
 import { Competitions } from '@/components/sections/Competitions';
 import { Parents } from '@/components/sections/Parents';
@@ -38,7 +37,6 @@ export default function HomePage() {
       <Parents />
       <Faq />
       <FinalCta />
-      <Booking />
       <Contacts />
     </>
   );

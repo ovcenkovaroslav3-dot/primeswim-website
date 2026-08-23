@@ -1,34 +1,79 @@
-import Link from 'next/link';
-
 import { WaterScene } from '../WaterScene';
 import { contacts } from '@/content/contacts';
-import { site } from '@/content/site';
 
 /*
-  Финальный экран.
+  Финальный экран и запись — один блок.
 
-  Намеренно рифмуется с первым: та же сцена воды, та же типографика, тот же
-  акцент. Сайт открывается и закрывается одним и тем же образом, поэтому
-  ощущается цельным, а не набором блоков.
+  Раньше это были две секции подряд: «Начните с первой тренировки» с кнопкой
+  и сразу за ней «Запишите ребёнка» с мессенджерами. Два призыва подряд
+  ослабляли друг друга, поэтому они сведены в один.
 
-  Сцена здесь та же самая, но вторая её копия не грузит устройство: обе
-  останавливаются, когда уходят за пределы экрана, а между первым и
-  последним экраном они никогда не видны одновременно.
+  Секция намеренно рифмуется с первым экраном: та же сцена воды, та же
+  типографика, тот же акцент. Сайт открывается и закрывается одинаково.
+
+  Якорь `booking` сохранён — на него ведут все кнопки записи со страницы.
+
+  Форма заявки временно отключена: сайт собирается в статику, а серверных
+  экшенов там нет. Разметка формы сохранена в LeadForm.tsx и вернётся,
+  когда появится обработчик заявок.
 */
+
+function MessengerCard({
+  href,
+  title,
+  description,
+  goal,
+}: {
+  href: string;
+  title: string;
+  description: string;
+  goal: string;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-goal={goal}
+      className="group glass flex min-h-24 flex-col justify-center rounded-[16px] p-6 text-left transition-colors duration-200 hover:border-aqua-300/60"
+    >
+      <span className="flex items-center gap-2 text-lg font-medium text-white">
+        {title}
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 18 18"
+          fill="none"
+          aria-hidden="true"
+          className="text-aqua-300 transition-transform duration-200 group-hover:translate-x-1"
+        >
+          <path
+            d="M4 14 14 4M6 4h8v8"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+      <span className="mt-1.5 text-sm leading-relaxed text-white/65">
+        {description}
+      </span>
+    </a>
+  );
+}
+
 export function FinalCta() {
   return (
     <section
-      id="start"
-      aria-labelledby="start-title"
+      id="booking"
+      aria-labelledby="booking-title"
       className="on-dark relative isolate overflow-hidden bg-abyss-950 px-4 py-28 text-white sm:px-6 md:py-36"
     >
       <div className="absolute inset-0 -z-10">
         <WaterScene />
       </div>
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-abyss-950/70"
-      />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-abyss-950/72" />
 
       <div className="relative mx-auto w-full max-w-3xl text-center">
         <p className="reveal text-xs font-medium tracking-[0.28em] text-aqua-300 uppercase">
@@ -36,7 +81,7 @@ export function FinalCta() {
         </p>
 
         <h2
-          id="start-title"
+          id="booking-title"
           className="reveal mt-6 text-[clamp(2.2rem,7vw,4.2rem)] leading-[1.02] font-extralight"
           style={{ ['--reveal-delay' as string]: '90ms' }}
         >
@@ -44,7 +89,7 @@ export function FinalCta() {
         </h2>
 
         <p
-          className="reveal mx-auto mt-6 max-w-[46ch] text-lg leading-relaxed text-white/70"
+          className="reveal mx-auto mt-6 max-w-[48ch] text-lg leading-relaxed text-white/75"
           style={{ ['--reveal-delay' as string]: '180ms' }}
         >
           Напишите нам — подберём группу по возрасту и уровню подготовки,
@@ -52,30 +97,42 @@ export function FinalCta() {
         </p>
 
         <div
-          className="reveal mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          className="reveal mt-10 grid gap-4 sm:grid-cols-2"
           style={{ ['--reveal-delay' as string]: '270ms' }}
         >
-          <Link
-            href="#booking"
-            data-goal="cta_booking"
-            className="glow-aqua inline-flex min-h-13 w-full items-center justify-center rounded-[10px] bg-aqua-400 px-8 text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-aqua-300 sm:w-auto"
-          >
-            {site.cta.primary}
-          </Link>
-          <a
-            href={contacts.phone.href}
-            data-goal="click_phone"
-            className="inline-flex min-h-13 w-full items-center justify-center rounded-[10px] border border-white/25 px-8 text-[15px] font-medium text-white transition-colors duration-200 hover:border-white/50 hover:bg-white/10 sm:w-auto"
-          >
-            {contacts.phone.display}
-          </a>
+          <MessengerCard
+            href={contacts.social.telegramBooking}
+            title="Telegram"
+            description="Ответим в рабочее время школы"
+            goal="click_telegram"
+          />
+          <MessengerCard
+            href={contacts.social.max}
+            title="MAX"
+            description="Если удобнее — пишите сюда"
+            goal="click_max"
+          />
         </div>
 
         <p
-          className="reveal mt-8 text-sm text-white/60"
+          className="reveal mt-8 text-sm leading-relaxed text-white/65"
           style={{ ['--reveal-delay' as string]: '340ms' }}
         >
-          {contacts.address.short}
+          Чтобы ответить сразу по делу, укажите в сообщении{' '}
+          <span className="text-white">возраст ребёнка</span>,{' '}
+          <span className="text-white">опыт занятий в бассейне</span> и{' '}
+          <span className="text-white">удобные дни</span>.
+        </p>
+
+        <p className="reveal mt-8 border-t border-white/15 pt-8 text-white/75">
+          Удобнее голосом? Позвоните{' '}
+          <a
+            href={contacts.phone.href}
+            data-goal="click_phone"
+            className="text-lg font-light text-aqua-300 underline-offset-4 hover:underline"
+          >
+            {contacts.phone.display}
+          </a>
         </p>
       </div>
     </section>

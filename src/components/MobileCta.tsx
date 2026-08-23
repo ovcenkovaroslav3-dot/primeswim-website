@@ -19,8 +19,8 @@ export function MobileCta() {
 
   useEffect(() => {
     const hero = document.querySelector('section');
-    // зоны, где своя кнопка уже есть
-    const quiet = ['#start', '#booking'].map((s) => document.querySelector(s));
+    // финальный экран: там свои кнопки записи, дублировать поверх незачем
+    const quiet = ['#booking'].map((s) => document.querySelector(s));
 
     let pastHero = false;
     let inQuiet = false;
