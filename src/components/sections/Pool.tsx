@@ -18,7 +18,7 @@ export function Pool() {
       />
 
       <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-surface-alt sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-[20px] bg-surface-alt sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]">
           <Image
             src={mainPhoto.src}
             alt={mainPhoto.alt}
@@ -32,7 +32,7 @@ export function Pool() {
         {restPhotos.map((photo) => (
           <div
             key={photo.src}
-            className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-surface-alt"
+            className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-surface-alt"
           >
             <Image
               src={photo.src}
@@ -48,7 +48,7 @@ export function Pool() {
         {venueImages.map((photo) => (
           <div
             key={photo.src}
-            className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-surface-alt"
+            className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-surface-alt"
           >
             <Image
               src={photo.src}
@@ -66,7 +66,7 @@ export function Pool() {
         {site.pool.facts.map((fact) => (
           <div
             key={fact.label}
-            className="rounded-2xl border border-hairline bg-surface-alt p-5"
+            className="rounded-[20px] border border-hairline bg-surface-alt p-5"
           >
             <dt className="text-sm text-ink-muted">{fact.label}</dt>
             <dd className="mt-1 text-xl font-extralight text-ink">

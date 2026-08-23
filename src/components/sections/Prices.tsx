@@ -18,7 +18,7 @@ export function Prices() {
         {prices.map((price) => (
           <li
             key={price.id}
-            className={`flex flex-col rounded-2xl border p-7 ${
+            className={`flex flex-col rounded-[20px] border p-7 ${
               price.featured
                 ? 'border-brand-600 bg-brand-600 text-white'
                 : 'border-hairline bg-surface-alt'

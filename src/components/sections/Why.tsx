@@ -13,14 +13,12 @@ export function Why() {
 
   return (
     <Section id="why" labelledBy="why-title" className="bg-surface">
-      <div className="reveal">
-        <SectionHeading
-          id="why-title"
-          eyebrow="Почему мы"
-          title="Плавание как навык, а не как развлечение"
-          lead="Разница между «ребёнок держится на воде» и «ребёнок плавает» — это техника. Мы строим занятие вокруг неё."
-        />
-      </div>
+      <SectionHeading
+        id="why-title"
+        eyebrow="Почему мы"
+        title="Плавание как навык, а не как развлечение"
+        lead="Разница между «ребёнок держится на воде» и «ребёнок плавает» — это техника. Мы строим занятие вокруг неё."
+      />
 
       <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {/* главный пункт: тёмная плашка с подсветкой, занимает две колонки */}

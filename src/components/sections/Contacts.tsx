@@ -13,7 +13,7 @@ export function Contacts() {
       />
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-hairline bg-surface-alt p-7">
+        <div className="rounded-[20px] border border-hairline bg-surface-alt p-7">
           <h3 className="text-lg font-light text-ink">Адрес</h3>
           <address className="mt-3 text-lg leading-relaxed text-ink-soft not-italic">
             {contacts.address.venue}
@@ -41,7 +41,7 @@ export function Contacts() {
           */}
         </div>
 
-        <div className="rounded-2xl border border-hairline bg-surface-alt p-7">
+        <div className="rounded-[20px] border border-hairline bg-surface-alt p-7">
           <h3 className="text-lg font-light text-ink">Связь</h3>
 
           <a

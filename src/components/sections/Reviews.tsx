@@ -15,7 +15,7 @@ export function Reviews() {
         {reviews.map((review) => (
           <li
             key={review.id}
-            className="flex flex-col rounded-2xl border border-hairline bg-white p-7"
+            className="flex flex-col rounded-[20px] border border-hairline bg-white p-7"
           >
             <blockquote className="flex-1 leading-relaxed text-ink">
               «{review.text}»

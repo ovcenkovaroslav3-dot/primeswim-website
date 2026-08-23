@@ -15,7 +15,7 @@ export function Programs() {
         {programs.map((program) => (
           <li
             key={program.id}
-            className="flex flex-col rounded-2xl border border-hairline bg-surface-alt p-7"
+            className="flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7"
           >
             <h3 className="text-xl font-light text-ink">
               {program.title}

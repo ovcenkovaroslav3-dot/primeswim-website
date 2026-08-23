@@ -107,7 +107,8 @@ export function SectionHeading({
   const alignment = align === 'center' ? 'text-center mx-auto' : '';
 
   return (
-    <div className={`max-w-3xl ${alignment}`.trim()}>
+    // появление задано здесь, чтобы не повторять класс в каждой секции
+    <div className={`reveal max-w-3xl ${alignment}`.trim()}>
       {eyebrow ? (
         <p className="mb-4 text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
           {eyebrow}

@@ -14,14 +14,12 @@ import { startingPoints, firstLesson } from '@/content/journey';
 export function Parents() {
   return (
     <Section id="parents" labelledBy="parents-title" className="bg-surface">
-      <div className="reveal">
-        <SectionHeading
-          id="parents-title"
-          eyebrow="Родителям"
-          title="С каким уровнем можно приходить"
-          lead="Практически с любым. Разница только в том, с чего начнётся работа."
-        />
-      </div>
+      <SectionHeading
+        id="parents-title"
+        eyebrow="Родителям"
+        title="С каким уровнем можно приходить"
+        lead="Практически с любым. Разница только в том, с чего начнётся работа."
+      />
 
       <ul className="mt-14 grid gap-4 sm:grid-cols-2">
         {startingPoints.map((p, i) => (
