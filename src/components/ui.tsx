@@ -5,14 +5,14 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 type ButtonSize = 'md' | 'lg';
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60';
+  'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
 
 const variants: Record<ButtonVariant, string> = {
   primary: 'bg-brand-600 text-white hover:bg-brand-700',
   secondary:
     'bg-lime-brand text-brand-900 hover:bg-lime-brand-dark hover:text-brand-950',
   ghost:
-    'border-2 border-brand-600 bg-transparent text-brand-600 hover:bg-brand-50',
+    'border border-hairline bg-transparent text-ink-soft hover:bg-surface-alt',
 };
 
 const sizes: Record<ButtonSize, string> = {
@@ -82,7 +82,7 @@ export function Section({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={`px-4 py-16 sm:px-6 md:py-24 ${className}`.trim()}
+      className={`px-4 py-20 sm:px-6 md:py-28 ${className}`.trim()}
     >
       <div className="mx-auto w-full max-w-6xl">{children}</div>
     </section>
@@ -107,18 +107,18 @@ export function SectionHeading({
   return (
     <div className={`max-w-3xl ${alignment}`.trim()}>
       {eyebrow ? (
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+        <p className="mb-4 text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
           {eyebrow}
         </p>
       ) : null}
       <h2
         id={id}
-        className="font-display text-3xl leading-tight font-bold text-ink sm:text-4xl md:text-5xl"
+        className="text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl md:text-[44px]"
       >
         {title}
       </h2>
       {lead ? (
-        <p className="mt-4 text-lg leading-relaxed text-ink-soft">{lead}</p>
+        <p className="mt-5 max-w-[62ch] text-base leading-relaxed text-ink-soft">{lead}</p>
       ) : null}
     </div>
   );

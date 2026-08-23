@@ -21,9 +21,9 @@ function MessengerCard({
       target="_blank"
       rel="noopener noreferrer"
       data-goal={goal}
-      className="group flex min-h-24 flex-col justify-center rounded-2xl bg-white/10 p-6 ring-1 ring-white/20 transition-colors hover:bg-white/15 hover:ring-lime-brand"
+      className="group flex min-h-24 flex-col justify-center rounded-xl bg-white/8 p-6 ring-1 ring-white/15 transition-colors hover:bg-white/15 hover:ring-lime-brand"
     >
-      <span className="flex items-center gap-2 font-display text-xl font-bold text-lime-brand">
+      <span className="flex items-center gap-2 text-xl font-light text-white">
         {title}
         <svg
           width="18"
@@ -69,7 +69,7 @@ export function Booking() {
         <div className="text-white">
           <h2
             id="booking-title"
-            className="font-display text-3xl leading-tight font-bold sm:text-4xl"
+            className="text-3xl leading-[1.08] font-extralight sm:text-4xl"
           >
             Запишите ребёнка на пробное занятие
           </h2>
@@ -110,7 +110,7 @@ export function Booking() {
             <a
               href={contacts.phone.href}
               data-goal="click_phone"
-              className="font-display text-lg font-bold text-lime-brand underline-offset-4 hover:underline"
+              className="text-lg font-light text-lime-brand underline-offset-4 hover:underline"
             >
               {contacts.phone.display}
             </a>

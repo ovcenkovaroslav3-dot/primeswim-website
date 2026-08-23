@@ -17,7 +17,7 @@ export function Programs() {
             key={program.id}
             className="flex flex-col rounded-2xl border border-hairline bg-surface-alt p-7"
           >
-            <h3 className="font-display text-xl font-bold text-ink">
+            <h3 className="text-xl font-light text-ink">
               {program.title}
             </h3>
             <p className="mt-3 flex-1 leading-relaxed text-ink-soft">
@@ -34,12 +34,12 @@ export function Programs() {
         {advantages.map((item) => (
           <li
             key={item.id}
-            className="rounded-2xl bg-brand-600 p-6 text-white"
+            className="rounded-xl border border-hairline bg-surface-alt p-6"
           >
-            <h3 className="font-display text-base font-bold text-lime-brand">
+            <h3 className="text-base font-medium text-ink">
               {item.title}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-white/85">
+            <p className="mt-2 text-sm leading-relaxed text-ink-soft">
               {item.description}
             </p>
           </li>

@@ -29,7 +29,7 @@ export function Coaches() {
             </div>
 
             <div>
-              <h3 className="font-display text-2xl font-bold text-ink sm:text-3xl">
+              <h3 className="text-2xl font-light text-ink sm:text-3xl">
                 {coach.name}
               </h3>
               <p className="mt-2 font-medium text-brand-600">{coach.role}</p>
@@ -43,7 +43,7 @@ export function Coaches() {
                 </p>
               ))}
 
-              <h4 className="mt-7 text-sm font-semibold uppercase tracking-[0.14em] text-ink-muted">
+              <h4 className="mt-7 text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
                 Направления работы
               </h4>
               <ul className="mt-3 flex flex-wrap gap-2">

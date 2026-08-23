@@ -18,7 +18,7 @@ export function Faq() {
             key={item.id}
             className="group rounded-2xl border border-hairline bg-white px-6 open:border-brand-200"
           >
-            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold text-ink marker:content-none">
+            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-ink marker:content-none">
               {item.question}
               <span
                 aria-hidden="true"

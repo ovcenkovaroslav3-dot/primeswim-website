@@ -44,7 +44,7 @@ export function LeadForm() {
               />
             </svg>
           </div>
-          <p className="mt-6 font-display text-2xl font-bold text-ink sm:text-3xl">
+          <p className="mt-6 text-2xl font-extralight text-ink sm:text-3xl">
             Заявка отправлена
           </p>
           <p className="mt-4 leading-relaxed text-ink-soft">
@@ -55,7 +55,7 @@ export function LeadForm() {
             Если нужно быстрее — позвоните:{' '}
             <a
               href={contacts.phone.href}
-              className="font-semibold text-brand-600 underline underline-offset-4"
+              className="font-medium text-brand-600 underline underline-offset-4"
             >
               {contacts.phone.display}
             </a>
@@ -83,7 +83,7 @@ export function LeadForm() {
             <div>
               <label
                 htmlFor="lead-name"
-                className="mb-2 block text-sm font-semibold text-ink"
+                className="mb-2 block text-sm font-medium text-ink"
               >
                 Имя <span className="text-red-600">*</span>
               </label>
@@ -111,7 +111,7 @@ export function LeadForm() {
             <div>
               <label
                 htmlFor="lead-phone"
-                className="mb-2 block text-sm font-semibold text-ink"
+                className="mb-2 block text-sm font-medium text-ink"
               >
                 Телефон <span className="text-red-600">*</span>
               </label>
@@ -147,7 +147,7 @@ export function LeadForm() {
             <div>
               <label
                 htmlFor="lead-program"
-                className="mb-2 block text-sm font-semibold text-ink"
+                className="mb-2 block text-sm font-medium text-ink"
               >
                 Направление
               </label>
@@ -171,7 +171,7 @@ export function LeadForm() {
             <div>
               <label
                 htmlFor="lead-comment"
-                className="mb-2 block text-sm font-semibold text-ink"
+                className="mb-2 block text-sm font-medium text-ink"
               >
                 Комментарий
               </label>

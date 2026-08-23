@@ -45,7 +45,7 @@ export function Header() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="hidden text-sm font-semibold whitespace-nowrap text-ink transition-colors hover:text-brand-600 md:inline"
+            className="hidden text-sm font-medium whitespace-nowrap text-ink transition-colors hover:text-brand-600 md:inline"
           >
             {contacts.phone.display}
           </a>

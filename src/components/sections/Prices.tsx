@@ -20,20 +20,20 @@ export function Prices() {
             key={price.id}
             className={`flex flex-col rounded-2xl border p-7 ${
               price.featured
-                ? 'border-brand-600 bg-brand-600 text-white shadow-lg'
+                ? 'border-brand-600 bg-brand-600 text-white'
                 : 'border-hairline bg-surface-alt'
             }`}
           >
             <p
-              className={`text-xs font-semibold uppercase tracking-[0.14em] ${
-                price.featured ? 'text-lime-brand' : 'text-brand-600'
+              className={`text-xs font-medium tracking-[0.2em] uppercase ${
+                price.featured ? 'text-white/70' : 'text-ink-muted'
               }`}
             >
               {price.badge}
             </p>
 
             <h3
-              className={`mt-3 font-display text-xl font-bold ${
+              className={`mt-4 text-xl font-light ${
                 price.featured ? 'text-white' : 'text-ink'
               }`}
             >
@@ -50,8 +50,8 @@ export function Prices() {
 
             <p className="mt-6 mb-7 flex items-baseline gap-1.5">
               <span
-                className={`font-display text-4xl font-extrabold ${
-                  price.featured ? 'text-lime-brand' : 'text-ink'
+                className={`text-4xl font-extralight tabular-nums ${
+                  price.featured ? 'text-white' : 'text-ink'
                 }`}
               >
                 {formatter.format(price.amount)} ₽
@@ -69,7 +69,7 @@ export function Prices() {
 
             <ButtonLink
               href="#booking"
-              variant={price.featured ? 'secondary' : 'primary'}
+              variant={price.featured ? 'secondary' : 'ghost'}
               className="mt-auto w-full"
             >
               Записаться

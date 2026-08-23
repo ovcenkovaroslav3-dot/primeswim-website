@@ -20,14 +20,14 @@ export function Footer() {
           </div>
 
           <div>
-            <h2 className="font-display text-sm font-bold uppercase tracking-[0.16em] text-lime-brand">
+            <h2 className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
               Контакты
             </h2>
             <ul className="mt-4 space-y-3 text-sm text-white/80">
               <li>
                 <a
                   href={contacts.phone.href}
-                  className="font-semibold text-white transition-colors hover:text-lime-brand"
+                  className="font-medium text-white transition-colors hover:text-lime-brand"
                 >
                   {contacts.phone.display}
                 </a>
@@ -50,7 +50,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h2 className="font-display text-sm font-bold uppercase tracking-[0.16em] text-lime-brand">
+            <h2 className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
               Разделы
             </h2>
             <ul className="mt-4 space-y-3 text-sm text-white/80">
