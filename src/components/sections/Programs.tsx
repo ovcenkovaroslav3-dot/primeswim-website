@@ -1,5 +1,5 @@
 import { Section, SectionHeading } from '../ui';
-import { programs, advantages } from '@/content/programs';
+import { programs } from '@/content/programs';
 
 export function Programs() {
   return (
@@ -30,21 +30,6 @@ export function Programs() {
         ))}
       </ul>
 
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {advantages.map((item) => (
-          <li
-            key={item.id}
-            className="rounded-xl border border-hairline bg-surface p-6"
-          >
-            <h3 className="text-base font-medium text-ink">
-              {item.title}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-              {item.description}
-            </p>
-          </li>
-        ))}
-      </ul>
     </Section>
   );
 }
