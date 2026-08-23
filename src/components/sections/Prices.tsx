@@ -20,12 +20,18 @@ export function Prices() {
             key={price.id}
             className={`flex flex-col rounded-[20px] border p-7 ${
               price.featured
-                ? 'border-brand-600 bg-brand-600 text-white'
+                ? 'relative overflow-hidden border-abyss-800 bg-abyss-900 text-white'
                 : 'border-hairline bg-surface-alt'
             }`}
           >
+            {price.featured ? (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-20 -right-14 size-48 rounded-full bg-aqua-500/25 blur-3xl"
+              />
+            ) : null}
             <p
-              className={`text-xs font-medium tracking-[0.2em] uppercase ${
+              className={`relative text-xs font-medium tracking-[0.2em] uppercase ${
                 price.featured ? 'text-white/70' : 'text-ink-muted'
               }`}
             >
@@ -33,7 +39,7 @@ export function Prices() {
             </p>
 
             <h3
-              className={`mt-4 text-xl font-light ${
+              className={`relative mt-4 text-xl font-light ${
                 price.featured ? 'text-white' : 'text-ink'
               }`}
             >
@@ -48,10 +54,10 @@ export function Prices() {
               {price.note}
             </p>
 
-            <p className="mt-6 mb-7 flex items-baseline gap-1.5">
+            <p className="relative mt-6 mb-7 flex items-baseline gap-1.5">
               <span
                 className={`text-4xl font-extralight tabular-nums ${
-                  price.featured ? 'text-white' : 'text-ink'
+                  price.featured ? 'text-aqua-300' : 'text-ink'
                 }`}
               >
                 {formatter.format(price.amount)} ₽
@@ -70,7 +76,7 @@ export function Prices() {
             <ButtonLink
               href="#booking"
               variant={price.featured ? 'secondary' : 'ghost'}
-              className="mt-auto w-full"
+              className="relative mt-auto w-full"
             >
               Записаться
             </ButtonLink>

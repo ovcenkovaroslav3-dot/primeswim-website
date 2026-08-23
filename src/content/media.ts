@@ -23,8 +23,8 @@ export type MediaItem = {
 export const heroImage: MediaItem = {
   src: '/media/pool/mgik-pool-lanes.jpg',
   alt: 'Бассейн МГИК в Химках: дорожки, стартовые тумбы и панорамное остекление зала, где проходят занятия PRIME SWIM',
-  width: 1920,
-  height: 2560,
+  width: 1050,
+  height: 1400,
 };
 
 /** Фотографии бассейна МГИК. */
@@ -32,14 +32,14 @@ export const poolImages: MediaItem[] = [
   {
     src: '/media/pool/mgik-pool-flags.jpg',
     alt: 'Зал бассейна МГИК с флажками поворота над водой и электронным табло',
-    width: 1920,
-    height: 2560,
+    width: 1050,
+    height: 1400,
   },
   {
     src: '/media/pool/mgik-pool-starting-blocks.jpg',
     alt: 'Ряд стартовых тумб вдоль бортика бассейна МГИК, отражение в спокойной воде',
-    width: 1920,
-    height: 2560,
+    width: 1050,
+    height: 1400,
   },
   {
     src: '/media/pool/mgik-pool-window-view.jpg',
@@ -54,14 +54,14 @@ export const venueImages: MediaItem[] = [
   {
     src: '/media/pool/mgik-building.jpg',
     alt: 'Здание бассейна МГИК в Химках: белый корпус с синей отделкой и арочной крышей',
-    width: 1600,
-    height: 900,
+    width: 1400,
+    height: 788,
   },
   {
     src: '/media/pool/mgik-entrance-gate.jpg',
     alt: 'Вход на территорию Московского государственного института культуры в Химках',
-    width: 2222,
-    height: 1000,
+    width: 1400,
+    height: 630,
   },
 ];
 
@@ -70,14 +70,14 @@ export const galleryImages: MediaItem[] = [
   {
     src: '/media/gallery/award-handshake.jpg',
     alt: 'Тренер пожимает руку юному пловцу с медалью после соревнований',
-    width: 1707,
-    height: 2560,
+    width: 934,
+    height: 1400,
   },
   {
     src: '/media/gallery/award-medals.jpg',
     alt: 'Тренер надевает медаль девочке в шапочке для плавания на награждении',
-    width: 1707,
-    height: 2560,
+    width: 934,
+    height: 1400,
   },
   {
     src: '/media/gallery/award-diplomas.jpg',
@@ -91,6 +91,6 @@ export const galleryImages: MediaItem[] = [
 export const logo: MediaItem = {
   src: '/media/brand/prime-swim-logo.jpg',
   alt: 'Логотип школы плавания PRIME SWIM',
-  width: 2560,
-  height: 2560,
+  width: 1400,
+  height: 1400,
 };

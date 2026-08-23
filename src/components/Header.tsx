@@ -6,12 +6,12 @@ import { ButtonLink } from './ui';
 import { contacts } from '@/content/contacts';
 
 export const navLinks = [
-  { href: '/#programs', label: 'Направления' },
+  { href: '/#why', label: 'Почему мы' },
+  { href: '/#strokes', label: 'Стили' },
+  { href: '/#training', label: 'Тренировки' },
   { href: '/#schedule', label: 'Расписание' },
   { href: '/#prices', label: 'Стоимость' },
-  { href: '/#trainers', label: 'Тренеры' },
-  { href: '/#faq', label: 'Вопросы' },
-  { href: '/#contacts', label: 'Контакты' },
+  { href: '/#parents', label: 'Родителям' },
 ];
 
 export function Header() {
