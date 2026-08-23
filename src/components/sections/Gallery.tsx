@@ -18,7 +18,7 @@ export function Gallery() {
         {galleryImages.map((photo) => (
           <li
             key={photo.src}
-            className="relative aspect-[3/4] overflow-hidden rounded-[20px] bg-surface-alt"
+            className="zoom-frame relative aspect-[3/4] overflow-hidden rounded-[20px] bg-surface-alt"
           >
             <Image
               src={photo.src}

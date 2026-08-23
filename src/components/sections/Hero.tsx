@@ -88,14 +88,14 @@ export function Hero() {
           <Link
             href="#booking"
             data-goal="cta_booking"
-            className="glow-aqua inline-flex min-h-13 items-center justify-center rounded-[10px] bg-aqua-400 px-7 text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-aqua-300"
+            className="lift glow-aqua inline-flex min-h-13 items-center justify-center rounded-[10px] bg-aqua-400 px-7 text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-aqua-300"
           >
             {site.cta.primary}
           </Link>
           <Link
             href="#programs"
             data-goal="cta_schedule"
-            className="inline-flex min-h-13 items-center justify-center rounded-[10px] border border-white/25 px-7 text-[15px] font-medium text-white transition-colors duration-200 hover:border-white/50 hover:bg-white/10"
+            className="lift inline-flex min-h-13 items-center justify-center rounded-[10px] border border-white/25 px-7 text-[15px] font-medium text-white transition-colors duration-200 hover:border-white/50 hover:bg-white/10"
           >
             Посмотреть программу
           </Link>

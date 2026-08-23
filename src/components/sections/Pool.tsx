@@ -18,7 +18,7 @@ export function Pool() {
       />
 
       <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="relative aspect-[3/4] overflow-hidden rounded-[20px] bg-surface sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]">
+        <div className="zoom-frame relative aspect-[3/4] overflow-hidden rounded-[20px] bg-surface sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]">
           <Image
             src={mainPhoto.src}
             alt={mainPhoto.alt}
@@ -32,7 +32,7 @@ export function Pool() {
         {restPhotos.map((photo) => (
           <div
             key={photo.src}
-            className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-surface"
+            className="zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-surface"
           >
             <Image
               src={photo.src}
@@ -48,7 +48,7 @@ export function Pool() {
         {venueImages.map((photo) => (
           <div
             key={photo.src}
-            className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-surface"
+            className="zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-surface"
           >
             <Image
               src={photo.src}

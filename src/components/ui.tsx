@@ -5,7 +5,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 type ButtonSize = 'md' | 'lg';
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
+  'lift inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
 
 const variants: Record<ButtonVariant, string> = {
   // главное действие: аква на тёмном и на светлом одинаково заметна

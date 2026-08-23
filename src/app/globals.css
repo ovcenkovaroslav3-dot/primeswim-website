@@ -130,6 +130,37 @@
     backdrop-filter: blur(12px) saturate(120%);
   }
 
+
+  /*
+    Микровзаимодействия. Сдвиг намеренно крошечный — на 2 пикселя: элемент
+    должен отзываться, а не подпрыгивать. Всё через transform, потому что
+    он считается композитором и не вызывает пересчёт раскладки.
+
+    Указателю без наведения (телефон, планшет) эти правила не достаются:
+    иначе состояние «наведено» залипает после касания.
+  */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .lift {
+      transition:
+        transform var(--dur-fast) var(--ease-out-soft),
+        box-shadow var(--dur-fast) var(--ease-out-soft);
+    }
+
+    .lift:hover {
+      transform: translateY(-2px);
+    }
+
+    /* снимок в рамке слегка приближается, сама рамка не двигается */
+    .zoom-frame img {
+      transition: transform var(--dur-slow) var(--ease-out-soft);
+      will-change: transform;
+    }
+
+    .zoom-frame:hover img {
+      transform: scale(1.04);
+    }
+  }
+
   /* мягкое свечение под ключевыми элементами */
   .glow-aqua {
     box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-aqua-400) 30%, transparent),
