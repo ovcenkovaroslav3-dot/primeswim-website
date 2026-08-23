@@ -91,18 +91,28 @@ export function Section({
   );
 }
 
+/*
+  Заголовок секции.
+
+  Два размера, и это не декор. Обычный носят разделы, отвечающие на вопрос
+  «как устроено» — расписание, стоимость, вопросы. Крупный оставлен для
+  тех, где школа заявляет позицию: их на странице немного, и они задают
+  ритм, а не соревнуются друг с другом за внимание.
+*/
 export function SectionHeading({
   id,
   eyebrow,
   title,
   lead,
   align = 'left',
+  size = 'base',
 }: {
   id?: string;
   eyebrow?: string;
   title: string;
   lead?: string;
   align?: 'left' | 'center';
+  size?: 'base' | 'statement';
 }) {
   const alignment = align === 'center' ? 'text-center mx-auto' : '';
 
@@ -116,7 +126,11 @@ export function SectionHeading({
       ) : null}
       <h2
         id={id}
-        className="text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl md:text-[44px]"
+        className={
+          size === 'statement'
+            ? 'text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-extralight text-ink'
+            : 'text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl md:text-[44px]'
+        }
       >
         {title}
       </h2>
