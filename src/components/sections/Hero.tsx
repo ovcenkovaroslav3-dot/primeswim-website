@@ -112,7 +112,7 @@ export function Hero() {
         </dl>
 
         <p
-          className="reveal mt-8 text-sm text-white/45"
+          className="reveal mt-8 text-sm text-white/65"
           style={{ ['--reveal-delay' as string]: '760ms' }}
         >
           {contacts.address.short}

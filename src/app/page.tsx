@@ -1,4 +1,7 @@
 import { Hero } from '@/components/sections/Hero';
+import { Why } from '@/components/sections/Why';
+import { Progress } from '@/components/sections/Progress';
+import { Strokes } from '@/components/sections/Strokes';
 import { Programs } from '@/components/sections/Programs';
 import { Pool } from '@/components/sections/Pool';
 import { Schedule } from '@/components/sections/Schedule';
@@ -16,6 +19,9 @@ export default function HomePage() {
     <>
       <StructuredData />
       <Hero />
+      <Why />
+      <Progress />
+      <Strokes />
       <Programs />
       <Pool />
       <Schedule />
