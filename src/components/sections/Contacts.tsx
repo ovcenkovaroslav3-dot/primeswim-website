@@ -12,8 +12,10 @@ export function Contacts() {
         lead="Напишите в Telegram, MAX или ВКонтакте — поможем выбрать группу и ответим на вопросы."
       />
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-[20px] border border-hairline bg-surface-alt p-7">
+      {/* карточки тянутся по высоте, кнопки уходят к нижнему краю:
+          иначе адресная колонка выглядела наполовину пустой */}
+      <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-2">
+        <div className="flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7">
           <h3 className="text-lg font-light text-ink">Адрес</h3>
           <address className="mt-3 text-lg leading-relaxed text-ink-soft not-italic">
             {contacts.address.venue}
@@ -29,7 +31,7 @@ export function Contacts() {
             external
             variant="ghost"
             data-goal="click_route"
-            className="mt-6"
+            className="mt-auto pt-6 self-start"
           >
             Построить маршрут на Яндекс Картах
           </ButtonLink>
@@ -41,7 +43,7 @@ export function Contacts() {
           */}
         </div>
 
-        <div className="rounded-[20px] border border-hairline bg-surface-alt p-7">
+        <div className="flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7">
           <h3 className="text-lg font-light text-ink">Связь</h3>
 
           <a
@@ -56,7 +58,7 @@ export function Contacts() {
             Звоните или пишите в мессенджеры — отвечаем в рабочее время школы.
           </p>
 
-          <div className="mt-6">
+          <div className="mt-auto pt-6">
             <SocialLinks />
           </div>
 

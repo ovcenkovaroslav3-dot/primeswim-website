@@ -3,9 +3,16 @@ import { competitionPillars } from '@/content/journey';
 /*
   Соревнования и развитие.
 
+  Три опоры — это не равнозначный набор, а лестница: сначала первый старт,
+  потом сборы, потом разряды. Раньше они стояли одинаковыми коробками в ряд
+  и эту последовательность скрывали.
+
+  Теперь карточки поднимаются ступенями, у каждой свой номер и полоса
+  заполнения. Ступени видно и на телефоне: там раскладка вертикальная,
+  и подъём передаёт полоса, а не отступ.
+
   Эмоциональный блок без фотографий: работают крупная типографика, глубина
-  и три опоры пути в спорт. Тёмная секция стоит между двумя светлыми и
-  задаёт ритм странице.
+  и структура. Тёмная секция задаёт паузу между светлыми.
 */
 export function Competitions() {
   return (
@@ -49,21 +56,53 @@ export function Competitions() {
           </p>
         </div>
 
-        <ul className="mt-16 grid gap-px overflow-hidden rounded-[20px] bg-white/10 sm:grid-cols-3">
+        <ol className="mt-16 grid gap-5 sm:grid-cols-3 sm:gap-6">
           {competitionPillars.map((p, i) => (
             <li
               key={p.id}
-              className="reveal bg-abyss-950 p-7 sm:p-8"
-              style={{ ['--reveal-delay' as string]: `${i * 90}ms` }}
+              className="reveal glass flex flex-col rounded-[20px] p-7 sm:p-8"
+              style={{
+                ['--reveal-delay' as string]: `${i * 100}ms`,
+                // ступени: каждая следующая опора выше предыдущей
+                marginTop: `calc(var(--step, 0px) * ${2 - i})`,
+              }}
             >
-              <h3 className="text-xl font-light text-white">{p.title}</h3>
-              <p className="mt-4 text-sm leading-relaxed text-white/65">
+              <span className="text-sm font-medium tabular-nums text-aqua-300">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+
+              <h3 className="mt-4 text-xl font-light text-white">{p.title}</h3>
+              <p className="mt-4 flex-1 text-sm leading-relaxed text-white/65">
                 {p.description}
               </p>
+
+              {/* полоса заполнения: показывает, какая это ступень из трёх */}
+              <span
+                aria-hidden="true"
+                className="mt-7 flex gap-1.5"
+              >
+                {[0, 1, 2].map((seg) => (
+                  <span
+                    key={seg}
+                    className={`h-0.5 flex-1 rounded-full ${
+                      seg <= i ? 'bg-aqua-400' : 'bg-white/15'
+                    }`}
+                  />
+                ))}
+              </span>
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
+
+      {/*
+        Величина ступени задаётся переменной и включается только там, где
+        карточки стоят в ряд: на телефоне вертикальный отступ сверху выглядел
+        бы просто дырой между блоками.
+      */}
+      <style>{`
+        @media (min-width: 640px) { #competitions ol { --step: 28px; } }
+      `}</style>
     </section>
   );
 }
