@@ -13,7 +13,7 @@ import { startingPoints, firstLesson } from '@/content/journey';
 */
 export function Parents() {
   return (
-    <Section id="parents" labelledBy="parents-title" className="bg-surface-alt">
+    <Section id="parents" labelledBy="parents-title" className="bg-surface">
       <SectionHeading
         id="parents-title"
         eyebrow="Родителям"
@@ -25,7 +25,7 @@ export function Parents() {
         {startingPoints.map((p, i) => (
           <li
             key={p.id}
-            className="reveal rounded-[20px] border border-hairline bg-surface p-7"
+            className="reveal rounded-[20px] border border-hairline bg-surface-alt p-7"
             style={{ ['--reveal-delay' as string]: `${i * 70}ms` }}
           >
             <h3 className="flex items-start gap-3 text-lg font-medium text-ink">

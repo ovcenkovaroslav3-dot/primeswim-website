@@ -19,7 +19,7 @@ export function Gallery() {
   const [main, ...rest] = galleryImages;
 
   return (
-    <Section id="gallery" labelledBy="gallery-title" className="bg-surface">
+    <Section id="gallery" labelledBy="gallery-title" className="bg-surface-alt">
       <SectionHeading
         id="gallery-title"
         eyebrow="Галерея"
@@ -31,7 +31,7 @@ export function Gallery() {
         className="reveal mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr]"
         style={{ ['--reveal-delay' as string]: '80ms' }}
       >
-        <li className="zoom-frame relative aspect-4/5 overflow-hidden rounded-[20px] bg-surface-alt sm:col-span-2 lg:col-span-1 lg:aspect-auto lg:min-h-[34rem]">
+        <li className="zoom-frame relative aspect-4/5 overflow-hidden rounded-[20px] bg-surface sm:col-span-2 lg:col-span-1 lg:aspect-auto lg:min-h-[34rem]">
           <Image
             src={main.src}
             alt={main.alt}
@@ -46,7 +46,7 @@ export function Gallery() {
           {rest.map((photo) => (
             <div
               key={photo.src}
-              className="zoom-frame relative aspect-4/3 overflow-hidden rounded-[20px] bg-surface-alt lg:aspect-auto lg:min-h-[16.5rem]"
+              className="zoom-frame relative aspect-4/3 overflow-hidden rounded-[20px] bg-surface lg:aspect-auto lg:min-h-[16.5rem]"
             >
               <Image
                 src={photo.src}

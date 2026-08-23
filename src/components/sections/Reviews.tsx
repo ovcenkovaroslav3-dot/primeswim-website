@@ -3,7 +3,7 @@ import { reviews, reviewsSource } from '@/content/reviews';
 
 export function Reviews() {
   return (
-    <Section id="reviews" labelledBy="reviews-title" className="bg-surface-alt">
+    <Section id="reviews" labelledBy="reviews-title" className="bg-surface">
       <SectionHeading
         id="reviews-title"
         eyebrow="Отзывы"
@@ -15,7 +15,7 @@ export function Reviews() {
         {reviews.map((review) => (
           <li
             key={review.id}
-            className="flex flex-col rounded-[20px] border border-hairline bg-surface p-7"
+            className="flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7"
           >
             <blockquote className="flex-1 leading-relaxed text-ink">
               «{review.text}»
