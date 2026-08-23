@@ -23,7 +23,7 @@ export function Programs() {
             <p className="mt-3 flex-1 leading-relaxed text-ink-soft">
               {program.description}
             </p>
-            <p className="mt-5 border-t border-hairline pt-4 text-sm font-medium text-brand-600">
+            <p className="mt-5 border-t border-hairline pt-4 text-sm font-medium text-aqua-600">
               {program.audience}
             </p>
           </li>

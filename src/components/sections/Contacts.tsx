@@ -47,7 +47,7 @@ export function Contacts() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="mt-3 inline-block text-2xl font-extralight text-brand-600 underline-offset-4 hover:underline sm:text-3xl"
+            className="mt-3 inline-block text-2xl font-extralight text-aqua-600 underline-offset-4 hover:underline sm:text-3xl"
           >
             {contacts.phone.display}
           </a>

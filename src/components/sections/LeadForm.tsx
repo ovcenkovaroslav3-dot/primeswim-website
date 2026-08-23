@@ -25,14 +25,14 @@ function SubmitButton() {
 }
 
 const fieldClass =
-  'min-h-12 w-full rounded-xl border bg-white px-4 py-3 text-ink outline-none transition-colors placeholder:text-ink-muted focus:border-brand-600';
+  'min-h-12 w-full rounded-xl border bg-surface px-4 py-3 text-ink outline-none transition-colors placeholder:text-ink-muted focus:border-brand-600';
 
 export function LeadForm() {
   const [state, formAction] = useActionState(submitLead, initialLeadState);
 
   if (state.status === 'success') {
     return (
-      <div className="rounded-[20px] bg-white p-8 text-center sm:p-12">
+      <div className="rounded-[20px] bg-surface p-8 text-center sm:p-12">
           <div className="mx-auto grid size-14 place-items-center rounded-full bg-aqua-400">
             <svg width="26" height="20" viewBox="0 0 26 20" fill="none" aria-hidden="true">
               <path
@@ -55,7 +55,7 @@ export function LeadForm() {
             Если нужно быстрее — позвоните:{' '}
             <a
               href={contacts.phone.href}
-              className="font-medium text-brand-600 underline underline-offset-4"
+              className="font-medium text-aqua-600 underline underline-offset-4"
             >
               {contacts.phone.display}
             </a>
@@ -68,7 +68,7 @@ export function LeadForm() {
         <form
           action={formAction}
           noValidate
-          className="rounded-[20px] bg-white p-6 sm:p-8"
+          className="rounded-[20px] bg-surface p-6 sm:p-8"
         >
           {state.message ? (
             <p
@@ -220,13 +220,13 @@ export function LeadForm() {
                   aria-describedby={
                     state.errors.consent ? 'lead-consent-error' : undefined
                   }
-                  className="mt-0.5 size-6 shrink-0 accent-brand-600"
+                  className="mt-0.5 size-6 shrink-0 accent-aqua-500"
                 />
                 <span>
                   Я согласен(а) на{' '}
                   <Link
                     href="/policy"
-                    className="font-medium text-brand-600 underline underline-offset-4"
+                    className="font-medium text-aqua-600 underline underline-offset-4"
                   >
                     обработку персональных данных
                   </Link>

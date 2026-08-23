@@ -91,7 +91,7 @@ export function Prices() {
           href={contacts.social.telegramBooking}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-brand-600 underline underline-offset-4"
+          className="font-medium text-aqua-600 underline underline-offset-4"
         >
           напишите нам в Telegram
         </a>

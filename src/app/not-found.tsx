@@ -35,7 +35,7 @@ export default function NotFound() {
         Или позвоните нам:{' '}
         <a
           href={contacts.phone.href}
-          className="font-semibold text-brand-600 underline underline-offset-4"
+          className="font-semibold text-aqua-600 underline underline-offset-4"
         >
           {contacts.phone.display}
         </a>

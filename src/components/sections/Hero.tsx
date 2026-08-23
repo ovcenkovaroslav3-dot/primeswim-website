@@ -25,7 +25,10 @@ const facts = [
 
 export function Hero() {
   return (
-    <section className="on-dark relative isolate min-h-[100svh] overflow-hidden bg-abyss-950 text-white">
+    <section
+      aria-labelledby="hero-title"
+      className="on-dark relative isolate min-h-[100svh] overflow-hidden bg-abyss-950 text-white"
+    >
       <div className="absolute inset-0 -z-10">
         <WaterScene />
       </div>
@@ -44,7 +47,10 @@ export function Hero() {
           {site.hero.kicker}
         </p>
 
-        <h1 className="mt-6 font-display leading-[0.86] font-extrabold tracking-[-0.03em]">
+        <h1
+          id="hero-title"
+          className="mt-6 font-display leading-[0.86] font-extrabold tracking-[-0.03em]"
+        >
           <span className="sr-only">
             {site.hero.wordmark.join(' ')} — {site.hero.kicker}
           </span>

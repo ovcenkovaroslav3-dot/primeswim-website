@@ -13,7 +13,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${site.url}/policy`,
+      // со слешем на конце: сборка настроена на trailingSlash,
+      // и без него адрес в карте сайта не совпадал бы с каноническим
+      url: `${site.url}/policy/`,
       lastModified,
       changeFrequency: 'yearly',
       priority: 0.3,
