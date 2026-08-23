@@ -4,12 +4,18 @@ import { Unbounded, Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { Analytics } from '@/components/Analytics';
 import { site } from '@/content/site';
 import { seo, ogImage } from '@/content/seo';
 
+/*
+  Заголовочный шрифт. Загружаем только те начертания, которые реально
+  используются в вёрстке (700 и 800): каждое лишнее — это ещё два файла,
+  латиница и кириллица, а они блокируют показ первого экрана.
+*/
 const unbounded = Unbounded({
   subsets: ['latin', 'cyrillic'],
-  weight: ['600', '700', '800'],
+  weight: ['700', '800'],
   variable: '--font-unbounded',
   display: 'swap',
 });
@@ -65,6 +71,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

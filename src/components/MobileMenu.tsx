@@ -82,7 +82,7 @@ export function MobileMenu() {
             className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-white p-6 shadow-xl"
           >
             <div className="mb-8 flex items-center justify-between">
-              <p className="font-display text-lg font-bold text-brand-600">
+              <p className="text-lg font-light text-ink">
                 Меню
               </p>
               <button
@@ -137,7 +137,7 @@ export function MobileMenu() {
               </Link>
               <a
                 href={contacts.phone.href}
-                className="text-center text-lg font-semibold text-ink"
+                className="text-center text-lg font-light text-ink"
               >
                 {contacts.phone.display}
               </a>

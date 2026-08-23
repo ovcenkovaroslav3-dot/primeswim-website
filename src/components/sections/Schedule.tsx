@@ -19,10 +19,10 @@ export function Schedule() {
             key={slot.id}
             className="flex flex-col rounded-2xl border border-hairline bg-white p-6"
           >
-            <p className="text-sm font-semibold uppercase tracking-wide text-brand-600">
+            <p className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
               {slot.day}
             </p>
-            <p className="mt-2 font-display text-3xl font-extrabold text-ink">
+            <p className="mt-2 text-3xl font-extralight tabular-nums text-ink">
               {slot.time}
             </p>
             <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-soft">

@@ -50,11 +50,24 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Заметный фокус для клавиатурной навигации */
+/*
+  Заметный фокус для клавиатурной навигации.
+  Цвет задаётся отдельным свойством, а не сокращённой записью outline:
+  в сокращённой записи он подменялся на currentColor, из-за чего у белых
+  кнопок обводка становилась белой и пропадала на светлом фоне.
+*/
 :focus-visible {
-  outline: 3px solid var(--color-brand-600);
+  outline-style: solid;
+  outline-width: 3px;
+  outline-color: var(--color-brand-600);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* На тёмном фоне фиолетовая обводка неразличима — там она лаймовая */
+.bg-brand-900 :focus-visible,
+.bg-brand-800 :focus-visible {
+  outline-color: var(--color-lime-brand);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -14,7 +14,7 @@ export function Contacts() {
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-hairline bg-surface-alt p-7">
-          <h3 className="font-display text-lg font-bold text-ink">Адрес</h3>
+          <h3 className="text-lg font-light text-ink">Адрес</h3>
           <address className="mt-3 text-lg leading-relaxed text-ink-soft not-italic">
             {contacts.address.venue}
             <br />
@@ -28,6 +28,7 @@ export function Contacts() {
             href={contacts.address.yandexMaps}
             external
             variant="ghost"
+            data-goal="click_route"
             className="mt-6"
           >
             Построить маршрут на Яндекс Картах
@@ -41,11 +42,12 @@ export function Contacts() {
         </div>
 
         <div className="rounded-2xl border border-hairline bg-surface-alt p-7">
-          <h3 className="font-display text-lg font-bold text-ink">Связь</h3>
+          <h3 className="text-lg font-light text-ink">Связь</h3>
 
           <a
             href={contacts.phone.href}
-            className="mt-3 inline-block font-display text-2xl font-bold text-brand-600 underline-offset-4 hover:underline sm:text-3xl"
+            data-goal="click_phone"
+            className="mt-3 inline-block text-2xl font-extralight text-brand-600 underline-offset-4 hover:underline sm:text-3xl"
           >
             {contacts.phone.display}
           </a>

@@ -70,23 +70,23 @@ export function Pool() {
             className="rounded-2xl border border-hairline bg-surface-alt p-5"
           >
             <dt className="text-sm text-ink-muted">{fact.label}</dt>
-            <dd className="mt-1 font-display text-xl font-bold text-brand-600">
+            <dd className="mt-1 text-xl font-extralight text-ink">
               {fact.value}
             </dd>
           </div>
         ))}
       </dl>
 
-      <h3 className="mt-16 font-display text-2xl font-bold text-ink sm:text-3xl">
+      <h3 className="mt-16 text-2xl font-extralight text-ink sm:text-3xl">
         Как проходит занятие
       </h3>
       <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {lessonFlow.map((item) => (
-          <li key={item.step} className="border-t-2 border-lime-brand pt-5">
-            <p className="font-display text-sm font-bold text-brand-600">
+          <li key={item.step} className="border-t border-hairline pt-5">
+            <p className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
               Шаг {item.step}
             </p>
-            <h4 className="mt-2 font-display text-lg font-bold text-ink">
+            <h4 className="mt-2 text-lg font-light text-ink">
               {item.title}
             </h4>
             <p className="mt-2 text-sm leading-relaxed text-ink-soft">

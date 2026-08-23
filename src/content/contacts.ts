@@ -45,9 +45,8 @@ export const contacts = {
    */
   legal: {
     operator: 'ИП Овченков Ярослав Сергеевич',
-    inn: null,
-    ogrnip: null,
-    registrationAddress: null,
-    email: null,
+    inn: '632143005800',
+    ogrnip: '326774600571372',
+    email: 'yarushik@mail.ru',
   },
 } as const;

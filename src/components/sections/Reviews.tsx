@@ -21,7 +21,7 @@ export function Reviews() {
               «{review.text}»
             </blockquote>
             <footer className="mt-5 border-t border-hairline pt-4">
-              <p className="font-semibold text-ink">{review.author}</p>
+              <p className="font-medium text-ink">{review.author}</p>
               <p className="mt-1 text-sm text-ink-muted">{review.context}</p>
             </footer>
           </li>

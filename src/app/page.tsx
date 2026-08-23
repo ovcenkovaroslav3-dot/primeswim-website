@@ -7,7 +7,7 @@ import { Coaches } from '@/components/sections/Coaches';
 import { Reviews } from '@/components/sections/Reviews';
 import { Gallery } from '@/components/sections/Gallery';
 import { Faq } from '@/components/sections/Faq';
-import { LeadForm } from '@/components/sections/LeadForm';
+import { Booking } from '@/components/sections/Booking';
 import { Contacts } from '@/components/sections/Contacts';
 import { StructuredData } from '@/components/StructuredData';
 
@@ -24,7 +24,7 @@ export default function HomePage() {
       <Reviews />
       <Gallery />
       <Faq />
-      <LeadForm />
+      <Booking />
       <Contacts />
     </>
   );
