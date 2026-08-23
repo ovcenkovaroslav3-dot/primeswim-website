@@ -52,7 +52,7 @@ export function Parents() {
         <ol className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {firstLesson.map((s, i) => (
             <li key={s.id} className="border-t border-white/15 pt-5">
-              <p className="font-display text-xs tracking-[0.2em] text-aqua-300/80 tabular-nums">
+              <p className="text-xs font-medium tracking-[0.2em] text-aqua-300/80 tabular-nums">
                 {String(i + 1).padStart(2, '0')}
               </p>
               <h4 className="mt-3 font-medium text-white">{s.title}</h4>

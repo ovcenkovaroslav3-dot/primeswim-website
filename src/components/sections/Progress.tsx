@@ -65,7 +65,7 @@ export function Progress() {
                 <span className="size-[5px] rounded-full bg-aqua-300" />
               </span>
 
-              <p className="font-display text-xs tracking-[0.2em] text-aqua-300/80 tabular-nums">
+              <p className="text-xs font-medium tracking-[0.2em] text-aqua-300/80 tabular-nums">
                 {stage.step}
               </p>
               <h3 className="mt-3 text-xl font-light text-white">

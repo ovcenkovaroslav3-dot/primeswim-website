@@ -23,7 +23,7 @@ export default function PolicyPage() {
         ]}
       />
 
-      <h1 className="font-display text-3xl leading-tight font-bold text-ink sm:text-4xl">
+      <h1 className="text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl">
         Политика обработки персональных данных
       </h1>
       <p className="mt-4 text-ink-muted">
@@ -31,7 +31,7 @@ export default function PolicyPage() {
       </p>
 
       <section className="mt-10">
-        <h2 className="font-display text-xl font-bold text-ink">
+        <h2 className="text-xl font-medium text-ink">
           Оператор персональных данных
         </h2>
         <p className="mt-3 leading-relaxed text-ink-soft">
@@ -55,7 +55,7 @@ export default function PolicyPage() {
 
       {policySections.map((section) => (
         <section key={section.id} className="mt-10">
-          <h2 className="font-display text-xl font-bold text-ink">
+          <h2 className="text-xl font-medium text-ink">
             {section.title}
           </h2>
 
@@ -76,7 +76,7 @@ export default function PolicyPage() {
       ))}
 
       <section className="mt-10">
-        <h2 className="font-display text-xl font-bold text-ink">
+        <h2 className="text-xl font-medium text-ink">
           9. Контакты оператора
         </h2>
         <p className="mt-3 leading-relaxed text-ink-soft">

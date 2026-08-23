@@ -79,7 +79,7 @@ export function Training() {
                 className="pointer-events-none absolute -top-20 -right-16 size-56 rounded-full bg-aqua-500/25 blur-3xl"
               />
               <div className="relative">
-                <p className="font-display text-6xl leading-none font-extralight tabular-nums text-aqua-300">
+                <p className="text-6xl leading-none font-extralight tabular-nums text-aqua-300">
                   {current.step}
                 </p>
                 <h3 className="mt-5 text-2xl font-light">{current.title}</h3>
@@ -125,7 +125,7 @@ export function Training() {
               >
                 <div className="flex items-baseline gap-4">
                   <span
-                    className={`font-display text-sm tabular-nums transition-colors duration-300 ${
+                    className={`text-sm font-medium tabular-nums transition-colors duration-300 ${
                       i === active ? 'text-aqua-600' : 'text-ink-muted'
                     }`}
                   >

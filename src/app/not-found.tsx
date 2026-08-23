@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-4 py-24 text-center sm:px-6 md:py-32">
-      <p className="font-display text-6xl font-extrabold text-brand-600 sm:text-7xl">
+      <p className="text-6xl font-extralight text-aqua-600 sm:text-7xl">
         404
       </p>
-      <h1 className="mt-6 font-display text-2xl font-bold text-ink sm:text-3xl">
+      <h1 className="mt-6 text-2xl font-light text-ink sm:text-3xl">
         Такой страницы нет
       </h1>
       <p className="mt-4 leading-relaxed text-ink-soft">
