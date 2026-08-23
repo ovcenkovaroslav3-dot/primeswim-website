@@ -17,7 +17,7 @@ export function Schedule() {
         {schedule.map((slot) => (
           <li
             key={slot.id}
-            className="flex flex-col rounded-[20px] border border-hairline bg-white p-6"
+            className="flex flex-col rounded-[20px] border border-hairline bg-surface p-6"
           >
             <p className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
               {slot.day}
@@ -32,7 +32,7 @@ export function Schedule() {
         ))}
       </ul>
 
-      <div className="mt-8 flex flex-col items-start gap-4 rounded-[20px] border border-hairline bg-white p-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-8 flex flex-col items-start gap-4 rounded-[20px] border border-hairline bg-surface p-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-ink-soft">
           Не нашли удобное время? Напишите — подберём группу под ваш график.
         </p>

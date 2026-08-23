@@ -42,7 +42,7 @@ export function Strokes() {
     <section
       id="strokes"
       aria-labelledby="strokes-title"
-      className="bg-surface-alt px-4 py-20 sm:px-6 md:py-28"
+      className="bg-surface px-4 py-20 sm:px-6 md:py-28"
     >
       <div className="mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">
@@ -84,7 +84,7 @@ export function Strokes() {
                 className={`min-h-11 rounded-[10px] px-4 text-sm font-medium transition-colors duration-200 ${
                   i === active
                     ? 'bg-abyss-900 text-white'
-                    : 'border border-hairline bg-surface text-ink-soft hover:border-aqua-300 hover:text-ink'
+                    : 'border border-hairline bg-surface-alt text-ink-soft hover:border-aqua-300 hover:text-ink'
                 }`}
               >
                 {s.name}
@@ -96,7 +96,7 @@ export function Strokes() {
             role="tabpanel"
             id={`${uid}-panel-${stroke.id}`}
             aria-labelledby={`${uid}-tab-${stroke.id}`}
-            className="mt-6 grid gap-8 rounded-[20px] border border-hairline bg-surface p-6 sm:p-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-12"
+            className="mt-6 grid gap-8 rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-12"
           >
             <div>
               <p className="text-xs font-medium tracking-[0.2em] text-aqua-600 uppercase">

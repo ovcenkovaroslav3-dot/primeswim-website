@@ -4,7 +4,7 @@ import { coaches } from '@/content/coaches';
 
 export function Coaches() {
   return (
-    <Section id="trainers" labelledBy="trainers-title" className="bg-surface-alt">
+    <Section id="trainers" labelledBy="trainers-title" className="bg-surface">
       <SectionHeading
         id="trainers-title"
         eyebrow="Тренеры"
@@ -15,7 +15,7 @@ export function Coaches() {
         {coaches.map((coach) => (
           <article
             key={coach.id}
-            className="grid gap-8 rounded-[20px] border border-hairline bg-white p-6 sm:p-8 lg:grid-cols-[320px_1fr] lg:items-start"
+            className="grid gap-8 rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8 lg:grid-cols-[320px_1fr] lg:items-start"
           >
             {/* фотографии пока нет: передадим photo, когда пройдёт съёмка */}
             <CoachPortrait name={coach.name} />

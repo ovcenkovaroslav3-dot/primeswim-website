@@ -3,7 +3,7 @@ import { programs, advantages } from '@/content/programs';
 
 export function Programs() {
   return (
-    <Section id="programs" labelledBy="programs-title" className="bg-surface">
+    <Section id="programs" labelledBy="programs-title" className="bg-surface-alt">
       <SectionHeading
         id="programs-title"
         eyebrow="Направления"
@@ -15,7 +15,7 @@ export function Programs() {
         {programs.map((program) => (
           <li
             key={program.id}
-            className="flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7"
+            className="flex flex-col rounded-[20px] border border-hairline bg-surface p-7"
           >
             <h3 className="text-xl font-light text-ink">
               {program.title}
@@ -34,7 +34,7 @@ export function Programs() {
         {advantages.map((item) => (
           <li
             key={item.id}
-            className="rounded-xl border border-hairline bg-surface-alt p-6"
+            className="rounded-xl border border-hairline bg-surface p-6"
           >
             <h3 className="text-base font-medium text-ink">
               {item.title}

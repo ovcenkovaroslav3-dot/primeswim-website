@@ -100,7 +100,7 @@ export function Training() {
                       key={s.id}
                       style={{ flexGrow: s.share }}
                       className={`h-full rounded-full transition-colors duration-300 ${
-                        i === active ? 'bg-aqua-400' : 'bg-white/15'
+                        i === active ? 'bg-aqua-400' : 'bg-surface-alt/15'
                       }`}
                     />
                   ))}
@@ -119,7 +119,7 @@ export function Training() {
                 className={`reveal rounded-[20px] border p-6 transition-colors duration-300 sm:p-7 ${
                   i === active
                     ? 'border-aqua-300 bg-surface-alt'
-                    : 'border-hairline bg-surface'
+                    : 'border-hairline bg-surface-alt'
                 }`}
                 style={{ ['--reveal-delay' as string]: `${i * 60}ms` }}
               >

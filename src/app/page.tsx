@@ -23,9 +23,9 @@ export default function HomePage() {
       <StructuredData />
       <Hero />
       <Why />
+      <Programs />
       <Progress />
       <Strokes />
-      <Programs />
       <Pool />
       <Training />
       <Schedule />
