@@ -13,6 +13,8 @@ import { Gallery } from '@/components/sections/Gallery';
 import { Faq } from '@/components/sections/Faq';
 import { Booking } from '@/components/sections/Booking';
 import { Contacts } from '@/components/sections/Contacts';
+import { Competitions } from '@/components/sections/Competitions';
+import { Parents } from '@/components/sections/Parents';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { StructuredData } from '@/components/StructuredData';
 
@@ -29,9 +31,11 @@ export default function HomePage() {
       <Training />
       <Schedule />
       <Prices />
+      <Competitions />
       <Coaches />
       <Reviews />
       <Gallery />
+      <Parents />
       <Faq />
       <FinalCta />
       <Booking />

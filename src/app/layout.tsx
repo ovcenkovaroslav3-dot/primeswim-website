@@ -6,6 +6,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Analytics } from '@/components/Analytics';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { MobileCta } from '@/components/MobileCta';
 import { site } from '@/content/site';
 import { seo, ogImage } from '@/content/seo';
 
@@ -74,6 +75,7 @@ export default function RootLayout({
         <Footer />
         <Analytics />
         <ScrollReveal />
+        <MobileCta />
       </body>
     </html>
   );
