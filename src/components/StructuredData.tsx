@@ -6,7 +6,7 @@
 
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
-import { seo } from '@/content/seo';
+import { ogImage, seo } from '@/content/seo';
 
 export function StructuredData() {
   const data = {
@@ -15,6 +15,8 @@ export function StructuredData() {
     name: site.name,
     description: seo.home.description,
     url: site.url,
+    // без картинки поиск подставляет к карточке что придётся или ничего
+    image: ogImage.url,
     telephone: contacts.phone.display,
     address: {
       '@type': 'PostalAddress',
