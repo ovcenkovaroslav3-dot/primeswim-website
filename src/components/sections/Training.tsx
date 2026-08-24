@@ -51,7 +51,7 @@ export function Training() {
     <section
       id="training"
       aria-labelledby="training-title"
-      className="bg-surface px-4 py-20 sm:px-6 md:py-28"
+      className="bg-surface px-4 py-14 sm:px-6 sm:py-16 md:py-28"
     >
       <div className="mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">

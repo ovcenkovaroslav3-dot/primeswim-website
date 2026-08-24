@@ -93,7 +93,7 @@ export function Section({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={`px-4 py-20 sm:px-6 md:py-28 ${className}`.trim()}
+      className={`px-4 py-14 sm:px-6 sm:py-16 md:py-28 ${className}`.trim()}
     >
       <div className="mx-auto w-full max-w-6xl">{children}</div>
     </section>

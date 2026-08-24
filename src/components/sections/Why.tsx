@@ -21,7 +21,7 @@ export function Why() {
         lead="Разница между «ребёнок держится на воде» и «ребёнок плавает» — это техника. Мы строим занятие вокруг неё."
       />
 
-      <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-10 grid gap-3 sm:mt-14 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {/* главный пункт: тёмная плашка с подсветкой, занимает две колонки */}
         <li
           className="reveal relative overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white sm:col-span-2 sm:p-10"
@@ -56,7 +56,7 @@ export function Why() {
         {rest.map((item, i) => (
           <li
             key={item.id}
-            className="reveal flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7"
+            className="reveal flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-7"
             style={{ ["--reveal-delay" as string]: `${120 + i * 70}ms` }}
           >
             {item.metric ? (

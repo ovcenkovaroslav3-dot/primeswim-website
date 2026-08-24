@@ -21,7 +21,7 @@ export function Pool() {
     <section
       id="pool"
       aria-labelledby="pool-title"
-      className="on-dark relative overflow-clip bg-abyss-950 px-4 py-20 text-white sm:px-6 md:py-28"
+      className="on-dark relative overflow-clip bg-abyss-950 px-4 py-14 text-white sm:px-6 sm:py-16 md:py-28"
     >
       <div
         aria-hidden="true"
@@ -99,17 +99,6 @@ export function Pool() {
             </div>
           ))}
         </div>
-
-        <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {site.pool.facts.map((fact) => (
-            <div key={fact.label} className="glass rounded-[20px] p-5">
-              <dt className="text-sm text-white/60">{fact.label}</dt>
-              <dd className="mt-1 text-xl font-extralight text-white">
-                {fact.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   );

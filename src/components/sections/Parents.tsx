@@ -21,11 +21,11 @@ export function Parents() {
         lead="Практически с любым. Разница только в том, с чего начнётся работа."
       />
 
-      <ul className="mt-14 grid gap-4 sm:grid-cols-2">
+      <ul className="mt-10 grid gap-3 sm:mt-14 sm:gap-4 sm:grid-cols-2">
         {startingPoints.map((p, i) => (
           <li
             key={p.id}
-            className="reveal rounded-[20px] border border-hairline bg-surface-alt p-7"
+            className="reveal rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-7"
             style={{ ['--reveal-delay' as string]: `${i * 70}ms` }}
           >
             <h3 className="flex items-start gap-3 text-lg font-medium text-ink">
@@ -47,7 +47,7 @@ export function Parents() {
           Как проходит первое занятие
         </h3>
 
-        <ol className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {firstLesson.map((s, i) => (
             <li key={s.id} className="border-t border-white/15 pt-5">
               <p className="text-xs font-medium tracking-[0.2em] text-lime-300/80 tabular-nums">

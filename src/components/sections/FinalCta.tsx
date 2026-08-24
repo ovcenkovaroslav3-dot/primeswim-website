@@ -69,7 +69,7 @@ export function FinalCta() {
     <section
       id="booking"
       aria-labelledby="booking-title"
-      className="on-dark relative isolate overflow-hidden bg-abyss-950 px-4 py-28 text-white sm:px-6 md:py-36"
+      className="on-dark relative isolate overflow-hidden bg-abyss-950 px-4 py-20 text-white sm:px-6 sm:py-24 md:py-36"
     >
       <div className="absolute inset-0 -z-10">
         <WaterScene />
