@@ -7,6 +7,19 @@
       "runtimeArgs": ["run", "dev"],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "scswim-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "../scswim-website", "run", "dev"],
+      "port": 3100,
+      "autoPort": true
+    },
+    {
+      "name": "scswim-prod",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "../scswim-website", "start", "--", "--port", "3200"],
+      "port": 3200
     }
   ]
 }
