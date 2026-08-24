@@ -21,13 +21,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # адрес проектной страницы содержит имя репозитория — отсюда basePath.
-      # при переезде на свой домен обе переменные меняются на пустую и https://primeswim.ru
-      NEXT_PUBLIC_BASE_PATH: /primeswim-website
-      NEXT_PUBLIC_SITE_URL: https://ovcenkovaroslav3-dot.github.io/primeswim-website
-      # индексацию держим выключенной, пока сайт живёт на техническом адресе:
-      # иначе он начнёт конкурировать с primeswim.ru в поиске
-      NEXT_PUBLIC_ALLOW_INDEXING: 'false'
+      # сайт живёт на своём домене, поэтому basePath пустой: адрес репозитория
+      # в путях больше не участвует. Домен задаётся файлом public/CNAME —
+      # он попадает в артефакт сборки, и Pages подхватывает его сам.
+      NEXT_PUBLIC_BASE_PATH: ''
+      NEXT_PUBLIC_SITE_URL: https://primeswim.ru
+      # адрес рабочий, конкурировать в поиске больше не с чем — индексацию включаем
+      NEXT_PUBLIC_ALLOW_INDEXING: 'true'
       # номер счётчика Метрики не секрет — он и так виден в исходнике страницы
       NEXT_PUBLIC_YANDEX_METRIKA_ID: '111745879'
 
