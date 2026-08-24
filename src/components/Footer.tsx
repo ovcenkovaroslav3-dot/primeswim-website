@@ -90,11 +90,27 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="mt-12 border-t border-white/15 pt-6 text-xs leading-relaxed text-white/55">
-          © {year} {site.name} — школа плавания в Химках, мкрн. Левобережный.
-          Бассейн МГИК, {contacts.address.street}. Информация на сайте не
-          является публичной офертой.
-        </p>
+        {/*
+          Сведения об исполнителе. Статья 9 Закона «О защите прав
+          потребителей» требует показать их самому потребителю, а не прятать
+          в политике: ФИО предпринимателя, данные о госрегистрации,
+          наименование зарегистрировавшего органа и режим работы.
+        */}
+        <div className="mt-12 space-y-3 border-t border-white/15 pt-6 text-xs leading-relaxed text-white/55">
+          <p>
+            {contacts.legal.operator}. ОГРНИП {contacts.legal.ogrnip}, ИНН{' '}
+            {contacts.legal.inn}. Зарегистрирован:{' '}
+            {contacts.legal.registrar}.
+          </p>
+          <p>
+            Режим работы: {contacts.workingHours}. Место оказания услуг:{' '}
+            {contacts.address.full}.
+          </p>
+          <p>
+            © {year} {site.name}. Информация на сайте не является публичной
+            офертой.
+          </p>
+        </div>
       </div>
     </footer>
   );

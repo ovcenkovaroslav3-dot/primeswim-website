@@ -9,6 +9,7 @@ import {
   trackGoal,
   type AnalyticsGoal,
 } from '@/lib/analytics';
+import { useConsent } from '@/lib/consent';
 
 /**
  * Подключение Яндекс Метрики и отслеживание кликов.
@@ -16,10 +17,19 @@ import {
  * Если номер счётчика не задан, компонент не рендерит ничего и не вешает
  * обработчиков — сторонний скрипт на страницу не попадает.
  *
+ * Счётчик подключается только после согласия посетителя: Метрика ставит
+ * cookie и обрабатывает IP-адрес, а это персональные данные. Пока выбор не
+ * сделан или получен отказ, тега Метрики в разметке нет вовсе — см.
+ * lib/consent.ts и components/CookieNotice.tsx.
+ *
  * Клики отслеживаются одним обработчиком на весь документ: так остальные
  * компоненты остаются серверными и в браузер не уезжает лишний JavaScript.
+ * Обработчик висит независимо от согласия — без счётчика trackGoal тихо
+ * ничего не делает.
  */
 export function Analytics() {
+  const consent = useConsent();
+
   useEffect(() => {
     if (!metrikaId) return;
 
@@ -34,7 +44,7 @@ export function Analytics() {
     return () => document.removeEventListener('click', onClick);
   }, []);
 
-  if (!metrikaId) return null;
+  if (!metrikaId || consent !== 'granted') return null;
 
   return (
     <>
@@ -53,16 +63,13 @@ export function Analytics() {
           });
         `}
       </Script>
-      <noscript>
-        <div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`https://mc.yandex.ru/watch/${metrikaId}`}
-            style={{ position: 'absolute', left: '-9999px' }}
-            alt=""
-          />
-        </div>
-      </noscript>
     </>
   );
 }
+
+/*
+  Пиксель в <noscript> убран намеренно. Он отправлял запрос в Метрику сразу
+  при загрузке страницы, а спросить согласие без JavaScript невозможно —
+  получалось, что у части посетителей данные собирались в обход выбора.
+  Терять здесь почти нечего: без JavaScript не работает и сам счётчик.
+*/

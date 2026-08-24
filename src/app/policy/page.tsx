@@ -37,8 +37,10 @@ export default function PolicyPage() {
         <p className="mt-3 leading-relaxed text-ink-soft">
           1.2. Оператором персональных данных является {legal.operator}
           {legal.inn ? `, ИНН ${legal.inn}` : ''}
-          {legal.ogrnip ? `, ОГРНИП ${legal.ogrnip}` : ''} — далее «Оператор»,
-          владелец сайта primeswim.ru.
+          {legal.ogrnip ? `, ОГРНИП ${legal.ogrnip}` : ''}
+          {legal.registrar
+            ? `, зарегистрирован ${legal.registrar}`
+            : ''} — далее «Оператор», владелец сайта primeswim.ru.
         </p>
         {!legal.inn || !legal.ogrnip ? (
           <p className="mt-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900">
@@ -77,7 +79,7 @@ export default function PolicyPage() {
 
       <section className="mt-10">
         <h2 className="text-xl font-medium text-ink">
-          9. Контакты оператора
+          11. Контакты оператора
         </h2>
         <p className="mt-3 leading-relaxed text-ink-soft">
           По всем вопросам, связанным с обработкой персональных данных, можно
