@@ -272,11 +272,22 @@
 @layer utilities {
   /*
     Появление секций. Элемент ждёт класса .is-in, который вешает наблюдатель
-    пересечений — без него ничего не двигается, поэтому контент виден даже
-    если JavaScript не выполнился.
+    пересечений.
+
+    Всё скрытие включается только атрибутом data-reveal="on" на <html> — его
+    ставит сам наблюдатель, когда убедился, что может работать. Пока
+    атрибута нет, ни одно правило ниже не применяется и контент виден.
+
+    Так сделано не для красоты. Раньше `.reveal { opacity: 0 }` действовало
+    безусловно, и любая осечка — не выполнился JavaScript, ошибка до
+    монтирования, промах наблюдателя — оставляла блок прозрачным навсегда.
+    На светлой секции это выглядело как белый прямоугольник размером с
+    карточку: так пропадал блок «Как проходит первое занятие». Комментарий
+    здесь при этом утверждал обратное — что без JavaScript контент виден.
+    Теперь это правда: сломаться можно только в сторону «видно всегда».
   */
   @media (prefers-reduced-motion: no-preference) {
-    .reveal {
+    [data-reveal='on'] .reveal {
       opacity: 0;
       transform: translateY(18px);
       transition:
@@ -285,7 +296,7 @@
       transition-delay: var(--reveal-delay, 0ms);
     }
 
-    .reveal.is-in {
+    [data-reveal='on'] .reveal.is-in {
       opacity: 1;
       transform: none;
     }
@@ -293,14 +304,14 @@
 
   /* текст, проявляющийся из-под маски — для крупных заголовков */
   @media (prefers-reduced-motion: no-preference) {
-    .reveal-mask > * {
+    [data-reveal='on'] .reveal-mask > * {
       display: block;
       transform: translateY(102%);
       transition: transform var(--dur-slow) var(--ease-out-soft);
       transition-delay: var(--reveal-delay, 0ms);
     }
 
-    .reveal-mask.is-in > * {
+    [data-reveal='on'] .reveal-mask.is-in > * {
       transform: none;
     }
   }
