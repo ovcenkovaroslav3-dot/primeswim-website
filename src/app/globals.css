@@ -212,6 +212,22 @@
     }
   }
 
+  /*
+    Заливка линии прогресса. Раскладка та же, что у самой линии в
+    Progress.tsx: scaleY для вертикали на телефоне, scaleX для горизонтали
+    на широком экране — поэтому кадры и имя анимации две, а не одна.
+    transform-origin задаётся классами Tailwind (`origin-top`/`md:origin-left`)
+    прямо на элементе, здесь только рост от 0 до 1.
+  */
+  @keyframes progress-fill-y {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+  @keyframes progress-fill-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
       .parallax {
@@ -229,6 +245,19 @@
         animation: hero-depart linear both;
         animation-timeline: view();
         will-change: transform, opacity;
+      }
+
+      /* та же логика: прогресс привязан к прокрутке самой линии, а не времени */
+      .progress-fill {
+        animation: progress-fill-y linear both;
+        animation-timeline: view();
+        will-change: transform;
+      }
+
+      @media (min-width: 768px) {
+        .progress-fill {
+          animation-name: progress-fill-x;
+        }
       }
     }
   }

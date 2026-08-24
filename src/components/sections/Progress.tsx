@@ -9,6 +9,14 @@ import { stages } from "@/content/method";
 
   Нумерация здесь не украшение: ступени действительно идут строго по порядку,
   и пропустить любую из них нельзя.
+
+  Секция называется «прогресс», но сама линия раньше ничего не прогрессировала —
+  просто гасла градиентом. Теперь под ней тусклый трек на всю длину, а поверх
+  растёт заливка: `.progress-fill` в globals.css привязана к прокрутке самой
+  линии через `animation-timeline: view()`, тем же нативным приёмом, что и
+  `.parallax`. Ни JavaScript, ни requestAnimationFrame не нужны; там, где
+  animation-timeline не поддержан, заливка остаётся видна на всю длину —
+  деградация молчаливая, как и у параллакса.
 */
 export function Progress() {
   return (
@@ -54,10 +62,16 @@ export function Progress() {
         </div>
 
         <ol className="relative mt-16 grid gap-10 md:grid-cols-4 md:gap-6">
-          {/* линия развития: вертикальная на телефоне, горизонтальная на широком экране */}
+          {/* трек: тусклая линия на всю длину, вертикальная на телефоне,
+              горизонтальная на широком экране */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute top-2 bottom-2 left-[7px] w-px bg-linear-to-b from-lime-400/70 via-lime-400/25 to-transparent md:top-[7px] md:right-2 md:bottom-auto md:left-2 md:h-px md:w-auto md:bg-linear-to-r"
+            className="pointer-events-none absolute top-2 bottom-2 left-[7px] w-px bg-lime-400/15 md:top-[7px] md:right-2 md:bottom-auto md:left-2 md:h-px md:w-auto"
+          />
+          {/* заливка поверх трека: растёт от начала к концу по мере прокрутки */}
+          <div
+            aria-hidden="true"
+            className="progress-fill pointer-events-none absolute top-2 bottom-2 left-[7px] w-px origin-top bg-linear-to-b from-lime-400 to-lime-300/60 md:top-[7px] md:right-2 md:bottom-auto md:left-2 md:h-px md:w-auto md:origin-left md:bg-linear-to-r"
           />
 
           {stages.map((stage, i) => (
