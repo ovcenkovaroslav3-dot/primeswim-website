@@ -4,31 +4,36 @@
   ДИЗАЙН-СИСТЕМА PRIME SWIM
 
   Визуальный язык: вода, глубина, скорость, свет.
+  Цвета — фирменные: фиолетовый и лайм из логотипа.
 
-  Основа тёмных экранов — не чистый фиолетовый, а сине-чёрная «толща»
-  (abyss). Фиолетовый из логотипа работает как второй свет в глубине,
-  акцент — аква. Лайм остаётся только в знаке: как акцент он жёлто-зелёный
-  и тянет макет в сторону детской секции.
+  Основа тёмных экранов — фиолетово-чёрная «толща» (abyss): тот же
+  фиолетовый, уведённый в глубину, чтобы работал как фон, а не как пятно.
+
+  Акцент двухполюсный, ровно как в самом логотипе:
+    • на тёмном — лайм (кнопки, цифры, надзаголовки);
+    • на светлом — фиолетовый (ссылки, метрики, активные состояния).
+  Лайм на белом нечитаем, а притушенный до оливкового выглядит грязно,
+  поэтому на светлых секциях его нет вообще.
 */
 @theme {
-  /* ── толща воды: основа тёмных секций ── */
-  --color-abyss-950: #03070f;
-  --color-abyss-900: #061124;
-  --color-abyss-800: #0a1c39;
-  --color-abyss-700: #102a4e;
-  --color-abyss-600: #17406e;
+  /* ── толща: основа тёмных секций ── */
+  --color-abyss-950: #0b0114;
+  --color-abyss-900: #180229;
+  --color-abyss-800: #260640;
+  --color-abyss-700: #360a58;
+  --color-abyss-600: #4a1076;
 
-  /* ── аква: главный акцент, свет сквозь воду ── */
-  --color-aqua-100: #dcf5ff;
-  --color-aqua-200: #b6ebff;
-  --color-aqua-300: #7adcff;
-  --color-aqua-400: #38c6f4;
-  --color-aqua-500: #12a5db;
-  --color-aqua-600: #096a90;
-  --color-aqua-700: #095f83;
+  /* ── лайм: акцент на тёмном ── */
+  --color-lime-100: #f4ffcf;
+  --color-lime-200: #e8ff9b;
+  --color-lime-300: #d8ff4d;
+  --color-lime-400: #c7fe03;
+  --color-lime-500: #a3d100;
+  --color-lime-600: #6d8c00;
+  --color-lime-700: #4c6200;
 
-  /* ── фиолетовый из логотипа: второй свет, глубина ── */
-  --color-brand-50: #f6ecfd;
+  /* ── фиолетовый: акцент на светлом, второй свет в глубине ── */
+  --color-brand-50: #f7ecfd;
   --color-brand-100: #ead4fa;
   --color-brand-200: #d5a9f2;
   --color-brand-300: #b96fe6;
@@ -40,19 +45,14 @@
   --color-brand-900: #24003a;
   --color-brand-950: #150022;
 
-  /* ── знак ── */
-  --color-lime-brand: #c7fe03;
-  --color-lime-brand-dark: #9ecb00;
-  --color-lime-brand-deep: #5f7a00;
-
-  /* ── светлые поверхности ── */
-  --color-ink: #0d1526;
-  --color-ink-soft: #40506a;
-  --color-ink-muted: #59687f;
+  /* ── светлые поверхности: подтон уведён из синего в фиолетовый ── */
+  --color-ink: #16101f;
+  --color-ink-soft: #4a4356;
+  --color-ink-muted: #6b6377;
   --color-surface: #ffffff;
-  --color-surface-alt: #f4f8fc;
-  --color-surface-deep: #e9f1f8;
-  --color-hairline: #dde7f0;
+  --color-surface-alt: #f8f5fc;
+  --color-surface-deep: #efe9f6;
+  --color-hairline: #e6dff0;
 
   --font-display: var(--font-unbounded), "Segoe UI", system-ui, sans-serif;
   --font-sans: var(--font-inter), "Segoe UI", system-ui, sans-serif;
@@ -107,14 +107,14 @@
   :focus-visible {
     outline-style: solid;
     outline-width: 3px;
-    outline-color: var(--color-aqua-500);
+    outline-color: var(--color-brand-500);
     outline-offset: 3px;
     border-radius: 4px;
   }
 
   /* на тёмной толще нужен более светлый контур */
   .on-dark :focus-visible {
-    outline-color: var(--color-aqua-300);
+    outline-color: var(--color-lime-300);
   }
 }
 
@@ -134,7 +134,7 @@
 
   .glass-light {
     background: color-mix(in oklab, white 68%, transparent);
-    border: 1px solid color-mix(in oklab, var(--color-aqua-600) 12%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-brand-600) 12%, transparent);
     backdrop-filter: blur(12px) saturate(120%);
   }
 
@@ -234,9 +234,9 @@
   }
 
   /* мягкое свечение под ключевыми элементами */
-  .glow-aqua {
-    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-aqua-400) 30%, transparent),
-      0 18px 60px -18px color-mix(in oklab, var(--color-aqua-400) 55%, transparent);
+  .glow-accent {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-lime-400) 30%, transparent),
+      0 18px 60px -18px color-mix(in oklab, var(--color-lime-400) 55%, transparent);
   }
 }
 

@@ -31,7 +31,7 @@ export function Parents() {
             <h3 className="flex items-start gap-3 text-lg font-medium text-ink">
               <span
                 aria-hidden="true"
-                className="mt-2 size-2 shrink-0 rounded-full bg-aqua-500"
+                className="mt-2 size-2 shrink-0 rounded-full bg-brand-500"
               />
               {p.situation}
             </h3>
@@ -50,7 +50,7 @@ export function Parents() {
         <ol className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {firstLesson.map((s, i) => (
             <li key={s.id} className="border-t border-white/15 pt-5">
-              <p className="text-xs font-medium tracking-[0.2em] text-aqua-300/80 tabular-nums">
+              <p className="text-xs font-medium tracking-[0.2em] text-lime-300/80 tabular-nums">
                 {String(i + 1).padStart(2, '0')}
               </p>
               <h4 className="mt-3 font-medium text-white">{s.title}</h4>

@@ -65,7 +65,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col overflow-x-clip">
         <a
           href="#main"
-          className="sr-only rounded-lg bg-aqua-600 px-4 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100"
+          className="sr-only rounded-lg bg-brand-600 px-4 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100"
         >
           Перейти к содержанию
         </a>

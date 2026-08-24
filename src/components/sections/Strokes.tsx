@@ -84,7 +84,7 @@ export function Strokes() {
                 className={`min-h-11 rounded-[10px] px-4 text-sm font-medium transition-colors duration-200 ${
                   i === active
                     ? 'bg-abyss-900 text-white'
-                    : 'border border-hairline bg-surface-alt text-ink-soft hover:border-aqua-300 hover:text-ink'
+                    : 'border border-hairline bg-surface-alt text-ink-soft hover:border-brand-300 hover:text-ink'
                 }`}
               >
                 {s.name}
@@ -99,7 +99,7 @@ export function Strokes() {
             className="mt-6 grid gap-8 rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-12"
           >
             <div>
-              <p className="text-xs font-medium tracking-[0.2em] text-aqua-600 uppercase">
+              <p className="text-xs font-medium tracking-[0.2em] text-brand-600 uppercase">
                 {stroke.short}
               </p>
               <h3 className="mt-4 text-2xl font-light text-ink sm:text-3xl">
@@ -120,7 +120,7 @@ export function Strokes() {
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-[7px] size-1.5 shrink-0 rounded-full bg-aqua-500"
+                      className="mt-[7px] size-1.5 shrink-0 rounded-full bg-brand-500"
                     />
                     {item}
                   </li>
@@ -132,7 +132,7 @@ export function Strokes() {
             <div className="relative overflow-hidden rounded-[16px] bg-abyss-900 p-6">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-linear-to-br from-brand-600/25 via-transparent to-aqua-500/20"
+                className="pointer-events-none absolute inset-0 bg-linear-to-br from-brand-600/25 via-transparent to-lime-500/18"
               />
               <svg
                 key={stroke.id}
@@ -155,7 +155,7 @@ export function Strokes() {
                 <path
                   d={stroke.path}
                   fill="none"
-                  stroke="var(--color-aqua-400)"
+                  stroke="var(--color-lime-400)"
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   pathLength={1}
@@ -167,7 +167,7 @@ export function Strokes() {
                 />
                 <circle
                   r="3.6"
-                  fill="var(--color-aqua-100)"
+                  fill="var(--color-lime-100)"
                   style={{
                     offsetPath: `path("${stroke.path}")`,
                     offsetRotate: '0deg',

@@ -29,7 +29,7 @@ export function Why() {
         >
           <div
             aria-hidden="true"
-            className="parallax pointer-events-none absolute -top-24 -right-16 size-64 rounded-full bg-aqua-500/25 blur-3xl"
+            className="parallax pointer-events-none absolute -top-24 -right-16 size-64 rounded-full bg-brand-300/18 blur-3xl"
             style={{
               ["--parallax-from" as string]: "10%",
               ["--parallax-to" as string]: "-10%",
@@ -61,7 +61,7 @@ export function Why() {
           >
             {item.metric ? (
               <p className="mb-5 flex items-baseline gap-2">
-                <span className="text-4xl font-extralight tabular-nums text-aqua-600">
+                <span className="text-4xl font-extralight tabular-nums text-brand-600">
                   {item.metric}
                 </span>
                 <span className="text-sm text-ink-muted">

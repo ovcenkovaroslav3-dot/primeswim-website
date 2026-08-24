@@ -23,7 +23,7 @@ export function Competitions() {
     >
       <div
         aria-hidden="true"
-        className="parallax pointer-events-none absolute -top-32 -left-24 size-[30rem] rounded-full bg-brand-600/25 blur-3xl"
+        className="parallax pointer-events-none absolute -top-32 -left-24 size-[30rem] rounded-full bg-brand-500/28 blur-3xl"
         style={{
           ["--parallax-from" as string]: "-12%",
           ["--parallax-to" as string]: "12%",
@@ -31,7 +31,7 @@ export function Competitions() {
       />
       <div
         aria-hidden="true"
-        className="parallax pointer-events-none absolute -right-28 bottom-0 size-[26rem] rounded-full bg-aqua-600/20 blur-3xl"
+        className="parallax pointer-events-none absolute -right-28 bottom-0 size-[26rem] rounded-full bg-brand-300/16 blur-3xl"
         style={{
           ["--parallax-from" as string]: "16%",
           ["--parallax-to" as string]: "-16%",
@@ -41,7 +41,7 @@ export function Competitions() {
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-16">
           <div className="reveal">
-            <p className="mb-4 text-xs font-medium tracking-[0.2em] text-aqua-300 uppercase">
+            <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
               Спорт
             </p>
             <h2
@@ -50,7 +50,7 @@ export function Competitions() {
             >
               Дальше — не просто
               <br />
-              <span className="text-aqua-300">умение плавать</span>
+              <span className="text-lime-300">умение плавать</span>
             </h2>
           </div>
 
@@ -75,7 +75,7 @@ export function Competitions() {
                 marginTop: `calc(var(--step, 0px) * ${2 - i})`,
               }}
             >
-              <span className="text-sm font-medium tabular-nums text-aqua-300">
+              <span className="text-sm font-medium tabular-nums text-lime-300">
                 {String(i + 1).padStart(2, "0")}
               </span>
 
@@ -90,7 +90,7 @@ export function Competitions() {
                   <span
                     key={seg}
                     className={`h-0.5 flex-1 rounded-full ${
-                      seg <= i ? "bg-aqua-400" : "bg-white/15"
+                      seg <= i ? "bg-lime-400" : "bg-white/15"
                     }`}
                   />
                 ))}

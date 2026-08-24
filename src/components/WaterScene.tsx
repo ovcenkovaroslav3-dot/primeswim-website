@@ -26,7 +26,7 @@ uniform float u_quality;  // 1.0 — полное качество, 0.0 — об
 uniform vec3  u_deep;     // цвет дна кадра
 uniform vec3  u_mid;      // цвет верха кадра
 uniform vec3  u_violet;   // второе свечение
-uniform vec3  u_aqua;     // акцентный свет
+uniform vec3  u_accent;   // акцентный свет
 
 float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -100,7 +100,7 @@ void main() {
 
   // ── два источника света в толще
   col += u_violet * 1.15 * exp(-length((p - vec2(0.62 + u_mouse.x * 0.06, -0.55)) * vec2(0.75, 1.0)) * 1.5);
-  col += u_aqua   * 0.42 * exp(-length((p - vec2(0.42 + u_mouse.x * 0.04,  0.70)) * vec2(0.6, 1.0)) * 1.7);
+  col += u_accent   * 0.42 * exp(-length((p - vec2(0.42 + u_mouse.x * 0.04,  0.70)) * vec2(0.6, 1.0)) * 1.7);
 
   // ── световые шахты сверху
   float shafts = 0.0;
@@ -111,10 +111,10 @@ void main() {
     shafts += smoothstep(0.40, 0.95, w);
   }
   shafts *= 0.333 * smoothstep(-0.8, 0.8, p.y);
-  col += u_aqua * shafts * 0.85;
+  col += u_accent * shafts * 0.85;
 
   // ── каустика ближе к поверхности
-  col += u_aqua * caustic(p * 2.1 + vec2(0.0, t * 0.04), t * 0.5)
+  col += u_accent * caustic(p * 2.1 + vec2(0.0, t * 0.04), t * 0.5)
        * 0.30 * smoothstep(-0.15, 0.85, p.y);
 
   // ── пузырьки
@@ -136,16 +136,16 @@ function hexToRgb(hex: string): [number, number, number] {
 }
 
 export function WaterScene({
-  deep = '#03070f',
-  mid = '#0a1c39',
-  violet = '#4f017b',
-  aqua = '#38c6f4',
+  deep = '#0b0114',
+  mid = '#1e0433',
+  violet = '#7f22bd',
+  accent = '#e2d2ff',
   className = '',
 }: {
   deep?: string;
   mid?: string;
   violet?: string;
-  aqua?: string;
+  accent?: string;
   className?: string;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -202,7 +202,7 @@ export function WaterScene({
     put('u_deep', deep);
     put('u_mid', mid);
     put('u_violet', violet);
-    put('u_aqua', aqua);
+    put('u_accent', accent);
 
     // мобильные GPU считают шум заметно медленнее: режем и разрешение, и октавы
     const coarse = window.matchMedia('(pointer: coarse)').matches;
@@ -272,7 +272,7 @@ export function WaterScene({
       window.removeEventListener('resize', resize);
       window.removeEventListener('pointermove', onMove);
     };
-  }, [deep, mid, violet, aqua]);
+  }, [deep, mid, violet, accent]);
 
   return (
     <canvas

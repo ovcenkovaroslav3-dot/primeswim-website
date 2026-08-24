@@ -129,7 +129,7 @@ export function MobileMenu() {
                         <Link
                           href={link.href}
                           onClick={() => setOpen(false)}
-                          className="flex min-h-12 items-center rounded-xl px-3 text-lg font-medium text-ink transition-colors hover:bg-surface-alt hover:text-aqua-600"
+                          className="flex min-h-12 items-center rounded-xl px-3 text-lg font-medium text-ink transition-colors hover:bg-surface-alt hover:text-brand-600"
                         >
                           {link.label}
                         </Link>

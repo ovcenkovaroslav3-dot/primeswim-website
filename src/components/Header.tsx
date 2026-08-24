@@ -27,12 +27,18 @@ export function Header() {
         </Link>
 
         <nav aria-label="Основная навигация" className="ml-auto hidden lg:block">
-          <ul className="flex items-center gap-6">
+          {/*
+            На 1024 меню, телефон и кнопка вместе шире контейнера, и шапка
+            уезжала вбок на пять пикселей. Вместо того чтобы прятать телефон
+            или само меню, поджимаем шаг между пунктами и логотип — на
+            широком экране и то и другое возвращается к прежнему размеру.
+          */}
+          <ul className="flex items-center gap-4 xl:gap-6">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-sm font-medium text-ink-soft transition-colors hover:text-aqua-600"
+                  className="text-sm font-medium text-ink-soft transition-colors hover:text-brand-600"
                 >
                   {link.label}
                 </Link>
@@ -45,7 +51,7 @@ export function Header() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="hidden text-sm font-medium whitespace-nowrap text-ink transition-colors hover:text-aqua-600 md:inline"
+            className="hidden text-sm font-medium whitespace-nowrap text-ink transition-colors hover:text-brand-600 md:inline"
           >
             {contacts.phone.display}
           </a>

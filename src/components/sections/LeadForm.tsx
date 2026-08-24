@@ -34,7 +34,7 @@ import { trackGoal } from '@/lib/analytics';
 
 const labelClass = 'mb-2 block text-sm font-medium text-ink';
 const fieldClass =
-  'min-h-12 w-full rounded-[10px] border bg-surface px-4 py-3 text-ink outline-none transition-colors placeholder:text-ink-muted focus:border-aqua-500';
+  'min-h-12 w-full rounded-[10px] border bg-surface px-4 py-3 text-ink outline-none transition-colors placeholder:text-ink-muted focus:border-brand-500';
 
 function fieldBorder(hasError: boolean) {
   return hasError ? 'border-red-400' : 'border-hairline';
@@ -100,11 +100,11 @@ export function LeadForm() {
   if (sent) {
     return (
       <div className="rounded-[20px] bg-surface p-8 text-center sm:p-12">
-        <div className="mx-auto grid size-14 place-items-center rounded-full bg-aqua-400">
+        <div className="mx-auto grid size-14 place-items-center rounded-full bg-lime-400">
           <svg width="26" height="20" viewBox="0 0 26 20" fill="none" aria-hidden="true">
             <path
               d="M2 10.5 9.5 18 24 2"
-              stroke="#03070f"
+              stroke="var(--color-abyss-950)"
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -123,7 +123,7 @@ export function LeadForm() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="font-medium text-aqua-600 underline underline-offset-4"
+            className="font-medium text-brand-600 underline underline-offset-4"
           >
             {contacts.phone.display}
           </a>
@@ -284,13 +284,13 @@ export function LeadForm() {
               checked={values.consent}
               onChange={(e) => set('consent', e.target.checked)}
               aria-invalid={Boolean(errors.consent)}
-              className="mt-0.5 size-6 shrink-0 accent-aqua-500"
+              className="mt-0.5 size-6 shrink-0 accent-brand-600"
             />
             <span>
               Я согласен(а) на{' '}
               <Link
                 href="/policy"
-                className="font-medium text-aqua-600 underline underline-offset-4"
+                className="font-medium text-brand-600 underline underline-offset-4"
               >
                 обработку персональных данных
               </Link>

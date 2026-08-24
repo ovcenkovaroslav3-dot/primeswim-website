@@ -24,7 +24,7 @@ export function Coaches() {
     >
       <div
         aria-hidden="true"
-        className="parallax pointer-events-none absolute -top-32 right-0 size-[30rem] rounded-full bg-aqua-600/18 blur-3xl"
+        className="parallax pointer-events-none absolute -top-32 right-0 size-[30rem] rounded-full bg-brand-300/14 blur-3xl"
         style={{
           ["--parallax-from" as string]: "16%",
           ["--parallax-to" as string]: "-16%",
@@ -32,7 +32,7 @@ export function Coaches() {
       />
       <div
         aria-hidden="true"
-        className="parallax pointer-events-none absolute -bottom-40 -left-24 size-[26rem] rounded-full bg-brand-600/25 blur-3xl"
+        className="parallax pointer-events-none absolute -bottom-40 -left-24 size-[26rem] rounded-full bg-brand-500/28 blur-3xl"
         style={{
           ["--parallax-from" as string]: "-12%",
           ["--parallax-to" as string]: "12%",
@@ -41,7 +41,7 @@ export function Coaches() {
 
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">
-          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-aqua-300 uppercase">
+          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
             Тренер
           </p>
           <h2
@@ -67,7 +67,7 @@ export function Coaches() {
                 {/* выравнивание по низу: у многострочной подписи базовая линия
                     берётся от первой строки, и подпись цеплялась за верх цифры */}
                 <p className="flex items-end gap-4">
-                  <span className="text-6xl leading-none font-extralight tabular-nums text-aqua-300 sm:text-7xl">
+                  <span className="text-6xl leading-none font-extralight tabular-nums text-lime-300 sm:text-7xl">
                     {coach.yearsExperience}
                   </span>
                   <span className="mb-2 max-w-[13ch] text-sm leading-snug text-white/60">
@@ -78,7 +78,7 @@ export function Coaches() {
                 <h3 className="mt-8 text-2xl font-light sm:text-3xl">
                   {coach.name}
                 </h3>
-                <p className="mt-2 text-aqua-300">{coach.role}</p>
+                <p className="mt-2 text-lime-300">{coach.role}</p>
 
                 {coach.bio.map((paragraph) => (
                   <p
@@ -89,7 +89,7 @@ export function Coaches() {
                   </p>
                 ))}
 
-                <p className="mt-9 text-xs font-medium tracking-[0.2em] text-white/45 uppercase">
+                <p className="mt-9 text-xs font-medium tracking-[0.2em] text-white/55 uppercase">
                   Направления работы
                 </p>
                 <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
@@ -100,7 +100,7 @@ export function Coaches() {
                     >
                       <span
                         aria-hidden="true"
-                        className="mt-[7px] size-1.5 shrink-0 rounded-full bg-aqua-400"
+                        className="mt-[7px] size-1.5 shrink-0 rounded-full bg-lime-400"
                       />
                       {item}
                     </li>

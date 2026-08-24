@@ -41,7 +41,7 @@ export function Hero() {
 
       <div className="hero-depart mx-auto flex min-h-[100svh] w-full max-w-6xl flex-col justify-center px-5 pt-26 pb-20 sm:px-6 md:pt-28 md:pb-24">
         <p
-          className="reveal text-xs font-medium tracking-[0.28em] text-aqua-300 uppercase"
+          className="reveal text-xs font-medium tracking-[0.28em] text-lime-300 uppercase"
           style={{ ['--reveal-delay' as string]: '80ms' }}
         >
           {site.hero.kicker}
@@ -65,7 +65,7 @@ export function Hero() {
                 className={
                   i === 0
                     ? 'block text-[clamp(3.2rem,15vw,10.5rem)] text-white'
-                    : 'block text-[clamp(3.2rem,15vw,10.5rem)] text-aqua-300'
+                    : 'block text-[clamp(3.2rem,15vw,10.5rem)] text-lime-300'
                 }
               >
                 {word}
@@ -88,7 +88,7 @@ export function Hero() {
           <Link
             href="#booking"
             data-goal="cta_booking"
-            className="lift glow-aqua inline-flex min-h-13 items-center justify-center rounded-[10px] bg-aqua-400 px-7 text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-aqua-300"
+            className="lift glow-accent inline-flex min-h-13 items-center justify-center rounded-[10px] bg-lime-400 px-7 text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-lime-300"
           >
             {site.cta.primary}
           </Link>

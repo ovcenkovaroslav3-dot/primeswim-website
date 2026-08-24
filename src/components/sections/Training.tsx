@@ -76,10 +76,10 @@ export function Training() {
             <div className="relative overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white">
               <div
                 aria-hidden="true"
-                className="parallax pointer-events-none absolute -top-20 -right-16 size-56 rounded-full bg-aqua-500/25 blur-3xl"
+                className="parallax pointer-events-none absolute -top-20 -right-16 size-56 rounded-full bg-brand-300/18 blur-3xl"
               />
               <div className="relative">
-                <p className="text-6xl leading-none font-extralight tabular-nums text-aqua-300">
+                <p className="text-6xl leading-none font-extralight tabular-nums text-lime-300">
                   {current.step}
                 </p>
                 <h3 className="mt-5 text-2xl font-light">{current.title}</h3>
@@ -87,7 +87,7 @@ export function Training() {
                   {current.description}
                 </p>
 
-                <p className="mt-8 text-xs font-medium tracking-[0.2em] text-white/45 uppercase">
+                <p className="mt-8 text-xs font-medium tracking-[0.2em] text-white/55 uppercase">
                   Доля занятия
                 </p>
                 <div
@@ -100,7 +100,7 @@ export function Training() {
                       key={s.id}
                       style={{ flexGrow: s.share }}
                       className={`h-full rounded-full transition-colors duration-300 ${
-                        i === active ? 'bg-aqua-400' : 'bg-surface-alt/15'
+                        i === active ? 'bg-lime-400' : 'bg-surface-alt/15'
                       }`}
                     />
                   ))}
@@ -118,7 +118,7 @@ export function Training() {
                 }}
                 className={`reveal rounded-[20px] border p-6 transition-colors duration-300 sm:p-7 ${
                   i === active
-                    ? 'border-aqua-300 bg-surface-alt'
+                    ? 'border-brand-300 bg-surface-alt'
                     : 'border-hairline bg-surface-alt'
                 }`}
                 style={{ ['--reveal-delay' as string]: `${i * 60}ms` }}
@@ -126,7 +126,7 @@ export function Training() {
                 <div className="flex items-baseline gap-4">
                   <span
                     className={`text-sm font-medium tabular-nums transition-colors duration-300 ${
-                      i === active ? 'text-aqua-600' : 'text-ink-muted'
+                      i === active ? 'text-brand-600' : 'text-ink-muted'
                     }`}
                   >
                     {s.step}

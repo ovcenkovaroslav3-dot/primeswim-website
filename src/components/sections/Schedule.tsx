@@ -43,13 +43,13 @@ export function Schedule() {
               aria-hidden="true"
               className={`flex flex-col items-center rounded-[14px] border py-4 ${
                 slot
-                  ? 'border-aqua-300 bg-surface'
+                  ? 'border-brand-300 bg-surface'
                   : 'border-transparent bg-surface/40'
               }`}
             >
               <span
                 className={`text-xs font-medium tracking-[0.14em] uppercase ${
-                  slot ? 'text-aqua-600' : 'text-ink-muted/60'
+                  slot ? 'text-brand-600' : 'text-ink-muted/60'
                 }`}
               >
                 {d}
@@ -60,7 +60,7 @@ export function Schedule() {
               */}
               <span
                 className={`mt-2 size-1.5 rounded-full sm:hidden ${
-                  slot ? 'bg-aqua-500' : 'bg-ink-muted/25'
+                  slot ? 'bg-brand-500' : 'bg-ink-muted/25'
                 }`}
               />
               <span

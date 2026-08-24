@@ -70,7 +70,7 @@ export function MobileCta() {
         <a
           href="#booking"
           data-goal="cta_booking"
-          className="inline-flex min-h-12 flex-1 items-center justify-center rounded-[10px] bg-aqua-400 px-5 text-sm font-semibold text-abyss-950"
+          className="inline-flex min-h-12 flex-1 items-center justify-center rounded-[10px] bg-lime-400 px-5 text-sm font-semibold text-abyss-950"
         >
           Записаться
         </a>

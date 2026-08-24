@@ -36,7 +36,7 @@ function MessengerCard({
       target="_blank"
       rel="noopener noreferrer"
       data-goal={goal}
-      className="group lift glass flex min-h-24 flex-col justify-center rounded-[16px] p-6 text-left transition-colors duration-200 hover:border-aqua-300/60"
+      className="group lift glass flex min-h-24 flex-col justify-center rounded-[16px] p-6 text-left transition-colors duration-200 hover:border-lime-300/60"
     >
       <span className="flex items-center gap-2 text-lg font-medium text-white">
         {title}
@@ -46,7 +46,7 @@ function MessengerCard({
           viewBox="0 0 18 18"
           fill="none"
           aria-hidden="true"
-          className="text-aqua-300 transition-transform duration-200 group-hover:translate-x-1"
+          className="text-lime-300 transition-transform duration-200 group-hover:translate-x-1"
         >
           <path
             d="M4 14 14 4M6 4h8v8"
@@ -77,7 +77,7 @@ export function FinalCta() {
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-abyss-950/72" />
 
       <div className="relative mx-auto w-full max-w-3xl text-center">
-        <p className="reveal text-xs font-medium tracking-[0.28em] text-aqua-300 uppercase">
+        <p className="reveal text-xs font-medium tracking-[0.28em] text-lime-300 uppercase">
           Первый шаг
         </p>
 
@@ -127,7 +127,7 @@ export function FinalCta() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="text-lg font-light text-aqua-300 underline-offset-4 hover:underline"
+            className="text-lg font-light text-lime-300 underline-offset-4 hover:underline"
           >
             {contacts.phone.display}
           </a>

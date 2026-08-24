@@ -27,7 +27,7 @@ export function Footer() {
               <li>
                 <a
                   href={contacts.phone.href}
-                  className="font-medium text-white transition-colors hover:text-aqua-300"
+                  className="font-medium text-white transition-colors hover:text-lime-300"
                 >
                   {contacts.phone.display}
                 </a>
@@ -38,7 +38,7 @@ export function Footer() {
                   href={contacts.address.yandexMaps}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline underline-offset-4 transition-colors hover:text-aqua-300"
+                  className="underline underline-offset-4 transition-colors hover:text-lime-300"
                 >
                   Посмотреть на Яндекс Картах
                 </a>
@@ -57,7 +57,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/#schedule"
-                  className="transition-colors hover:text-aqua-300"
+                  className="transition-colors hover:text-lime-300"
                 >
                   Расписание
                 </Link>
@@ -65,7 +65,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/#prices"
-                  className="transition-colors hover:text-aqua-300"
+                  className="transition-colors hover:text-lime-300"
                 >
                   Стоимость занятий
                 </Link>
@@ -73,7 +73,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/#booking"
-                  className="transition-colors hover:text-aqua-300"
+                  className="transition-colors hover:text-lime-300"
                 >
                   Запись на тренировку
                 </Link>
@@ -81,7 +81,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/policy"
-                  className="transition-colors hover:text-aqua-300"
+                  className="transition-colors hover:text-lime-300"
                 >
                   Политика обработки персональных данных
                 </Link>

@@ -50,7 +50,7 @@ export function CoachPortrait({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-12 -bottom-16 size-52 rounded-full bg-aqua-500/25 blur-3xl"
+        className="pointer-events-none absolute -right-12 -bottom-16 size-52 rounded-full bg-brand-300/18 blur-3xl"
       />
 
       {/* круги расходящейся волны */}
@@ -66,7 +66,7 @@ export function CoachPortrait({
             cy="104"
             r={r}
             fill="none"
-            stroke="var(--color-aqua-300)"
+            stroke="var(--color-lime-300)"
             strokeWidth="0.6"
             opacity={0.42 - i * 0.08}
           />
@@ -77,7 +77,7 @@ export function CoachPortrait({
           rx="94"
           ry="30"
           fill="none"
-          stroke="var(--color-aqua-300)"
+          stroke="var(--color-lime-300)"
           strokeWidth="0.5"
           opacity="0.22"
         />

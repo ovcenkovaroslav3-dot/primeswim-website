@@ -88,7 +88,7 @@ export default function PolicyPage() {
             телефон:{' '}
             <a
               href={contacts.phone.href}
-              className="font-medium text-aqua-600 underline underline-offset-4"
+              className="font-medium text-brand-600 underline underline-offset-4"
             >
               {contacts.phone.display}
             </a>
@@ -100,7 +100,7 @@ export default function PolicyPage() {
               href={contacts.social.telegramBooking}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-aqua-600 underline underline-offset-4"
+              className="font-medium text-brand-600 underline underline-offset-4"
             >
               @primeswim_khimki
             </a>

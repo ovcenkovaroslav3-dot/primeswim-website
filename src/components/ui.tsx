@@ -1,20 +1,29 @@
 import Link from 'next/link';
 import type { ComponentProps, ReactNode } from 'react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline';
 type ButtonSize = 'md' | 'lg';
 
 const base =
   'lift inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
 
 const variants: Record<ButtonVariant, string> = {
-  // главное действие: аква на тёмном и на светлом одинаково заметна
+  /*
+    Главное действие — фирменный лайм. Он одинаково заметен и на белом, и на
+    фиолетовой толще, поэтому кнопка везде одна и та же. Тень под ней взята
+    фиолетовой, а не лаймовой: лаймовая по белому расплывалась зеленоватым
+    пятном.
+  */
   primary:
-    'bg-aqua-400 text-abyss-950 hover:bg-aqua-300 shadow-[0_14px_40px_-16px_var(--color-aqua-500)]',
+    'bg-lime-400 text-abyss-950 hover:bg-lime-300 shadow-[0_14px_40px_-16px_var(--color-brand-400)]',
   // для действия поверх насыщенной заливки — белая плашка
-  secondary: 'bg-white text-abyss-900 hover:bg-aqua-100',
+  secondary: 'bg-white text-abyss-900 hover:bg-lime-100',
+  // второстепенное действие на светлой секции
   ghost:
     'border border-hairline bg-transparent text-ink-soft hover:bg-surface-alt',
+  // то же самое на тёмной: кромка из белого, а не из hairline, иначе не видна
+  outline:
+    'border border-white/25 bg-transparent text-white hover:border-white/50 hover:bg-white/10',
 };
 
 const sizes: Record<ButtonSize, string> = {

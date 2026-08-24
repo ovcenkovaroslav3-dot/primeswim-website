@@ -28,7 +28,7 @@ export function Progress() {
       />
       <div
         aria-hidden="true"
-        className="parallax pointer-events-none absolute -right-20 -bottom-40 size-[28rem] rounded-full bg-aqua-500/15 blur-3xl"
+        className="parallax pointer-events-none absolute -right-20 -bottom-40 size-[28rem] rounded-full bg-brand-300/14 blur-3xl"
         style={{
           ["--parallax-from" as string]: "-10%",
           ["--parallax-to" as string]: "10%",
@@ -37,7 +37,7 @@ export function Progress() {
 
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">
-          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-aqua-300 uppercase">
+          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
             Путь ребёнка
           </p>
           <h2
@@ -57,7 +57,7 @@ export function Progress() {
           {/* линия развития: вертикальная на телефоне, горизонтальная на широком экране */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute top-2 bottom-2 left-[7px] w-px bg-linear-to-b from-aqua-400/70 via-aqua-400/25 to-transparent md:top-[7px] md:right-2 md:bottom-auto md:left-2 md:h-px md:w-auto md:bg-linear-to-r"
+            className="pointer-events-none absolute top-2 bottom-2 left-[7px] w-px bg-linear-to-b from-lime-400/70 via-lime-400/25 to-transparent md:top-[7px] md:right-2 md:bottom-auto md:left-2 md:h-px md:w-auto md:bg-linear-to-r"
           />
 
           {stages.map((stage, i) => (
@@ -68,12 +68,12 @@ export function Progress() {
             >
               <span
                 aria-hidden="true"
-                className="absolute top-1.5 left-0 grid size-[15px] place-items-center rounded-full bg-abyss-900 ring-2 ring-aqua-400 md:top-0 md:left-0"
+                className="absolute top-1.5 left-0 grid size-[15px] place-items-center rounded-full bg-abyss-900 ring-2 ring-lime-400 md:top-0 md:left-0"
               >
-                <span className="size-[5px] rounded-full bg-aqua-300" />
+                <span className="size-[5px] rounded-full bg-lime-300" />
               </span>
 
-              <p className="text-xs font-medium tracking-[0.2em] text-aqua-300/80 tabular-nums">
+              <p className="text-xs font-medium tracking-[0.2em] text-lime-300/80 tabular-nums">
                 {stage.step}
               </p>
               <h3 className="mt-3 text-xl font-light text-white">

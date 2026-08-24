@@ -32,14 +32,14 @@ export function Reviews() {
         >
           <div
             aria-hidden="true"
-            className="parallax pointer-events-none absolute -top-24 -right-20 size-64 rounded-full bg-aqua-500/20 blur-3xl"
+            className="parallax pointer-events-none absolute -top-24 -right-20 size-64 rounded-full bg-brand-300/16 blur-3xl"
           />
           <div className="relative flex flex-1 flex-col">
             {/* кавычка набрана основным шрифтом: в Unbounded она геометрическая
                 и читается как иконка, а не как знак цитаты */}
             <span
               aria-hidden="true"
-              className="text-5xl leading-none font-light text-aqua-300/45"
+              className="text-5xl leading-none font-light text-lime-300/45"
             >
               «
             </span>
@@ -76,7 +76,7 @@ export function Reviews() {
           href={reviewsSource.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-aqua-600 underline underline-offset-4"
+          className="font-medium text-brand-600 underline underline-offset-4"
         >
           Открыть карточку школы
         </a>

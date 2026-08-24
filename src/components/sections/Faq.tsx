@@ -22,7 +22,7 @@ export function Faq() {
               {item.question}
               <span
                 aria-hidden="true"
-                className="grid size-7 shrink-0 place-items-center rounded-full border border-hairline text-aqua-600 transition-transform group-open:rotate-45"
+                className="grid size-7 shrink-0 place-items-center rounded-full border border-hairline text-brand-600 transition-transform group-open:rotate-45"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path
@@ -45,14 +45,14 @@ export function Faq() {
           href={contacts.social.telegramBooking}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-aqua-600 underline underline-offset-4"
+          className="font-medium text-brand-600 underline underline-offset-4"
         >
           Telegram
         </a>{' '}
         или позвоните по телефону{' '}
         <a
           href={contacts.phone.href}
-          className="font-medium text-aqua-600 underline underline-offset-4"
+          className="font-medium text-brand-600 underline underline-offset-4"
         >
           {contacts.phone.display}
         </a>
