@@ -59,8 +59,7 @@ export function Coaches() {
               className="reveal grid gap-10 lg:grid-cols-[300px_1fr] lg:gap-14"
             >
               <div className="max-w-[300px]">
-                {/* фотографии пока нет: передадим photo, когда пройдёт съёмка */}
-                <CoachPortrait name={coach.name} />
+                <CoachPortrait name={coach.name} photo={coach.photo} />
               </div>
 
               <div>

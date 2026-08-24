@@ -20,7 +20,11 @@ export function CoachPortrait({
 }) {
   if (photo) {
     return (
-      <div className="relative aspect-square w-full overflow-hidden rounded-[16px] bg-surface-alt">
+      /*
+        Подложка тёмная, а не светлая: секция с тренерами лежит на толще, и
+        светлый квадрат просвечивал бы каймой, пока снимок грузится.
+      */
+      <div className="zoom-frame relative aspect-square w-full overflow-hidden rounded-[16px] bg-abyss-800">
         <Image
           src={photo.src}
           alt={photo.alt}

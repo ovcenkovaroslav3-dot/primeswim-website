@@ -40,10 +40,10 @@ export const coaches: Coach[] = [
       'Занятия для детей и взрослых',
     ],
     photo: {
-      src: '/media/coaches/ovchenkov-yaroslav.png',
+      src: '/media/coaches/ovchenkov-yaroslav.jpg',
       alt: 'Ярослав Сергеевич Овченков — тренер и основатель школы плавания PRIME SWIM, на фоне бассейна',
-      width: 1036,
-      height: 1051,
+      width: 1000,
+      height: 1014,
     },
   },
 ];
