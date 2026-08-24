@@ -11,23 +11,29 @@ export function Prices() {
         id="prices-title"
         eyebrow="Стоимость"
         title="Сколько стоят занятия"
-        lead={pricesNote}
       />
 
       <ul className="mt-12 grid gap-6 md:grid-cols-3">
-        {prices.map((price) => (
+        {prices.map((price, i) => (
           <li
             key={price.id}
-            className={`flex flex-col rounded-[20px] border p-7 ${
+            /*
+              Карточки появляются с той же задержкой, что и во всех остальных
+              секциях. Раньше их не было в общем ритме: блок со стоимостью
+              единственный возникал разом и на фоне остального выглядел
+              статичной вставкой.
+            */
+            className={`reveal lift flex flex-col rounded-[20px] border p-7 ${
               price.featured
                 ? 'relative overflow-hidden border-abyss-800 bg-abyss-900 text-white'
                 : 'border-hairline bg-surface-alt'
             }`}
+            style={{ ['--reveal-delay' as string]: `${i * 90}ms` }}
           >
             {price.featured ? (
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-20 -right-14 size-48 rounded-full bg-aqua-500/25 blur-3xl"
+                className="pointer-events-none absolute -top-20 -right-14 size-48 rounded-full bg-brand-300/18 blur-3xl"
               />
             ) : null}
             <p
@@ -55,9 +61,13 @@ export function Prices() {
             </p>
 
             <p className="relative mt-6 mb-7 flex items-baseline gap-1.5">
+              {/* у выделенного тарифа сумма крупнее: разницу должно быть видно
+                  раньше, чем читатель дойдёт до цифр */}
               <span
-                className={`text-4xl font-extralight tabular-nums ${
-                  price.featured ? 'text-aqua-300' : 'text-ink'
+                className={`font-extralight tabular-nums ${
+                  price.featured
+                    ? 'text-5xl text-lime-300'
+                    : 'text-4xl text-ink'
                 }`}
               >
                 {formatter.format(price.amount)} ₽
@@ -84,6 +94,15 @@ export function Prices() {
         ))}
       </ul>
 
+      {/*
+        Скидка стояла подзаголовком секции и терялась в сером тексте рядом с
+        заголовком. Это выгода, а не сноска, поэтому она вынесена под тарифы
+        отдельной плашкой — до юридических оговорок, а не после них.
+      */}
+      <p className="reveal mt-6 rounded-[20px] border border-brand-100 bg-brand-50 px-7 py-5 text-sm leading-relaxed text-ink-soft">
+        {pricesNote}
+      </p>
+
       <p className="mt-8 max-w-3xl text-sm leading-relaxed text-ink-muted">
         {pricesDisclaimer} Условия возврата и переноса занятий описаны в договоре,
         который подписывается до начала занятий. Остались вопросы по оплате —{' '}
@@ -91,7 +110,7 @@ export function Prices() {
           href={contacts.social.telegramBooking}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-aqua-600 underline underline-offset-4"
+          className="font-medium text-brand-600 underline underline-offset-4"
         >
           напишите нам в Telegram
         </a>
