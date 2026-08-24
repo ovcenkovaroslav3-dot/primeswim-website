@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { contacts } from '@/content/contacts';
+import { useConsent, useHydrated } from '@/lib/consent';
 
 /*
   Липкая кнопка записи на телефоне.
@@ -16,6 +17,16 @@ import { contacts } from '@/content/contacts';
 */
 export function MobileCta() {
   const [shown, setShown] = useState(false);
+
+  /*
+    Пока посетитель не ответил на вопрос про cookie, снизу уже стоит баннер
+    высотой ~230 px. Панель записи вставала под него вплотную, и на телефоне
+    получался сплошной белый блок почти в треть экрана. Показываем панель
+    только после того, как баннер ушёл.
+  */
+  const consent = useConsent();
+  const hydrated = useHydrated();
+  const noticeVisible = hydrated && consent === null;
 
   useEffect(() => {
     const hero = document.querySelector('section');
@@ -60,11 +71,11 @@ export function MobileCta() {
   return (
     <div
       className={`fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-white/92 px-4 pt-3 backdrop-blur transition-transform duration-300 lg:hidden ${
-        shown ? 'translate-y-0' : 'translate-y-full'
+        shown && !noticeVisible ? 'translate-y-0' : 'translate-y-full'
       }`}
       style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
       // пока панель спрятана, её содержимое не должно попадать в обход с клавиатуры
-      inert={!shown || undefined}
+      inert={!shown || noticeVisible || undefined}
     >
       <div className="mx-auto flex max-w-md items-center gap-3">
         <a
