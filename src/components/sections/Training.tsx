@@ -111,16 +111,22 @@ export function Training() {
 
           <ol className="space-y-4">
             {trainingSteps.map((s, i) => (
+              /*
+                Активный шаг помечается атрибутом, а не подстановкой в
+                className. Наблюдатель появления дописывает классу `is-in`
+                прямо в DOM, а React при перерисовке переписывает className
+                целиком — и стирал его. Активный шаг меняется на каждой
+                прокрутке, поэтому все шесть пунктов после первого же
+                движения оставались с opacity: 0, и секция превращалась в
+                пустое место. Постоянная строка класса React не трогает.
+              */
               <li
                 key={s.id}
                 ref={(el) => {
                   itemsRef.current[i] = el;
                 }}
-                className={`reveal rounded-[20px] border p-6 transition-colors duration-300 sm:p-7 ${
-                  i === active
-                    ? 'border-brand-300 bg-surface-alt'
-                    : 'border-hairline bg-surface-alt'
-                }`}
+                data-active={i === active}
+                className="reveal rounded-[20px] border border-hairline bg-surface-alt p-6 transition-colors duration-300 data-[active=true]:border-brand-300 sm:p-7"
                 style={{ ['--reveal-delay' as string]: `${i * 60}ms` }}
               >
                 <div className="flex items-baseline gap-4">
