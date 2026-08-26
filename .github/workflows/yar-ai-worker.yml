@@ -1,18 +1,18 @@
 name: YAR AI Worker
 
 on:
-  repository_dispatch:
-    types: [yar-ai-task]
+  issues:
+    types: [opened]
 
 permissions:
   contents: write
   pull-requests: write
+  issues: read
   actions: read
-  id-token: write
 
 jobs:
   claude:
-    if: github.event.client_payload.task.project == 'prime-swim'
+    if: startsWith(github.event.issue.title, 'AI TASK:') && !contains(github.event.issue.body, 'Risk: high')
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -22,11 +22,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Create task branch
+      - name: Create isolated task branch
         id: branch
         shell: bash
         run: |
-          BRANCH="ai/task-${{ github.run_id }}"
+          BRANCH="ai/task-${{ github.event.issue.number }}-${{ github.run_id }}"
           git switch -c "$BRANCH"
           echo "name=$BRANCH" >> "$GITHUB_OUTPUT"
 
@@ -35,32 +35,21 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
-            You are the implementation agent for YAR AI Hub.
+            You are the Claude Developer Agent for YAR AI Hub.
+            Follow CLAUDE.md and all referenced repository instructions.
 
             Repository: ${{ github.repository }}
             Project: PRIME SWIM
-            Source task: ${{ github.event.client_payload.source_repo }}#${{ github.event.client_payload.source_issue }}
+            Source issue: #${{ github.event.issue.number }}
+            Task title: ${{ github.event.issue.title }}
 
-            Goal:
-            ${{ github.event.client_payload.task.goal }}
+            Structured task:
+            ${{ github.event.issue.body }}
 
-            Constraints:
-            ${{ github.event.client_payload.task.constraints }}
-
-            Acceptance criteria:
-            ${{ github.event.client_payload.task.acceptance }}
-
-            Rules:
-            - Make only changes required by this task.
-            - Never deploy to production.
-            - Never modify secrets, credentials, DNS, payments, or customer data.
-            - Inspect the existing code before editing.
-            - Run the relevant existing build/lint/tests when available.
-            - Do not weaken tests to make them pass.
-            - Keep the implementation concise and maintainable.
+            Execute only this task. Never deploy to production. Stop when the acceptance criteria are met and provide the required structured status.
           claude_args: |
             --max-turns 12
-            --append-system-prompt "Follow CLAUDE.md if present. Prefer minimal changes. Stop when acceptance criteria are met."
+            --append-system-prompt "Follow CLAUDE.md and referenced instructions. Prefer minimal changes. Never deploy. Stop when acceptance criteria are met."
 
       - name: Commit and push changes
         id: push
@@ -75,7 +64,7 @@ jobs:
           fi
 
           git add -A
-          git commit -m "ai: implement dispatched task"
+          git commit -m "ai: implement task #${{ github.event.issue.number }}"
           git push origin "${{ steps.branch.outputs.name }}"
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
@@ -88,5 +77,5 @@ jobs:
           gh pr create \
             --base "${{ github.event.repository.default_branch }}" \
             --head "${{ steps.branch.outputs.name }}" \
-            --title "AI: ${{ github.event.client_payload.task.goal }}" \
-            --body "Automated implementation from YAR AI Hub.\n\nSource: ${{ github.event.client_payload.source_repo }}#${{ github.event.client_payload.source_issue }}\n\nNo production deployment was performed. Review is required before merge."
+            --title "AI: ${{ github.event.issue.title }}" \
+            --body "Automated implementation from YAR AI Hub.\n\nSource issue: #${{ github.event.issue.number }}\n\nNo production deployment was performed. Review is required before merge."
