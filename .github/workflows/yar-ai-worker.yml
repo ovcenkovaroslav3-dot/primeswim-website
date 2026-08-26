@@ -1,0 +1,92 @@
+name: YAR AI Worker
+
+on:
+  repository_dispatch:
+    types: [yar-ai-task]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+  id-token: write
+
+jobs:
+  claude:
+    if: github.event.client_payload.task.project == 'prime-swim'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create task branch
+        id: branch
+        shell: bash
+        run: |
+          BRANCH="ai/task-${{ github.run_id }}"
+          git switch -c "$BRANCH"
+          echo "name=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are the implementation agent for YAR AI Hub.
+
+            Repository: ${{ github.repository }}
+            Project: PRIME SWIM
+            Source task: ${{ github.event.client_payload.source_repo }}#${{ github.event.client_payload.source_issue }}
+
+            Goal:
+            ${{ github.event.client_payload.task.goal }}
+
+            Constraints:
+            ${{ github.event.client_payload.task.constraints }}
+
+            Acceptance criteria:
+            ${{ github.event.client_payload.task.acceptance }}
+
+            Rules:
+            - Make only changes required by this task.
+            - Never deploy to production.
+            - Never modify secrets, credentials, DNS, payments, or customer data.
+            - Inspect the existing code before editing.
+            - Run the relevant existing build/lint/tests when available.
+            - Do not weaken tests to make them pass.
+            - Keep the implementation concise and maintainable.
+          claude_args: |
+            --max-turns 12
+            --append-system-prompt "Follow CLAUDE.md if present. Prefer minimal changes. Stop when acceptance criteria are met."
+
+      - name: Commit and push changes
+        id: push
+        shell: bash
+        run: |
+          git config user.name "yar-ai-hub"
+          git config user.email "yar-ai-hub@users.noreply.github.com"
+
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "ai: implement dispatched task"
+          git push origin "${{ steps.branch.outputs.name }}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        if: steps.push.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh pr create \
+            --base "${{ github.event.repository.default_branch }}" \
+            --head "${{ steps.branch.outputs.name }}" \
+            --title "AI: ${{ github.event.client_payload.task.goal }}" \
+            --body "Automated implementation from YAR AI Hub.\n\nSource: ${{ github.event.client_payload.source_repo }}#${{ github.event.client_payload.source_issue }}\n\nNo production deployment was performed. Review is required before merge."
