@@ -6,6 +6,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Analytics } from '@/components/Analytics';
 import { CookieNotice } from '@/components/CookieNotice';
+import { ChunkErrorRecovery } from '@/components/ChunkErrorRecovery';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { MobileCta } from '@/components/MobileCta';
 import { site } from '@/content/site';
@@ -87,6 +88,7 @@ export default function RootLayout({
         <ScrollReveal />
         <MobileCta />
         <CookieNotice />
+        <ChunkErrorRecovery />
       </body>
     </html>
   );
