@@ -142,7 +142,7 @@ export function FinalCta({
           <MessengerCard
             href={contacts.social.telegramBooking}
             title="Telegram"
-            description="Ответим в рабочее время школы"
+            description={`Ответим ${contacts.workingHours.display.toLowerCase()}`}
             goal="click_telegram"
           />
           <MessengerCard

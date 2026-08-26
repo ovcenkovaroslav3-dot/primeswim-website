@@ -13,7 +13,7 @@ import { Section, SectionHeading } from './ui';
   Порядок тот же, что в карте сайта: сначала расписание и цены, потому
   что с них начинается выбор школы.
 */
-const links = [
+export const sectionLinks = [
   {
     href: '/raspisanie/',
     title: 'Расписание',
@@ -62,7 +62,7 @@ export function SiteMap() {
       />
 
       <ul className="mt-10 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-        {links.map((link, i) => (
+        {sectionLinks.map((link, i) => (
           <li
             key={link.href}
             className="reveal"

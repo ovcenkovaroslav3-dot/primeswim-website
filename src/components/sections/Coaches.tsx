@@ -48,7 +48,7 @@ export function Coaches({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2'
             id="trainers-title"
             className="text-3xl leading-[1.08] font-extralight sm:text-4xl md:text-[44px]"
           >
-            Кто ведёт занятия
+            Тренер по плаванию в Химках
           </Heading>
         </div>
 

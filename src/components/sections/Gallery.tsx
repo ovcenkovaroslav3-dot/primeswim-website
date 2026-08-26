@@ -38,7 +38,7 @@ export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         as={headingAs}
         id="gallery-title"
         eyebrow="Галерея"
-        title="PRIME SWIM в жизни"
+        title="Фото и видео с тренировок в Химках"
         lead="Тренировки, соревнования и первые награды наших учеников."
       />
 

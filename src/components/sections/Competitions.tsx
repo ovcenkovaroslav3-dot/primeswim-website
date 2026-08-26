@@ -48,9 +48,9 @@ export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' |
               id="competitions-title"
               className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-extralight"
             >
-              Дальше — не просто
+              Спортивное плавание,
               <br />
-              <span className="text-lime-300">умение плавать</span>
+              <span className="text-lime-300">соревнования и разряды</span>
             </Heading>
           </div>
 

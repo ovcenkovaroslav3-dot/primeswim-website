@@ -1,16 +1,10 @@
-import type { Metadata } from 'next';
-
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Faq } from '@/components/sections/Faq';
 import { Parents } from '@/components/sections/Parents';
-import { seo } from '@/content/seo';
+import { pageMetadata, seo } from '@/content/seo';
 
-export const metadata: Metadata = {
-  title: seo.parents.title,
-  description: seo.parents.description,
-  alternates: { canonical: seo.parents.path },
-};
+export const metadata = pageMetadata(seo.parents);
 
 /*
   Родителям. Сомнения на входе и частые вопросы — рядом: это один

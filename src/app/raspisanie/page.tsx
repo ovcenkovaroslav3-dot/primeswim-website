@@ -1,15 +1,9 @@
-import type { Metadata } from 'next';
-
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Schedule } from '@/components/sections/Schedule';
-import { seo } from '@/content/seo';
+import { pageMetadata, seo } from '@/content/seo';
 
-export const metadata: Metadata = {
-  title: seo.schedule.title,
-  description: seo.schedule.description,
-  alternates: { canonical: seo.schedule.path },
-};
+export const metadata = pageMetadata(seo.schedule);
 
 /*
   Расписание отдельной страницей: это первый вопрос родителя и

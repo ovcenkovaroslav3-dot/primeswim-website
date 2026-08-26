@@ -1,10 +1,35 @@
 import { Section, SectionHeading } from '../ui';
+import { JsonLd } from '../StructuredData';
 import { faq } from '@/content/faq';
 import { contacts } from '@/content/contacts';
 
+/*
+  Частые вопросы.
+
+  Кроме блока на странице отдают FAQPage. Разметка допустима именно здесь:
+  вопросы и ответы видны посетителю целиком — details/summary прячет их до
+  клика, но текст лежит в разметке страницы, а не подгружается скриптом.
+  Разметить скрытый или несуществующий на странице текст было бы нарушением
+  требований поисковых систем.
+
+  Блок стоит ровно на одной странице (/roditelyam), поэтому разметка живёт
+  в самом компоненте: продублировать её на второй странице невозможно, пока
+  компонент используется один раз.
+*/
 export function Faq() {
+  const faqPage = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  };
+
   return (
     <Section id="faq" labelledBy="faq-title" className="bg-surface-alt">
+      <JsonLd data={faqPage} />
       <SectionHeading
         id="faq-title"
         eyebrow="Вопросы"

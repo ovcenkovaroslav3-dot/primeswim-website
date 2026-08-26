@@ -1,15 +1,9 @@
-import type { Metadata } from 'next';
-
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { contacts } from '@/content/contacts';
-import { seo } from '@/content/seo';
+import { pageMetadata, seo } from '@/content/seo';
 import { policySections, policyPublishedAt } from '@/content/policy';
 
-export const metadata: Metadata = {
-  title: seo.policy.title,
-  description: seo.policy.description,
-  alternates: { canonical: seo.policy.path },
-};
+export const metadata = pageMetadata(seo.policy);
 
 export default function PolicyPage() {
   const { legal } = contacts;

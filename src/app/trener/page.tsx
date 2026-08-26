@@ -1,15 +1,9 @@
-import type { Metadata } from 'next';
-
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Coaches } from '@/components/sections/Coaches';
-import { seo } from '@/content/seo';
+import { pageMetadata, seo } from '@/content/seo';
 
-export const metadata: Metadata = {
-  title: seo.coach.title,
-  description: seo.coach.description,
-  alternates: { canonical: seo.coach.path },
-};
+export const metadata = pageMetadata(seo.coach);
 
 /*
   Тренер. Ярослав ведёт занятия лично, поэтому страница про него —
