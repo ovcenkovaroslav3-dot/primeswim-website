@@ -1,15 +1,9 @@
-import type { Metadata } from 'next';
-
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Competitions } from '@/components/sections/Competitions';
-import { seo } from '@/content/seo';
+import { pageMetadata, seo } from '@/content/seo';
 
-export const metadata: Metadata = {
-  title: seo.competitions.title,
-  description: seo.competitions.description,
-  alternates: { canonical: seo.competitions.path },
-};
+export const metadata = pageMetadata(seo.competitions);
 
 /*
   Спортивное направление: старты, сборы, разряды.

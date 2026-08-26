@@ -1,15 +1,9 @@
-import type { Metadata } from 'next';
-
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Prices } from '@/components/sections/Prices';
-import { seo } from '@/content/seo';
+import { pageMetadata, seo } from '@/content/seo';
 
-export const metadata: Metadata = {
-  title: seo.prices.title,
-  description: seo.prices.description,
-  alternates: { canonical: seo.prices.path },
-};
+export const metadata = pageMetadata(seo.prices);
 
 /*
   Стоимость. Второй по частоте вопрос после расписания.

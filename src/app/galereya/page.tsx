@@ -1,15 +1,9 @@
-import type { Metadata } from 'next';
-
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Gallery } from '@/components/sections/Gallery';
-import { seo } from '@/content/seo';
+import { pageMetadata, seo } from '@/content/seo';
 
-export const metadata: Metadata = {
-  title: seo.gallery.title,
-  description: seo.gallery.description,
-  alternates: { canonical: seo.gallery.path },
-};
+export const metadata = pageMetadata(seo.gallery);
 
 /*
   Галерея. Самая тяжёлая секция сайта — 23 фотографии и 3 видео.

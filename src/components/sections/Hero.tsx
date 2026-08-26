@@ -47,17 +47,34 @@ export function Hero() {
           {site.hero.kicker}
         </p>
 
-        <h1
-          id="hero-title"
+        {/*
+          Заголовок и крупная надпись разделены.
+
+          Раньше H1 содержал и то и другое: скрытую строку для чтения плюс
+          два блока со словами PRIME и SWIM. В тексте заголовка они шли
+          подряд без пробелов, и поиску доставалось «…в ХимкахPRIMESWIM» —
+          склейка, похожая на набивку ключами.
+
+          Теперь H1 — это ровно заголовок, а надпись рядом остаётся
+          оформлением и скрыта от чтения: на экране ничего не изменилось,
+          но в разметке заголовок читается как написан.
+
+          Порядок слов в нём тоже не случаен: сначала запрос, потом бренд.
+          Школа новая, «PRIME SWIM» пока никто не ищет — начинать заголовок
+          с неизвестного названия значит потратить впустую самую весомую
+          его часть.
+        */}
+        <h1 id="hero-title" className="sr-only">
+          {site.hero.kicker} — {site.hero.wordmark.join(' ')}
+        </h1>
+
+        <div
+          aria-hidden="true"
           className="mt-6 font-display leading-[0.86] font-extrabold tracking-[-0.03em]"
         >
-          <span className="sr-only">
-            {site.hero.wordmark.join(' ')} — {site.hero.kicker}
-          </span>
           {site.hero.wordmark.map((word, i) => (
             <span
               key={word}
-              aria-hidden="true"
               className="reveal-mask block"
               style={{ ['--reveal-delay' as string]: `${160 + i * 110}ms` }}
             >
@@ -72,7 +89,7 @@ export function Hero() {
               </span>
             </span>
           ))}
-        </h1>
+        </div>
 
         <p
           className="reveal mt-8 max-w-[34ch] text-lg leading-relaxed text-white/75 sm:text-xl"

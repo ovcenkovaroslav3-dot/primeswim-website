@@ -1,10 +1,12 @@
 import { ButtonLink, Section, SectionHeading } from '../ui';
 import { SocialLinks } from '../SocialLinks';
+import { ViewGoal } from '../ViewGoal';
 import { contacts } from '@/content/contacts';
 
 export function Contacts() {
   return (
     <Section id="contacts" labelledBy="contacts-title" className="bg-surface">
+      <ViewGoal goal="view_contacts" />
       <SectionHeading
         id="contacts-title"
         eyebrow="Контакты"
@@ -55,7 +57,7 @@ export function Contacts() {
           </a>
 
           <p className="mt-4 text-ink-soft">
-            Звоните или пишите в мессенджеры — отвечаем в рабочее время школы.
+            Звоните или пишите в мессенджеры — {contacts.workingHours.display.toLowerCase()}.
           </p>
 
           <div className="mt-auto pt-6">

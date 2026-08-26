@@ -27,7 +27,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
         as={headingAs}
         id="schedule-title"
         eyebrow="Расписание"
-        title="Когда проходят тренировки"
+        title="Расписание занятий по плаванию в Химках"
         lead={scheduleIntro}
       />
 
