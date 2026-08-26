@@ -40,7 +40,7 @@ export default function HomePage() {
       <Strokes />
       <Reviews />
       <SiteMap />
-      <FinalCta />
+      <FinalCta variant="water" />
       <Contacts />
     </>
   );

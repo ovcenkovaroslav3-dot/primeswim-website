@@ -9,14 +9,25 @@ import { contacts } from '@/content/contacts';
   и сразу за ней «Запишите ребёнка» с мессенджерами. Два призыва подряд
   ослабляли друг друга, поэтому они сведены в один.
 
-  Секция намеренно рифмуется с первым экраном: та же сцена воды, та же
-  типографика, тот же акцент. Сайт открывается и закрывается одинаково.
-
   Якорь `booking` сохранён — на него ведут все кнопки записи со страницы.
 
   Форма работает без сервера: проверяет поля в браузере и открывает Telegram
   с готовым сообщением. Мессенджеры рядом — для тех, кому проще написать
   сразу, без формы.
+
+  ФОН ЗАВИСИТ ОТ ТОГО, ГДЕ СТОИТ СЕКЦИЯ. Сцена воды была задумана как рифма
+  к первому экрану — «сайт открывается и закрывается одинаково», и это
+  правда, пока секция встречается один раз. После разбивки на страницы
+  FinalCta стоит на каждой из восьми — и стала главной причиной, почему
+  переход между страницами ощущался медленным: WebGL-контекст и шейдер
+  собираются заново при каждом монтировании, а не один раз за сеанс.
+  На семи внутренних страницах эта секция вообще не рифмуется ни с чем —
+  первый экран там не показывается, рифмовать не с чем.
+
+  Поэтому variant="water" (сцена воды) остался только на самой FinalCta
+  на главной, следом за Hero — там рифма настоящая. Остальные страницы
+  получают variant="plain": те же два мягких пятна на тёмном фоне, что и
+  в Progress/Pool/Competitions — тот же язык, но без WebGL.
 */
 
 function MessengerCard({
@@ -64,17 +75,44 @@ function MessengerCard({
   );
 }
 
-export function FinalCta() {
+export function FinalCta({
+  variant = 'plain',
+}: {
+  variant?: 'water' | 'plain';
+} = {}) {
   return (
     <section
       id="booking"
       aria-labelledby="booking-title"
       className="on-dark relative isolate overflow-hidden bg-abyss-950 px-4 py-20 text-white sm:px-6 sm:py-24 md:py-36"
     >
-      <div className="absolute inset-0 -z-10">
-        <WaterScene />
-      </div>
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-abyss-950/72" />
+      {variant === 'water' ? (
+        <>
+          <div className="absolute inset-0 -z-10">
+            <WaterScene />
+          </div>
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-abyss-950/72" />
+        </>
+      ) : (
+        <>
+          <div
+            aria-hidden="true"
+            className="parallax pointer-events-none absolute -top-32 -left-24 size-[30rem] rounded-full bg-brand-500/24 blur-3xl"
+            style={{
+              ['--parallax-from' as string]: '-12%',
+              ['--parallax-to' as string]: '12%',
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="parallax pointer-events-none absolute -right-28 bottom-0 size-[26rem] rounded-full bg-brand-300/14 blur-3xl"
+            style={{
+              ['--parallax-from' as string]: '14%',
+              ['--parallax-to' as string]: '-14%',
+            }}
+          />
+        </>
+      )}
 
       <div className="relative mx-auto w-full max-w-3xl text-center">
         <p className="reveal text-xs font-medium tracking-[0.28em] text-lime-300 uppercase">
