@@ -11,10 +11,11 @@ import { startingPoints, firstLesson } from '@/content/journey';
   Ниже — что происходит на первом визите. Порядок здесь настоящий,
   поэтому шаги пронумерованы.
 */
-export function Parents() {
+export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   return (
     <Section id="parents" labelledBy="parents-title" className="bg-surface">
       <SectionHeading
+        as={headingAs}
         id="parents-title"
         eyebrow="Родителям"
         title="С каким уровнем можно приходить"

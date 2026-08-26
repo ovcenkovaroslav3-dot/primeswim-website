@@ -17,13 +17,14 @@ import { site } from '@/content/site';
   Длительность занятия вынесена во вступление: раньше «45 минут» стояло
   в каждой карточке и работало шумом, а не информацией.
 */
-export function Schedule() {
+export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   const active = new Map(schedule.map((s) => [s.short, s]));
   const activeDays = schedule.map((s) => `${s.day.toLowerCase()} в ${s.time}`);
 
   return (
     <Section id="schedule" labelledBy="schedule-title" className="bg-surface-alt">
       <SectionHeading
+        as={headingAs}
         id="schedule-title"
         eyebrow="Расписание"
         title="Когда проходят тренировки"

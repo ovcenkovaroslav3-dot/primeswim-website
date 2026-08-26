@@ -140,7 +140,7 @@ export function MobileMenu() {
 
                 <div className="mt-8 flex flex-col gap-4 border-t border-hairline pt-6">
                   <Link
-                    href="/#booking"
+                    href="#booking"
                     onClick={() => setOpen(false)}
                     className={buttonClass("primary", "lg", "w-full")}
                   >

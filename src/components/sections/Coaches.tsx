@@ -15,7 +15,7 @@ import { coaches } from "@/content/coaches";
   Раскладка рассчитана на одного тренера и на нескольких: при добавлении
   второго карточки просто встанут друг под другом.
 */
-export function Coaches() {
+export function Coaches({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   return (
     <section
       id="trainers"
@@ -44,12 +44,12 @@ export function Coaches() {
           <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
             Тренер
           </p>
-          <h2
+          <Heading
             id="trainers-title"
             className="text-3xl leading-[1.08] font-extralight sm:text-4xl md:text-[44px]"
           >
             Кто ведёт занятия
-          </h2>
+          </Heading>
         </div>
 
         <div className="mt-14 flex flex-col gap-16">

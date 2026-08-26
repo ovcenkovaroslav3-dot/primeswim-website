@@ -4,10 +4,11 @@ import { contacts } from '@/content/contacts';
 
 const formatter = new Intl.NumberFormat('ru-RU');
 
-export function Prices() {
+export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   return (
     <Section id="prices" labelledBy="prices-title" className="bg-surface">
       <SectionHeading
+        as={headingAs}
         id="prices-title"
         eyebrow="Стоимость"
         title="Сколько стоят занятия"

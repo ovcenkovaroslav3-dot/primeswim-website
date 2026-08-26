@@ -115,6 +115,7 @@ export function SectionHeading({
   lead,
   align = 'left',
   size = 'base',
+  as: Heading = 'h2',
 }: {
   id?: string;
   eyebrow?: string;
@@ -122,6 +123,14 @@ export function SectionHeading({
   lead?: string;
   align?: 'left' | 'center';
   size?: 'base' | 'statement';
+  /*
+    Уровень заголовка. На главной секция — одна из многих, и это h2. Но та
+    же секция бывает единственной на собственной странице: тогда её
+    заголовок и есть заголовок страницы, то есть h1. Выносить сверху
+    отдельный h1 нельзя — на экране получилось бы два одинаковых
+    заголовка подряд.
+  */
+  as?: 'h1' | 'h2';
 }) {
   const alignment = align === 'center' ? 'text-center mx-auto' : '';
 
@@ -133,7 +142,7 @@ export function SectionHeading({
           {eyebrow}
         </p>
       ) : null}
-      <h2
+      <Heading
         id={id}
         className={
           size === 'statement'
@@ -142,7 +151,7 @@ export function SectionHeading({
         }
       >
         {title}
-      </h2>
+      </Heading>
       {lead ? (
         <p className="mt-5 max-w-[62ch] text-base leading-relaxed text-ink-soft">{lead}</p>
       ) : null}

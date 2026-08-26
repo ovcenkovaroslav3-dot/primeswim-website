@@ -14,7 +14,7 @@ import { poolImages, venueImages } from '@/content/media';
   оказывалась только в начале и в конце. Эта секция стоит ровно посередине
   того разрыва.
 */
-export function Pool() {
+export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   const [mainPhoto, ...restPhotos] = poolImages;
 
   return (
@@ -37,12 +37,12 @@ export function Pool() {
           <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
             Бассейн
           </p>
-          <h2
+          <Heading
             id="pool-title"
             className="text-3xl leading-[1.08] font-extralight sm:text-4xl md:text-[44px]"
           >
             {site.pool.title}
-          </h2>
+          </Heading>
           <p className="mt-5 max-w-[62ch] leading-relaxed text-white/70">
             {site.pool.lead} {contacts.address.street}.
           </p>

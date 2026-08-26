@@ -5,13 +5,17 @@ import { MobileMenu } from './MobileMenu';
 import { ButtonLink } from './ui';
 import { contacts } from '@/content/contacts';
 
+/*
+  Навигация ведёт на отдельные страницы, а не на якоря главной: разделы
+  разъехались по своим адресам, и ссылка вида /#schedule вела бы в никуда.
+*/
 export const navLinks = [
-  { href: '/#why', label: 'Почему мы' },
-  { href: '/#strokes', label: 'Стили' },
-  { href: '/#training', label: 'Тренировки' },
-  { href: '/#schedule', label: 'Расписание' },
-  { href: '/#prices', label: 'Стоимость' },
-  { href: '/#parents', label: 'Родителям' },
+  { href: '/raspisanie/', label: 'Расписание' },
+  { href: '/price/', label: 'Стоимость' },
+  { href: '/trener/', label: 'Тренер' },
+  { href: '/bassein/', label: 'Бассейн' },
+  { href: '/roditelyam/', label: 'Родителям' },
+  { href: '/galereya/', label: 'Галерея' },
 ];
 
 export function Header() {
@@ -61,7 +65,7 @@ export function Header() {
             видимой на узких экранах и разрывала шапку.
           */}
           <span className="hidden sm:block">
-            <ButtonLink href="/#booking" variant="primary" data-goal="cta_booking">
+            <ButtonLink href="#booking" variant="primary" data-goal="cta_booking">
               Записаться
             </ButtonLink>
           </span>

@@ -14,7 +14,7 @@ import { competitionPillars } from "@/content/journey";
   Эмоциональный блок без фотографий: работают крупная типографика, глубина
   и структура. Тёмная секция задаёт паузу между светлыми.
 */
-export function Competitions() {
+export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   return (
     <section
       id="competitions"
@@ -44,14 +44,14 @@ export function Competitions() {
             <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
               Спорт
             </p>
-            <h2
+            <Heading
               id="competitions-title"
               className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-extralight"
             >
               Дальше — не просто
               <br />
               <span className="text-lime-300">умение плавать</span>
-            </h2>
+            </Heading>
           </div>
 
           <p

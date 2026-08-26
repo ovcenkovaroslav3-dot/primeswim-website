@@ -56,7 +56,7 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-white/80">
               <li>
                 <Link
-                  href="/#schedule"
+                  href="/raspisanie/"
                   className="transition-colors hover:text-lime-300"
                 >
                   Расписание
@@ -64,7 +64,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#prices"
+                  href="/price/"
                   className="transition-colors hover:text-lime-300"
                 >
                   Стоимость занятий
@@ -72,7 +72,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#booking"
+                  href="#booking"
                   className="transition-colors hover:text-lime-300"
                 >
                   Запись на тренировку

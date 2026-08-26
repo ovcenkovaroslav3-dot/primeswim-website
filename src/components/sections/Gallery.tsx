@@ -31,10 +31,11 @@ import { galleryImages, galleryVideos } from '@/content/media';
   на своём месте. Поэтому здесь именно grid — менять его на columns нельзя,
   даже если захочется вписать видео обратно в мазонри.
 */
-export function Gallery() {
+export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   return (
     <Section id="gallery" labelledBy="gallery-title" className="bg-surface-alt">
       <SectionHeading
+        as={headingAs}
         id="gallery-title"
         eyebrow="Галерея"
         title="PRIME SWIM в жизни"
