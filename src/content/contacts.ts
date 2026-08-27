@@ -41,14 +41,20 @@ export const contacts = {
 
   /**
    * Соцсети и мессенджеры.
-   * Два разных Telegram — так и задумано, оба есть на действующем сайте школы:
-   * channel — канал для чтения, booking — личка для записи.
+   *
+   * Та же пара, что у Telegram: channel — публичный канал для чтения,
+   * booking (или без суффикса, как у MAX) — личка, куда пишут, чтобы
+   * записаться. Спутать их — реальная ошибка: сообщение в личку админа
+   * уйдёт получателю, а то же самое, отправленное в канал, никто не увидит.
    */
   social: {
     vk: 'https://vk.com/primeswim',
     telegramChannel: 'https://t.me/prime_swim',
     telegramBooking: 'https://t.me/primeswim_khimki',
+    /** Личный чат для записи — используется в кнопках «Написать в MAX». */
     max: 'https://max.ru/u/f9LHodD0cOJBZRtbcgB2n3T9cjxgH587FJgPP3J665Uou0eVUVhp3O531bQ',
+    /** Официальный бизнес-канал — id совпадает с ИНН оператора. */
+    maxChannel: 'https://max.ru/id632143005800_biz',
   },
 
   /**

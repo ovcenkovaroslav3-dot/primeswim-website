@@ -9,8 +9,8 @@ const links = [
     goal: 'click_telegram',
   },
   {
-    href: contacts.social.max,
-    label: 'Сообщество в MAX',
+    href: contacts.social.maxChannel,
+    label: 'Канал в MAX',
     short: 'MAX',
     goal: 'click_max',
   },

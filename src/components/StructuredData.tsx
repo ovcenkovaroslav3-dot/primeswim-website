@@ -116,6 +116,7 @@ export function StructuredData() {
     sameAs: [
       contacts.social.vk,
       contacts.social.telegramChannel,
+      contacts.social.maxChannel,
       contacts.address.yandexMaps,
     ],
   };
