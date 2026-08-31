@@ -208,6 +208,44 @@ export const galleryImages: MediaItem[] = [
 ];
 
 /**
+ * УМЕНЬШЕННЫЕ КОПИИ.
+ *
+ * На статике нет сервера, который пересжимал бы картинки: свой загрузчик
+ * умеет только приклеивать basePath, вариантов по ширине не создаёт и srcset
+ * не отдаёт (см. next.config.ts). То есть каждый посетитель скачивал полный
+ * архивный кадр шириной 1280–1500 px, чтобы увидеть его в колонке 357 px.
+ *
+ * Поэтому копии сделаны заранее и лежат готовыми в media/preview:
+ *
+ *   preview/tiles  — квадраты 560×560 для восьми плиток главной, обрезка
+ *                    вшита в файл (смещена вверх: лица в верхней трети);
+ *   preview/grid   — кадры галереи шириной 720, пропорции сохранены;
+ *   preview/venue  — снимки бассейна и здания для главной и /bassein/.
+ *
+ * Оригиналы остаются на месте и никуда не деваются — из них эти копии и
+ * пересобираются. Рецепт и точные параметры — в public/media/preview/README.md.
+ *
+ * Размеры копий не вписаны руками, а считаются из оригинала тем же правилом,
+ * что и при генерации: так подпись и пропорции не разъедутся, если снимок
+ * заменят на другой.
+ */
+function derivative(
+  image: MediaItem,
+  folder: 'grid' | 'venue',
+  targetWidth: number,
+): MediaItem {
+  // никогда не увеличиваем: апскейл добавляет байты и не добавляет резкости
+  const width = Math.min(targetWidth, image.width);
+
+  return {
+    src: image.src.replace(/^\/media\/[a-z-]+\//, `/media/preview/${folder}/`),
+    alt: image.alt,
+    width,
+    height: Math.round((image.height * width) / image.width),
+  };
+}
+
+/**
  * Восемь кадров для главной.
  *
  * Не первые восемь из массива, а отобранные: будни в воде, работа тренера
@@ -217,21 +255,8 @@ export const galleryImages: MediaItem[] = [
  *
  * Кадры, где крупный настенный баннер забирает половину плитки, сюда не
  * берутся: в квадратной обрезке от снимка остаётся текст на стене, а не
- * дети в воде. В самой галерее они остаются — там кадр показан целиком и
- * читается как есть. Это то же правило, по которому из видео отобраны три
- * клипа из шести.
- *
- * ГЛАВНАЯ ОТДАЁТ НЕ ОРИГИНАЛЫ, А УМЕНЬШЕННЫЕ КОПИИ из media/preview.
- * Плитка занимает 171 px на телефоне и 276 px на десктопе, а исходные
- * файлы шириной 1280–1500 px весили 1 861 KB на восемь снимков. Свой
- * загрузчик на статике вариантов по ширине не создаёт (см. next.config.ts),
- * поэтому копии сделаны заранее и лежат готовыми — 440 KB вместо 1 861 KB
- * при том же изображении на экране. Рецепт пересборки — в
- * public/media/preview/README.md.
- *
- * Обрезка вшита в файл: копии уже квадратные, с тем же смещением вверх,
- * что раньше задавал object-position. Подпись берётся из galleryImages —
- * alt правится в одном месте и не разъезжается между главной и галереей.
+ * дети в воде. В самой галерее они остаются — там кадр показан целиком.
+ * Это то же правило, по которому из видео отобраны три клипа из шести.
  */
 const highlightSources = [
   '/media/gallery/coach-briefing-at-blocks.jpg',
@@ -244,7 +269,7 @@ const highlightSources = [
   '/media/gallery/team-group-competition.jpg',
 ];
 
-/** Сторона квадратной копии. 276 px на десктопе при 2x — 552, берём 560. */
+/** Сторона квадратной плитки. 276 px на десктопе при 2x — 552, берём 560. */
 const TILE_SIZE = 560;
 
 export const galleryHighlights: MediaItem[] = highlightSources
@@ -253,7 +278,7 @@ export const galleryHighlights: MediaItem[] = highlightSources
     if (!original) return null;
 
     return {
-      src: src.replace('/media/gallery/', '/media/preview/'),
+      src: src.replace('/media/gallery/', '/media/preview/tiles/'),
       alt: original.alt,
       width: TILE_SIZE,
       height: TILE_SIZE,
@@ -262,13 +287,29 @@ export const galleryHighlights: MediaItem[] = highlightSources
   .filter((image): image is MediaItem => Boolean(image));
 
 /**
- * Здание и ворота для блока «Где занимаемся» на главной — те же снимки,
- * что в venueImages, но 720×540 вместо 1400 px по ширине. На странице
- * бассейна остаются оригиналы: там кадр показан крупно.
+ * Сетка галереи. Колонка занимает максимум 357 px на десктопе и 171 px на
+ * телефоне, поэтому 720 — это ровно двойная плотность и запас на всё
+ * остальное. Двадцать три кадра весили 4 871 KB, стали 2 323 KB.
+ */
+export const galleryGridImages: MediaItem[] = galleryImages.map((image) =>
+  derivative(image, 'grid', 720),
+);
+
+/**
+ * Снимки зала для страницы бассейна, кроме первого: он показывается крупной
+ * плиткой примерно в 560 px, и копия шире оригинала всё равно не получится —
+ * там остаётся исходный файл.
+ */
+export const poolPreviewImages: MediaItem[] = poolImages
+  .slice(1)
+  .map((image) => derivative(image, 'venue', 720));
+
+/**
+ * Здание и ворота. Обрезаны в 4:3 — ровно так они и показываются и на
+ * главной, и на /bassein/, поэтому одна копия работает в обоих местах.
  */
 export const venuePreviewImages: MediaItem[] = venueImages.map((image) => ({
-  src: image.src.replace('/media/pool/', '/media/preview/'),
-  alt: image.alt,
+  ...derivative(image, 'venue', 720),
   width: 720,
   height: 540,
 }));

@@ -4,7 +4,7 @@ import { ButtonLink, buttonClass } from '../ui';
 
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
-import { poolImages, venueImages } from '@/content/media';
+import { poolImages, poolPreviewImages, venuePreviewImages } from '@/content/media';
 
 /*
   Где проходят тренировки.
@@ -17,7 +17,15 @@ import { poolImages, venueImages } from '@/content/media';
   того разрыва.
 */
 export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
-  const [mainPhoto, ...restPhotos] = poolImages;
+  /*
+    Крупная плитка берёт оригинал, мелкие — уменьшенные копии.
+
+    Первый снимок показывается примерно в 560 px, и копия шире оригинала
+    (1050 px) всё равно не получится — пересжатие только добавило бы вес.
+    Остальные плитки идут в 270 px, там оригинал избыточен вчетверо.
+  */
+  const mainPhoto = poolImages[0];
+  const restPhotos = poolPreviewImages;
 
   return (
     <section
@@ -145,7 +153,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
             </div>
           ))}
 
-          {venueImages.map((photo, i) => (
+          {venuePreviewImages.map((photo, i) => (
             <div
               key={photo.src}
               className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-abyss-800"
