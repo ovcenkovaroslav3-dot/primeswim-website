@@ -4,7 +4,6 @@ import { Programs } from '@/components/sections/Programs';
 import { PlanPreview } from '@/components/sections/PlanPreview';
 import { CoachPreview } from '@/components/sections/CoachPreview';
 import { GalleryPreview } from '@/components/sections/GalleryPreview';
-import { Reviews } from '@/components/sections/Reviews';
 import { PoolPreview } from '@/components/sections/PoolPreview';
 import { Faq } from '@/components/sections/Faq';
 import { Contacts } from '@/components/sections/Contacts';
@@ -31,11 +30,10 @@ import { StructuredData } from '@/components/StructuredData';
    4. PlanPreview     — расписание и стоимость, два первых вопроса.
    5. CoachPreview    — кто будет стоять у бортика.
    6. GalleryPreview  — восемь кадров: школа существует и выигрывает старты.
-   7. Reviews         — что говорят родители, со ссылкой на источник.
-   8. PoolPreview     — куда ехать и как узнать место с улицы.
-   9. Faq             — оставшиеся сомнения, короткой выборкой.
-  10. FinalCta        — форма и мессенджеры.
-  11. Contacts        — адрес, телефон, каналы.
+   7. PoolPreview     — куда ехать, как пройти КПП, как узнать место.
+   8. Faq             — оставшиеся сомнения, короткой выборкой.
+   9. FinalCta        — форма и мессенджеры.
+  10. Contacts        — адрес, телефон, каналы.
 
   Аргументы идут от самых конкретных к самым мягким. Родитель, который
   ушёл после четвёртого блока, уже знает время, цену и место — то есть
@@ -68,11 +66,17 @@ export default function HomePage() {
       <CoachPreview />
       <GalleryPreview />
       {/*
-        Четыре отзыва из шести: все шесть занимали на телефоне 1 700 px и
-        вставали долгой паузой ровно там, где родитель уже почти решил.
-        Ссылка на карточку школы под блоком ведёт ко всем.
+        ЗДЕСЬ БЫЛИ ОТЗЫВЫ, и они вернутся — но только настоящие.
+
+        Стояли шесть текстов, перенесённых со старого сайта, под подписью
+        «Отзывы опубликованы пользователями на Яндекс Картах» и со ссылкой
+        на карточку школы. На карточке при проверке 31 августа 2026 оказался
+        один отзыв, и ни один из шести с ним не совпадал: сайт называл
+        источник, в котором этих текстов нет.
+
+        Решение владельца — выставить блок, когда накопятся свои. Как
+        вернуть: см. инструкцию в content/reviews.ts.
       */}
-      <Reviews limit={4} />
       <PoolPreview />
       {/*
         Короткая выборка и без разметки FAQPage: полную отдаёт /roditelyam/,

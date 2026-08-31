@@ -23,6 +23,17 @@ import { reviews, reviewsSource } from '@/content/reviews';
 */
 export function Reviews({ limit }: { limit?: number } = {}) {
   const shown = limit ? reviews.slice(0, limit) : reviews;
+
+  /*
+    Пустой список — не ошибка, а рабочее состояние: настоящих отзывов пока
+    нет, и секции на сайте быть не должно. Без этой проверки страница
+    падала бы на деструктуризации ниже.
+
+    Секция с заголовком «Что говорят родители» и пустотой под ним была бы
+    хуже её отсутствия: она обещает доказательство и не даёт его.
+  */
+  if (shown.length === 0) return null;
+
   const [featured, ...rest] = shown;
 
   return (
