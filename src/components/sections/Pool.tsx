@@ -5,6 +5,7 @@ import { ButtonLink, buttonClass } from '../ui';
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
 import { poolImages, poolPreviewImages, venuePreviewImages } from '@/content/media';
+import { routeSteps, routeTransit } from '@/content/route';
 
 /*
   Где проходят тренировки.
@@ -119,6 +120,53 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
               {contacts.phone.display}
             </a>
           </div>
+        </div>
+
+        {/*
+          Как добраться.
+
+          Бассейн стоит на территории института, и попасть в него нельзя,
+          просто подойдя к зданию: сначала КПП. До этого блока сайт про это
+          не говорил вовсе — родитель узнавал о пропускном режиме, уже стоя
+          у ворот с ребёнком. Это и есть та самая локальная тревога перед
+          первым визитом, ради которой блок написан.
+
+          Шаги пронумерованы, потому что порядок настоящий, а не оформление.
+
+          Про дорогу от КПП до самого бассейна здесь ничего нет намеренно —
+          владелец её пока не описал, а придумывать путь к месту, куда
+          человек везёт ребёнка, нельзя. Пока эту работу делает фотография
+          корпуса ниже: здание узнаваемое. См. content/route.ts.
+        */}
+        <div className="reveal mt-10 rounded-[20px] border border-white/12 p-6 sm:p-7">
+          <h3 className="text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+            Как добраться
+          </h3>
+
+          <ol className="mt-6 grid gap-6 sm:grid-cols-2">
+            {routeSteps.map((step, i) => (
+              <li key={step.id} className="flex gap-4">
+                <span
+                  aria-hidden="true"
+                  className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-lime-400/50 text-sm tabular-nums text-lime-300"
+                >
+                  {i + 1}
+                </span>
+                <span>
+                  <span className="block font-medium text-white">
+                    {step.title}
+                  </span>
+                  <span className="mt-2 block text-sm leading-relaxed text-white/70">
+                    {step.description}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ol>
+
+          <p className="mt-6 border-t border-white/12 pt-5 text-sm leading-relaxed text-white/70">
+            Ближайшая остановка — «{routeTransit.stop}», {routeTransit.distance}.
+          </p>
         </div>
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
