@@ -207,6 +207,72 @@ export const galleryImages: MediaItem[] = [
   },
 ];
 
+/**
+ * Восемь кадров для главной.
+ *
+ * Не первые восемь из массива, а отобранные: будни в воде, работа тренера
+ * с группой и результат на соревнованиях — по каждому сюжету понятно, что
+ * происходит. Родителю на главной нужен не архив, а доказательство, что
+ * школа настоящая; весь набор лежит на /galereya/.
+ *
+ * Кадры, где крупный настенный баннер забирает половину плитки, сюда не
+ * берутся: в квадратной обрезке от снимка остаётся текст на стене, а не
+ * дети в воде. В самой галерее они остаются — там кадр показан целиком и
+ * читается как есть. Это то же правило, по которому из видео отобраны три
+ * клипа из шести.
+ *
+ * ГЛАВНАЯ ОТДАЁТ НЕ ОРИГИНАЛЫ, А УМЕНЬШЕННЫЕ КОПИИ из media/preview.
+ * Плитка занимает 171 px на телефоне и 276 px на десктопе, а исходные
+ * файлы шириной 1280–1500 px весили 1 861 KB на восемь снимков. Свой
+ * загрузчик на статике вариантов по ширине не создаёт (см. next.config.ts),
+ * поэтому копии сделаны заранее и лежат готовыми — 440 KB вместо 1 861 KB
+ * при том же изображении на экране. Рецепт пересборки — в
+ * public/media/preview/README.md.
+ *
+ * Обрезка вшита в файл: копии уже квадратные, с тем же смещением вверх,
+ * что раньше задавал object-position. Подпись берётся из galleryImages —
+ * alt правится в одном месте и не разъезжается между главной и галереей.
+ */
+const highlightSources = [
+  '/media/gallery/coach-briefing-at-blocks.jpg',
+  '/media/gallery/kickboard-drill-lineup.jpg',
+  '/media/gallery/coach-with-young-swimmers.jpg',
+  '/media/gallery/two-kids-goggles-thumbs-up.jpg',
+  '/media/gallery/kids-yellow-kickboards.jpg',
+  '/media/gallery/award-handshake.jpg',
+  '/media/gallery/teens-celebrating-medals.jpg',
+  '/media/gallery/team-group-competition.jpg',
+];
+
+/** Сторона квадратной копии. 276 px на десктопе при 2x — 552, берём 560. */
+const TILE_SIZE = 560;
+
+export const galleryHighlights: MediaItem[] = highlightSources
+  .map((src) => {
+    const original = galleryImages.find((image) => image.src === src);
+    if (!original) return null;
+
+    return {
+      src: src.replace('/media/gallery/', '/media/preview/'),
+      alt: original.alt,
+      width: TILE_SIZE,
+      height: TILE_SIZE,
+    };
+  })
+  .filter((image): image is MediaItem => Boolean(image));
+
+/**
+ * Здание и ворота для блока «Где занимаемся» на главной — те же снимки,
+ * что в venueImages, но 720×540 вместо 1400 px по ширине. На странице
+ * бассейна остаются оригиналы: там кадр показан крупно.
+ */
+export const venuePreviewImages: MediaItem[] = venueImages.map((image) => ({
+  src: image.src.replace('/media/pool/', '/media/preview/'),
+  alt: image.alt,
+  width: 720,
+  height: 540,
+}));
+
 export type VideoItem = {
   src: string;
   poster: string;

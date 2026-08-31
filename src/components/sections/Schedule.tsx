@@ -103,7 +103,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
             href={contacts.social.telegramBooking}
             external
             variant="primary"
-            data-goal="click_telegram"
+            data-goal="click_telegram_booking"
           >
             {site.cta.telegram}
           </ButtonLink>
@@ -111,7 +111,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
             href={contacts.social.max}
             external
             variant="ghost"
-            data-goal="click_max"
+            data-goal="click_max_booking"
           >
             {site.cta.max}
           </ButtonLink>

@@ -142,12 +142,14 @@ export function MobileMenu() {
                   <Link
                     href="#booking"
                     onClick={() => setOpen(false)}
+                    data-goal="cta_booking"
                     className={buttonClass("primary", "lg", "w-full")}
                   >
-                    Записаться на тренировку
+                    Записаться на пробное занятие
                   </Link>
                   <a
                     href={contacts.phone.href}
+                    data-goal="click_phone"
                     className="text-center text-lg font-light text-ink"
                   >
                     {contacts.phone.display}

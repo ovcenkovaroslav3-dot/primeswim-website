@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Logo } from './Logo';
 import { SocialLinks } from './SocialLinks';
-import { sectionLinks } from './SiteMap';
+import { sectionLinks } from '@/content/sections';
 import { contacts } from '@/content/contacts';
 import { site } from '@/content/site';
 
@@ -26,8 +26,11 @@ export function Footer() {
             </h2>
             <ul className="mt-4 space-y-3 text-sm text-white/80">
               <li>
+                {/* цели те же, что и везде: подвал стоит на каждой странице,
+                    и без разметки его клики просто не попадали в отчёт */}
                 <a
                   href={contacts.phone.href}
+                  data-goal="click_phone"
                   className="font-medium text-white transition-colors hover:text-lime-300"
                 >
                   {contacts.phone.display}
@@ -39,6 +42,7 @@ export function Footer() {
                   href={contacts.address.yandexMaps}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-goal="click_route"
                   className="underline underline-offset-4 transition-colors hover:text-lime-300"
                 >
                   Посмотреть на Яндекс Картах
@@ -66,18 +70,28 @@ export function Footer() {
               складывается из того, сколько раз на неё ссылаются внутри
               сайта.
 
-              Список берётся из того же массива, что и блок разделов на
-              главной, чтобы новая страница не появлялась в одном месте и
-              отсутствовала в другом.
+              Список лежит в content/sections.ts. Блок «Что ещё есть на
+              сайте» с главной убран — там теперь настоящие превью разделов
+              со ссылками, — но подвал остался единственной сквозной ссылкой
+              на «Соревнования» и потому важнее прежнего.
 
               Адрес политики со слешем на конце: сборка настроена на
               trailingSlash, и без него переход шёл лишним редиректом.
+
+              prefetch={false} на всех девяти: подвал есть на каждой
+              странице и всегда лежит ниже экрана, а Next по умолчанию
+              тянет полезную нагрузку каждого маршрута, до которого
+              долистали. На главной это давало 376 KiB фоновой закачки
+              на восемь страниц, из которых посетитель откроет одну.
+              По наведению и касанию маршрут всё равно догружается —
+              то есть при настоящем намерении скорость не теряется.
             */}
             <ul className="mt-4 space-y-3 text-sm text-white/80">
               {sectionLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    prefetch={false}
                     className="transition-colors hover:text-lime-300"
                   >
                     {link.title}
@@ -95,6 +109,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/policy/"
+                  prefetch={false}
                   className="transition-colors hover:text-lime-300"
                 >
                   Политика обработки персональных данных

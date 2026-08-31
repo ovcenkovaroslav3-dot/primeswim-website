@@ -143,13 +143,13 @@ export function FinalCta({
             href={contacts.social.telegramBooking}
             title="Telegram"
             description={`Ответим ${contacts.workingHours.display.toLowerCase()}`}
-            goal="click_telegram"
+            goal="click_telegram_booking"
           />
           <MessengerCard
             href={contacts.social.max}
             title="MAX"
             description="Если удобнее — пишите сюда"
-            goal="click_max"
+            goal="click_max_booking"
           />
         </div>
 

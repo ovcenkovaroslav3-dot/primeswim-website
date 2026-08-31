@@ -22,12 +22,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-hairline bg-white/95 backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
-        <Link
-          href="/"
-          className="shrink-0"
-          aria-label="PRIME SWIM — на главную страницу"
-        >
+        {/*
+          Пояснение лежит внутри ссылки скрытым текстом, а не в aria-label.
+          С aria-label доступное имя было «PRIME SWIM — на главную страницу»,
+          а на экране написано «PRIMESWIM» слитно: видимая подпись в имя не
+          входила, и голосовое управление по ней ссылку не находило
+          (WCAG 2.5.3). Теперь имя начинается ровно с того, что видно.
+        */}
+        <Link href="/" className="shrink-0">
           <Logo />
+          <span className="sr-only"> — на главную страницу</span>
         </Link>
 
         <nav aria-label="Основная навигация" className="ml-auto hidden lg:block">

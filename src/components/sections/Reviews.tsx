@@ -14,9 +14,16 @@ import { reviews, reviewsSource } from '@/content/reviews';
 
   Тексты не редактируются и не сокращаются: это публичные отзывы
   с Яндекс Карт, они должны совпадать с оригиналом дословно.
+
+  `limit` обрезает количество карточек, но не сами отзывы. Нужен для
+  главной: шесть отзывов занимали там 1 700 px на телефоне и вставали
+  длинной паузой между фотографиями и бассейном. Урезать чужой текст
+  нельзя, а показать часть карточек и увести к первоисточнику — можно;
+  ссылка на карточку школы стоит под блоком в любом случае.
 */
-export function Reviews() {
-  const [featured, ...rest] = reviews;
+export function Reviews({ limit }: { limit?: number } = {}) {
+  const shown = limit ? reviews.slice(0, limit) : reviews;
+  const [featured, ...rest] = shown;
 
   return (
     <Section id="reviews" labelledBy="reviews-title" className="bg-surface">
@@ -71,7 +78,9 @@ export function Reviews() {
       </ul>
 
       <p className="reveal mt-8 text-sm text-ink-muted">
-        Отзывы опубликованы пользователями на Яндекс Картах.{' '}
+        {shown.length < reviews.length
+          ? 'Здесь показана часть отзывов. Все они опубликованы пользователями на Яндекс Картах.'
+          : 'Отзывы опубликованы пользователями на Яндекс Картах.'}{' '}
         <a
           href={reviewsSource.href}
           target="_blank"

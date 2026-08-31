@@ -93,6 +93,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
             <ButtonLink
               href="#booking"
               variant={price.featured ? 'secondary' : 'ghost'}
+              data-goal="cta_booking"
               className="relative mt-auto w-full"
             >
               Записаться
@@ -117,6 +118,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           href={contacts.social.telegramBooking}
           target="_blank"
           rel="noopener noreferrer"
+          data-goal="click_telegram_booking"
           className="font-medium text-brand-600 underline underline-offset-4"
         >
           напишите нам в Telegram

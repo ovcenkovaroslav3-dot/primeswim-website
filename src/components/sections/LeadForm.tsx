@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { buttonClass } from '../ui';
 import { contacts } from '@/content/contacts';
@@ -15,18 +15,27 @@ import {
 import { trackGoal } from '@/lib/analytics';
 
 /*
-  Заявка без сервера.
+  Черновик заявки, а не отправка.
 
-  Сайт собран в статику, серверных обработчиков нет — и заводить сторонний
-  приёмник заявок ради этой формы не понадобилось. Форма проверяет поля
-  в браузере и открывает Telegram с уже набранным сообщением: отправляет
-  его сам родитель, из своего мессенджера.
+  ЧТО ПРОИСХОДИТ НА САМОМ ДЕЛЕ: форма проверяет поля в браузере и открывает
+  Telegram с уже набранным сообщением. Дальше родитель нажимает «Отправить»
+  сам, в своём мессенджере. Сайт не передаёт данные школе и не получает
+  подтверждения, что сообщение ушло. Часть родителей закроет вкладку, и школа
+  об этой попытке не узнает — это известная и пока не закрытая потеря.
 
-  Побочный эффект оказался важнее самого решения: сайт вообще не получает
-  персональные данные. Ничего не передаётся на наши серверы и никаким
-  третьим лицам — переписка идёт напрямую между родителем и школой.
-  Поэтому кнопка честно называется «Открыть Telegram», а не «Отправить»:
-  пользователь должен понимать, что произойдёт по нажатию.
+  Поэтому здесь нельзя писать «заявка отправлена» ни в интерфейсе, ни в
+  аналитике. Цель называется `open_telegram_draft`: раньше отправлялась
+  `lead_submitted`, и каждое открытие черновика считалось лидом — число
+  заявок в Метрике было завышено, а CPL занижен.
+
+  Побочный эффект решения ценный: сайт вообще не получает персональные данные.
+  Ничего не уходит на наши серверы и третьим лицам — переписка идёт напрямую
+  между родителем и школой. Поэтому кнопка называется «Открыть Telegram»,
+  а не «Отправить».
+
+  Настоящая доставка с подтверждением — следующий этап, разобран в
+  docs/lead-delivery.md. Пока его нет, цели `lead_delivered` в проекте
+  быть не должно.
 
   Правила проверки общие с остальным проектом и покрыты тестами
   (lead-schema.ts, npm test) — здесь они не дублируются.
@@ -62,9 +71,25 @@ export function LeadForm() {
   const [values, setValues] = useState<LeadValues>(emptyLeadValues);
   const [errors, setErrors] = useState<LeadErrors>({});
   const [sent, setSent] = useState(false);
-  const [company, setCompany] = useState('');
+  const [trap, setTrap] = useState('');
+
+  /*
+    «Форма начата» — ровно один раз на экземпляр формы. Ref, а не state:
+    перерисовывать компонент из-за отметки не нужно, а состояние сбросилось
+    бы вместе с ней. Событие показывает разрыв между «дошёл до формы» и
+    «открыл черновик»: без него непонятно, теряются люди на самой форме
+    или не доходят до неё.
+  */
+  const formStarted = useRef(false);
+
+  const markStarted = () => {
+    if (formStarted.current) return;
+    formStarted.current = true;
+    trackGoal('start_form');
+  };
 
   const set = <K extends keyof LeadValues>(key: K, value: LeadValues[K]) => {
+    markStarted();
     setValues((v) => ({ ...v, [key]: value }));
     setErrors((e) => ({ ...e, [key]: undefined }));
   };
@@ -73,13 +98,13 @@ export function LeadForm() {
     e.preventDefault();
 
     // ловушка для ботов: люди это поле не видят и не заполняют
-    if (company.trim() !== '') {
+    if (trap.trim() !== '') {
       setSent(true);
       return;
     }
 
     const found = validateLead(
-      { ...values, company },
+      { ...values, hpx7: trap },
       validProgramIds,
       validAgeIds,
     );
@@ -91,7 +116,8 @@ export function LeadForm() {
       return;
     }
 
-    trackGoal('lead_submitted');
+    // именно открытие черновика, а не отправленная заявка — см. шапку файла
+    trackGoal('open_telegram_draft');
     const url = `${contacts.social.telegramBooking}?text=${encodeURIComponent(buildMessage(values))}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     setSent(true);
@@ -112,11 +138,23 @@ export function LeadForm() {
           </svg>
         </div>
         <p className="mt-6 text-2xl font-extralight text-ink sm:text-3xl">
-          Telegram открыт
+          Остался один шаг
         </p>
         <p className="mt-4 leading-relaxed text-ink-soft">
-          Заявка уже набрана в поле сообщения — осталось нажать «Отправить».
-          Если вкладка не открылась, напишите нам напрямую.
+          Мы открыли Telegram с готовым сообщением. Пока вы не нажмёте в нём
+          «Отправить», школа заявку не получит — сайт ничего не передаёт сам.
+          Если вкладка не открылась, напишите или позвоните нам напрямую.
+        </p>
+        <p className="mt-4">
+          <a
+            href={contacts.social.telegramBooking}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-goal="click_telegram_booking"
+            className="font-medium text-brand-600 underline underline-offset-4"
+          >
+            Открыть Telegram ещё раз
+          </a>
         </p>
         <p className="mt-6 text-sm text-ink-muted">
           Или позвоните:{' '}
@@ -253,25 +291,54 @@ export function LeadForm() {
             value={values.comment}
             onChange={(e) => set('comment', e.target.value)}
             aria-invalid={Boolean(errors.comment)}
+            aria-describedby="lead-comment-medical"
             placeholder="Опыт занятий, удобное время, вопросы"
             className={`${fieldClass} resize-y ${fieldBorder(Boolean(errors.comment))}`}
           />
+          {/*
+            Предупреждение о медицинских сведениях.
+
+            Свободное поле рядом со словом «ребёнок» само провоцирует
+            родителя написать диагноз. Данные о здоровье — специальная
+            категория персональных данных (ст. 10 152-ФЗ), и получать их
+            в обычной форме записи школа не должна. Дешевле не спрашивать,
+            чем потом обеспечивать особый режим хранения.
+
+            Стоит до поля в потоке чтения через aria-describedby и видимо —
+            под ним, где взгляд оказывается перед началом ввода.
+
+            [ТРЕБУЕТ ПРОВЕРКИ ЮРИСТОМ] Формулировка и то, как медицинские
+            вопросы обсуждаются после обращения, — за пределами кода.
+          */}
+          <p id="lead-comment-medical" className="mt-2 text-sm text-ink-muted">
+            Не указывайте диагнозы и другие медицинские сведения. Медицинские
+            вопросы обсудим отдельно после обращения.
+          </p>
           {errors.comment ? (
             <p className="mt-2 text-sm text-red-700">{errors.comment}</p>
           ) : null}
         </div>
 
-        {/* honeypot: скрыт от людей, но доступен ботам */}
+        {/*
+          Honeypot: скрыт от людей, но доступен ботам.
+
+          Имя, id и подпись — бессмысленные. Поле называлось `company`, и
+          заполнял его не бот, а автозаполнение браузера: «организацию» он
+          подставляет сам, а `autocomplete="off"` для распознанных категорий
+          давно не запрет. Настоящий родитель попадал в ловушку, форма
+          показывала успех и не открывала Telegram — заявка исчезала.
+          См. пояснение у поля hpx7 в lib/lead-schema.ts.
+        */}
         <div aria-hidden="true" className="absolute -left-[9999px]">
-          <label htmlFor="lead-company">Не заполняйте это поле</label>
+          <label htmlFor="lead-hpx7">Оставьте это поле пустым</label>
           <input
-            id="lead-company"
-            name="company"
+            id="lead-hpx7"
+            name="hpx7"
             type="text"
             tabIndex={-1}
             autoComplete="off"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
+            value={trap}
+            onChange={(e) => setTrap(e.target.value)}
           />
         </div>
 
@@ -290,6 +357,7 @@ export function LeadForm() {
               Я согласен(а) на{' '}
               <Link
                 href="/policy"
+                prefetch={false}
                 className="font-medium text-brand-600 underline underline-offset-4"
               >
                 обработку персональных данных
@@ -307,8 +375,9 @@ export function LeadForm() {
         </button>
 
         <p className="text-sm leading-relaxed text-ink-muted">
-          Заявка не отправляется через сайт: откроется Telegram с уже набранным
-          сообщением, отправите его сами.
+          Сайт не отправляет заявку сам. По кнопке откроется Telegram с уже
+          набранным сообщением — школа получит его после того, как вы нажмёте
+          в мессенджере «Отправить».
         </p>
       </div>
     </form>

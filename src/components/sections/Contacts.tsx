@@ -69,10 +69,16 @@ export function Contacts() {
               href={contacts.social.telegramBooking}
               external
               variant="primary"
+              data-goal="click_telegram_booking"
             >
               Написать в Telegram
             </ButtonLink>
-            <ButtonLink href={contacts.social.max} external variant="ghost">
+            <ButtonLink
+              href={contacts.social.max}
+              external
+              variant="ghost"
+              data-goal="click_max_booking"
+            >
               Написать в MAX
             </ButtonLink>
           </div>
