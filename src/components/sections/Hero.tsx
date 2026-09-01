@@ -1,5 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
+
+import { Picture } from '../Picture';
 
 import { WaterScene } from '../WaterScene';
 import { site } from '@/content/site';
@@ -184,7 +185,7 @@ export function Hero() {
             style={{ ['--reveal-delay' as string]: '320ms' }}
           >
             <div className="relative overflow-hidden rounded-[24px] border border-white/15 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]">
-              <Image
+              <Picture
                 src={heroImage.src}
                 alt={heroImage.alt}
                 width={heroImage.width}

@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
+import { Picture } from '../Picture';
 import { Section, SectionHeading } from '../ui';
 import { galleryHighlights } from '@/content/media';
 
@@ -46,13 +46,13 @@ export function GalleryPreview() {
             className="reveal zoom-frame relative aspect-square overflow-hidden rounded-[16px] bg-surface"
             style={{ ['--reveal-delay' as string]: `${(i % 4) * 60}ms` }}
           >
-            <Image
+            <Picture
               src={photo.src}
               alt={photo.alt}
-              fill
-              loading="lazy"
+              width={photo.width}
+              height={photo.height}
               sizes="(max-width: 768px) 50vw, 25vw"
-              className="object-cover"
+              className="absolute inset-0 size-full object-cover"
             />
           </li>
         ))}

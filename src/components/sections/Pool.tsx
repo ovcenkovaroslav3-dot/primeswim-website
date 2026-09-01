@@ -1,10 +1,9 @@
-import Image from 'next/image';
-
+import { Picture } from '../Picture';
 import { ButtonLink, buttonClass } from '../ui';
 
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
-import { poolImages, poolPreviewImages, venuePreviewImages } from '@/content/media';
+import { poolMainImage, poolPreviewImages, venuePreviewImages } from '@/content/media';
 import { routeSteps, routeTransit } from '@/content/route';
 
 /*
@@ -25,7 +24,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
     (1050 px) всё равно не получится — пересжатие только добавило бы вес.
     Остальные плитки идут в 270 px, там оригинал избыточен вчетверо.
   */
-  const mainPhoto = poolImages[0];
+  const mainPhoto = poolMainImage;
   const restPhotos = poolPreviewImages;
 
   return (
@@ -174,13 +173,13 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
             className="reveal zoom-frame relative aspect-[3/4] overflow-hidden rounded-[20px] bg-abyss-800 sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]"
             style={{ ['--reveal-delay' as string]: '60ms' }}
           >
-            <Image
+            <Picture
               src={mainPhoto.src}
               alt={mainPhoto.alt}
-              fill
-              loading="lazy"
+              width={mainPhoto.width}
+              height={mainPhoto.height}
               sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover"
+              className="absolute inset-0 size-full object-cover"
             />
           </div>
 
@@ -190,13 +189,13 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
               className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-abyss-800"
               style={{ ['--reveal-delay' as string]: `${120 + i * 60}ms` }}
             >
-              <Image
+              <Picture
                 src={photo.src}
                 alt={photo.alt}
-                fill
-                loading="lazy"
+                width={photo.width}
+                height={photo.height}
                 sizes="(max-width: 640px) 100vw, 25vw"
-                className="object-cover"
+                className="absolute inset-0 size-full object-cover"
               />
             </div>
           ))}
@@ -209,13 +208,13 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
                 ['--reveal-delay' as string]: `${120 + (restPhotos.length + i) * 60}ms`,
               }}
             >
-              <Image
+              <Picture
                 src={photo.src}
                 alt={photo.alt}
-                fill
-                loading="lazy"
+                width={photo.width}
+                height={photo.height}
                 sizes="(max-width: 640px) 100vw, 25vw"
-                className="object-cover"
+                className="absolute inset-0 size-full object-cover"
               />
             </div>
           ))}

@@ -1,5 +1,4 @@
-import Image from 'next/image';
-
+import { Picture } from '../Picture';
 import { Section, SectionHeading } from '../ui';
 import { galleryGridImages, galleryVideos } from '@/content/media';
 
@@ -81,12 +80,11 @@ export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
             key={photo.src}
             className="zoom-frame relative mb-4 overflow-hidden rounded-[20px] bg-surface break-inside-avoid"
           >
-            <Image
+            <Picture
               src={photo.src}
               alt={photo.alt}
               width={photo.width}
               height={photo.height}
-              loading="lazy"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
               className="block h-auto w-full object-cover"
             />

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { Picture } from './Picture';
 
 /*
   Портрет тренера.
@@ -26,7 +26,7 @@ export function CoachPortrait({
   priority = true,
 }: {
   name: string;
-  photo?: { src: string; alt: string };
+  photo?: { src: string; alt: string; width: number; height: number };
   priority?: boolean;
 }) {
   if (photo) {
@@ -36,20 +36,20 @@ export function CoachPortrait({
         светлый квадрат просвечивал бы каймой, пока снимок грузится.
       */
       <div className="zoom-frame relative aspect-square w-full overflow-hidden rounded-[16px] bg-abyss-800">
-        <Image
+        <Picture
           src={photo.src}
           alt={photo.alt}
-          fill
+          width={photo.width}
+          height={photo.height}
           /*
-            На странице тренера — приоритет: по умолчанию next/image грузит
-            изображения лениво, браузер узнавал о снимке только после разбора
-            разметки и стилей, и главный элемент страницы появлялся последним.
+            На странице тренера — приоритет: по умолчанию картинки грузятся
+            лениво, браузер узнавал о снимке только после разбора разметки и
+            стилей, и главный элемент страницы появлялся последним.
             На главной приоритет снимается — см. параметр выше.
           */
           priority={priority}
-          loading={priority ? undefined : 'lazy'}
           sizes="(max-width: 1024px) 100vw, 320px"
-          className="object-cover"
+          className="absolute inset-0 size-full object-cover"
         />
       </div>
     );

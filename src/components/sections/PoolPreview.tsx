@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
+import { Picture } from '../Picture';
 import { ButtonLink } from '../ui';
 import { contacts } from '@/content/contacts';
 import { venuePreviewImages } from '@/content/media';
@@ -124,13 +124,13 @@ export function PoolPreview() {
               className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-abyss-800"
               style={{ ['--reveal-delay' as string]: `${80 + i * 80}ms` }}
             >
-              <Image
+              <Picture
                 src={photo.src}
                 alt={photo.alt}
-                fill
-                loading="lazy"
+                width={photo.width}
+                height={photo.height}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-cover"
+                className="absolute inset-0 size-full object-cover"
               />
             </div>
           ))}
