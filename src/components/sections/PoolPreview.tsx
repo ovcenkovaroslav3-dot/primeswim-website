@@ -77,6 +77,7 @@ export function PoolPreview() {
           <p className="mt-4 leading-relaxed text-white/65">
             Бассейн на территории института: заходите через любой из двух КПП
             и скажите охране, что вы к тренеру Овченкову Ярославу Сергеевичу.
+            От КПП до бассейна около 500 метров.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">

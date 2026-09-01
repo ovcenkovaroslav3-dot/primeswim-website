@@ -142,7 +142,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
             Как добраться
           </h3>
 
-          <ol className="mt-6 grid gap-6 sm:grid-cols-2">
+          <ol className="mt-6 grid gap-6 sm:grid-cols-3">
             {routeSteps.map((step, i) => (
               <li key={step.id} className="flex gap-4">
                 <span
@@ -164,7 +164,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
           </ol>
 
           <p className="mt-6 border-t border-white/12 pt-5 text-sm leading-relaxed text-white/70">
-            Ближайшая остановка — «{routeTransit.stop}», {routeTransit.distance}.
+            Ближайшая остановка — «{routeTransit.stop}»: {routeTransit.note}.
           </p>
         </div>
 
