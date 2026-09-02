@@ -65,7 +65,12 @@ const facts = [
     label: 'занятие в абонементе',
   },
   { value: '45 мин', label: 'тренировка' },
-  { value: 'до 12', label: 'человек в группе' },
+  /*
+    «На дорожке», а не «в группе»: родителю важно, сколько детей делят воду
+    с его ребёнком, а не численность списка. Цифра та же — группа занимает
+    одну дорожку.
+  */
+  { value: 'до 12', label: 'детей на дорожке' },
   { value: coachYears ? `${coachYears} лет` : null, label: 'опыт тренера' },
 ].filter((fact): fact is { value: string; label: string } =>
   Boolean(fact.value),
