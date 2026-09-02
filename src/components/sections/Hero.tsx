@@ -33,7 +33,21 @@ import { coaches } from '@/content/coaches';
   и содержимое просто видно — экран не пустеет.
 */
 
-const trialPrice = prices.find((price) => price.id === 'trial')?.amount;
+/*
+  Цена первого экрана — минимальная стоимость занятия в абонементе.
+
+  Здесь стояла цена пробного. Она выше цены регулярного занятия, и первым
+  же числом на экране завышала представление о школе: родитель видел 1 100 ₽
+  там, где на самом деле платит от 850 ₽ за тренировку.
+
+  Минимум считается по тарифам, у которых цена указана за занятие (у пробного
+  единицы нет — это разовый платёж). Так строка не разъедется, если тарифы
+  поменяются или появится новый.
+*/
+const perLessonPrices = prices
+  .filter((price) => price.unit)
+  .map((price) => price.amount);
+const fromPrice = perLessonPrices.length ? Math.min(...perLessonPrices) : null;
 const coachYears = coaches[0]?.yearsExperience;
 
 /*
@@ -47,8 +61,8 @@ const coachYears = coaches[0]?.yearsExperience;
 */
 const facts = [
   {
-    value: trialPrice ? `${trialPrice.toLocaleString('ru-RU')} ₽` : null,
-    label: 'пробное занятие',
+    value: fromPrice ? `от ${fromPrice.toLocaleString('ru-RU')} ₽` : null,
+    label: 'занятие в абонементе',
   },
   { value: '45 мин', label: 'тренировка' },
   { value: 'до 12', label: 'человек в группе' },
