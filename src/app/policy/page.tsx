@@ -91,6 +91,18 @@ export default function PolicyPage() {
             ;
           </li>
           <li>
+            MAX:{' '}
+            <a
+              href={contacts.social.max}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-brand-600 underline underline-offset-4"
+            >
+              чат школы
+            </a>
+            ;
+          </li>
+          <li>
             Telegram:{' '}
             <a
               href={contacts.social.telegramBooking}

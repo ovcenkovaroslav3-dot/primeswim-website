@@ -18,8 +18,8 @@ export type LeadInput = {
     заполнял не бот, а автозаполнение браузера: «организация» входит в
     распознаваемые профильные категории, а `autocomplete="off"` для них
     сегодня не запрет, а пожелание, которое Chrome и Яндекс.Браузер
-    игнорируют. Форма считала такого посетителя ботом и молча не открывала
-    Telegram — заявка терялась без следа для обеих сторон.
+    игнорируют. Форма считала такого посетителя ботом и молча его отсеивала —
+    заявка терялась без следа для обеих сторон.
 
     Проверено на соседнем проекте: там та же ловушка съедала заявки на
     боевом сайте. Поэтому здесь у поля нет ни одного признака, за который
@@ -108,3 +108,55 @@ export function validateLead(
 
   return errors;
 }
+
+/**
+ * Разбор тела запроса на сервере.
+ *
+ * `validateLead` проверяет смысл полей и считает, что перед ним уже строки.
+ * До неё нужен слой, который не верит вообще ничему: в endpoint прилетает
+ * произвольный JSON, а не то, что отправила форма — запрос можно послать
+ * curl'ом. Числа, `null` и вложенные объекты сюда попасть могут, и молча
+ * приводить их к строке нельзя: `String(объект)` даёт «[object Object]»,
+ * которое пройдёт проверку на длину имени.
+ *
+ * Возвращает `null`, если тело вообще не похоже на заявку. Разбирать такое
+ * по полям и объяснять человеку, что не так, незачем: форма такого не шлёт.
+ */
+export function parseLeadInput(raw: unknown): LeadInput | null {
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return null;
+
+  const body = raw as Record<string, unknown>;
+  const text = (key: string): string | null => {
+    const value = body[key];
+    if (value === undefined || value === null) return '';
+    return typeof value === 'string' ? value : null;
+  };
+
+  const name = text('name');
+  const phone = text('phone');
+  const age = text('age');
+  const program = text('program');
+  const comment = text('comment');
+  const hpx7 = text('hpx7');
+  if (
+    name === null ||
+    phone === null ||
+    age === null ||
+    program === null ||
+    comment === null ||
+    hpx7 === null
+  ) {
+    return null;
+  }
+
+  if (typeof body.consent !== 'boolean') return null;
+
+  return { name, phone, age, program, comment, hpx7, consent: body.consent };
+}
+
+/**
+ * Потолок размера тела запроса. Проверка длин полей находится ниже по
+ * потоку, а разбирать мегабайтный JSON, чтобы потом его отклонить, — уже
+ * работа, за которую платит владелец функции.
+ */
+export const LEAD_REQUEST_MAX_BYTES = 8 * 1024;
