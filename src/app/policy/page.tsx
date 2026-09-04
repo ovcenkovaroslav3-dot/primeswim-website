@@ -33,7 +33,7 @@ export default function PolicyPage() {
           {legal.inn ? `, ИНН ${legal.inn}` : ''}
           {legal.ogrnip ? `, ОГРНИП ${legal.ogrnip}` : ''}
           {legal.registrar
-            ? `, зарегистрирован ${legal.registrar}`
+            ? `, регистрирующий орган — ${legal.registrar}`
             : ''} — далее «Оператор», владелец сайта primeswim.ru.
         </p>
         {!legal.inn || !legal.ogrnip ? (

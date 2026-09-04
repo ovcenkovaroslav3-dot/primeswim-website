@@ -115,6 +115,15 @@ export function Footer() {
                   Политика обработки персональных данных
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/soglasie/"
+                  prefetch={false}
+                  className="transition-colors hover:text-lime-300"
+                >
+                  Согласие на обработку персональных данных
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
