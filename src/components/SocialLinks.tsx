@@ -19,18 +19,24 @@ const links = [
   {
     href: contacts.social.telegramChannel,
     label: 'Telegram-канал',
+    short: 'Telegram',
+    tail: '-канал',
     handle: 't.me/prime_swim',
     goal: 'click_telegram_channel',
   },
   {
     href: contacts.social.maxChannel,
     label: 'Канал в MAX',
+    short: 'MAX',
+    tail: ' — канал школы',
     handle: 'max.ru',
     goal: 'click_max_channel',
   },
   {
     href: contacts.social.vk,
     label: 'ВКонтакте',
+    short: 'ВКонтакте',
+    tail: ' — страница школы',
     handle: 'vk.com/primeswim',
     goal: 'click_vk',
   },
@@ -39,6 +45,7 @@ const links = [
 /**
  * `inline` — строка ссылок для подвала и мобильного меню.
  * `cards` — крупные плитки с адресом канала, для секции «Контакты».
+ * `bar` — узкая строка для полоски над шапкой.
  */
 export function SocialLinks({
   inverted = false,
@@ -46,7 +53,7 @@ export function SocialLinks({
   align = 'start',
 }: {
   inverted?: boolean;
-  variant?: 'inline' | 'cards';
+  variant?: 'inline' | 'cards' | 'bar';
   /*
     Выравнивание строки ссылок. Обёртки с justify-center снаружи мало:
     при переносе список занимает всю доступную ширину, и вторая строка
@@ -54,6 +61,36 @@ export function SocialLinks({
   */
   align?: 'start' | 'center';
 }) {
+  if (variant === 'bar') {
+    /*
+      В полоске над шапкой места мало, поэтому подписи короткие: слово
+      «каналы» стоит один раз слева, для всех трёх сразу. Уточнение уезжает
+      в sr-only — и не просто так: доступное имя начинается ровно с того,
+      что написано на экране («Telegram» → «Telegram-канал»), поэтому
+      голосовое управление находит ссылку по видимому слову (WCAG 2.5.3).
+    */
+    return (
+      <ul className="flex items-center gap-3 sm:gap-4">
+        {links.map((link) => (
+          <li key={link.href}>
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal={link.goal}
+              /* py-1 расширяет зону нажатия: в полоске строка низкая,
+                 и без него палец на телефоне целится в 16 пикселей */
+              className="inline-block py-1 text-xs font-medium text-brand-600 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
+            >
+              {link.short}
+              <span className="sr-only">{link.tail}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   if (variant === 'cards') {
     return (
       <ul className="grid gap-3 sm:grid-cols-3">
