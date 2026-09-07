@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRef, useState } from 'react';
 
 import { buttonClass } from '../ui';
+import { readSource } from '@/lib/campaign-source';
 import { contacts } from '@/content/contacts';
 import { programOptions, validProgramIds, ageOptions, validAgeIds } from '@/content/programs';
 import {
@@ -47,24 +48,6 @@ const endpoint = process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim() || '';
 
 function fieldBorder(hasError: boolean) {
   return hasError ? 'border-red-400' : 'border-hairline';
-}
-
-/**
- * Рекламные метки текущего визита. Нужны школе, чтобы понимать, откуда
- * пришёл человек: Метрика это знает, но в чате номера заявки рядом с
- * источником не будет, если его не передать.
- *
- * Берём только известные метки, а не всю строку запроса: в query может
- * оказаться что угодно, вплоть до чужих персональных данных.
- */
-function collectSource(): string {
-  if (typeof window === 'undefined') return '';
-  const known = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid'];
-  const params = new URLSearchParams(window.location.search);
-  return known
-    .filter((key) => params.get(key))
-    .map((key) => `${key}=${params.get(key)?.slice(0, 60)}`)
-    .join('&');
 }
 
 /**
@@ -147,7 +130,7 @@ export function LeadForm() {
           hpx7: trap,
           requestId: requestId.current,
           page: window.location.pathname,
-          source: collectSource(),
+          source: readSource(),
         }),
       });
 

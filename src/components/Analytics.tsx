@@ -9,6 +9,7 @@ import {
   trackGoal,
   type AnalyticsGoal,
 } from '@/lib/analytics';
+import { captureSource } from '@/lib/campaign-source';
 import { useConsent } from '@/lib/consent';
 
 /**
@@ -36,6 +37,17 @@ import { useConsent } from '@/lib/consent';
  */
 export function Analytics() {
   const consent = useConsent();
+
+  /*
+    Рекламные метки запоминаются независимо от счётчика и от согласия:
+    это не аналитика, а часть самой заявки — школе нужно видеть в чате,
+    откуда пришло обращение. Метки приходят только на первую страницу
+    визита, поэтому ловим их здесь: компонент стоит в корневом макете и
+    отрабатывает на каждой странице. Подробности — в lib/campaign-source.
+  */
+  useEffect(() => {
+    captureSource();
+  }, []);
 
   useEffect(() => {
     if (!metrikaId) return;

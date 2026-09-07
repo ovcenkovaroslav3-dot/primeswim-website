@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 
 import { useConsent, useHydrated, writeConsent } from '@/lib/consent';
 
@@ -15,8 +16,9 @@ import { useConsent, useHydrated, writeConsent } from '@/lib/consent';
   нет), поэтому баннера нет и в разметке — иначе он мигал бы у тех, кто уже
   ответил, и ломал гидратацию.
 
-  z-50 держит панель над липкой кнопкой записи (z-40): вопрос разовый, и
-  перекрыть кнопку на несколько секунд лучше, чем показать две полосы разом.
+  z-50 держит панель над липкой кнопкой записи (z-40), но кнопку больше не
+  перекрывает: панель отдаёт свою высоту в переменную --cookie-notice-h, и
+  кнопка встаёт ровно над ней. Почему так — в комментарии у эффекта ниже.
 
   НА ТЕЛЕФОНЕ ПАНЕЛЬ КОРОТКАЯ. Она занимала 207 px из 844 — почти четверть
   первого экрана, то есть съедала место, отведённое под само предложение.
@@ -32,11 +34,49 @@ import { useConsent, useHydrated, writeConsent } from '@/lib/consent';
 export function CookieNotice() {
   const consent = useConsent();
   const hydrated = useHydrated();
+  const ref = useRef<HTMLDivElement>(null);
+  const visible = hydrated && consent === null;
 
-  if (!hydrated || consent !== null) return null;
+  /*
+    Панель сообщает свою высоту всей странице через CSS-переменную.
+
+    Нужна она кнопке записи: раньше кнопка просто пряталась, пока висит
+    этот вопрос, и в комментарии ниже стояло «перекрыть кнопку на
+    несколько секунд лучше, чем показать две полосы разом». На деле
+    секунды кончались не у всех: кто не отвечал на вопрос вовсе — а таких
+    большинство, — проходил весь сайт с телефона без кнопки записи.
+    Проверено на боевом сайте 7 сентября 2026.
+
+    Переменная, а не прямая связь между компонентами: кнопка ничего не
+    знает про эту панель, а панель — про кнопку. Высота меняется вместе с
+    переносами текста, поэтому ResizeObserver, а не разовый замер.
+  */
+  useEffect(() => {
+    const element = ref.current;
+    if (!visible || !element) return;
+
+    const root = document.documentElement;
+    const apply = () =>
+      root.style.setProperty(
+        '--cookie-notice-h',
+        `${Math.round(element.getBoundingClientRect().height)}px`,
+      );
+
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      root.style.setProperty('--cookie-notice-h', '0px');
+    };
+  }, [visible]);
+
+  if (!visible) return null;
 
   return (
     <div
+      ref={ref}
       role="dialog"
       aria-label="Использование cookie"
       className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-white/95 px-4 py-3 backdrop-blur sm:px-6 sm:py-4"
