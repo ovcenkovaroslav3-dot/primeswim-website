@@ -56,15 +56,13 @@ export function Contacts() {
             {contacts.phone.display}
           </a>
 
-          <p className="mt-4 text-ink-soft">
+          {/* mb-6 держит зазор до разделителя: кнопки прижаты mt-auto,
+              и при равной высоте карточек линия вставала вплотную к тексту */}
+          <p className="mt-4 mb-6 text-ink-soft">
             Звоните или пишите в мессенджеры — {contacts.workingHours.display.toLowerCase()}.
           </p>
 
-          <div className="mt-auto pt-6">
-            <SocialLinks />
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3 border-t border-hairline pt-6">
+          <div className="mt-auto flex flex-wrap gap-3 border-t border-hairline pt-6">
             <ButtonLink
               href={contacts.social.telegramBooking}
               external
@@ -82,6 +80,29 @@ export function Contacts() {
               Написать в MAX
             </ButtonLink>
           </div>
+        </div>
+      </div>
+
+      {/*
+        Каналы вынесены из карточки «Связь» отдельным блоком во всю ширину.
+        Внутри карточки они стояли тремя кружками «VK/TG/MAX» под кнопками
+        записи и терялись: посетитель видел два действия — позвонить и
+        написать — и не замечал, что у школы вообще есть открытые страницы.
+
+        Порядок именно такой: сперва как связаться (телефон и личные чаты),
+        потом что почитать. Читают до того, как пишут, но кнопка записи
+        всё равно важнее, и уводить её вниз ради каналов нельзя.
+      */}
+      <div className="mt-6 rounded-[20px] border border-hairline bg-surface-alt p-7">
+        <h3 className="text-lg font-light text-ink">Каналы школы</h3>
+        <p className="mt-2 max-w-[62ch] text-ink-soft">
+          Открытые страницы — можно просто читать, подписываться необязательно.
+          Чтобы записаться или задать вопрос, пишите в личные сообщения:
+          кнопки выше.
+        </p>
+
+        <div className="mt-5">
+          <SocialLinks variant="cards" />
         </div>
       </div>
     </Section>

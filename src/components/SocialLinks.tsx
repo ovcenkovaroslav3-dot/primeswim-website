@@ -8,39 +8,106 @@ import { contacts } from '@/content/contacts';
   была общая (`click_telegram`), и в отчёте открытие канала складывалось с
   обращением в личку: два противоположных действия выглядели одним числом.
 
-  Подпись собрана из видимого текста и скрытой расшифровки, а не из
-  aria-label поверх него. С aria-label кнопка «VK» называлась для
-  скринридера «ВКонтакте»: видимое и озвученное расходились, и голосовое
-  управление по команде «нажми VK» кнопку не находило (WCAG 2.5.3).
+  Подписи полные, а не «VK/TG/MAX». Аббревиатуры в кружках владелец не
+  находил на собственном сайте: три одинаковых кругляша по 40 пикселей
+  читались как декор, а не как ссылки, и по ним не было понятно, куда
+  они ведут. Заодно ушёл и приём с sr-only-расшифровкой: когда видимый
+  текст сам называет ссылку, прятать расшифровку больше не от кого, и
+  видимое совпадает с озвученным (WCAG 2.5.3).
 */
 const links = [
   {
-    href: contacts.social.vk,
-    short: 'VK',
-    label: 'ВКонтакте',
-    goal: 'click_vk',
-  },
-  {
     href: contacts.social.telegramChannel,
-    short: 'TG',
     label: 'Telegram-канал',
+    handle: 't.me/prime_swim',
     goal: 'click_telegram_channel',
   },
   {
     href: contacts.social.maxChannel,
-    short: 'MAX',
-    label: 'канал в MAX',
+    label: 'Канал в MAX',
+    handle: 'max.ru',
     goal: 'click_max_channel',
+  },
+  {
+    href: contacts.social.vk,
+    label: 'ВКонтакте',
+    handle: 'vk.com/primeswim',
+    goal: 'click_vk',
   },
 ];
 
-export function SocialLinks({ inverted = false }: { inverted?: boolean }) {
+/**
+ * `inline` — строка ссылок для подвала и мобильного меню.
+ * `cards` — крупные плитки с адресом канала, для секции «Контакты».
+ */
+export function SocialLinks({
+  inverted = false,
+  variant = 'inline',
+  align = 'start',
+}: {
+  inverted?: boolean;
+  variant?: 'inline' | 'cards';
+  /*
+    Выравнивание строки ссылок. Обёртки с justify-center снаружи мало:
+    при переносе список занимает всю доступную ширину, и вторая строка
+    всё равно липнет к левому краю — центрировать надо сам список.
+  */
+  align?: 'start' | 'center';
+}) {
+  if (variant === 'cards') {
+    return (
+      <ul className="grid gap-3 sm:grid-cols-3">
+        {links.map((link) => (
+          <li key={link.href}>
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal={link.goal}
+              className="lift flex min-h-16 items-center justify-between gap-3 rounded-2xl border border-hairline bg-surface px-5 py-4 transition-colors hover:border-brand-500"
+            >
+              <span>
+                <span className="block text-base font-medium text-ink">
+                  {link.label}
+                </span>
+                <span className="mt-0.5 block text-sm text-ink-muted">
+                  {link.handle}
+                </span>
+              </span>
+              {/* стрелка «наружу»: ссылка открывается в новой вкладке */}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                aria-hidden="true"
+                fill="none"
+                className="shrink-0 text-brand-600"
+              >
+                <path
+                  d="M4 10L10 4M10 4H5M10 4v5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   const itemClass = inverted
     ? 'border-white/30 text-white hover:border-lime-300 hover:text-lime-300'
     : 'border-hairline text-ink-soft hover:border-brand-500 hover:text-brand-600';
 
   return (
-    <ul className="flex flex-wrap items-center gap-2">
+    <ul
+      className={`flex flex-wrap items-center gap-2 ${
+        align === 'center' ? 'justify-center' : ''
+      }`.trim()}
+    >
       {links.map((link) => (
         <li key={link.href}>
           <a
@@ -48,10 +115,9 @@ export function SocialLinks({ inverted = false }: { inverted?: boolean }) {
             target="_blank"
             rel="noopener noreferrer"
             data-goal={link.goal}
-            className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border px-4 text-sm font-medium transition-colors ${itemClass}`}
+            className={`inline-flex min-h-11 items-center justify-center rounded-full border px-4 text-sm font-medium transition-colors ${itemClass}`}
           >
-            {link.short}
-            <span className="sr-only"> — {link.label}</span>
+            {link.label}
           </a>
         </li>
       ))}

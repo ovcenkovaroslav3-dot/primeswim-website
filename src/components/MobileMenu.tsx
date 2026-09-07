@@ -154,9 +154,7 @@ export function MobileMenu() {
                   >
                     {contacts.phone.display}
                   </a>
-                  <div className="flex justify-center">
-                    <SocialLinks />
-                  </div>
+                  <SocialLinks align="center" />
                 </div>
               </div>
             </div>,
