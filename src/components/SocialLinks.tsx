@@ -78,9 +78,11 @@ export function SocialLinks({
               target="_blank"
               rel="noopener noreferrer"
               data-goal={link.goal}
-              /* py-1 расширяет зону нажатия: в полоске строка низкая,
-                 и без него палец на телефоне целится в 16 пикселей */
-              className="inline-block py-1 text-xs font-medium text-brand-600 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
+              /* py-1.5 расширяет зону нажатия до 28 пикселей: без него
+                 палец на телефоне целится в 16, а с py-1 — в 24, ровно
+                 в минимум WCAG 2.5.8. Высоту полоски это не меняет —
+                 её собственные отступы уменьшены на столько же. */
+              className="inline-block py-1.5 text-xs font-medium text-brand-600 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
             >
               {link.short}
               <span className="sr-only">{link.tail}</span>
