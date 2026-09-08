@@ -40,10 +40,35 @@ const STORAGE_KEY = 'primeswim:campaign-source';
 const VALUE_LIMIT = 60;
 
 /**
+ * Экранирование значения — только то, что имеет смысл в строке запроса:
+ * `%`, `&`, `+` и `=`.
+ *
+ * Кодировать значение целиком (`URLSearchParams.toString()`) нельзя: строка
+ * уходит в чат школе строкой «Источник», а `utm_campaign` в Яндекс Директе
+ * бывает кириллическим — вместо названия кампании там оказалось бы
+ * `%D0%9F%D0%BB%D0%B0%D0%B2...`, и прочесть его человеку невозможно.
+ * Кириллицу, пробелы и дефисы `URLSearchParams` разбирает как есть, разбору
+ * они не мешают, поэтому их и не трогаем.
+ *
+ * Экранирование удлиняет значение втрое в худшем случае, но длина строки в
+ * чате ограничена отдельно — см. `flatten` в server/lead/message.ts.
+ */
+function escapeValue(value: string): string {
+  return value.replace(
+    /[%&+=]/g,
+    (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
+  );
+}
+
+/**
  * Известные метки из строки запроса, одной строкой.
  *
  * Берём только знакомые ключи, а не всю строку: в query может оказаться
  * что угодно, вплоть до чужих персональных данных.
+ *
+ * Значение сначала обрезается, потом экранируется: предел в `VALUE_LIMIT`
+ * задан для содержимого, а не для его записи, и обрезка до экранирования
+ * не может разрубить `%26` пополам.
  */
 export function pickKnownParams(search: string): string {
   const params = new URLSearchParams(search);
@@ -51,7 +76,7 @@ export function pickKnownParams(search: string): string {
 
   for (const key of KNOWN) {
     const value = params.get(key);
-    if (value) found.push(`${key}=${value.slice(0, VALUE_LIMIT)}`);
+    if (value) found.push(`${key}=${escapeValue(value.slice(0, VALUE_LIMIT))}`);
   }
 
   return found.join('&');
