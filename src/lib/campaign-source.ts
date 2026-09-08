@@ -47,10 +47,14 @@ const VALUE_LIMIT = 60;
  */
 export function pickKnownParams(search: string): string {
   const params = new URLSearchParams(search);
+  const found: string[] = [];
 
-  return KNOWN.filter((key) => params.get(key))
-    .map((key) => `${key}=${params.get(key)?.slice(0, VALUE_LIMIT)}`)
-    .join('&');
+  for (const key of KNOWN) {
+    const value = params.get(key);
+    if (value) found.push(`${key}=${value.slice(0, VALUE_LIMIT)}`);
+  }
+
+  return found.join('&');
 }
 
 /** Значение одной метки из собранной строки — нужно для `yclid`. */

@@ -68,7 +68,7 @@ export function CookieNotice() {
 
     return () => {
       observer.disconnect();
-      root.style.setProperty('--cookie-notice-h', '0px');
+      root.style.removeProperty('--cookie-notice-h');
     };
   }, [visible]);
 
