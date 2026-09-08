@@ -53,3 +53,6 @@ graphify-out/
 # сборка функции приёма заявок (собирается командой npm run build:lead)
 /server/lead/dist/
 /server/lead/lead-function.zip
+
+# настройки Codex CLI на этой машине — дублируют проектный .mcp.json
+/.codex/
