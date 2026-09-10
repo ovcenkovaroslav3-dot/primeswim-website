@@ -51,7 +51,7 @@ export function PoolPreview() {
 
       <div className="relative mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
         <div className="reveal">
-          <p className="text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+          <p className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Где занимаемся
           </p>
 
@@ -92,7 +92,7 @@ export function PoolPreview() {
             <Link
               href="/bassein/"
               prefetch={false}
-              className="lift group inline-flex min-h-11 items-center gap-2 px-1 text-sm font-medium text-lime-300"
+              className="lift group inline-flex min-h-11 items-center gap-2 px-1 text-sm font-medium text-white"
             >
               О бассейне и занятии
               <svg

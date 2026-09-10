@@ -14,6 +14,12 @@ import { proofPoints } from '@/content/method';
 
   Тёмная, потому что стоит вплотную к первому экрану и дочитывает его —
   светлая полоса здесь резала бы страницу пополам сразу после hero.
+
+  Утверждения набраны белым, а не лаймом. Полоса стоит в том же экране,
+  что и кнопка записи, и четыре лаймовых строки спорили с ней за роль
+  главного пятна: на первом развороте лайма было девять штук — логотип,
+  кнопка в шапке, cookie, надзаголовок, слово в заголовке, кнопка, и вот
+  эти четыре. Лайм остался кнопке.
 */
 export function ProofStrip() {
   return (
@@ -28,10 +34,10 @@ export function ProofStrip() {
             className="reveal"
             style={{ ['--reveal-delay' as string]: `${i * 70}ms` }}
           >
-            <p className="text-base leading-snug font-medium text-lime-300 sm:text-lg">
+            <p className="text-base leading-snug font-medium text-white sm:text-lg">
               {point.value}
             </p>
-            <p className="mt-1.5 text-sm leading-snug text-white/60">
+            <p className="mt-1.5 text-sm leading-snug text-white/55">
               {point.label}
             </p>
           </li>

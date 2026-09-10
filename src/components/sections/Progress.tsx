@@ -45,7 +45,7 @@ export function Progress() {
 
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">
-          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Путь ребёнка
           </p>
           <h2

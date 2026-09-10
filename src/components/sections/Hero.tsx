@@ -109,7 +109,7 @@ export function Hero() {
         <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-16">
           <div className="min-w-0">
             <p
-              className="reveal text-xs font-medium tracking-[0.28em] text-lime-300 uppercase"
+              className="reveal text-xs font-medium tracking-[0.28em] text-white/55 uppercase"
               style={{ ['--reveal-delay' as string]: '80ms' }}
             >
               {site.hero.kicker}
@@ -121,6 +121,21 @@ export function Hero() {
               ищет — начинать заголовок с неизвестного названия значило бы
               потратить впустую самую весомую его часть. Логотип остался
               в шапке, во весь экран его повторять незачем.
+
+              UNBOUNDED В EXTRABOLD ЗДЕСЬ НАМЕРЕННО, И ЭТО РЕШЕНИЕ ВЛАДЕЛЬЦА.
+              Пробовали набрать заголовок волосяным Inter — тем же, что и все
+              заголовки ниже (SectionHeading в ui.tsx): по букве DESIGN.md
+              так ровнее, «авторитет берётся сдержанностью, а не весом», и
+              первый экран перестаёт выглядеть отдельным сайтом. Вариант
+              отклонён — школе нужен голос погромче, чем у референса.
+
+              Значит, Unbounded на сайте живёт в двух ролях: логотип и этот
+              заголовок. Третьей не заводить — в остальных заголовках его
+              нет, и разнобой начнётся именно оттуда.
+
+              Лайм на площадке тоже остаётся. Он здесь второй по счёту после
+              кнопки, и это предел: всё остальное на первом экране с лайма
+              снято (надзаголовок, полоса фактов под ним) — см. ProofStrip.
             */}
             <h1
               id="hero-title"

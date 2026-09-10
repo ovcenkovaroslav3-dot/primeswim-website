@@ -41,7 +41,7 @@ export function CoachPreview() {
         </div>
 
         <div className="reveal" style={{ ['--reveal-delay' as string]: '90ms' }}>
-          <p className="text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+          <p className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Тренер
           </p>
 
@@ -51,7 +51,7 @@ export function CoachPreview() {
           >
             {coach.name}
           </h2>
-          <p className="mt-2 text-lime-300">{coach.role}</p>
+          <p className="mt-2 text-white/70">{coach.role}</p>
 
           {/* выравнивание по низу: у многострочной подписи базовая линия
               берётся от первой строки, и подпись цеплялась за верх цифры */}
@@ -71,7 +71,7 @@ export function CoachPreview() {
           <Link
             href="/trener/"
             prefetch={false}
-            className="lift group mt-8 inline-flex items-center gap-2 text-sm font-medium text-lime-300"
+            className="lift group mt-8 inline-flex items-center gap-2 text-sm font-medium text-white"
           >
             О тренере и методике
             <svg

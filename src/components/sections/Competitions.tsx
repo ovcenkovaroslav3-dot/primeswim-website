@@ -41,7 +41,7 @@ export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' |
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-16">
           <div className="reveal">
-            <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+            <p className="mb-4 text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
               Спорт
             </p>
             <Heading
@@ -50,7 +50,7 @@ export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' |
             >
               Спортивное плавание,
               <br />
-              <span className="text-lime-300">соревнования и разряды</span>
+              <span className="font-normal">соревнования и разряды</span>
             </Heading>
           </div>
 

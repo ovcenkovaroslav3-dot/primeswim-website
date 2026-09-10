@@ -41,7 +41,7 @@ export function Coaches({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2'
 
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">
-          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Тренер
           </p>
           <Heading
@@ -77,7 +77,7 @@ export function Coaches({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2'
                 <h3 className="mt-8 text-2xl font-light sm:text-3xl">
                   {coach.name}
                 </h3>
-                <p className="mt-2 text-lime-300">{coach.role}</p>
+                <p className="mt-2 text-white/70">{coach.role}</p>
 
                 {coach.bio.map((paragraph) => (
                   <p
@@ -99,7 +99,7 @@ export function Coaches({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2'
                     >
                       <span
                         aria-hidden="true"
-                        className="mt-[7px] size-1.5 shrink-0 rounded-full bg-lime-400"
+                        className="mt-[7px] size-1.5 shrink-0 rounded-full bg-white/30"
                       />
                       {item}
                     </li>

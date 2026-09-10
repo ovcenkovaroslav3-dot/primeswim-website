@@ -44,7 +44,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
 
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">
-          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Бассейн
           </p>
           <Heading
@@ -75,7 +75,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
         <div className="reveal glass mt-10 rounded-[20px] p-6 sm:p-7">
           <dl className="grid gap-6 sm:grid-cols-2">
             <div>
-              <dt className="text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+              <dt className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
                 Адрес
               </dt>
               <dd className="mt-3">
@@ -91,7 +91,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
             </div>
 
             <div>
-              <dt className="text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+              <dt className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
                 Чаша и занятие
               </dt>
               <dd className="mt-3 leading-relaxed text-white/80">
@@ -138,7 +138,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
           корпуса ниже: здание узнаваемое. См. content/route.ts.
         */}
         <div className="reveal mt-10 rounded-[20px] border border-white/12 p-6 sm:p-7">
-          <h3 className="text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+          <h3 className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Как добраться
           </h3>
 
