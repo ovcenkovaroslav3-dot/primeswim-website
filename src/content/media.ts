@@ -147,7 +147,7 @@ export const galleryImages: MediaItem[] = [
   },
   {
     src: '/media/gallery/teen-swimmers-long-fins.jpg',
-    alt: 'Два подростка надевают длинные ласты перед тренировкой',
+    alt: 'Двое взрослых пловцов надевают длинные ласты перед тренировкой',
     width: 960,
     height: 1280,
   },
@@ -350,7 +350,7 @@ export const galleryVideos: VideoItem[] = [
   {
     src: '/media/video/starts-drill.mp4',
     poster: '/media/video/starts-drill-poster.jpg',
-    alt: 'Дети готовятся к старту с тумб на тренировке в бассейне МГИК',
+    alt: 'Дети готовятся к старту с тумб на тренировке',
     width: 720,
     height: 1280,
   },
