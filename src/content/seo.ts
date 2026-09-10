@@ -32,7 +32,7 @@ export type PageSeo = {
 const trialPrice = prices.find((price) => price.id === 'trial')?.amount;
 const lowestPrice = Math.min(...prices.map((price) => price.amount));
 const scheduleSlots = schedule
-  .map((slot) => `${slot.short} ${slot.time}`)
+  .map((slot) => `${slot.short} ${slot.times.join(' и ')}`)
   .join(', ');
 
 export const seo = {

@@ -28,7 +28,7 @@ export function PlanPreview() {
         id="plan-title"
         eyebrow="Когда и сколько"
         title="Расписание и стоимость"
-        lead="Занятия идут четыре раза в неделю в бассейне МГИК. Группу подберём по возрасту и уровню подготовки ребёнка."
+        lead="Занятия идут четыре дня в неделю в бассейне МГИК, по будням — две группы подряд. Группу подберём по возрасту и уровню подготовки ребёнка."
       />
 
       <div className="mt-10 grid gap-4 sm:mt-12 lg:grid-cols-2">
@@ -46,9 +46,14 @@ export function PlanPreview() {
               >
                 <span className="text-ink-soft">{slot.day}</span>
                 <span className="text-right">
-                  <span className="block text-lg font-light tabular-nums text-ink">
-                    {slot.time}
-                  </span>
+                  {slot.times.map((time) => (
+                    <span
+                      key={time}
+                      className="block text-lg font-light tabular-nums text-ink"
+                    >
+                      {time}
+                    </span>
+                  ))}
                   <span className="block text-xs text-ink-muted">
                     {slot.note}
                   </span>
