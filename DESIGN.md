@@ -1,217 +1,302 @@
 # PRIME SWIM — дизайн-ориентир
 
-Источник: [Aqua Voice на styles.refero.design](https://styles.refero.design/style/6734fe92-6a02-45d5-8d72-0c55b37ace82) · сайт [withaqua.com](https://withaqua.com)
+Источник: [WHOOP на styles.refero.design](https://styles.refero.design/style/05053a60-1964-4154-9d58-ebdf6352ed3a) · сайт [whoop.com](https://whoop.com)
+
+## ПОЧЕМУ СМЕНИЛИ ОРИЕНТИР
+
+Здесь лежал Aqua Voice. Его центральный тезис — «авторитет берётся
+сдержанностью, а не весом», weight 200 в заголовках, акцент только на кнопке.
+
+10 сентября 2026 владелец отклонил половину этого тезиса. Заголовок первого
+экрана пробовали набрать волосяным Inter, тем же, что и все заголовки ниже;
+вариант отклонён, Unbounded extrabold остаётся — школе нужен голос громче,
+чем у референса.
+
+Ориентир, который спорит с уже принятым решением, вреден: по нему следующий,
+кто откроет проект, «починит» то, что чинить не просили. Поэтому Aqua Voice
+заменён на WHOOP — он описывает ту же конструкцию без этого противоречия.
+
+Что у WHOOP совпадает с уже собранным сайтом:
+
+- **чередование полноширинных тёмных и светлых секций** — «full-bleed black
+  theatrical heroes alternate with clinical white content sections». У нас
+  ровно это, и в комментарии к `src/app/page.tsx` есть отдельная оговорка,
+  что четыре светлые секции подряд ломают ритм;
+- **типографика как главный голос** — «typography is the dominant voice,
+  oversized display type carries the brand». Это и есть решение по h1;
+- **один насыщенный акцент, только на действиях** — «a single vivid violet
+  appears only on primary actions». Лайм приведён к этому же 10 сентября;
+- **спортивный бренд, а не SaaS**, и среди их фотографий — плавание.
 
 ## ВАЖНО: что мы берём, а что нет
 
-Референс выбран за **структуру и ритм**, не за цвет.
+Референс выбран за **конструкцию, ритм и дисциплину акцента**, не за цвет и
+не за форму элементов.
 
-**Берём:** воздух между секциями, сверхлёгкое начертание заголовков, почти-белый холст, один-единственный насыщенный акцент на экран, тонкие hairline-границы, тени в доли процента, узкую колонку текста, плоские матовые поверхности.
+**Берём:** чередование тёмных и светлых полос без серых переходов между ними,
+крупный заголовок как главный голос страницы, единственный хроматический
+акцент на действии, плоскую высоту через цвет вместо теней, фотографию без
+дуотонов и градиентных масок, uppercase-метки с трекингом, левое выравнивание
+текстовых блоков.
 
-**НЕ берём палитру.** Цвета PRIME SWIM заданы логотипом и живут в `src/app/globals.css` (`@theme`). Голубой `#67beff` и `#4288ff` из таблиц ниже — цвета Aqua Voice, **применять их запрещено**.
+**НЕ БЕРЁМ ПАЛИТРУ.** Цвета PRIME SWIM заданы логотипом и живут в
+`src/app/globals.css` (`@theme`). Фиолетовый `#4a53ff` и чёрный `#000000` из
+таблиц ниже — цвета WHOOP, **применять их запрещено**.
 
 ### Таблица подстановки цветов
 
-| Роль у Aqua Voice | Цвет Aqua Voice | Чем заменяем у нас | Токен |
+| Роль у WHOOP | Цвет WHOOP | Чем заменяем у нас | Токен |
 |---|---|---|---|
-| Filled CTA | `#67beff` | лайм | `--color-lime-brand` `#c7fe03` |
-| Ссылки, ghost-обводка, focus ring | `#4288ff` | фиолетовый | `--color-brand-600` `#4f017b` |
-| Инвертированная тёмная полоса | `#171719` | фиолетовый глубокий | `--color-brand-900` `#24003a` |
-| Основной текст | `#292c3d` | | `--color-ink` `#191524` |
-| Текст body | `#3e4150` | | `--color-ink-soft` `#4d4757` |
-| Приглушённый текст | `#686a76` | | `--color-ink-muted` `#6f6980` |
-| Холст страницы | `#fafbfc` | | `--color-surface` `#ffffff` |
-| Фон секции-полосы | `#f3f7fa` | | `--color-surface-alt` `#f7f5fa` |
-| Hairline | `#e5e8ec` | | `--color-hairline` `#e6e2ee` |
-| Водные оттенки | — | уже есть в проекте | `--color-water-100/300/500/700` |
+| Единственный акцент, только на действии | `#4a53ff` | лайм на тёмном | `--color-lime-400` `#c7fe03` |
+| — он же на светлых секциях | `#4a53ff` | фиолетовый | `--color-brand-600` `#4f017b` |
+| Тёмная секция, театральная | `#000000` | толща | `--color-abyss-950` `#0b0114` |
+| Вторая тёмная поверхность | `#191919` | толща светлее | `--color-abyss-900` `#180229` |
+| Основной текст на светлом | `#000000` | | `--color-ink` `#16101f` |
+| Приглушённый текст | `#808080` | | `--color-ink-soft` `#4a4356` |
+| Третичный текст, метки | `#999999` | | `--color-ink-muted` `#6b6377` |
+| Холст страницы | `#ffffff` | | `--color-surface` `#ffffff` |
+| Светлая карточка (Lab Mist) | `#f3f5f9` | | `--color-surface-alt` `#f8f5fc` |
+| Hairline | `#e5e7eb` | | `--color-hairline` `#e6dff0` |
+
+**Одно расхождение осознанное.** У WHOOP акцент один на весь сайт. У нас их
+два, и это не небрежность: лайм на белом нечитаем, а притушенный до
+оливкового выглядит грязно, поэтому на светлых секциях акцент — фиолетовый.
+Правило «один заливной акцент на экран» при этом остаётся в силе: два цвета
+никогда не встречаются на одном экране. Подробности — в шапке `globals.css`.
 
 ### Шрифты
 
-У Aqua Voice — PP Neue Montreal weight 200. У нас уже подключены **Unbounded** (display) и **Inter** (sans), менять их не нужно.
+У WHOOP одно семейство на всё — Proxima Nova от 14px до 120px. У нас два, и
+оба остаются: **Unbounded** — логотип и заголовок первого экрана, **Inter** —
+всё остальное. Третьего не заводить.
 
-Ключевой приём переносится так: Unbounded сейчас стоит жирным в заголовках — именно это создаёт крикливость. Смысл референса в том, что **авторитет берётся сдержанностью, а не весом**. Для Inter это означает weight 200–300 в крупных заголовках вместо 700.
+Приём, который переносится: **отрицательный трекинг растёт вместе с кеглем**.
+У WHOOP от нуля на body до -0.04em на display. У нас на h1 стоит `-0.02em` —
+направление верное, и на крупных h2 (44px и выше) его тоже стоит довести до
+`-0.02em`; сейчас там трекинг нулевой.
+
+### Что НЕ переносим
+
+Четыре правила WHOOP, которые для нас неверны. Записаны, чтобы их не
+применили механически:
+
+- **«pill 300px на каждой кнопке, форма не обсуждается»** — у нас радиусы
+  свои: `--radius-control` 10px и `--radius-card` 20px. Круглые пилюли на
+  всех кнопках — это другой бренд, не наш.
+- **«display 120px, line-height 0.71, трекинг -4.8px»** — у нас h1 64px при
+  1.04. Кириллица выше латиницы по выносным элементам: на 0.71 строки
+  столкнутся. Ниже 1.0 не опускаться.
+- **«body 19-20px, меньше — теряется уверенный масштаб»** — правило для
+  английского маркетингового сайта. Русский текст длиннее, у нас 16px, и это
+  верно. Не менять.
+- **«никаких градиентов на поверхностях»** — у нас на тёмных сценах живёт
+  WebGL-вода и `.glass`. Это сцена, а не заливка компонента, и она остаётся.
+
+А вот **«высота через цвет, а не через тень»** взять стоит, и до конца пока
+не взято: `.glass` на тёмных сценах тень оправдывает — панель лежит поверх
+движущегося видео и держится кромкой, — но декоративные тени на светлых
+карточках нет, там высоту уже даёт `--color-surface-alt`.
+
+Второе, что стоит проверить: **«не центровать абзацы, текст выравнивается
+влево при max-width 520px»**. У нас секция записи (`FinalCta`) центрует всё —
+надзаголовок, заголовок, лид. Это единственная такая секция на главной.
 
 ### Главное правило переноса
 
-Лайм — как `#67beff` у Aqua Voice: **один заливной акцент на экран, и только на главное действие**. Сейчас лайм на сайте повсюду, поэтому и читается дёшево. Дефицит делает цвет дорогим.
+То же, что и было, и это единственное, что осталось от Aqua Voice дословно:
+**дефицит делает цвет дорогим**. Акцент — на действии, и больше нигде.
 
 ---
 
-# Оригинал: Aqua Voice — Style Reference
+# Оригинал: WHOOP — Style Reference
 
-> Ниже — исходный документ refero без правок. Цвета в нём читать через таблицу подстановки выше.
+> Ниже — исходный документ refero без правок. Цвета в нём читать через
+> таблицу подстановки выше.
 
-**Vibe:** Whisper on paper — ultra-light type resting on near-white with a single blue drop of color
+**Vibe:** Performance laboratory at midnight — clinical white lab benches beneath a black theatrical void, one violet pulse of electricity.
 
-**Theme:** light
+**Theme:** mixed
 
-Aqua speaks in a typographic whisper on near-white surfaces. PP Neue Montreal at weight 200 for headlines is the signature — text that feels etched rather than printed, gaining authority through restraint instead of volume. The palette is 99% achromatic: a paper-white canvas, a tight ladder of cool grays for text, and a single vivid sky blue that appears only as functional punctuation for the download CTA, link accents, and the tiny 'now live' dot. Surfaces are flat with hairline borders and almost imperceptible shadows; the only elevation is a millimeter of rgba(0,0,0,0.02) depth. Components are compact and utilitarian — small radii, tight padding, ghost controls — but the page breathes with generous vertical rhythm between sections. Layout centers text in wide single-column blocks rather than fighting for grid space, and a large product screenshot in a soft 20px card anchors the second screen.
+WHOOP operates on a high-contrast split-canvas system: full-bleed black theatrical heroes alternate with clinical white content sections, creating a rhythm that mimics the alternation between effort and recovery. Typography is the dominant voice — oversized Proxima Nova display type at 120px with aggressive negative tracking carries the brand, while body copy stays compact and neutral. A single vivid violet (#4a53ff) acts as the lone chromatic accent against an otherwise achromatic palette, appearing only on primary actions and the announcement bar. Components are large, confident, and rounded: 24px-radius cards, fully pill-shaped buttons, and photographic overlays with heavy text treatment replace the typical SaaS card grid. The result feels less like a product page and more like a premium performance lab at night — scientific, dramatic, and focused on data over decoration.
 
 ## Tokens — Colors
 
 | Name | Value | Token | Role |
 |------|-------|-------|------|
-| Sky Signal | `#67beff` | `--color-sky-signal` | Blue action color for filled buttons, selected navigation states, and focused conversion moments |
-| Electric Iris | `#4288ff` | `--color-electric-iris` | Outlined/ghost action border, inline link accent, focus rings — cooler and slightly deeper than Sky Signal |
-| Paper White | `#fafbfc` | `--color-paper-white` | Page canvas, primary surface, inverted text on dark bars |
-| Mist | `#f3f7fa` | `--color-mist` | Subtle band backgrounds, section alternation, elevated surface tint |
-| Fog | `#f2f6fa` | `--color-fog` | Card surface, soft fill behind product screenshots |
-| Linen | `#e5e8ec` | `--color-linen` | Hairline dividers, faint borders, disabled surfaces |
-| Ash | `#efefef` | `--color-ash` | Ghost button background, subtle hover fill |
-| Inkstone | `#292c3d` | `--color-inkstone` | Primary text, strongest contrast — carries the 200-weight headlines |
-| Slate | `#3e4150` | `--color-slate` | Body text, secondary headings, dense body copy |
-| Pewter | `#686a76` | `--color-pewter` | Muted body text, helper text, inactive nav |
-| Graphite | `#7d7e7e` | `--color-graphite` | Tertiary text, footer links, faint labels |
-| Silver | `#c2c3c8` | `--color-silver` | Placeholder text, very faint borders, decorative strokes |
-| Obsidian | `#171719` | `--color-obsidian` | Top announcement bar background, dark surface, inverted text fill |
-| Midnight | `#1e1e20` | `--color-midnight` | Dark card surface, secondary dark fill |
+| Pulse Violet | `#4a53ff` | `--color-pulse-violet` | Violet supporting accent for decorative details and low-frequency emphasis. Do not promote it to the primary CTA color |
+| Obsidian | `#000000` | `--color-obsidian` | Primary text on light surfaces, dark hero/section backgrounds, filled neutral buttons, icon strokes |
+| Carbon | `#191919` | `--color-carbon` | Secondary dark surface (footer band, alternating black sections), heading text on light surfaces |
+| Paper White | `#ffffff` | `--color-paper-white` | Primary page canvas, card surfaces on dark sections, text on dark backgrounds, filled white pill buttons |
+| Lab Mist | `#f3f5f9` | `--color-lab-mist` | Soft elevated surface for light cards and feature panels — a cool off-white that distinguishes cards from the page without using shadow |
+| Hairline | `#e5e7eb` | `--color-hairline` | Borders, dividers, outlined button strokes, input frames — the most-used neutral in the system (2560 occurrences) |
+| Fog Gray | `#808080` | `--color-fog-gray` | Muted body text, secondary descriptions, placeholder copy on light surfaces |
+| Ash | `#999999` | `--color-ash` | Tertiary text, inactive button labels, disabled icon strokes — sits one step below Fog Gray for de-emphasized metadata |
 
 ## Tokens — Typography
 
-### PP Neue Montreal — Primary typeface
-- **Substitute:** Inter (200, 400) or Söhne Buch
-- **Weights:** 200, 400
-- **Sizes:** 13px, 14px, 15px, 16px, 17px, 20px, 24px, 40px, 56px, 60px, 72px
-- **Line height:** 1.00, 1.10, 1.20, 1.40, 1.50, 1.60
-- **Letter spacing:** normal across all sizes — no tracking adjustment
-- **Role:** weight 200 for display and headlines (anti-convention; most sites use 600-700, this whisper-weight gains authority through restraint), weight 400 for body and subheadings.
+### Proxima Nova
 
-### PP Neue Montreal — Medium cut
-- **Substitute:** Inter Medium (500)
-- **Weights:** 400, 500
-- **Role:** UI controls, buttons, nav links, and small labels where the Book weight feels too quiet to anchor interaction
-
-### Inter — System-level fallback and small UI text
-- **Weights:** 400, 500, 600
-- **Sizes:** 10px, 11px, 12px, 20px
-- **Role:** nav micro-labels, metadata, the smallest body sizes
-
-### Geist Mono — Monospaced
-- **Substitute:** IBM Plex Mono, JetBrains Mono
-- **Weights:** 400, 500
-- **Sizes:** 11px, 13px, 14px, 18px
-- **Role:** keyboard hints, code, technical micro-labels
+- **Substitute:** Montserrat, Nunito Sans, or DM Sans
+- **Weights:** 400, 500, 600, 700
+- **Sizes:** 14, 15, 16, 19, 20, 24, 32, 35, 50, 120
+- **Line height:** 0.71 (120px) → 0.80 (50px) → 1.00 (35px) → 1.09 (32px) → 1.13 (24px) → 1.29–1.30 (20–19px) → 1.33 (16px) → 1.50 (15px) → 1.59 (14px)
+- **Letter spacing:** Negative tracking tightens with size: 0.1em on 15px uppercase nav, 0 on body (14–16px), -0.03em at 19–24px (-0.48 to -0.72px), -0.04em at 32–120px (-1.05 to -4.8px)
+- **Role:** Single-family system covering everything from 14px captions to 120px display headlines. The aggressive letter-spacing compression at display sizes (-4.8px at 120px) is signature — it makes oversized headlines feel carved rather than stacked. Proxima Nova's geometric warmth keeps the clinical data aesthetic from feeling cold.
 
 ### Type Scale
 
-| Role | Size | Line Height | Token |
-|------|------|-------------|-------|
-| caption | 11px | 1.4 | `--text-caption` |
-| body | 16px | 1.5 | `--text-body` |
-| subheading | 20px | 1.4 | `--text-subheading` |
-| heading-sm | 24px | 1.2 | `--text-heading-sm` |
-| heading | 40px | 1.1 | `--text-heading` |
-| heading-lg | 56px | 1.1 | `--text-heading-lg` |
-| display | 72px | 1 | `--text-display` |
+| Role | Size | Line Height | Letter Spacing | Token |
+|------|------|-------------|----------------|-------|
+| caption | 14px | 1.59 | — | `--text-caption` |
+| body-sm | 16px | 1.33 | -0.48px | `--text-body-sm` |
+| body-lg | 20px | 1.29 | -0.6px | `--text-body-lg` |
+| subheading | 24px | 1.13 | -0.72px | `--text-subheading` |
+| heading-sm | 32px | 1.09 | -0.96px | `--text-heading-sm` |
+| heading | 35px | 1 | -1.05px | `--text-heading` |
+| heading-lg | 50px | 0.8 | -2px | `--text-heading-lg` |
+| display | 120px | 0.71 | -4.8px | `--text-display` |
 
 ## Tokens — Spacing & Shapes
 
-**Density:** compact
+**Density:** comfortable
 
-Spacing scale: 4, 6, 8, 10, 12, 15, 16, 20, 24, 28, 30, 32, 40, 48, 80, 124 (px)
+### Spacing Scale
+
+5, 8, 10, 12, 15, 16, 20, 24, 25, 30, 33, 36, 38, 40, 50, 92 (px)
 
 ### Border Radius
 
 | Element | Value |
 |---------|-------|
-| cards | 12-20px |
-| icons | 4px |
-| pills | 9999px |
-| inputs | 8px |
-| buttons | 8px |
-| decorative | 30-70px |
+| cards | 24px |
+| pills | 300px |
+| images | 24px |
+| buttons | 300px |
+| mediumRounded | 30px |
+| smallElements | 8px |
+
+### Shadows
+
+| Name | Value | Token |
+|------|-------|-------|
+| md | `rgba(199, 199, 199, 0.25) 0px 4px 15px 0px` | `--shadow-md` |
 
 ### Layout
 
 - **Page max-width:** 1200px
 - **Section gap:** 80-120px
-- **Card padding:** 20-24px
-- **Element gap:** 10px
+- **Card padding:** 24-32px
+- **Element gap:** 15-24px
 
 ## Components
 
 ### Announcement Bar
-Full-bleed Obsidian (#171719) bar, ~40px tall, centered white text at 12px Book, contains an inline 'Download' link underlined.
+**Role:** Top-of-page thin promotional strip
+
+Full-width, 40-48px tall, Pulse Violet (#4a53ff) background, white Proxima Nova 14px text centered, with an underlined white text link aligned right. Sits flush above the nav bar with no gap.
 
 ### Primary Navigation
-White background, no border or shadow. Left: wordmark at 16px Medium 500, uppercase tracking. Right: nav links at 14px weight 400 in Slate, followed by a filled CTA. Generous horizontal padding ~24px.
+**Role:** Top navigation bar on dark hero
 
-### Filled CTA Button
-Sky Signal background, white text, 8px radius, padding 10px 16px, Medium 500 at 14px. **The only saturated fill in the system — its rarity makes it the unmistakable action signal.** No border, no shadow.
+Full-bleed black background, 80-100px tall. WHOOP wordmark left in white 24px weight 700. Nav links in white 15px weight 500 with 0.1em tracking, spaced ~32px apart. Right-aligned Pulse Violet pill button (#4a53ff, white text, 300px radius, 12px 24px padding).
 
-### Ghost Button
-Transparent background, Slate text at 14px weight 500, 8px radius, padding 10px 16px. No border — relies on text weight contrast. Hover: Ash background fill.
+### Full-Bleed Dark Hero
+**Role:** Opening theatrical section
 
-### Hero Headline
-Book 200, 56-72px, Inkstone, line-height 1.00-1.10. The ultra-light weight is the signature — headline reads as whisper rather than announcement. Left-aligned in wide single-column blocks with generous breathing room.
+100% width, 100vh height, pure #000000 background. Display headline at 120px Proxima Nova weight 400, white, line-height 0.71, letter-spacing -4.8px, occupying 2 lines and left-aligned with ~8% page padding. Subtext at 19px weight 400, white or Fog Gray, max-width 520px. White pill CTA centered below (300px radius, 16px 32px padding, black 15px weight 600 uppercase text with 0.1em tracking).
 
-### Key Hint Chip
-White background, Linen 1px border, 4px radius, padding 4px 10px, Geist Mono 13px weight 500 Slate.
+### Pulse Violet Pill Button
+**Role:** Primary brand action
 
-### Product Screenshot Card
-Screenshot inside a 20px-radius card with Fog or Mist background. Hairline Linen border and a barely-there shadow at rgba(0,0,0,0.02). Centered below text blocks, acting as visual anchor.
+#4a53ff background, white text, 300px border-radius, 12px 24px padding, Proxima Nova 15px weight 600 uppercase with 0.1em letter-spacing. Used in nav and promotional contexts. No shadow.
 
-### Inline Link
-Electric Iris color, Medium 500, underlined. No background fill — color is the only signal. Hover: same color, opacity 0.8.
+### White Pill Button
+**Role:** Secondary action on dark backgrounds
 
-### Status Dot
-8px filled circle in Sky Signal. Used sparingly to indicate live/active state. The only place this color appears outside the filled CTA.
+White (#ffffff) background, black (#000000) text, 300px border-radius, 16px 32px padding, 15px weight 600 uppercase with 0.1em tracking. Centered in hero sections and dark bands.
 
-### Feature Section
-Centered text block on Paper White or Mist background. Subheading at 40px weight 200, body at 16px weight 400 Slate, max-width ~680px, followed by a Ghost CTA. Vertical rhythm: 80-120px between sections.
+### Outlined Pill Button
+**Role:** Tertiary action on light surfaces
 
-### Subtle Background Pattern
-Very faint geometric or organic pattern overlaid on hero sections at near-white opacity. Adds texture without competing with the whisper typography.
+Transparent background, 1.5px Hairline (#e5e7eb) border, black text, 300px border-radius, 12px 28px padding, 14px weight 500. Used in feature cards for trial and secondary offers.
+
+### Lab Mist Feature Card
+**Role:** Inline promotional card on light sections
+
+Lab Mist (#f3f5f9) background, 24px border-radius, no shadow, 24px padding. Contains a 24px-radius square image left (~200×140px), bold heading and body text middle, outlined pill button right. Total height ~200px, full content-width.
+
+### Carousel Story Card
+**Role:** Full-bleed photographic feature card
+
+Tall card (aspect ratio ~3:4 or 4:5), photographic background filling the entire card, 24px border-radius. Overlay heading top-left at 24px weight 600, white. Small white circular expand button (40px, 1px white border) bottom-right. Pagination dots centered below carousel.
+
+### Dark CTA Band
+**Role:** Closing full-bleed black section
+
+Full-width #000000 background, 400-600px height, large display heading in white (50px weight 400, -2px tracking), centered or left-aligned with generous padding (80-120px vertical).
+
+### Membership Pricing Card
+**Role:** Tier comparison card
+
+White background, 24px border-radius, 1px Hairline (#e5e7eb) border, 32px padding. Black tier name at 24px weight 700, price at 50px weight 400 with -2px tracking, feature list at 16px with 15px row gap. Pulse Violet pill button at bottom for selected tier.
+
+### Metric Overlay Stat
+**Role:** Data point on photographic backgrounds
+
+Small white number (32px weight 400) with thin white label (12px weight 500, 0.1em tracking, uppercase). Used as floating data callouts over carousel images — e.g. '98%' '82%' on a forest scene, '45.8%' inside a green radial glow.
 
 ## Do's and Don'ts
 
 ### Do
-- Use weight 200 for all display and headline text — the ultra-light cut is the visual signature.
-- Use the accent only for the filled primary CTA and the live-status dot; never extend it to backgrounds, illustrations, or decorative fills.
-- Set headline line-height to 1.00-1.10 — tight leading is essential and prevents the light weight from looking fragile.
-- Keep card padding in the 20-24px range and radii at 12-20px.
-- Use Ghost buttons for all secondary actions; reserve the filled button exclusively for the single primary action on each screen.
-- Apply the hairline border pattern with rgba(0,0,0,0.02) shadow for elevated surfaces — depth in millimeters.
-- Center text blocks at max-width 680px; let negative space carry the page rhythm.
+- Use 300px border-radius for every button — pill shape is non-negotiable, even on small utility buttons
+- Set display headlines at 120px with line-height 0.71 and letter-spacing -4.8px; this tight tracking is the brand's visual signature
+- Alternate full-bleed black sections with full-bleed white sections at 80-120px gaps; never blend the two with a gray transition
+- Use #4a53ff exclusively for primary actions and the announcement bar — no other element should carry chromatic color
+- Render cards at 24px radius with no drop shadow; elevation comes from #f3f5f9 fills, not blur
+- Apply 0.1em letter-spacing with uppercase to all 14-15px labels in nav, buttons, and metric captions
+- Keep body text at 19-20px with -0.57 to -0.6px tracking; anything smaller loses the brand's confident scale
 
 ### Don't
-- Do not use weights above 500 — Medium 500 is the upper bound; 600+ destroys the whisper character.
-- Do not add color to body copy, headings, or backgrounds beyond the neutral scale — chromatic text breaks the monochrome contract.
-- Do not apply large or saturated shadows; operate at rgba(0,0,0,0.02) to rgba(0,0,0,0.1) depth only.
-- Do not use pill shapes for primary buttons — 8px is the button radius; pills are reserved for tags and status chips.
-- Do not introduce gradients, glassmorphism, or heavy blur effects — the language is flat, matte, and paper-like.
-- Do not set headline letter-spacing to negative values.
-- Do not use the link/outline color as a fill — the filled action color owns that role.
+- Don't add drop shadows to cards or buttons — WHOOP uses flat color elevation only; the single rgba(199,199,199,0.25) shadow is reserved for floating overlays
+- Don't introduce a second accent color — the system is monochromatic + one violet, anything else breaks the lab aesthetic
+- Don't use line-height above 1.0 on display sizes (50px+) — the tight 0.71-0.80 ratio is what makes headlines feel carved
+- Don't center body paragraphs — text in feature cards and descriptions left-aligns with max-width 520px
+- Don't use square or 8px-radius buttons — every action is a pill, including icon buttons and tags
+- Don't place colored gradients on UI surfaces; the three detected gradients are decorative background washes only, not component fills
+- Don't set body text below 16px — 14px is reserved for uppercase labels with tracking, never running prose
 
 ## Surfaces
 
 | Level | Name | Value | Purpose |
 |-------|------|-------|---------|
-| 1 | Page Canvas | `#fafbfc` | Primary background for all pages |
-| 2 | Section Band | `#f3f7fa` | Alternating section tint, subtle visual rhythm |
-| 3 | Card Surface | `#f2f6fa` | Product screenshot cards, elevated content blocks |
-| 4 | Hover/Active Fill | `#efefef` | Ghost button hover, interactive feedback |
-| 5 | Inverted Bar | `#171719` | Top announcement bar, dark accent surfaces |
+| 0 | Page Canvas | `#ffffff` | Default light section background |
+| 1 | Lab Mist Card | `#f3f5f9` | Elevated feature card on light sections — flat elevation via color, not shadow |
+| 2 | Dark Section | `#000000` | Full-bleed theatrical hero and closing CTA band |
+| 3 | Carbon Band | `#191919` | Secondary dark surface for transitional bands between black and white |
 
-## Elevation
+## Elevation Philosophy
 
-- **Card:** `0px 0px 0px 1px rgba(0,0,0,0.02), 0px 1px 1px 0.5px rgba(0,0,0,0.02), 0px 3px 3px 1.5px rgba(0,0,0,0.02), 0px 6px 6px -3px rgba(0,0,0,0.02), 0px 12px 12px -6px rgba(0,0,0,0.02), 0px 24px 24px -12px rgba(0,0,0,0.02)`
-- **Elevated Panel:** same stack at `0.06` alpha, plus `inset 0 1px 0 rgb(255,255,255)`
-- **Floating Card:** same stack at `0.1` alpha
+WHOOP avoids drop shadows almost entirely. The single detected shadow (rgba(199,199,199,0.25) 0px 4px 15px 0px) is used sparingly on floating overlays only. Elevation is communicated through flat color contrast: Lab Mist (#f3f5f9) cards sit on Paper White (#ffffff) canvases; black sections sit on white sections; the Pulse Violet button sits on black. This keeps the system feeling clinical and flat — closer to print editorial than interactive app.
 
 ## Imagery
 
-> ⚠️ Единственный пункт, который у нас будет иначе. У Aqua Voice продукт — приложение, поэтому вместо фотографий скриншоты интерфейса. У PRIME SWIM продукт — живые занятия, поэтому здесь будут **реальные фотографии бассейна, детей и тренера**, помещённые в ту же карточку: радиус 20px, hairline-граница, тень в 2%.
+> ⚠️ Здесь мы совпадаем с референсом почти полностью, и это редкость. У WHOOP
+> продукт — тренировки, поэтому фотография настоящая, тёплая, при естественном
+> свете, без дуотонов и градиентных масок. У PRIME SWIM ровно та же задача:
+> бассейн, дети, тренер, никакой обработки. Единственная поправка — у них текст
+> кладётся прямо на фото без подложки. У нас так нельзя: кадры сняты при разном
+> свете, и белый текст на светлой воде пропадёт.
 
-Оригинал: Visuals are dominated by product UI screenshots displayed in rounded cards against muted backgrounds. No lifestyle photography, no stock imagery, no illustration. The only decorative visuals are very faint geometric patterns on hero sections, rendered in near-white opacity so they read as paper texture. Icons are minimal and line-based, inline with text.
+Оригинал: Photography is the dominant visual asset: tight, full-bleed lifestyle crops of athletes and bodies in motion — swimming, running, sleeping on textured bedding. Images are warm-toned and natural-light, never staged studio shots. Treatment is raw: no duotone, no color grading overlays, no masks. They sit inside 24px-radius carousel cards with white text overlaid directly on the photo (no scrim). UI graphics are minimal — small white circular expand buttons, thin pagination dots, and one green radial-glow metric on the longevity card. No illustrations, no 3D renders, no abstract graphics. Icons (where present) are thin-stroke monoline, white on dark, black on light.
 
 ## Layout
 
-Full-bleed sections on a 1200px max-width centered grid. Hero is left-aligned text block at ~680px width with generous left margin, followed by centered cards. Sections alternate between Page Canvas and Section Band for subtle rhythm. Vertical spacing between sections is 80-120px. Navigation is a minimal top bar with no sticky behavior, no shadow, no border.
+Page model alternates between full-bleed edge-to-edge sections (no max-width constraint on the outer container) and a 1200px max-width content well for text and card grids. Hero is a full-viewport black theater with a 120px display headline left-aligned in the first 60% of the screen. Below the hero, content sections stack as white bands containing a single max-width column or a 3-up carousel of photographic cards. Closing section returns to full-bleed black. Navigation is a fixed top bar on the dark hero only; content sections rely on the page scrolling naturally without sticky chrome. Card grids use 3 equal columns with 24px gutters. Density is comfortable: 80-120px between sections, 15-24px between elements. No sidebar, no mega-menu.
 
 ## Similar Brands
 
-- **Linear** — near-monochrome palette with a single vivid accent, ultra-clean surfaces, hairline borders, whisper-light typography hierarchy
-- **Stripe** — typographic confidence with custom display faces, centered hero text blocks on white, minimal decorative chrome
-- **Notion** — paper-white canvas aesthetic, restrained color, generous whitespace around compact UI
-- **Vercel** — dark/light surface contrast via announcement bars, minimal surfaces
+- **Oura** — Same split-canvas black/white alternation, oversized display headlines with tight tracking, and single-accent restrained palette in the health-wearable space
+- **Peloton** — Full-bleed photographic hero cards with 24px radius, pill-shaped CTAs, and a dark theatrical opening that transitions to white content sections
+- **Garmin** — Performance-data aesthetic with uppercase tracking labels, flat card elevation, and Proxima-Nova-adjacent geometric sans typography
+- **Notion** — Minimalist monochrome palette with a single violet brand accent, tight letter-spacing on large headlines, and pill-shaped primary buttons
+- **Apple Fitness+** — Athletic-performance category peers using photographic carousel cards as the primary content unit with direct text overlay
