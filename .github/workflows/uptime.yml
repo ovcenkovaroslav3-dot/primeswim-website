@@ -1,0 +1,80 @@
+name: Проверка доступности сайта
+
+# Зачем отдельный воркфлоу, а не облачный агент: у агента исходящий трафик
+# идёт через прокси с политикой доступа, и primeswim.ru он не пропускает.
+# Раннер GitHub ходит в сеть напрямую, поэтому пинговать сайт может только он.
+#
+# ЧЕСТНО О РАСПИСАНИИ: GitHub душит cron в бесплатных репозиториях. Указанные
+# полчаса — это пожелание, а не гарантия: в загруженные часы запуск
+# откладывается, и разрыв доходит до нескольких часов. Для «сайт лежит уже
+# сутки» этого хватает, для «лежал семь минут» — нет. Если однажды понадобится
+# настоящий аптайм — нужен внешний сервис, который опрашивает раз в минуту.
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Канонический адрес отвечает и отдаёт настоящую страницу
+        run: |
+          # Три попытки с паузой: один сетевой сбой на раннере не должен
+          # поднимать тревогу, а вот три подряд — уже повод.
+          for attempt in 1 2 3; do
+            body=$(mktemp)
+            # Именно GET, а не HEAD: страница отдаётся статикой, и проверять
+            # надо не только код, но и что в теле лежит вёрстка, а не пустышка
+            # или заглушка хостинга.
+            code=$(curl -sS -L --max-time 25 -o "$body" -w '%{http_code}' \
+              https://www.primeswim.ru/ || echo 000)
+            size=$(wc -c < "$body")
+
+            if [ "$code" = "200" ] && [ "$size" -gt 5000 ] \
+               && grep -qi 'PRIME SWIM' "$body"; then
+              echo "Попытка $attempt: 200, $size байт, разметка на месте."
+              exit 0
+            fi
+
+            echo "Попытка $attempt: код $code, $size байт — не годится."
+            if [ "$attempt" -lt 3 ]; then sleep 20; fi
+          done
+
+          echo "::error::www.primeswim.ru не отдаёт рабочую страницу (последний код: $code)"
+          exit 1
+
+      - name: Голый домен ведёт на www постоянным редиректом
+        run: |
+          # Редирект держит склейку домена в поиске. Если он отвалится,
+          # primeswim.ru и www.primeswim.ru станут двумя разными сайтами
+          # с одинаковым содержимым, и позиции размажутся между ними.
+          code=$(curl -sS --max-time 20 -o /dev/null -w '%{http_code}' \
+            https://primeswim.ru/ || echo 000)
+          target=$(curl -sS --max-time 20 -o /dev/null -w '%{redirect_url}' \
+            https://primeswim.ru/ || echo '')
+
+          if [ "$code" != "301" ]; then
+            echo "::error::Голый домен отвечает $code вместо 301"
+            exit 1
+          fi
+          case "$target" in
+            https://www.primeswim.ru/*) echo "301 → $target" ;;
+            *) echo "::error::301 ведёт на $target вместо https://www.primeswim.ru/"; exit 1 ;;
+          esac
+
+      - name: Карта сайта на месте и не пуста
+        run: |
+          # Пустой sitemap означает, что сборка прошла, но контент не
+          # сгенерировался — сайт при этом отвечает 200 и выглядит живым.
+          urls=$(curl -sS --max-time 20 https://www.primeswim.ru/sitemap.xml \
+            | grep -c '<loc>' || true)
+          urls=${urls:-0}
+          echo "Адресов в карте сайта: $urls"
+          if [ "$urls" -lt 5 ]; then
+            echo "::error::В sitemap.xml всего $urls адресов — ожидалось не меньше 5"
+            exit 1
+          fi
