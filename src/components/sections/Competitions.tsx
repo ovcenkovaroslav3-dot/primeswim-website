@@ -14,7 +14,11 @@ import { competitionPillars } from "@/content/journey";
   Эмоциональный блок без фотографий: работают крупная типографика, глубина
   и структура. Тёмная секция задаёт паузу между светлыми.
 */
-export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+export function Competitions({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+  const Heading = headingAs;
+  // заголовок ступени на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
+  const PillarHeading = headingAs === 'h1' ? 'h2' : 'h3';
+
   return (
     <section
       id="competitions"
@@ -79,7 +83,7 @@ export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' |
                 {String(i + 1).padStart(2, "0")}
               </span>
 
-              <h3 className="mt-4 text-xl font-light text-white">{p.title}</h3>
+              <PillarHeading className="mt-4 text-xl font-light text-white">{p.title}</PillarHeading>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-white/65">
                 {p.description}
               </p>

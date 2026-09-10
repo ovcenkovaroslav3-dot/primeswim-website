@@ -16,7 +16,11 @@ import { routeSteps, routeTransit } from '@/content/route';
   оказывалась только в начале и в конце. Эта секция стоит ровно посередине
   того разрыва.
 */
-export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+  const Heading = headingAs;
+  // «Как добраться» на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
+  const RouteHeading = headingAs === 'h1' ? 'h2' : 'h3';
+
   /*
     Крупная плитка берёт оригинал, мелкие — уменьшенные копии.
 
@@ -138,9 +142,9 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
           корпуса ниже: здание узнаваемое. См. content/route.ts.
         */}
         <div className="reveal mt-10 rounded-[20px] border border-white/12 p-6 sm:p-7">
-          <h3 className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
+          <RouteHeading className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Как добраться
-          </h3>
+          </RouteHeading>
 
           <ol className="mt-6 grid gap-6 sm:grid-cols-3">
             {routeSteps.map((step, i) => (

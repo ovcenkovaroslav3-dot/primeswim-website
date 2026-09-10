@@ -15,7 +15,11 @@ import { coaches } from "@/content/coaches";
   Раскладка рассчитана на одного тренера и на нескольких: при добавлении
   второго карточки просто встанут друг под другом.
 */
-export function Coaches({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+export function Coaches({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+  const Heading = headingAs;
+  // имя тренера на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
+  const CoachName = headingAs === 'h1' ? 'h2' : 'h3';
+
   return (
     <section
       id="trainers"
@@ -74,9 +78,9 @@ export function Coaches({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2'
                   </span>
                 </p>
 
-                <h3 className="mt-8 text-2xl font-light sm:text-3xl">
+                <CoachName className="mt-8 text-2xl font-light sm:text-3xl">
                   {coach.name}
-                </h3>
+                </CoachName>
                 <p className="mt-2 text-white/70">{coach.role}</p>
 
                 {coach.bio.map((paragraph) => (

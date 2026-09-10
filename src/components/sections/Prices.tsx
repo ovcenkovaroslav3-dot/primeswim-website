@@ -5,6 +5,9 @@ import { contacts } from '@/content/contacts';
 const formatter = new Intl.NumberFormat('ru-RU');
 
 export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+  // название тарифа на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
+  const PriceHeading = headingAs === 'h1' ? 'h2' : 'h3';
+
   return (
     <Section id="prices" labelledBy="prices-title" className="bg-surface">
       <SectionHeading
@@ -51,13 +54,13 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
               {price.badge}
             </p>
 
-            <h3
+            <PriceHeading
               className={`relative mt-4 text-xl font-light ${
                 price.featured ? 'text-white' : 'text-ink'
               }`}
             >
               {price.title}
-            </h3>
+            </PriceHeading>
 
             <p
               className={`mt-1 text-sm ${
