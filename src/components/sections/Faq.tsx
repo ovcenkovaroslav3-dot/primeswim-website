@@ -90,7 +90,7 @@ export function Faq({
         <Link
           href={moreHref as string}
           prefetch={false}
-          className="lift group mt-8 inline-flex items-center gap-2 text-sm font-medium text-brand-600"
+          className="lift group mt-7 -mb-1 inline-flex items-center gap-2 py-1 text-sm font-medium text-brand-600"
         >
           Все вопросы и что взять на первое занятие
           <svg

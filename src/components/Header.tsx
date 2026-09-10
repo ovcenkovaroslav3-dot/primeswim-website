@@ -71,7 +71,7 @@ export function Header() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm font-medium text-ink-soft transition-colors hover:text-brand-600"
+                    className="inline-block py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-600"
                   >
                     {link.label}
                   </Link>
@@ -84,7 +84,7 @@ export function Header() {
             <a
               href={contacts.phone.href}
               data-goal="click_phone"
-              className="hidden text-sm font-medium whitespace-nowrap text-ink transition-colors hover:text-brand-600 md:inline"
+              className="hidden py-2 text-sm font-medium whitespace-nowrap text-ink transition-colors hover:text-brand-600 md:inline-block"
             >
               {contacts.phone.display}
             </a>

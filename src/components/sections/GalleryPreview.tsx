@@ -61,7 +61,7 @@ export function GalleryPreview() {
       <Link
         href="/galereya/"
         prefetch={false}
-        className="lift group mt-8 inline-flex items-center gap-2 text-sm font-medium text-brand-600"
+        className="lift group mt-7 -mb-1 inline-flex items-center gap-2 py-1 text-sm font-medium text-brand-600"
       >
         Все фото и видео с тренировок
         <svg

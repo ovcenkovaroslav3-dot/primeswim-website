@@ -76,7 +76,7 @@ export function PlanPreview() {
             href="/raspisanie/"
             data-goal="cta_schedule"
             prefetch={false}
-            className="lift group mt-5 inline-flex items-center gap-2 self-start text-sm font-medium text-brand-600"
+            className="lift group mt-4 -mb-1 inline-flex items-center gap-2 self-start py-1 text-sm font-medium text-brand-600"
           >
             Всё расписание
             <svg
@@ -141,7 +141,7 @@ export function PlanPreview() {
           <Link
             href="/price/"
             prefetch={false}
-            className="lift group mt-5 inline-flex items-center gap-2 self-start text-sm font-medium text-brand-600"
+            className="lift group mt-4 -mb-1 inline-flex items-center gap-2 self-start py-1 text-sm font-medium text-brand-600"
           >
             Условия оплаты и абонемента
             <svg

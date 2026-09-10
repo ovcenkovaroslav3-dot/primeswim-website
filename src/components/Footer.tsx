@@ -24,14 +24,14 @@ export function Footer() {
             <h2 className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
               Контакты
             </h2>
-            <ul className="mt-4 space-y-3 text-sm text-white/80">
+            <ul className="mt-4 space-y-1 text-sm text-white/80">
               <li>
                 {/* цели те же, что и везде: подвал стоит на каждой странице,
                     и без разметки его клики просто не попадали в отчёт */}
                 <a
                   href={contacts.phone.href}
                   data-goal="click_phone"
-                  className="font-medium text-white transition-colors hover:text-lime-300"
+                  className="inline-block py-1 font-medium text-white transition-colors hover:text-lime-300"
                 >
                   {contacts.phone.display}
                 </a>
@@ -43,7 +43,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-goal="click_route"
-                  className="underline underline-offset-4 transition-colors hover:text-lime-300"
+                  className="inline-block py-1 underline underline-offset-4 transition-colors hover:text-lime-300"
                 >
                   Посмотреть на Яндекс Картах
                 </a>
@@ -86,13 +86,13 @@ export function Footer() {
               По наведению и касанию маршрут всё равно догружается —
               то есть при настоящем намерении скорость не теряется.
             */}
-            <ul className="mt-4 space-y-3 text-sm text-white/80">
+            <ul className="mt-4 space-y-1 text-sm text-white/80">
               {sectionLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     prefetch={false}
-                    className="transition-colors hover:text-lime-300"
+                    className="inline-block py-1 transition-colors hover:text-lime-300"
                   >
                     {link.title}
                   </Link>
@@ -101,7 +101,7 @@ export function Footer() {
               <li>
                 <Link
                   href="#booking"
-                  className="transition-colors hover:text-lime-300"
+                  className="inline-block py-1 transition-colors hover:text-lime-300"
                 >
                   Запись на тренировку
                 </Link>
@@ -110,7 +110,7 @@ export function Footer() {
                 <Link
                   href="/policy/"
                   prefetch={false}
-                  className="transition-colors hover:text-lime-300"
+                  className="inline-block py-1 transition-colors hover:text-lime-300"
                 >
                   Политика обработки персональных данных
                 </Link>
@@ -119,7 +119,7 @@ export function Footer() {
                 <Link
                   href="/soglasie/"
                   prefetch={false}
-                  className="transition-colors hover:text-lime-300"
+                  className="inline-block py-1 transition-colors hover:text-lime-300"
                 >
                   Согласие на обработку персональных данных
                 </Link>

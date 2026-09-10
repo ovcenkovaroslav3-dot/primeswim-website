@@ -71,7 +71,7 @@ export function CoachPreview() {
           <Link
             href="/trener/"
             prefetch={false}
-            className="lift group mt-8 inline-flex items-center gap-2 text-sm font-medium text-white"
+            className="lift group mt-7 -mb-1 inline-flex items-center gap-2 py-1 text-sm font-medium text-white"
           >
             О тренере и методике
             <svg
