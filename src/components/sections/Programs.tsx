@@ -8,9 +8,28 @@ import { programs } from '@/content/programs';
 
   Три одинаковые карточки читались плоско — три пункта меню, а не рассказ.
   Программы на самом деле идут по порядку, от новичка до спортсмена, и
-  первая — «с нуля» — самая частая точка входа. Она и занимает крупную
-  тёмную плашку, как в секции «Почему мы»; остальные две встают в третью
-  колонку светлыми плитками одна над другой.
+  первая — «с нуля» — самая частая точка входа. Она и выделена крупной
+  тёмной плашкой.
+
+  ГЛАВНАЯ КАРТОЧКА ШИРЕ ОСТАЛЬНЫХ, А НЕ ВЫШЕ. Раньше она занимала две
+  колонки и обе строки сетки, и высоту ей задавали две соседние плитки:
+  на 1440 карточка выходила 606 px при 177 px содержимого — 349 px, почти
+  три пятых, приходились на пустоту между текстом и подписью внизу.
+  Выделять размером было верно, брать этот размер высотой — нет. Теперь
+  все три стоят в одну строку, а первой отдана лишняя доля ширины.
+
+  ВЫСОТА У КАЖДОЙ СВОЯ (items-start). Выровненные по низу карточки —
+  верный приём, когда содержимого в них поровну; здесь не поровну, и
+  выравнивание просто переносило пустоту из одной карточки в другие.
+  По той же причине с абзацев снят flex-1: он растягивал текст до низа и
+  выдавливал хайрлайн с подписью вниз, оставляя дыру посередине. Нижний
+  край строки получился ступенчатым, и это честно — карточки правда
+  разной длины, а разница читается как вес главной, а не как ошибка.
+
+  Пустоту в главной карточке закрывает не только ширина: четыре шага
+  первых занятий лежали в description одной строкой через запятую и
+  теперь разложены списком (см. content/programs.ts). Родитель, который
+  выбирает «с нуля», спрашивает ровно об этом.
 */
 export function Programs() {
   const [first, ...rest] = programs;
@@ -24,9 +43,9 @@ export function Programs() {
         lead="Ребёнок попадает в группу по возрасту и уровню подготовки, поэтому программа подходит и новичку, и тому, кто уже плавает."
       />
 
-      <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2">
+      <ul className="mt-12 grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr]">
         <li
-          className="reveal relative overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white sm:col-span-2 lg:row-span-2 lg:p-10"
+          className="reveal relative overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white sm:col-span-2 lg:col-span-1 lg:p-10"
           style={{ ['--reveal-delay' as string]: '60ms' }}
         >
           <div
@@ -44,7 +63,24 @@ export function Programs() {
             <p className="mt-5 max-w-[52ch] leading-relaxed text-white/70">
               {first.description}
             </p>
-            <p className="mt-auto border-t border-white/15 pt-5 text-sm font-medium text-lime-300">
+
+            {first.steps ? (
+              <ol className="mt-6 space-y-3.5">
+                {first.steps.map((step, i) => (
+                  <li key={step} className="flex items-baseline gap-3.5">
+                    <span
+                      aria-hidden="true"
+                      className="w-4 shrink-0 text-sm tabular-nums text-white/35"
+                    >
+                      {i + 1}
+                    </span>
+                    <span className="text-white/85">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            ) : null}
+
+            <p className="mt-8 border-t border-white/15 pt-5 text-sm font-medium text-white">
               {first.audience}
             </p>
           </div>
@@ -57,7 +93,7 @@ export function Programs() {
             style={{ ['--reveal-delay' as string]: `${140 + i * 80}ms` }}
           >
             <h3 className="text-xl font-light text-ink">{program.title}</h3>
-            <p className="mt-3 flex-1 leading-relaxed text-ink-soft">
+            <p className="mt-3 leading-relaxed text-ink-soft">
               {program.description}
             </p>
             <p className="mt-5 border-t border-hairline pt-4 text-sm font-medium text-brand-600">

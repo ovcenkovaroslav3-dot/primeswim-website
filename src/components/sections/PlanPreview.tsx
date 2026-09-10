@@ -20,6 +20,12 @@ import { prices, pricesNote } from '@/content/prices';
 
   Данные берутся из тех же файлов, что и полные страницы. Поправить цену
   в одном месте и забыть про главную здесь невозможно.
+
+  Списки не растянуты по высоте. С flex-1 более короткий из двух — тарифы,
+  их три против четырёх дней расписания — дотягивался до низа карточки и
+  выдавливал сноску со ссылкой вниз, оставляя дыру посередине. Теперь
+  лишняя высота, которую даёт выравнивание карточек, уходит под низ и
+  читается полем, а не пропуском.
 */
 export function PlanPreview() {
   return (
@@ -38,7 +44,7 @@ export function PlanPreview() {
             Расписание
           </h3>
 
-          <ul className="mt-6 flex-1 divide-y divide-hairline">
+          <ul className="mt-6 divide-y divide-hairline">
             {schedule.map((slot) => (
               <li
                 key={slot.id}
@@ -98,7 +104,7 @@ export function PlanPreview() {
             Стоимость
           </h3>
 
-          <ul className="mt-6 flex-1 divide-y divide-hairline">
+          <ul className="mt-6 divide-y divide-hairline">
             {prices.map((price) => (
               <li
                 key={price.id}
