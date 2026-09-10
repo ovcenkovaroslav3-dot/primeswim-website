@@ -47,7 +47,7 @@ export function CoachPreview() {
 
           <h2
             id="coach-preview-title"
-            className="mt-4 text-3xl leading-[1.08] font-extralight sm:text-4xl"
+            className="mt-4 text-3xl leading-[1.08] font-extralight tracking-[-0.02em] sm:text-4xl"
           >
             {coach.name}
           </h2>

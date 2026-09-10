@@ -57,7 +57,7 @@ export function PoolPreview() {
 
           <h2
             id="pool-preview-title"
-            className="mt-4 text-3xl leading-[1.08] font-extralight sm:text-4xl"
+            className="mt-4 text-3xl leading-[1.08] font-extralight tracking-[-0.02em] sm:text-4xl"
           >
             Бассейн МГИК в Химках
           </h2>

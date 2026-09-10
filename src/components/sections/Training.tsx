@@ -60,7 +60,7 @@ export function Training() {
           </p>
           <h2
             id="training-title"
-            className="text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl md:text-[44px]"
+            className="text-3xl leading-[1.08] font-extralight tracking-[-0.02em] text-ink sm:text-4xl md:text-[44px]"
           >
             Что происходит в эти 45 минут
           </h2>

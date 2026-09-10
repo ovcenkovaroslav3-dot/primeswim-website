@@ -51,7 +51,7 @@ export function Strokes() {
           </p>
           <h2
             id="strokes-title"
-            className="text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl md:text-[44px]"
+            className="text-3xl leading-[1.08] font-extralight tracking-[-0.02em] text-ink sm:text-4xl md:text-[44px]"
           >
             Четыре стиля, а не один
           </h2>

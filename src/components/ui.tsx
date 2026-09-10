@@ -146,8 +146,8 @@ export function SectionHeading({
         id={id}
         className={
           size === 'statement'
-            ? 'text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-extralight text-ink'
-            : 'text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl md:text-[44px]'
+            ? 'text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-extralight tracking-[-0.02em] text-ink'
+            : 'text-3xl leading-[1.08] font-extralight tracking-[-0.02em] text-ink sm:text-4xl md:text-[44px]'
         }
       >
         {title}
