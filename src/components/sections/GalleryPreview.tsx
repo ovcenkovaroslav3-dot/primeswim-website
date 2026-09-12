@@ -1,7 +1,5 @@
-import Link from 'next/link';
-
 import { Picture } from '../Picture';
-import { Section, SectionHeading } from '../ui';
+import { ArrowLink, Section, SectionHeading } from '../ui';
 import { galleryHighlights } from '@/content/media';
 
 /*
@@ -58,29 +56,9 @@ export function GalleryPreview() {
         ))}
       </ul>
 
-      <Link
-        href="/galereya/"
-        prefetch={false}
-        className="lift group mt-7 -mb-1 inline-flex items-center gap-2 py-1 text-sm font-medium text-brand-600"
-      >
+      <ArrowLink href="/galereya/" className="mt-8">
         Все фото и видео с тренировок
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 18 18"
-          fill="none"
-          aria-hidden="true"
-          className="transition-transform duration-200 group-hover:translate-x-1"
-        >
-          <path
-            d="M3 9h12M10 4l5 5-5 5"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </Link>
+      </ArrowLink>
     </Section>
   );
 }

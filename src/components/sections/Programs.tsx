@@ -1,6 +1,4 @@
-import Link from 'next/link';
-
-import { Section, SectionHeading } from '../ui';
+import { ArrowLink, Section, SectionHeading } from '../ui';
 import { programs } from '@/content/programs';
 
 /*
@@ -101,29 +99,9 @@ export function Programs() {
             </p>
 
             {program.href ? (
-              <Link
-                href={program.href}
-                prefetch={false}
-                className="lift group mt-3 -mb-1 inline-flex items-center gap-2 py-1 text-sm font-medium text-brand-600"
-              >
+              <ArrowLink href={program.href} className="mt-4 self-start">
                 Старты, сборы и разряды
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  aria-hidden="true"
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                >
-                  <path
-                    d="M3 9h12M10 4l5 5-5 5"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
+              </ArrowLink>
             ) : null}
           </li>
         ))}

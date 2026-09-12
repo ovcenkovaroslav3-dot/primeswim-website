@@ -276,6 +276,21 @@ function derivative(
  * берутся: в квадратной обрезке от снимка остаётся текст на стене, а не
  * дети в воде. В самой галерее они остаются — там кадр показан целиком.
  * Это то же правило, по которому из видео отобраны три клипа из шести.
+ *
+ * ДВА КАДРА ЗАМЕНЕНЫ 13 сентября 2026 по тому же правилу, только про свет,
+ * а не про баннеры. `award-handshake` и `teens-celebrating-medals` сняты в
+ * коридоре при верхнем лампном свете: в квадрате от них остаются кафель,
+ * тень и полуодетые подростки — сюжет «соревнования» по ним не читается, а
+ * общее впечатление от сетки падает до уровня родительского чата. На их
+ * месте `two-girls-pink-fins` (медали, бортик, дневной свет) и
+ * `teen-swimmers-long-fins` (взрослая группа с лопатками у воды). Первый
+ * сохраняет довод про старты, второй — про то, что школа работает и с
+ * подростками, а не только с малышами. Оба остались в полной галерее.
+ *
+ * Меняя этот список, пересоберите плитки:
+ *   node scripts/make-gallery-tiles.mjs
+ * Без этого страница запросит файл, которого нет, и картинка будет битой —
+ * <picture> на 404 к запасному варианту не откатывается.
  */
 const highlightSources = [
   '/media/gallery/coach-briefing-at-blocks.jpg',
@@ -283,8 +298,8 @@ const highlightSources = [
   '/media/gallery/coach-with-young-swimmers.jpg',
   '/media/gallery/two-kids-goggles-thumbs-up.jpg',
   '/media/gallery/kids-yellow-kickboards.jpg',
-  '/media/gallery/award-handshake.jpg',
-  '/media/gallery/teens-celebrating-medals.jpg',
+  '/media/gallery/two-girls-pink-fins.jpg',
+  '/media/gallery/teen-swimmers-long-fins.jpg',
   '/media/gallery/team-group-competition.jpg',
 ];
 

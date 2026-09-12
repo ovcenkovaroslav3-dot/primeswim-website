@@ -55,7 +55,7 @@ export function Header() {
             (WCAG 2.5.3). Теперь имя начинается ровно с того, что видно.
           */}
           <Link href="/" className="shrink-0">
-            <Logo />
+            <Logo mark="wide" />
             <span className="sr-only"> — на главную страницу</span>
           </Link>
 

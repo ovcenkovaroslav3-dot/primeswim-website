@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { HeroMascot } from '../HeroMascot';
+import { HeroVisual } from '../HeroVisual';
 import { WaterScene } from '../WaterScene';
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
@@ -97,7 +97,7 @@ export function Hero() {
         className="absolute inset-0 -z-10 bg-linear-to-b from-abyss-950/88 via-abyss-950/62 to-abyss-950/88 md:bg-linear-to-r md:from-abyss-950/94 md:via-abyss-950/58 md:to-abyss-950/28"
       />
 
-      <div className="hero-depart mx-auto w-full max-w-6xl px-5 pt-24 pb-16 sm:px-6 md:pt-28 md:pb-24">
+      <div className="hero-depart mx-auto w-full max-w-6xl px-5 pt-14 pb-16 sm:px-6 sm:pt-20 md:pt-28 md:pb-24">
         {/*
           Две колонки на десктопе, одна на телефоне. Фотография на телефоне
           идёт после кнопок, а не перед заголовком: сначала предложение,
@@ -205,7 +205,7 @@ export function Hero() {
           <div
             style={{ ['--reveal-delay' as string]: '320ms' }}
           >
-            <HeroMascot
+            <HeroVisual
               venue={contacts.address.venue}
               district={contacts.address.district}
             />
@@ -213,10 +213,19 @@ export function Hero() {
         </div>
       </div>
 
-      {/* переход в следующую секцию: сцена растворяется в светлом фоне */}
+      {/*
+        Переход в следующую секцию.
+
+        Растворяется в abyss-900, а не в белом. За первым экраном идёт
+        ProofStrip, и он тёмный: прежний градиент уводил низ сцены в белый,
+        после чего страница резко возвращалась в тёмное — между двумя тёмными
+        секциями лежала светлая полоса в палец шириной, читавшаяся как шов
+        или недогрузившийся блок. Теперь сцена уходит ровно в цвет того, что
+        под ней.
+      */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-surface"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-abyss-900"
       />
     </section>
   );

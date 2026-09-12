@@ -1,7 +1,5 @@
-import Link from 'next/link';
-
 import { Picture } from '../Picture';
-import { ButtonLink } from '../ui';
+import { ArrowLink, ButtonLink } from '../ui';
 import { contacts } from '@/content/contacts';
 import { venuePreviewImages } from '@/content/media';
 
@@ -89,29 +87,9 @@ export function PoolPreview() {
             >
               Построить маршрут
             </ButtonLink>
-            <Link
-              href="/bassein/"
-              prefetch={false}
-              className="lift group inline-flex min-h-11 items-center gap-2 px-1 text-sm font-medium text-white"
-            >
+            <ArrowLink href="/bassein/" tone="white">
               О бассейне и занятии
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 18 18"
-                fill="none"
-                aria-hidden="true"
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              >
-                <path
-                  d="M3 9h12M10 4l5 5-5 5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
+            </ArrowLink>
           </div>
         </div>
 

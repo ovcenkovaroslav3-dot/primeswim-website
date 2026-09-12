@@ -82,7 +82,13 @@ export function SocialLinks({
                  палец на телефоне целится в 16, а с py-1 — в 24, ровно
                  в минимум WCAG 2.5.8. Высоту полоски это не меняет —
                  её собственные отступы уменьшены на столько же. */
-              className="inline-block py-1.5 text-xs font-medium text-brand-600 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
+              /*
+                Зона нажатия 36 px вместо 28: у «MAX» подпись из трёх букв, и
+                прежний квадрат 28×28 на телефоне промахивался чаще, чем
+                попадал. Отрицательный внешний отступ забирает добавленную
+                высоту обратно — полоса каналов осталась тонкой, как и была.
+              */
+              className="-my-1.5 inline-flex min-h-9 items-center py-1.5 text-xs font-medium text-brand-600 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
             >
               {link.short}
               <span className="sr-only">{link.tail}</span>

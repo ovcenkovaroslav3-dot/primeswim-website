@@ -1,6 +1,4 @@
-import Link from 'next/link';
-
-import { Section, SectionHeading } from '../ui';
+import { ArrowLink, Section, SectionHeading } from '../ui';
 import { JsonLd } from '../StructuredData';
 import { faq } from '@/content/faq';
 import { contacts } from '@/content/contacts';
@@ -87,29 +85,9 @@ export function Faq({
       </div>
 
       {hasMore ? (
-        <Link
-          href={moreHref as string}
-          prefetch={false}
-          className="lift group mt-7 -mb-1 inline-flex items-center gap-2 py-1 text-sm font-medium text-brand-600"
-        >
+        <ArrowLink href={moreHref as string} className="mt-8">
           Все вопросы и что взять на первое занятие
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 18 18"
-            fill="none"
-            aria-hidden="true"
-            className="transition-transform duration-200 group-hover:translate-x-1"
-          >
-            <path
-              d="M3 9h12M10 4l5 5-5 5"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+        </ArrowLink>
       ) : null}
 
       <p className="mt-8 text-ink-soft">
