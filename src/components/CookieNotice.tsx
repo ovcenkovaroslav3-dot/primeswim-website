@@ -98,7 +98,7 @@ export function CookieNotice() {
             Без вашего согласия счётчик не подключается. Подробнее — в{' '}
           </span>
           <Link
-            href="/policy"
+            href="/policy/"
             className="font-medium text-brand-600 underline underline-offset-4"
           >
             политике
