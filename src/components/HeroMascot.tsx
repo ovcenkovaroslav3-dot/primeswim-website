@@ -1,3 +1,4 @@
+import { MascotPointer } from './MascotPointer';
 import { Picture } from './Picture';
 
 import { heroImage, mascot } from '@/content/media';
@@ -135,12 +136,41 @@ export function HeroMascot({
               draggable="false"
               className="mascot-water-motion absolute inset-0 h-auto w-full select-none"
             />
+
+            {/*
+              Блик. Маской служит сам WebP: светлая полоса видна только там,
+              где у картинки непрозрачные пиксели, поэтому свет идёт по
+              силуэту, а не по прямоугольнику вокруг него.
+            */}
+            <span
+              aria-hidden="true"
+              className="mascot-shine absolute inset-0"
+              style={{
+                maskImage: `url(${mascotSrc})`,
+                WebkitMaskImage: `url(${mascotSrc})`,
+              }}
+            />
           </div>
         </div>
       </div>
 
       <span aria-hidden="true" className="mascot-ripple mascot-ripple-one" />
       <span aria-hidden="true" className="mascot-ripple mascot-ripple-two" />
+
+      {/*
+        Пузырьки из водяного вихря. Шесть штук достаточно, чтобы вихрь
+        перестал читаться как застывшая картинка: каждый идёт своим путём,
+        со своей задержкой и скоростью, и цикл не выглядит зациклённым.
+      */}
+      {[1, 2, 3, 4, 5, 6].map((n) => (
+        <span
+          key={n}
+          aria-hidden="true"
+          className={`mascot-bubble mascot-bubble-${n}`}
+        />
+      ))}
+
+      <MascotPointer />
     </figure>
   );
 }
