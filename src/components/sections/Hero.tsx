@@ -1,11 +1,9 @@
 import Link from 'next/link';
 
-import { Picture } from '../Picture';
-
+import { HeroMascot } from '../HeroMascot';
 import { WaterScene } from '../WaterScene';
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
-import { heroImage } from '@/content/media';
 import { prices } from '@/content/prices';
 import { coaches } from '@/content/coaches';
 
@@ -204,39 +202,14 @@ export function Hero() {
             </p>
           </div>
 
-          {/*
-            Фотография бассейна. priority — потому что это самый крупный
-            элемент экрана и он же кандидат в LCP: без приоритета браузер
-            дошёл бы до него в общей очереди.
-
-            sizes задан по колонке, а не по ширине окна. Свой загрузчик на
-            статике не создаёт вариантов по ширине (см. next.config.ts), но
-            атрибут остаётся верным описанием разметки — и станет рабочим в
-            тот день, когда появится нормальная сборка изображений.
-          */}
-          <figure
-            className="reveal relative mx-auto w-full max-w-sm md:max-w-none"
+          <div
             style={{ ['--reveal-delay' as string]: '320ms' }}
           >
-            <div className="relative overflow-hidden rounded-[24px] border border-white/15 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]">
-              <Picture
-                src={heroImage.src}
-                alt={heroImage.alt}
-                width={heroImage.width}
-                height={heroImage.height}
-                priority
-                sizes="(min-width: 1024px) 26rem, (min-width: 768px) 22rem, 24rem"
-                className="h-[clamp(16rem,42vw,30rem)] w-full object-cover md:h-[clamp(22rem,46vw,34rem)]"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-b from-transparent to-abyss-950/85"
-              />
-              <figcaption className="absolute inset-x-0 bottom-0 p-5 text-sm leading-snug text-white/85">
-                {contacts.address.venue} · {contacts.address.district}
-              </figcaption>
-            </div>
-          </figure>
+            <HeroMascot
+              venue={contacts.address.venue}
+              district={contacts.address.district}
+            />
+          </div>
         </div>
       </div>
 

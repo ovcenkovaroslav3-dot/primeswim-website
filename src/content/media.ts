@@ -27,6 +27,19 @@ export const heroImage: MediaItem = {
   height: 1400,
 };
 
+/**
+ * Фирменный талисман «Хранитель глубины».
+ *
+ * Это иллюстрация, а не фотография тренера или бассейна. На первом экране
+ * она работает только вместе с настоящим кадром площадки и не подменяет его.
+ */
+export const mascot: MediaItem = {
+  src: '/media/mascot/sea-guardian-v1.webp',
+  alt: 'Талисман PRIME SWIM — дружелюбный морской хранитель с трезубцем',
+  width: 1024,
+  height: 1536,
+};
+
 /** Фотографии бассейна МГИК. */
 export const poolImages: MediaItem[] = [
   {

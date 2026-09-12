@@ -585,6 +585,20 @@
       "quality": "medium",
       "status": "imported",
       "comment": "Кадр 30-й секунды: тренер смотрит в камеру, титр «Знакомство» виден целиком."
+    },
+    {
+      "file": "mascot/sea-guardian-v1.webp",
+      "sourceOrigin": "ai-generated",
+      "sourceFile": "primeswim-mascot-sea-guardian-v1.png",
+      "oldPlacement": "НЕ ИСПОЛЬЗОВАЛОСЬ",
+      "newPlacement": "Главная, первый экран — анимированный талисман рядом с реальной фотографией бассейна",
+      "resolution": "1024x1536",
+      "sizeKb": 313,
+      "format": "webp с прозрачным фоном",
+      "alt": "Талисман PRIME SWIM — дружелюбный морской хранитель с трезубцем",
+      "quality": "high",
+      "status": "generated",
+      "comment": "Оригинальный 3D-маскот в фирменных цветах #4F017B и #C7FE03. Это иллюстрация, не фотография тренера или площадки; используется вместе с реальным кадром бассейна."
     }
   ],
   "notUsedFromTilda": [
