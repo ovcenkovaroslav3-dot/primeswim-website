@@ -333,34 +333,21 @@
   }
 
   /*
-    Два дубля одного WebP не загружают файл повторно: браузер берёт его из
-    кеша. Маски оставляют в каждом слое только нужную материю, поэтому тело
-    не «плывёт» вместе с водой, а лицо не деформируется вместе с волосами.
+    Дубль того же WebP не загружает файл повторно: браузер берёт его из кеша.
+    Маска оставляет в слое только всплеск под фигурой, поэтому колышется вода,
+    а сама косатка остаётся неподвижной.
+
+    Раньше слоёв было два, второй колыхал волосы прежнего талисмана. У косатки
+    волос нет, и слой начал бы деформировать случайный кусок тела — поэтому он
+    удалён вместе со своим SVG-фильтром, а не оставлен «на всякий случай».
   */
-  .mascot-hair-motion,
   .mascot-water-motion {
     opacity: 0;
     mix-blend-mode: normal;
-  }
-
-  .mascot-hair-motion {
-    /* Маска начинается за виском: лицо и глаза остаются полностью стабильны. */
-    clip-path: polygon(55% 2%, 86% 2%, 91% 24%, 72% 30%, 61% 21%, 61% 12%);
-    transform-origin: 57% 17%;
-  }
-
-  .mascot-water-motion {
-    -webkit-mask-image:
-      radial-gradient(ellipse 19% 47% at 24% 55%, #000 48%, transparent 76%),
-      radial-gradient(ellipse 24% 23% at 86% 39%, #000 48%, transparent 77%),
-      radial-gradient(ellipse 56% 23% at 56% 89%, #000 46%, transparent 78%);
-    -webkit-mask-composite: source-over;
-    mask-image:
-      radial-gradient(ellipse 19% 47% at 24% 55%, #000 48%, transparent 76%),
-      radial-gradient(ellipse 24% 23% at 86% 39%, #000 48%, transparent 77%),
-      radial-gradient(ellipse 56% 23% at 56% 89%, #000 46%, transparent 78%);
-    mask-composite: add;
-    transform-origin: 54% 74%;
+    /* Всплеск занимает низ кадра: маска повторяет именно его. */
+    -webkit-mask-image: radial-gradient(ellipse 46% 15% at 50% 91%, #000 52%, transparent 82%);
+    mask-image: radial-gradient(ellipse 46% 15% at 50% 91%, #000 52%, transparent 82%);
+    transform-origin: 50% 92%;
   }
 
   .mascot-venue-card {
@@ -511,18 +498,6 @@
     }
     100% {
       transform: translate3d(0, 0, 0) rotate(-0.38deg) scaleX(1) scaleY(1);
-    }
-  }
-
-  @keyframes mascot-hair-flow {
-    0%,
-    100% {
-      transform: translate3d(-1px, 0, 0) skewX(-0.35deg) scaleX(0.998);
-      opacity: 0.12;
-    }
-    50% {
-      transform: translate3d(5px, -1px, 0) skewX(0.9deg) scaleX(1.012);
-      opacity: 0.34;
     }
   }
 
@@ -681,12 +656,6 @@
     .mascot-bubble-6 {
       --dur: 11.7s;
       animation-delay: -8.1s;
-    }
-
-    .mascot-hair-motion {
-      filter: url('#mascot-hair-warp') brightness(1.03) saturate(1.06);
-      animation: mascot-hair-flow 4.8s ease-in-out infinite;
-      will-change: transform, opacity, filter;
     }
 
     .mascot-water-motion {

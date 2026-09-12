@@ -28,30 +28,6 @@ export function HeroMascot({
         focusable="false"
       >
         <defs>
-          <filter id="mascot-hair-warp" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.012 0.028"
-              numOctaves="2"
-              seed="11"
-              result="hairNoise"
-            >
-              <animate
-                attributeName="baseFrequency"
-                dur="4.8s"
-                values="0.012 0.028;0.016 0.037;0.012 0.028"
-                repeatCount="indefinite"
-              />
-            </feTurbulence>
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="hairNoise"
-              scale="6"
-              xChannelSelector="R"
-              yChannelSelector="B"
-            />
-          </filter>
-
           <filter id="mascot-water-warp" x="-25%" y="-25%" width="150%" height="150%">
             <feTurbulence
               type="turbulence"
@@ -116,17 +92,7 @@ export function HeroMascot({
               fetchPriority="low"
               className="h-auto w-full select-none"
             />
-            <img
-              aria-hidden="true"
-              src={mascotSrc}
-              alt=""
-              width={mascot.width}
-              height={mascot.height}
-              decoding="async"
-              draggable="false"
-              className="mascot-hair-motion absolute inset-0 h-auto w-full select-none"
-            />
-            <img
+                        <img
               aria-hidden="true"
               src={mascotSrc}
               alt=""
