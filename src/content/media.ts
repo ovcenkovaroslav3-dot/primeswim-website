@@ -34,7 +34,7 @@ export const heroImage: MediaItem = {
  * она работает только вместе с настоящим кадром площадки и не подменяет его.
  */
 export const mascot: MediaItem = {
-  src: '/media/mascot/sea-guardian-v1.webp',
+  src: '/media/mascot/sea-guardian-v2.webp',
   alt: 'Талисман PRIME SWIM — дружелюбный морской хранитель с трезубцем',
   width: 1024,
   height: 1536,
