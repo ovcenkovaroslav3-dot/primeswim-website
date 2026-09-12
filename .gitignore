@@ -56,3 +56,11 @@ graphify-out/
 
 # настройки Codex CLI на этой машине — дублируют проектный .mcp.json
 /.codex/
+
+# рабочие файлы ruflo (база памяти, индекс и политики) — машинные, не общие
+/.swarm/
+/.claude-flow/
+/.hive-mind/
+/.claude/memory.db
+/.claude/proven-config.json
+/.claude/.proven-config-version
