@@ -370,6 +370,24 @@ export const galleryVideos: VideoItem[] = [
   },
 ];
 
+/**
+ * Видео-знакомство с тренером.
+ *
+ * Снято вертикально, на телефон, со своим титром — это не постановочный
+ * ролик, а тот же формат, в котором школа говорит с родителями в соцсетях.
+ * Стоит на главной, в блоке о тренере: там как раз вопрос «кто будет стоять
+ * у бортика», и лучший ответ на него — сам человек.
+ *
+ * В galleryVideos не кладётся: там клипы с тренировок, а это обращение.
+ */
+export const coachIntroVideo: VideoItem = {
+  src: '/media/video/coach-intro.mp4',
+  poster: '/media/video/coach-intro-poster.jpg',
+  alt: 'Тренер Ярослав Овченков рассказывает о школе плавания PRIME SWIM',
+  width: 720,
+  height: 1280,
+};
+
 /** Логотип школы. */
 export const logo: MediaItem = {
   src: '/media/brand/prime-swim-logo.jpg',

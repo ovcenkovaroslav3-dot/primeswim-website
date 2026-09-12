@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { CoachPortrait } from '../CoachPortrait';
 import { coaches } from '@/content/coaches';
+import { coachIntroVideo } from '@/content/media';
 
 /*
   Тренер на главной — короткая карточка, а не вторая копия страницы.
@@ -36,8 +36,30 @@ export function CoachPreview() {
       />
 
       <div className="relative mx-auto grid w-full max-w-6xl gap-10 md:grid-cols-[260px_1fr] md:items-center md:gap-14">
+        {/*
+          Вместо портрета — видео-знакомство: то же лицо, но человек ещё и
+          говорит. Портрет остался на /trener/, дублировать его здесь незачем.
+
+          preload="none" — на странице не грузится ни байта видео, пока
+          родитель не нажал play; до этого виден только постер, он же кадр
+          из самого ролика. Кадр вертикальный, 9:16, поэтому колонка держит
+          пропорции сама, без фиксированной высоты.
+
+          controls, а не автозапуск: в ролике речь, и включать её без
+          спроса нельзя.
+        */}
         <div className="reveal mx-auto w-full max-w-[260px]">
-          <CoachPortrait name={coach.name} photo={coach.photo} priority={false} />
+          <video
+            src={coachIntroVideo.src}
+            poster={coachIntroVideo.poster}
+            aria-label={coachIntroVideo.alt}
+            width={coachIntroVideo.width}
+            height={coachIntroVideo.height}
+            controls
+            playsInline
+            preload="none"
+            className="block h-auto w-full rounded-[16px] bg-abyss-800"
+          />
         </div>
 
         <div className="reveal" style={{ ['--reveal-delay' as string]: '90ms' }}>

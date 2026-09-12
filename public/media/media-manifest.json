@@ -557,6 +557,34 @@
       "quality": "medium",
       "status": "imported",
       "comment": "Кадр, извлечённый из видео ffmpeg."
+    },
+    {
+      "file": "video/coach-intro.mp4",
+      "sourceOrigin": "telegram",
+      "sourceFile": "IMG_8316.MOV",
+      "oldPlacement": "НЕ ИСПОЛЬЗОВАЛОСЬ",
+      "newPlacement": "Главная, блок «Тренер» (CoachPreview) — вместо статичного портрета",
+      "resolution": "720x1280",
+      "sizeKb": 4514,
+      "format": "mp4 (h264, перекодировано из hevc/.MOV)",
+      "alt": "Тренер Ярослав Овченков рассказывает о школе плавания PRIME SWIM",
+      "quality": "medium",
+      "status": "imported",
+      "comment": "Видео-обращение «Знакомство», 37 секунд, со своим титром и заменённым фоном. Исходник 1080x1920 hevc на 45 МБ перекодирован ffmpeg (libx264, CRF 28, AAC 96k моно, faststart) до 4,5 МБ. На странице стоит с preload=\"none\": до нажатия play не грузится ни байта, виден только постер. Автозапуска нет — в ролике речь. Постер: video/coach-intro-poster.jpg (кадр 30-й секунды). Субтитров нет — расшифровки речи не делали."
+    },
+    {
+      "file": "video/coach-intro-poster.jpg",
+      "sourceOrigin": "telegram",
+      "sourceFile": "IMG_8316.MOV",
+      "oldPlacement": "НЕ ИСПОЛЬЗОВАЛОСЬ",
+      "newPlacement": "Постер видео-знакомства в блоке «Тренер» на главной",
+      "resolution": "720x1280",
+      "sizeKb": 84,
+      "format": "jpg",
+      "alt": "Тренер Ярослав Овченков в бассейне, кадр из видео-знакомства",
+      "quality": "medium",
+      "status": "imported",
+      "comment": "Кадр 30-й секунды: тренер смотрит в камеру, титр «Знакомство» виден целиком."
     }
   ],
   "notUsedFromTilda": [
