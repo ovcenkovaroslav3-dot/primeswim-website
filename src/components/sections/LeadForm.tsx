@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { buttonClass } from '../ui';
 import { readSource } from '@/lib/campaign-source';
@@ -70,6 +70,23 @@ export function LeadForm() {
   const [ticket, setTicket] = useState('');
   const [failure, setFailure] = useState('');
   const [trap, setTrap] = useState('');
+  const sentRef = useRef<HTMLDivElement>(null);
+
+  /*
+    Успех заменяет форму целиком — и до этой правки не сообщал об этом никак.
+    Фокус оставался на кнопке «Отправить», которой в разметке больше нет:
+    браузер возвращает его на <body>, то есть человек, идущий по табу или
+    слушающий страницу, оказывался в начале документа без единого слова о
+    том, ушла заявка или нет. Неудача при этом объявлялась (role="alert"),
+    и получалось, что об отказе сообщаем, а об успехе молчим.
+
+    role="status" объявит текст сам, фокус на карточке вернёт клавиатуру
+    ровно туда, где теперь лежит ответ. tabIndex -1 нужен затем, чтобы
+    карточка принимала фокус программно, но не вставала в обход табом.
+  */
+  useEffect(() => {
+    if (status === 'sent') sentRef.current?.focus();
+  }, [status]);
 
   /*
     «Форма начата» — ровно один раз на экземпляр формы. Ref, а не state:
@@ -168,7 +185,12 @@ export function LeadForm() {
 
   if (status === 'sent') {
     return (
-      <div className="rounded-[20px] bg-surface p-8 text-center sm:p-12">
+      <div
+        ref={sentRef}
+        role="status"
+        tabIndex={-1}
+        className="rounded-[20px] bg-surface p-8 text-center sm:p-12"
+      >
         <div className="mx-auto grid size-14 place-items-center rounded-full bg-lime-400">
           <svg width="26" height="20" viewBox="0 0 26 20" fill="none" aria-hidden="true">
             <path
