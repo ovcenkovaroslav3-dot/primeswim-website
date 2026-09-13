@@ -68,7 +68,13 @@ export function Programs() {
                   <li key={step} className="flex items-baseline gap-3.5">
                     <span
                       aria-hidden="true"
-                      className="w-4 shrink-0 text-sm tabular-nums text-white/35"
+                      /*
+                        Было white/35 — контраст 3,1 при требуемых 4,5.
+                        Цифра дублирует порядок, который уже несёт <ol>,
+                        но читает её глазами живой человек, и «декоративно»
+                        не значит «можно не разглядеть».
+                      */
+                      className="w-4 shrink-0 text-sm tabular-nums text-white/55"
                     >
                       {i + 1}
                     </span>

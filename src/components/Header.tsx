@@ -54,7 +54,12 @@ export function Header() {
             входила, и голосовое управление по ней ссылку не находило
             (WCAG 2.5.3). Теперь имя начинается ровно с того, что видно.
           */}
-          <Link href="/" className="shrink-0">
+          {/*
+              inline-flex с высотой: сама надпись — 24 px, и ссылка была ровно
+              по ней. Рядом стоит кнопка записи высотой 44, и промах по
+              логотипу на телефоне попадал в пустоту между ними.
+            */}
+            <Link href="/" className="inline-flex min-h-11 shrink-0 items-center">
             <Logo mark="wide" />
             <span className="sr-only"> — на главную страницу</span>
           </Link>

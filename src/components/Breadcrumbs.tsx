@@ -48,7 +48,14 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
                 {item.href && !isLast ? (
                   <Link
                     href={item.href}
-                    className="transition-colors hover:text-brand-600"
+                    /*
+                      Зона нажатия 32 px вместо 20: строчная высота ссылки в
+                      крошках была ниже минимума, который стандарт требует от
+                      самостоятельного действия, а крошки — именно действие,
+                      а не текст. Отрицательный внешний отступ возвращает
+                      набранную высоту обратно, цепочка осталась однострочной.
+                    */
+                    className="-my-1.5 inline-flex min-h-8 items-center py-1.5 transition-colors hover:text-brand-600"
                   >
                     {item.label}
                   </Link>

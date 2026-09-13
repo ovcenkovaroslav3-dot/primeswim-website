@@ -36,7 +36,7 @@ export function PoolPreview() {
     <section
       id="pool-preview"
       aria-labelledby="pool-preview-title"
-      className="on-dark relative overflow-clip bg-abyss-950 px-4 py-14 text-white sm:px-6 sm:py-16 md:py-24"
+      className="on-dark relative overflow-clip bg-abyss-950 px-4 py-14 text-white sm:px-6 sm:py-16 md:py-28"
     >
       <div
         aria-hidden="true"
