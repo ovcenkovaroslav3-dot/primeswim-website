@@ -10,7 +10,14 @@
            public/media/mascot/orca-3d.{webp,avif}      экраны от 768
            public/media/mascot/orca-3d-sm.{webp,avif}   телефоны
 
+    public/media/mascot/orca-3d.webp
+      └─ node scripts/make-og-cover.mjs
+           public/media/brand/og-cover.jpg    обложка ссылки в мессенджерах
+
 Всё остальное — готовые кадры для публикации: их постят, а не пересобирают.
+
+**Сменив талисмана, пересоберите обе цепочки.** Обложка вшивает картинку в
+себя как data-URI и сама не обновится.
 
 ## Файлы
 
@@ -20,7 +27,8 @@
 | `praimi-breach-vertical-v1.jpg` | «Прорыв», вертикаль 9:16 — Reels, обложки |
 | `prime-orca-3d-styleframe-v1.jpg` | спокойная поза, квадрат — наклейки, дипломы, мерч |
 | `prime-orca-vertical-v1.jpg` | спокойная поза, вертикаль — шапки каналов |
-| `prime-orca-reels-loop-v1.mp4` | петля 5 с, 1080×1920, спокойная поза |
+| `praimi-breach-reels-loop-v2.mp4` | петля 5 с, 1080×1920, «Прорыв» — основная |
+| `prime-orca-reels-loop-v1.mp4` | петля 5 с, спокойная поза — второй ролик |
 | `concepts/` | три стилевых кадра, из которых выбирали |
 
 ## Зачем хранить отклонённые концепции
