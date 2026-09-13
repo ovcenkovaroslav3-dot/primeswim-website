@@ -286,6 +286,170 @@
     }
   }
 
+  /*
+    ДВИЖЕНИЕ ПРАЙМИ. Сорок строк, а не четыреста.
+
+    У прежнего талисмана здесь жило восемь анимаций разом: покачивание,
+    дыхание ауры, пульс свечения, две волны на воде, шесть пузырьков со своими
+    периодами, блик и деформация водяного слоя через SVG-фильтр. Всё это
+    двигалось одновременно, и в сумме первый экран не успокаивался никогда.
+    При удалении талисмана ушло около 390 строк CSS.
+
+    Вернулись две, и обе отвечают за одно и то же — что фигура живая, а не
+    приклеена:
+
+      • зависание в верхней точке прыжка. Выпрыгнувшее животное на пике
+        замирает и начинает падать — медленный подъём и оседание на восемь
+        пикселей передают именно это. Восемь, а не двадцать: на большем
+        амплитуда читается как «болтается», а не «висит»;
+
+      • блик по кромке спины. Тот же приём, что в ролике для Reels, — маской
+        служит сам файл талисмана, поэтому светлая полоса идёт по фигуре, а
+        не по прямоугольнику вокруг неё. Период девять секунд: это должно
+        быть редким проблеском, а не мигалкой.
+
+    Периоды намеренно не кратны друг другу — иначе через минуту они сойдутся
+    в одну волну, и обман станет виден.
+
+    Всё композиторное: transform, opacity и background-position. Ни раскладка,
+    ни отрисовка не пересчитываются. Под запретом движения не работает ничего.
+  */
+  @keyframes praimi-hover {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    45% {
+      transform: translate3d(0, -8px, 0) rotate(-0.6deg);
+    }
+  }
+
+  @keyframes praimi-shine-sweep {
+    0%,
+    62% {
+      background-position: -60% 0;
+      opacity: 0;
+    }
+    68% {
+      opacity: 0.55;
+    }
+    86% {
+      opacity: 0.4;
+    }
+    100% {
+      background-position: 160% 0;
+      opacity: 0;
+    }
+  }
+
+  .praimi-shine {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      108deg,
+      transparent 42%,
+      color-mix(in oklab, #ffffff 46%, transparent) 48%,
+      color-mix(in oklab, var(--color-lime-300) 22%, transparent) 52%,
+      transparent 59%
+    );
+    background-size: 260% 100%;
+    background-position: -60% 0;
+    background-repeat: no-repeat;
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mix-blend-mode: screen;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .praimi-hover {
+      animation: praimi-hover 7.3s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .praimi-shine {
+      animation: praimi-shine-sweep 9.1s ease-in-out infinite;
+      will-change: background-position, opacity;
+    }
+  }
+
+  /*
+    Ритм четырёх стилей. Разбор, зачем они разные, — в шапке Strokes.tsx.
+
+    Смещения намеренно мелкие: фигура должна дышать, а не ездить по панели.
+    Шесть-девять пикселей на картинке высотой около трёхсот — это примерно
+    два-три процента, ровно на грани заметности, и этого достаточно, чтобы
+    статичный силуэт перестал читаться наклейкой.
+  */
+  @keyframes stroke-rhythm-even {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-6px) rotate(-0.7deg);
+    }
+  }
+
+  @keyframes stroke-rhythm-wave {
+    0%,
+    100% {
+      transform: translateY(4px) rotate(1.1deg);
+    }
+    34% {
+      transform: translateY(-9px) rotate(-1.5deg);
+    }
+    68% {
+      transform: translateY(1px) rotate(0.3deg);
+    }
+  }
+
+  /*
+    Брасс: толчок, короткое зависание, возврат — и дальше пауза до конца
+    цикла. Пауза выражена кадрами, а не задержкой: задержка сработала бы
+    один раз перед первым проходом, а нужна она в каждом.
+  */
+  @keyframes stroke-rhythm-surge {
+    0% {
+      transform: translateY(0) rotate(0deg);
+    }
+    16% {
+      transform: translateY(-10px) rotate(-1.4deg);
+    }
+    30% {
+      transform: translateY(-8px) rotate(-1deg);
+    }
+    58%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .stroke-rhythm-even {
+      animation: stroke-rhythm-even 2.7s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .stroke-rhythm-slow {
+      animation-duration: 3.4s;
+    }
+
+    .stroke-rhythm-wave {
+      animation: stroke-rhythm-wave 2.3s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .stroke-rhythm-surge {
+      animation: stroke-rhythm-surge 3.9s cubic-bezier(0.3, 0, 0.2, 1) infinite;
+      will-change: transform;
+    }
+  }
+
   /* мягкое свечение под ключевыми элементами */
   .glow-accent {
     box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-lime-400) 30%, transparent),

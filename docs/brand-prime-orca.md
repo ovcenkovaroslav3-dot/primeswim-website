@@ -245,6 +245,47 @@ box, watermark, lettering, signature, stock-photo look, HDR, oversaturation.
 свет, кромка — всё, что вокруг фигуры. Сама фигура должна остаться той же,
 какой её узнают.
 
+### Силуэты четырёх стилей (`/trener/`)
+
+Секция техники объясняла стили одной лаймовой кривой: она показывает ритм
+гребка, но не показывает, как это выглядит. Родитель, читающий «баттерфляй»,
+в большинстве случаев представляет его смутно.
+
+**Первый заход отклонён целиком.** Просил скульптурные фигуры в том же
+регистре, что и талисман: «gender-neutral, no facial features, smooth
+simplified forms». Получились гладкие обнажённые манекены — на сайте детской
+школы плавания это недопустимо, и никакой правкой света не лечится. Серия не
+сохранена.
+
+**Что сработало — плоский силуэт.** Ключевые слова промта:
+
+```
+FLAT means: one solid uniform fill colour, absolutely no shading, no gradient,
+no highlight, no rim light, no volume, no anatomy detail — a clean cut-paper
+shape like a pictogram or a sports icon.
+The swimmer WEARS A SWIM CAP and a racing swimsuit — cap and suit are part of
+the same solid silhouette, but their outline must be clearly visible so the
+figure is obviously a clothed athlete, never a bare body.
+STRICTLY ONE FIGURE: no reflection, no mirrored copy below the water line,
+no duplicate limbs, no second body, no ghost shape.
+```
+
+Три оговорки, каждая из опыта:
+
+1. **`--background transparent`** — иначе силуэт ложится прямоугольником на
+   тёмную панель;
+2. **Явный запрет отражения.** Первая проба нарисовала под линией воды
+   зеркальную копию фигуры, и силуэт читался двоящимся;
+3. **Поза описывается подробно и с объяснением, что её выдаёт.** Без фразы
+   «the upward-facing chest and the straight vertical arm must make it
+   unmistakable that this is backstroke and not front crawl» спина и кроль
+   выходили одинаковыми.
+
+Дальше файлы обрабатывает `scripts/make-stroke-art.mjs`: находит линию воды,
+выравнивает её по центру у всех четырёх, срезает общее пустое поле и
+перекрашивает силуэт в `brand-400`. 8–13 КБ в AVIF на стиль, в разметке
+всегда одна картинка — та, чья вкладка открыта.
+
 ### Кадр, который запускался и отклонён
 
 **Векторный знак через Recraft V4.1** (`--model_type vector`): выдача пришла

@@ -44,41 +44,70 @@ import imageLoader from '@/lib/image-loader';
 */
 export function MascotOrca({ className = '' }: { className?: string }) {
   const src = (name: string) => imageLoader({ src: `/media/mascot/${name}` });
+  const maskSrc = src('orca-3d-sm.webp');
 
   return (
-    <picture className={`pointer-events-none block ${className}`.trim()}>
-      <source
-        type="image/avif"
-        media="(min-width: 768px)"
-        srcSet={src('orca-3d.avif')}
-      />
-      <source type="image/avif" srcSet={src('orca-3d-sm.avif')} />
-      <source
-        type="image/webp"
-        media="(min-width: 768px)"
-        srcSet={src('orca-3d.webp')}
-      />
-      {/*
-        Фигура декоративная: смысл первого экрана несут заголовок, факты и
-        фотография площадки, а не она. Пустой alt убирает её из чтения с
-        экрана — иначе программа объявляла бы картинку, за которой нет
-        сведений, которых нет в тексте рядом.
-      */}
-      <img
-        src={src('orca-3d-sm.webp')}
-        alt=""
-        aria-hidden="true"
-        width={760}
-        height={760}
-        decoding="async"
-        /*
-          Не priority. Кандидат в LCP на первом экране — фотография бассейна,
-          и очередь загрузки принадлежит ей: талисман, вставший в неё первым,
-          отодвинул бы единственное доказательство места ради украшения.
-        */
-        fetchPriority="low"
-        className="h-auto w-full select-none"
-      />
-    </picture>
+    /*
+      Обёртка отвечает за посадку, внутренний слой — за движение. Разделение
+      нужно, чтобы анимация не спорила с позиционированием: у обёртки свои
+      absolute-координаты, у ребёнка только transform.
+    */
+    <div className={`pointer-events-none ${className}`.trim()}>
+      <div className="praimi-hover relative">
+        <picture className="block">
+          <source
+            type="image/avif"
+            media="(min-width: 768px)"
+            srcSet={src('orca-3d.avif')}
+          />
+          <source type="image/avif" srcSet={src('orca-3d-sm.avif')} />
+          <source
+            type="image/webp"
+            media="(min-width: 768px)"
+            srcSet={src('orca-3d.webp')}
+          />
+          {/*
+            Фигура декоративная: смысл первого экрана несут заголовок, факты и
+            фотография площадки, а не она. Пустой alt убирает её из чтения с
+            экрана — иначе программа объявляла бы картинку, за которой нет
+            сведений, которых нет в тексте рядом.
+          */}
+          <img
+            src={src('orca-3d-sm.webp')}
+            alt=""
+            aria-hidden="true"
+            width={760}
+            height={760}
+            decoding="async"
+            /*
+              Не priority. Кандидат в LCP на первом экране — фотография
+              бассейна, и очередь загрузки принадлежит ей: талисман, вставший
+              в неё первым, отодвинул бы единственное доказательство места
+              ради украшения.
+            */
+            fetchPriority="low"
+            className="block h-auto w-full select-none"
+          />
+        </picture>
+
+        {/*
+          Блик по кромке. Маской служит сам файл талисмана, поэтому светлая
+          полоса видна только там, где у картинки непрозрачные пиксели, —
+          свет идёт по фигуре, а не по прямоугольнику вокруг неё.
+
+          Маска берётся маленькая: ей нужна форма, а не разрешение, и грузить
+          ради неё второй файл в полный размер незачем. На телефоне это тот же
+          файл, что и сам талисман, — браузер возьмёт его из кеша.
+        */}
+        <span
+          aria-hidden="true"
+          className="praimi-shine"
+          style={{
+            maskImage: `url(${maskSrc})`,
+            WebkitMaskImage: `url(${maskSrc})`,
+          }}
+        />
+      </div>
+    </div>
   );
 }
