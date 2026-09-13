@@ -38,6 +38,18 @@ const SRC = 'media-source/brand/strokes';
 const OUT = 'public/media/strokes';
 const NAMES = ['freestyle', 'backstroke', 'breaststroke', 'butterfly'];
 
+/*
+  ФАЗЫ ГРЕБКА. У стиля может быть одна картинка, а может быть цикл из
+  нескольких: первая лежит как <id>.png, остальные — в phases/<id>-2.png и
+  дальше. Скрипт собирает всё, что найдёт, и складывает кадры в общую систему
+  координат — иначе при перелистывании фигура прыгала бы по панели.
+
+  Почему кадры, а не видео и не трёхмерная модель: и то и другое на этой
+  странице стоило бы мегабайтов и просмотрщика, а покадровая смена силуэта
+  даёт то же движение за десяток килобайт и без единой строки JavaScript.
+*/
+const MAX_PHASES = 8;
+
 /* Панель показывается примерно в 420 px, берём двойную плотность с запасом. */
 const WIDTH = 900;
 
@@ -103,16 +115,31 @@ async function waterLineRow(file) {
   Общая высота берётся максимальная: так ни одна фигура не обрезается, а
   лишнее поле прозрачно и ничего не стоит.
 */
+/** Все файлы стиля по порядку: основной кадр, затем фазы. */
+async function phaseFiles(name) {
+  const files = [`${SRC}/${name}.png`];
+  for (let i = 2; i <= MAX_PHASES; i++) {
+    const file = `${SRC}/phases/${name}-${i}.png`;
+    try {
+      await stat(file);
+      files.push(file);
+    } catch {
+      break;
+    }
+  }
+  return files;
+}
+
 const centred = [];
 
 for (const name of NAMES) {
-  const file = `${SRC}/${name}.png`;
+  for (const [index, file] of (await phaseFiles(name)).entries()) {
   const meta = await sharp(file).metadata();
   const line = await waterLineRow(file);
 
   if (line === null) {
     throw new Error(
-      `${name}: линия воды не найдена — рисунок сделан не по промту из docs/brand-prime-orca.md`,
+      `${file}: линия воды не найдена — рисунок сделан не по промту из docs/brand-prime-orca.md`,
     );
   }
 
@@ -132,7 +159,15 @@ for (const name of NAMES) {
     .toBuffer();
 
   const size = await sharp(buffer).metadata();
-  centred.push({ name, buffer, height: size.height, line, srcHeight: meta.height });
+  centred.push({
+    name,
+    phase: index + 1,
+    buffer,
+    height: size.height,
+    line,
+    srcHeight: meta.height,
+  });
+  }
 }
 
 /*
@@ -189,14 +224,30 @@ for (const c of centred) {
 const bounds = await Promise.all(
   centred.map((c) => opaqueBounds(c.buffer, tallest)),
 );
+
+/*
+  ОБРЕЗКА СИММЕТРИЧНА ОТНОСИТЕЛЬНО ЦЕНТРА, И ЭТО НЕ ПРИДИРКА.
+
+  Первая версия резала по фактическим границам: сверху до самой верхней
+  непрозрачной строки, снизу до самой нижней. Границы эти несимметричны —
+  у кроля рука уходит высоко, у брасса ноги низко, — и вместе с полем
+  срезалось выравнивание, сделанное шагом раньше: линия воды переставала
+  проходить по центру. На панели это было видно сразу, потому что поверх
+  лежит лаймовая волна, и она оказывалась заметно выше линии в рисунке.
+
+  Теперь берётся наибольший отступ от центра в обе стороны, и рамка
+  строится от него. Поля чуть больше, зато линия воды остаётся ровно
+  посередине у всех четырёх.
+*/
+const centre = Math.round(tallest / 2);
 /* поле в 3% высоты, чтобы фигура не упиралась в край панели */
 const margin = Math.round(tallest * 0.03);
-const cropTop = Math.max(0, Math.min(...bounds.map((b) => b.top)) - margin);
-const cropBottom = Math.min(
-  tallest,
-  Math.max(...bounds.map((b) => b.bottom)) + margin,
+const reach = Math.max(
+  ...bounds.map((b) => Math.max(centre - b.top, b.bottom - centre)),
 );
-const canvasHeight = cropBottom - cropTop;
+const half = Math.min(centre, reach + margin);
+const cropTop = centre - half;
+const canvasHeight = half * 2;
 
 for (const c of centred) {
   c.buffer = await sharp(c.buffer)
@@ -206,10 +257,12 @@ for (const c of centred) {
 }
 
 console.log(
-  `общая рамка: ${tallest} → ${canvasHeight} px, срезано ${tallest - canvasHeight}`,
+  `общая рамка: ${tallest} → ${canvasHeight} px, срезано ${tallest - canvasHeight}, линия воды по центру`,
 );
 
-for (const { name, buffer, line, srcHeight } of centred) {
+for (const { name, phase, buffer, line, srcHeight } of centred) {
+  /* первая фаза сохраняет прежнее имя: на неё ссылается тест и разметка */
+  const slug = phase === 1 ? name : `${name}-${phase}`;
   /*
     Перекраска: альфа остаётся своей, цвет заливается сплошным. Композиция
     `dest-in` оставляет от заливки только то, что попало в непрозрачные
@@ -229,15 +282,20 @@ for (const { name, buffer, line, srcHeight } of centred) {
 
   await sharp(buf)
     .webp({ quality: 88, alphaQuality: 90, effort: 6 })
-    .toFile(`${OUT}/${name}.webp`);
-  await sharp(buf).avif({ quality: 60, effort: 6 }).toFile(`${OUT}/${name}.avif`);
+    .toFile(`${OUT}/${slug}.webp`);
+  await sharp(buf).avif({ quality: 60, effort: 6 }).toFile(`${OUT}/${slug}.avif`);
 
-  const w = (await stat(`${OUT}/${name}.webp`)).size / 1024;
-  const a = (await stat(`${OUT}/${name}.avif`)).size / 1024;
+  const w = (await stat(`${OUT}/${slug}.webp`)).size / 1024;
+  const a = (await stat(`${OUT}/${slug}.avif`)).size / 1024;
   console.log(
-    `${name.padEnd(13)} вода ${line}/${srcHeight} → центр, ${WIDTH}×${canvasHeight}, webp ${w.toFixed(0)} KB, avif ${a.toFixed(0)} KB`,
+    `${slug.padEnd(15)} вода ${line}/${srcHeight} → центр, ${WIDTH}×${canvasHeight}, webp ${w.toFixed(0)} KB, avif ${a.toFixed(0)} KB`,
   );
 }
+
+/* сводка по фазам — её переносят в PHASES в Strokes.tsx */
+const counts = {};
+for (const c of centred) counts[c.name] = (counts[c.name] ?? 0) + 1;
+console.log('фаз у стилей:', JSON.stringify(counts));
 
 console.log(`
 для разметки: width={${WIDTH}} height={${canvasHeight}}`);

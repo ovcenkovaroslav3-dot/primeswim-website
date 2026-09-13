@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 import { strokes } from '@/content/method';
 import imageLoader from '@/lib/image-loader';
@@ -59,6 +59,64 @@ const motion: Record<string, string> = {
   butterfly: 'stroke-rhythm-wave',
 };
 
+/*
+  У КАКИХ СТИЛЕЙ ЕСТЬ ПЕТЛЯ ДВИЖЕНИЯ.
+
+  Только у попеременных. Видеомодель уверенно знает кроль и спину — руки
+  чередуются, вход и пронос на месте — и плохо знает одновременные стили.
+  У брасса она сгибала колено так, что голень уходила вперёд-вниз, как при
+  вставании на колено: в брассе пятки идут вверх к тазу, стопы
+  разворачиваются наружу и делают круговой захлёст назад-внутрь. У
+  баттерфляя тело извивалось червём вместо волны от груди к тазу, а руки
+  не выходили из воды целиком. Четыре попытки промтом это не сдвинули.
+
+  НА САЙТЕ ШКОЛЫ ПЛАВАНИЯ НЕВЕРНАЯ ТЕХНИКА ХУЖЕ ОТСУТСТВИЯ АНИМАЦИИ: тренер
+  видит её за секунду, а родитель, которому показали неправильный гребок,
+  теряет к школе ровно то доверие, ради которого весь сайт и сделан.
+  Поэтому брасс и баттерфляй остаются неподвижными силуэтами со своим
+  ритмом покачивания — он показывает темп стиля и ничего не утверждает о
+  технике. Отклонённые ролики лежат в
+  media-source/brand/strokes/motion/rejected/, чтобы к ним не возвращались
+  по второму разу.
+
+  Появится верная петля — достаточно положить файлы и добавить стиль сюда.
+*/
+const HAS_MOTION = new Set(['freestyle', 'backstroke']);
+
+/*
+  ПЕТЛЯ ГРЕБКА.
+
+  У стиля есть короткий ролик: тот же плоский силуэт, но руки идут полный
+  цикл. Ролик подставляется вместо картинки, когда движение разрешено.
+
+  ПОЧЕМУ НЕ ПОКАДРОВАЯ АНИМАЦИЯ. Пробовали первой: четыре положения рук,
+  снятые по отдельности, и смена по opacity. Не сложилось по двум причинам
+  сразу. Каждый кадр — отдельная генерация, поэтому вторая рука от кадра к
+  кадру не менялась (гребок читался одноруким), а фигура смещалась и
+  «прыгала» при перелистывании. И четыре кадра на полуторасекундный цикл —
+  это меньше трёх кадров в секунду, плавным такое не бывает. Разбор —
+  в scripts/make-stroke-motion.mjs.
+
+  ПОЧЕМУ ВЫБОР ДЕЛАЕТСЯ В JAVASCRIPT, А НЕ В CSS. Спрятать ролик правилом
+  `prefers-reduced-motion` можно, но он всё равно скачается: около ста
+  килобайт тому, кто попросил у системы поменьше движения. Поэтому на
+  сервере рисуется картинка, а ролик подставляется уже в браузере и только
+  если движение разрешено. Заодно нет расхождения разметки при гидратации.
+*/
+function useMotionAllowed() {
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: no-preference)');
+    const apply = () => setAllowed(query.matches);
+    apply();
+    query.addEventListener('change', apply);
+    return () => query.removeEventListener('change', apply);
+  }, []);
+
+  return allowed;
+}
+
 export function Strokes() {
   const [active, setActive] = useState(0);
   const uid = useId();
@@ -78,6 +136,7 @@ export function Strokes() {
   };
 
   const stroke = strokes[active];
+  const motionAllowed = useMotionAllowed() && HAS_MOTION.has(stroke.id);
 
   return (
     <section
@@ -169,14 +228,46 @@ export function Strokes() {
               </ul>
             </div>
 
-            {/* силуэт стиля, поверх него — траектория гребка */}
+            {/*
+              Петля гребка. Схемы траектории здесь больше нет: пока силуэт
+              был неподвижен, лаймовая кривая заменяла движение — показывала
+              путь руки над водой и под ней. Движущийся пловец показывает то
+              же самое прямо, и держать рядом две вещи об одном незачем.
+              Данные траектории (`stroke.path`) остались в content/method.ts:
+              они верные и могут пригодиться, а мёртвого кода в разметке нет.
+
+              Лайма в секции теперь нет вовсе, и это правильно по системе:
+              акцент принадлежит действию, а здесь объяснение, а не действие.
+            */}
             <div className="relative overflow-hidden rounded-[16px] bg-abyss-900">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 bg-linear-to-br from-brand-600/25 via-transparent to-lime-500/18"
               />
 
-              <div className="relative aspect-900/763">
+              <div className="relative aspect-900/740">
+                {/*
+                  Линия воды — единственный лайм в секции, и он здесь не для
+                  красоты. Убрав траекторию гребка, панель осталась вовсе без
+                  акцента: одна фиолетовая фигура на фиолетовой подложке.
+                  Возвращать кривую нельзя — она и была тем, что резало
+                  силуэт, — а линия воды лежит ровно там, где фигура её и так
+                  пересекает по смыслу, и потому ничего не портит.
+
+                  ВОЛНОЙ, А НЕ ПРЯМОЙ. Прямая читалась чертёжной осью, а не
+                  поверхностью воды. Волна нарисована двумя периодами на
+                  ширину блока и медленно сносится вбок ровно на один период —
+                  поэтому петля сходится без скачка и заметить её повтор
+                  нечем. Снос очень медленный: вода должна дышать, а не течь.
+
+                  Стоит поверх ролика и совпадает с его собственной линией:
+                  и та и другая проходят по центру блока (выравнивание —
+                  в scripts/make-stroke-art.mjs).
+                */}
+                <span
+                  aria-hidden="true"
+                  className="stroke-waterline pointer-events-none absolute inset-x-0 top-1/2 z-10 h-2 -translate-y-1/2"
+                />
                 {/*
                   Силуэт декоративен: что за стиль, уже сказано заголовком
                   вкладки и списком рядом, и второе объявление той же вещи
@@ -185,60 +276,78 @@ export function Strokes() {
                   Линия воды в самом рисунке выведена ровно на его середину
                   (scripts/make-stroke-art.mjs), поэтому схема ниже ставится
                   по центру того же блока — и две линии воды совпадают.
-                */}
-                <picture
-                  key={`${stroke.id}-art`}
-                  className={`absolute inset-0 block size-full ${motion[stroke.id] ?? ''}`}
-                >
-                  <source
-                    type="image/avif"
-                    srcSet={imageLoader({
-                      src: `/media/strokes/${stroke.id}.avif`,
-                    })}
-                  />
-                  <img
-                    src={imageLoader({ src: `/media/strokes/${stroke.id}.webp` })}
-                    alt=""
-                    aria-hidden="true"
-                    width={900}
-                    height={588}
-                    loading="lazy"
-                    decoding="async"
-                    className="size-full object-contain p-4"
-                  />
-                </picture>
 
-              <svg
-                key={stroke.id}
-                viewBox="0 0 200 100"
-                className="absolute inset-x-0 top-1/2 w-full -translate-y-1/2"
-                role="img"
-                aria-label={`Схема траектории гребка: ${stroke.name}`}
-              >
-                <path
-                  d={stroke.path}
-                  fill="none"
-                  stroke="var(--color-lime-400)"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  pathLength={1}
-                  style={{
-                    strokeDasharray: 1,
-                    strokeDashoffset: 1,
-                    animation: 'stroke-draw 1.8s var(--ease-out-soft) forwards',
-                  }}
-                />
-                <circle
-                  r="3.6"
-                  fill="var(--color-lime-100)"
-                  style={{
-                    offsetPath: `path("${stroke.path}")`,
-                    offsetRotate: '0deg',
-                    animation:
-                      'stroke-travel 3.2s var(--ease-out-soft) 1.4s infinite',
-                  }}
-                />
-              </svg>
+                  ТРАЕКТОРИЯ ЛЕЖИТ ПОД ФИГУРОЙ, А НЕ ПОВЕРХ. Сверху она
+                  разрезала силуэт пополам: два главных объекта панели
+                  спорили, и не читался ни один. Уменьшать фигуру пробовали
+                  — она теряла присутствие, а кривая всё равно шла по
+                  корпусу. Снизу кривая выходит из-за тела с обеих сторон и
+                  скрывается за ним — так и должно быть: часть гребка правда
+                  проходит под пловцом.
+                */}
+
+                <div
+                  key={`${stroke.id}-art`}
+                  className={`absolute inset-0 ${motionAllowed ? '' : (motion[stroke.id] ?? '')}`}
+                >
+                  {motionAllowed ? (
+                    /*
+                      Ролик беззвучный, зациклен и играет сам: это не контент,
+                      а иллюстрация движения, и кнопка воспроизведения тут была
+                      бы лишним действием. playsInline обязателен — без него
+                      iOS открывает видео на весь экран по первому касанию.
+                    */
+                    <video
+                      key={`${stroke.id}-video`}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      poster={imageLoader({
+                        src: `/media/strokes/${stroke.id}.webp`,
+                      })}
+                      width={840}
+                      height={549}
+                      aria-hidden="true"
+                      className="size-full object-cover"
+                    >
+                      <source
+                        type="video/webm"
+                        src={imageLoader({
+                          src: `/media/strokes/${stroke.id}.webm`,
+                        })}
+                      />
+                      <source
+                        type="video/mp4"
+                        src={imageLoader({
+                          src: `/media/strokes/${stroke.id}.mp4`,
+                        })}
+                      />
+                    </video>
+                  ) : (
+                    <picture className="absolute inset-0 block size-full">
+                      <source
+                        type="image/avif"
+                        srcSet={imageLoader({
+                          src: `/media/strokes/${stroke.id}.avif`,
+                        })}
+                      />
+                      <img
+                        src={imageLoader({
+                          src: `/media/strokes/${stroke.id}.webp`,
+                        })}
+                        alt=""
+                        aria-hidden="true"
+                        width={900}
+                        height={740}
+                        loading="lazy"
+                        decoding="async"
+                        className="size-full object-contain p-[5%]"
+                      />
+                    </picture>
+                  )}
+                </div>
               </div>
             </div>
           </div>
