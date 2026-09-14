@@ -480,6 +480,46 @@
     }
   }
 
+  /*
+    ПРЫЖОК В КАРТОЧКЕ ПРИНЯТОЙ ЗАЯВКИ — единственная анимация Прайми, которая
+    играет сама и один раз.
+
+    Повод разовый и заслуженный: родитель только что сделал то, ради чего
+    сайт существует. Всё остальное движение на сайте либо непрерывно и еле
+    заметно, либо им управляет человек, — здесь наоборот, и это не
+    противоречие, а разница между фоном и событием. Петля на этом месте
+    превратила бы событие обратно в фон.
+
+    Заваливание назад в начале и перелёт на 62% — это замах и гашение:
+    без них подъём читается лифтом. Поворот, как и везде, считается от
+    хвоста.
+  */
+  @keyframes praimi-leap {
+    0% {
+      transform: translate3d(7%, 42%, 0) scale(0.84) rotate(-13deg);
+      opacity: 0;
+    }
+    22% {
+      opacity: 1;
+    }
+    62% {
+      transform: translate3d(-1%, -7%, 0) scale(1.04) rotate(4deg);
+      opacity: 1;
+    }
+    100% {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .praimi-leap {
+      animation: praimi-leap 1.05s cubic-bezier(0.18, 0.72, 0.3, 1) both;
+      transform-origin: 76% 80%;
+      will-change: transform, opacity;
+    }
+  }
+
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
       .praimi-arc {

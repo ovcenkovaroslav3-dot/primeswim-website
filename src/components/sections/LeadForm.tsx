@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
+import { MascotOrca } from '../MascotOrca';
 import { buttonClass } from '../ui';
 import { readSource } from '@/lib/campaign-source';
 import { contacts } from '@/content/contacts';
@@ -205,6 +206,18 @@ export function LeadForm() {
         tabIndex={-1}
         className="on-light rounded-[20px] bg-surface p-8 text-center sm:p-12"
       >
+        {/*
+          Прайми выпрыгивает один раз, когда карточка появилась.
+
+          Это единственное место на сайте, где движение играет само собой, и
+          повод здесь заслуженный: родитель только что сделал то, ради чего
+          сайт существует. Раздражать оно не может по устройству — карточку
+          видят один раз и только после отправки.
+
+          Галочка осталась и стоит выше. Дело карточки — мгновенно сказать
+          «принято», и этим занимается знак, который читается без разглядывания;
+          Прайми добавляет к сообщению интонацию, но не заменяет его.
+        */}
         <div className="mx-auto grid size-14 place-items-center rounded-full bg-lime-400">
           <svg width="26" height="20" viewBox="0 0 26 20" fill="none" aria-hidden="true">
             <path
@@ -216,6 +229,11 @@ export function LeadForm() {
             />
           </svg>
         </div>
+
+        <MascotOrca
+          motion="celebrate"
+          className="mx-auto mt-4 w-[124px] sm:w-[142px]"
+        />
         <p className="mt-6 text-2xl font-extralight text-ink sm:text-3xl">
           Заявка принята
         </p>

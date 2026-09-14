@@ -42,7 +42,21 @@ import imageLoader from '@/lib/image-loader';
   AVIF первым, WebP запасным: браузер берёт первый формат, который понимает.
   Собирается всё одной командой — node scripts/make-mascot-web.mjs.
 */
-export function MascotOrca({ className = '' }: { className?: string }) {
+export function MascotOrca({
+  className = '',
+  /*
+    Где стоит фигура, такой у неё и повод двигаться.
+
+    `hero` — первый экран: прыжок дорабатывается прокруткой страницы.
+    `celebrate` — карточка принятой заявки: прыжок проигрывается один раз,
+    когда карточка появилась. Там прокрутка ни при чём — повод разовый, и
+    петля на этом месте превратила бы событие в фон.
+  */
+  motion = 'hero',
+}: {
+  className?: string;
+  motion?: 'hero' | 'celebrate';
+}) {
   const src = (name: string) => imageLoader({ src: `/media/mascot/${name}` });
   const maskSrc = src('orca-3d-mask.png');
 
@@ -57,7 +71,9 @@ export function MascotOrca({ className = '' }: { className?: string }) {
       слоям, они перемножаются. Посадке это не мешает: обёртка стоит на
       top/right, а не на сдвиге.
     */
-    <div className={`praimi-arc pointer-events-none ${className}`.trim()}>
+    <div
+      className={`${motion === 'hero' ? 'praimi-arc' : 'praimi-leap'} pointer-events-none ${className}`.trim()}
+    >
       <div className="praimi-hover relative">
         <picture className="block">
           <source
