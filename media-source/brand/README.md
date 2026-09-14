@@ -5,7 +5,7 @@
 
 ## Что из чего получается
 
-    praimi-breach-cutout-v1.png          ← единственный настоящий исходник
+    praimi-breach-cutout-v2.png          ← единственный настоящий исходник
       └─ node scripts/make-mascot-web.mjs
            public/media/mascot/orca-3d.{webp,avif}      экраны от 768
            public/media/mascot/orca-3d-sm.{webp,avif}   телефоны
@@ -32,7 +32,8 @@
 
 | Файл | Что |
 |---|---|
-| `praimi-breach-cutout-v1.png` | «Прорыв» на прозрачном фоне, 2048², **не трогать** |
+| `praimi-breach-cutout-v2.png` | «Прорыв» на прозрачном фоне, 2048², **не трогать** |
+| `praimi-breach-cutout-v1-archive.png` | первая версия, с низким плавником — архив |
 | `praimi-breach-vertical-v1.jpg` | «Прорыв», вертикаль 9:16 — Reels, обложки |
 | `prime-orca-3d-styleframe-v1.jpg` | спокойная поза, квадрат — наклейки, дипломы, мерч |
 | `prime-orca-vertical-v1.jpg` | спокойная поза, вертикаль — шапки каналов |
