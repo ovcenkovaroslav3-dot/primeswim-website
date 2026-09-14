@@ -152,7 +152,13 @@ async function waterLineRow(frame) {
     }
     if (count > best.count) best = { row: y, count };
   }
-  return { row: best.row, height: info.height, width: info.width };
+  return {
+    row: best.row,
+    /* доля строки, занятая яркими пикселями: по ней решают, есть ли полоса */
+    share: best.count / info.width,
+    height: info.height,
+    width: info.width,
+  };
 }
 
 for (const file of files.sort()) {
@@ -213,17 +219,52 @@ for (const file of files.sort()) {
     не фон. Отступ в один пиксель от краёв — требование самого фильтра,
     рамка не должна касаться границы кадра.
   */
-  const lineHalf = Math.max(3, Math.round((4 * line.width) / WIDTH));
+  /*
+    ЛИНИЯ СТИРАЕТСЯ ПРОДОЛЖЕНИЕМ СОСЕДНЕГО МАТЕРИАЛА, А НЕ ИНТЕРПОЛЯЦИЕЙ.
+
+    Сначала здесь стоял delogo — фильтр ровно для такой задачи, он затягивает
+    прямоугольник, смешивая его края. На кроле и спине вышло чисто, а на
+    баттерфляе поперёк пловца появился разрез, и его заметил владелец.
+
+    Причина в том, где проходит линия. Она нарисована поверх кадра, и на
+    баттерфляе ровно по ней меняется материал: сверху фон, снизу тело. Любое
+    усреднение краёв даёт в этом месте тёмную полосу — смесь фона с телом,
+    то есть цвет, которого в рисунке нет.
+
+    Рисунок плоский, двухцветный, поэтому правильный ход — не усреднять, а
+    продолжить то, что рядом: верхняя половина полосы берёт строку сверху,
+    нижняя — снизу. Граница материалов при этом восстанавливается с точностью
+    до пикселя, а на однородном участке не меняется вовсе.
+
+    Стирание включается, только если яркая строка действительно есть.
+  */
+  const lineTop = padded / 2 - 1;
+  const lineBottom = padded / 2 + 2;
+  const copyFrom = (ch) =>
+    `if(between(Y,${lineTop},${lineBottom}),` +
+    `if(lte(Y,${padded / 2}),${ch}(X,${lineTop - 1}),${ch}(X,${lineBottom + 1})),` +
+    `${ch}(X,Y))`;
   const erase =
-    `delogo=x=1:y=${padded / 2 - lineHalf}:w=${line.width - 2}:h=${lineHalf * 2}`;
+    line.share > 0.5
+      ? [`geq=r='${copyFrom('r')}':g='${copyFrom('g')}':b='${copyFrom('b')}'`]
+      : [];
 
   const palette = PALETTE_NORMALIZATION[name];
   const filters = [
     pad,
-    erase,
+    ...erase,
     ...(palette ? [`geq=${paletteFilter(palette)}`] : []),
     `scale=${WIDTH}:-2`,
     ...(TEMPORAL_NORMALIZATION[name] ?? []),
+    /*
+      Формат возвращается к yuv420p в самом конце цепочки.
+
+      geq работает в RGB и отдаёт кадр в нём же. H.264 это не мешало — там
+      формат задан ключом явно, — а VP9 брал что дают и кодировал плоские
+      заливки втрое дороже: webm спины вырос со 159 до 461 KB. Одна строка в
+      фильтрах дешевле, чем ключ у каждого кодека.
+    */
+    'format=yuv420p',
   ].join(',');
 
   /*
@@ -252,6 +293,6 @@ for (const file of files.sort()) {
   const mp4 = (await stat(`${OUT}/${name}.mp4`)).size / 1024;
   const webm = (await stat(`${OUT}/${name}.webm`)).size / 1024;
   console.log(
-    `${name.padEnd(13)} вода ${line.row}/${line.height} → центр, ${src.toFixed(0)} KB → mp4 ${mp4.toFixed(0)} KB, webm ${webm.toFixed(0)} KB`,
+    `${name.padEnd(13)} вода ${line.row}/${line.height} (${Math.round(line.share * 100)}% строки)${erase.length ? ', полоса стёрта' : ', полосы нет'} → центр, ${src.toFixed(0)} KB → mp4 ${mp4.toFixed(0)} KB, webm ${webm.toFixed(0)} KB`,
   );
 }
