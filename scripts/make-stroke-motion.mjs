@@ -143,19 +143,40 @@ async function waterLineRow(frame) {
     if (v > max) max = v;
   }
   const threshold = min + (max - min) * 0.45;
-  let best = { row: 0, count: -1 };
+  const counts = [];
   for (let y = 0; y < info.height; y++) {
     let count = 0;
     for (let x = 0; x < info.width; x++) {
       const i = (y * info.width + x) * info.channels;
       if ((data[i] + data[i + 1] + data[i + 2]) / 3 > threshold) count++;
     }
-    if (count > best.count) best = { row: y, count };
+    counts.push(count);
   }
+
+  const peak = counts.indexOf(Math.max(...counts));
+
+  /*
+    Возвращается вся полоса, а не одна строка.
+
+    Раньше отдавалась только самая яркая, и по ней же велось выравнивание —
+    для выравнивания этого хватает. Но стирать по одной строке нельзя:
+    толщина линии от одной до пяти строк, а argmax у брасса попадал на нижний
+    край полосы (338–342, он отдавал 342). Рамка стирания, построенная от
+    неё, срезала половину линии, и остаток оставался на панели — замер
+    находил его у трёх стилей из четырёх.
+  */
+  const edge = counts[peak] * 0.6;
+  let top = peak;
+  let bottom = peak;
+  while (top > 0 && counts[top - 1] > edge) top--;
+  while (bottom < info.height - 1 && counts[bottom + 1] > edge) bottom++;
+
   return {
-    row: best.row,
+    row: peak,
+    top,
+    bottom,
     /* доля строки, занятая яркими пикселями: по ней решают, есть ли полоса */
-    share: best.count / info.width,
+    share: counts[peak] / info.width,
     height: info.height,
     width: info.width,
   };
@@ -238,11 +259,17 @@ for (const file of files.sort()) {
 
     Стирание включается, только если яркая строка действительно есть.
   */
-  const lineTop = padded / 2 - 1;
-  const lineBottom = padded / 2 + 2;
+  /*
+    Рамка строится по найденным границам полосы плюс две строки запаса на
+    сглаженные края. С правилом продолжения материала запас безвреден:
+    лишние строки просто повторяют соседа.
+  */
+  const LINE_PAD = 2;
+  const lineTop = line.top + offsetY - LINE_PAD;
+  const lineBottom = line.bottom + offsetY + LINE_PAD;
   const copyFrom = (ch) =>
     `if(between(Y,${lineTop},${lineBottom}),` +
-    `if(lte(Y,${padded / 2}),${ch}(X,${lineTop - 1}),${ch}(X,${lineBottom + 1})),` +
+    `if(lte(Y,${(lineTop + lineBottom) / 2}),${ch}(X,${lineTop - 1}),${ch}(X,${lineBottom + 1})),` +
     `${ch}(X,Y))`;
   const erase =
     line.share > 0.5
