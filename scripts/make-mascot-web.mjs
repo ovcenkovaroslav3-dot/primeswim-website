@@ -90,6 +90,46 @@ for (const { name, width } of SIZES) {
 }
 
 /*
+  ОТДЕЛЬНАЯ МАСКА ДЛЯ БЛИКА — ПОТОМУ ЧТО ПЕРЕИСПОЛЬЗОВАТЬ ГОТОВЫЙ ФАЙЛ НЕЛЬЗЯ.
+
+  Блик по кромке (`.praimi-shine`) маскируется формой фигуры, и сначала маской
+  служил сам талисман в WebP — с расчётом, что телефон уже скачал этот файл и
+  возьмёт его из кеша. Расчёт держался ровно до тех пор, пока рядом не лёг
+  AVIF: <picture> стал отдавать телефону `orca-3d-sm.avif`, а маска по-прежнему
+  просила `.webp`. Сетевой замер показал оба файла — 21 KB плюс 38 KB, второй
+  целиком ради формы.
+
+  Подставить в маску AVIF нельзя: у `mask-image` нет согласования форматов, а
+  если файл не поймут, свойство считается пустым — и градиент ляжет прямоугольником
+  поверх фигуры. Это хуже, чем отсутствие блика.
+
+  Поэтому маска своя: только альфа, белым по прозрачному, PNG — формат,
+  который понимают все. Разрешения ей нужно немного: она растягивается под
+  элемент и держит форму, а не детали. 240 px против 420 у самой фигуры — это
+  9 KB вместо 38.
+*/
+const MASK_WIDTH = 240;
+const maskShape = sharp(trimmed.data).resize({ width: MASK_WIDTH });
+const maskAlpha = await maskShape.clone().extractChannel('alpha').toBuffer();
+const maskMeta = await maskShape.clone().toBuffer({ resolveWithObject: true });
+
+await sharp({
+  create: {
+    width: maskMeta.info.width,
+    height: maskMeta.info.height,
+    channels: 3,
+    background: '#ffffff',
+  },
+})
+  .joinChannel(maskAlpha)
+  .png({ compressionLevel: 9, palette: true })
+  .toFile(`${OUT}/orca-3d-mask.png`);
+
+console.log(
+  `orca-3d-mask.png: ${((await stat(`${OUT}/orca-3d-mask.png`)).size / 1024).toFixed(0)} KB (маска блика)`,
+);
+
+/*
   Размеры готового файла нужны разметке: без width/height браузер не знает
   пропорций до загрузки и двигает соседей, когда картинка приходит. Печатаем
   их здесь, чтобы не подглядывать в файл руками.
