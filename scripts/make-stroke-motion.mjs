@@ -26,7 +26,9 @@
  * поддержанный, а H.264 понимают все. Размер у них одинаковый до килобайта,
  * так что дело не в экономии — просто webm не требует лицензий на кодек.
  *
- * ЗАПУСК: node scripts/make-stroke-motion.mjs   (нужен ffmpeg в PATH)
+ * ЗАПУСК: node scripts/make-stroke-motion.mjs              (все стили)
+ *         node scripts/make-stroke-motion.mjs butterfly    (один стиль)
+ * Нужен ffmpeg в PATH.
  */
 
 import { execFile } from 'node:child_process';
@@ -67,6 +69,19 @@ const PALETTE_NORMALIZATION = {
   butterfly: { threshold: 70, transition: 80 },
 };
 
+/*
+  Брасс из временной дорожки получился ступенчатым рядом с кролем.
+  Motion-compensated interpolation строит промежуточные положения: 48 fps
+  вместо 24 без обычного растворения и «многоруких» наложений. Исходный темп
+  и читаемая фаза скольжения сохраняются. Баттерфляй уже приходит из своей
+  сборки в 48 fps и повторно интерполировать его нельзя.
+*/
+const TEMPORAL_NORMALIZATION = {
+  breaststroke: [
+    'minterpolate=fps=48:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1',
+  ],
+};
+
 function paletteFilter({ threshold, transition }) {
   const mask = `clip((b(X,Y)-${threshold})/${transition},0,1)`;
   return [
@@ -79,9 +94,16 @@ function paletteFilter({ threshold, transition }) {
 
 await mkdir(OUT, { recursive: true });
 
-const files = (await readdir(SRC)).filter((f) => f.endsWith('.mp4'));
+const requested = new Set(process.argv.slice(2));
+const files = (await readdir(SRC)).filter((file) => {
+  if (!file.endsWith('.mp4')) return false;
+  return !requested.size || requested.has(file.replace(/\.mp4$/, ''));
+});
 if (!files.length) {
-  throw new Error(`В ${SRC} нет исходных роликов.`);
+  const suffix = requested.size
+    ? ` для: ${[...requested].join(', ')}`
+    : '';
+  throw new Error(`В ${SRC} нет исходных роликов${suffix}.`);
 }
 
 /**
@@ -177,6 +199,7 @@ for (const file of files.sort()) {
     pad,
     ...(palette ? [`geq=${paletteFilter(palette)}`] : []),
     `scale=${WIDTH}:-2`,
+    ...(TEMPORAL_NORMALIZATION[name] ?? []),
   ].join(',');
 
   /*
