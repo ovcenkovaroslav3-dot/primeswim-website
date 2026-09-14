@@ -27,19 +27,20 @@ export const heroImage: MediaItem = {
   height: 1400,
 };
 
-/**
- * Фирменный талисман — косатка в шапочке для плавания.
- *
- * Это иллюстрация, а не фотография тренера или бассейна. На первом экране
- * она работает только вместе с настоящим кадром площадки и не подменяет его.
- */
-export const mascot: MediaItem = {
-  src: '/media/mascot/orca-v1.webp',
-  alt: 'Талисман PRIME SWIM — улыбающаяся косатка в шапочке и очках для плавания',
-  width: 1024,
-  height: 1536,
-};
+/*
+  ТАЛИСМАНА ЗДЕСЬ БОЛЬШЕ НЕТ, И ЭТО НЕ ПРОПУСК.
 
+  Объёмная косатка живёт четырьмя файлами — два размера на два формата, —
+  и в MediaItem с одним `src` они не укладываются. Раскладку и разметку
+  держит components/MascotOrca.tsx, файлы собираются командой
+  `node scripts/make-mascot-web.mjs` из выреза в media-source/brand/.
+
+  Запись с одним путём и пустым alt, стоявшая тут раньше, ничего не
+  описывала и никем не читалась — реестр, который врёт, хуже отсутствующего.
+
+  Прежний талисман (мультяшная косатка в шапочке) лежит там же,
+  `orca-v1.webp`; почему он снят — в docs/brand-prime-orca.md.
+*/
 /** Фотографии бассейна МГИК. */
 export const poolImages: MediaItem[] = [
   {
@@ -276,6 +277,21 @@ function derivative(
  * берутся: в квадратной обрезке от снимка остаётся текст на стене, а не
  * дети в воде. В самой галерее они остаются — там кадр показан целиком.
  * Это то же правило, по которому из видео отобраны три клипа из шести.
+ *
+ * ДВА КАДРА ЗАМЕНЕНЫ 13 сентября 2026 по тому же правилу, только про свет,
+ * а не про баннеры. `award-handshake` и `teens-celebrating-medals` сняты в
+ * коридоре при верхнем лампном свете: в квадрате от них остаются кафель,
+ * тень и полуодетые подростки — сюжет «соревнования» по ним не читается, а
+ * общее впечатление от сетки падает до уровня родительского чата. На их
+ * месте `two-girls-pink-fins` (медали, бортик, дневной свет) и
+ * `teen-swimmers-long-fins` (взрослая группа с лопатками у воды). Первый
+ * сохраняет довод про старты, второй — про то, что школа работает и с
+ * подростками, а не только с малышами. Оба остались в полной галерее.
+ *
+ * Меняя этот список, пересоберите плитки:
+ *   node scripts/make-gallery-tiles.mjs
+ * Без этого страница запросит файл, которого нет, и картинка будет битой —
+ * <picture> на 404 к запасному варианту не откатывается.
  */
 const highlightSources = [
   '/media/gallery/coach-briefing-at-blocks.jpg',
@@ -283,8 +299,8 @@ const highlightSources = [
   '/media/gallery/coach-with-young-swimmers.jpg',
   '/media/gallery/two-kids-goggles-thumbs-up.jpg',
   '/media/gallery/kids-yellow-kickboards.jpg',
-  '/media/gallery/award-handshake.jpg',
-  '/media/gallery/teens-celebrating-medals.jpg',
+  '/media/gallery/two-girls-pink-fins.jpg',
+  '/media/gallery/teen-swimmers-long-fins.jpg',
   '/media/gallery/team-group-competition.jpg',
 ];
 

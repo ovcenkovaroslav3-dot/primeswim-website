@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { buttonClass } from '../ui';
 import { readSource } from '@/lib/campaign-source';
@@ -40,8 +40,22 @@ import { trackGoal } from '@/lib/analytics';
 */
 
 const labelClass = 'mb-2 block text-sm font-medium text-ink';
+/*
+  ЗДЕСЬ СТОЯЛ outline-none, И ЭТО БЫЛА ОШИБКА.
+
+  Он гасил общую обводку фокуса — три пикселя фирменного фиолетового,
+  заданные в globals.css для всего сайта, — и от индикатора оставалась
+  смена цвета рамки в один пиксель: с бледно-сиреневого на фиолетовый.
+  Формально это видимый фокус, фактически на белой карточке при беглом
+  взгляде не разобрать, какое поле активно. И получалось навыворот:
+  самая важная интерактивная поверхность сайта была отмечена слабее
+  любой ссылки в подвале.
+
+  Обводка вернулась, смена цвета рамки осталась рядом — вместе они
+  читаются и на светлом, и при увеличении.
+*/
 const fieldClass =
-  'min-h-12 w-full rounded-[10px] border bg-surface px-4 py-3 text-ink outline-none transition-colors placeholder:text-ink-muted focus:border-brand-500 disabled:opacity-60';
+  'min-h-12 w-full rounded-[10px] border bg-surface px-4 py-3 text-ink transition-colors placeholder:text-ink-muted focus:border-brand-500 disabled:opacity-60';
 
 /** Адрес приёмника заявок. Пустой — значит форма отправлять некуда. */
 const endpoint = process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim() || '';
@@ -70,6 +84,23 @@ export function LeadForm() {
   const [ticket, setTicket] = useState('');
   const [failure, setFailure] = useState('');
   const [trap, setTrap] = useState('');
+  const sentRef = useRef<HTMLDivElement>(null);
+
+  /*
+    Успех заменяет форму целиком — и до этой правки не сообщал об этом никак.
+    Фокус оставался на кнопке «Отправить», которой в разметке больше нет:
+    браузер возвращает его на <body>, то есть человек, идущий по табу или
+    слушающий страницу, оказывался в начале документа без единого слова о
+    том, ушла заявка или нет. Неудача при этом объявлялась (role="alert"),
+    и получалось, что об отказе сообщаем, а об успехе молчим.
+
+    role="status" объявит текст сам, фокус на карточке вернёт клавиатуру
+    ровно туда, где теперь лежит ответ. tabIndex -1 нужен затем, чтобы
+    карточка принимала фокус программно, но не вставала в обход табом.
+  */
+  useEffect(() => {
+    if (status === 'sent') sentRef.current?.focus();
+  }, [status]);
 
   /*
     «Форма начата» — ровно один раз на экземпляр формы. Ref, а не state:
@@ -168,7 +199,12 @@ export function LeadForm() {
 
   if (status === 'sent') {
     return (
-      <div className="rounded-[20px] bg-surface p-8 text-center sm:p-12">
+      <div
+        ref={sentRef}
+        role="status"
+        tabIndex={-1}
+        className="on-light rounded-[20px] bg-surface p-8 text-center sm:p-12"
+      >
         <div className="mx-auto grid size-14 place-items-center rounded-full bg-lime-400">
           <svg width="26" height="20" viewBox="0 0 26 20" fill="none" aria-hidden="true">
             <path
@@ -209,7 +245,11 @@ export function LeadForm() {
   const sending = status === 'sending';
 
   return (
-    <form onSubmit={onSubmit} noValidate className="rounded-[20px] bg-surface p-6 sm:p-8">
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      className="on-light rounded-[20px] bg-surface p-6 sm:p-8"
+    >
       <div className="grid gap-5">
         <div>
           <label htmlFor="lead-name" className={labelClass}>

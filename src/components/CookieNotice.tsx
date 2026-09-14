@@ -112,7 +112,13 @@ export function CookieNotice() {
           <button
             type="button"
             onClick={() => writeConsent('denied')}
-            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-[10px] border border-hairline px-4 text-sm font-medium text-ink-soft transition-colors hover:bg-surface-alt sm:flex-none sm:px-5"
+            /*
+              На узком экране подпись из двух слов переносилась внутри кнопки
+              и вставала в две строки против одной у соседней — при равных
+              по замыслу кнопках это читалось как «главная тут одна». Кегль
+              на телефоне на шаг мельче, дальше прежний.
+            */
+            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-[10px] border border-hairline px-3 text-[13px] font-medium whitespace-nowrap text-ink-soft transition-colors hover:bg-surface-alt sm:flex-none sm:px-5 sm:text-sm"
           >
             Только необходимые
           </button>

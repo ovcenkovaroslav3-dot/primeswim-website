@@ -1,6 +1,4 @@
-import Link from 'next/link';
-
-import { Section, SectionHeading } from '../ui';
+import { ArrowLink, ButtonLink, Section, SectionHeading } from '../ui';
 import { schedule } from '@/content/schedule';
 import { prices, pricesNote } from '@/content/prices';
 
@@ -72,30 +70,13 @@ export function PlanPreview() {
             Тренировка — 45 минут, группа до 12 человек.
           </p>
 
-          <Link
+          <ArrowLink
             href="/raspisanie/"
             data-goal="cta_schedule"
-            prefetch={false}
-            className="lift group mt-4 -mb-1 inline-flex items-center gap-2 self-start py-1 text-sm font-medium text-brand-600"
+            className="mt-5 self-start"
           >
             Всё расписание
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 18 18"
-              fill="none"
-              aria-hidden="true"
-              className="transition-transform duration-200 group-hover:translate-x-1"
-            >
-              <path
-                d="M3 9h12M10 4l5 5-5 5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+          </ArrowLink>
         </div>
 
         {/* стоимость */}
@@ -138,30 +119,52 @@ export function PlanPreview() {
             {pricesNote}
           </p>
 
-          <Link
-            href="/price/"
-            prefetch={false}
-            className="lift group mt-4 -mb-1 inline-flex items-center gap-2 self-start py-1 text-sm font-medium text-brand-600"
-          >
+          <ArrowLink href="/price/" className="mt-5 self-start">
             Условия оплаты и абонемента
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 18 18"
-              fill="none"
-              aria-hidden="true"
-              className="transition-transform duration-200 group-hover:translate-x-1"
-            >
-              <path
-                d="M3 9h12M10 4l5 5-5 5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+          </ArrowLink>
         </div>
+      </div>
+
+      {/*
+        Запись стоит ровно здесь, и это единственная кнопка между первым
+        экраном и финальной формой.
+
+        Раньше между ними не было ничего: родитель прокручивал время, цену,
+        тренера, галерею и бассейн — пять экранов — и всё это время
+        единственной кнопкой под рукой оставалась липкая панель на телефоне.
+        На десктопе не было и её: только кнопка в шапке, которую на прокрутке
+        не ищут.
+
+        Именно после расписания и стоимости, а не после тренера или галереи:
+        человек только что получил ответ на два вопроса, с которыми пришёл, и
+        это первый момент, когда «записаться» — следующий по смыслу шаг, а не
+        перебивка. Дальше по странице идут доводы, а не решения.
+
+        Плашка фиолетовая внутри светлой секции, а не отдельной тёмной полосой:
+        ритм чередования полос (см. page.tsx) требует, чтобы за двумя светлыми
+        секциями шла тёмная — CoachPreview. Своя тёмная полоса перед ней дала
+        бы две тёмные подряд и сломала бы разбивку страницы.
+      */}
+      <div className="reveal mt-4 flex flex-col gap-6 rounded-[20px] bg-brand-600 p-7 text-white sm:p-9 md:flex-row md:items-center md:justify-between md:gap-10">
+        <div className="min-w-0">
+          <p className="text-xl leading-snug font-light sm:text-2xl">
+            Подберём группу по возрасту и уровню подготовки
+          </p>
+          <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-white/70">
+            Напишите — назовём ближайшее свободное время и ответим на вопросы
+            до первого занятия.
+          </p>
+        </div>
+
+        <ButtonLink
+          href="#booking"
+          variant="secondary"
+          size="lg"
+          data-goal="cta_booking"
+          className="shrink-0"
+        >
+          Записаться на пробное занятие
+        </ButtonLink>
       </div>
     </Section>
   );

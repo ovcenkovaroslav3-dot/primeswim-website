@@ -158,3 +158,84 @@ export function SectionHeading({
     </div>
   );
 }
+
+/*
+  Стрелка «читать дальше».
+
+  Один компонент вместо семи копий. Раньше каждая секция несла свой
+  инлайновый SVG и свой набор классов — разметка совпадала дословно, а
+  отступы расходились, и по странице гуляла высота ссылки.
+
+  ГЛАВНОЕ ЗДЕСЬ — ВЫСОТА. Все эти ссылки были ростом 28 px: на телефоне это
+  вдвое меньше подушечки пальца, и промах по «Всё расписание» или
+  «О тренере» уводил человека не туда. Теперь min-h-11 — те же 44 px, что
+  у кнопок, ниже этого на сайте не опускается ни одна зона нажатия.
+
+  Отрицательный внешний отступ возвращает набранный рост обратно в вёрстку:
+  нажимать стало удобнее, а ритм абзацев остался прежним.
+*/
+export function ArrowLink({
+  href,
+  children,
+  tone = 'brand',
+  external = false,
+  className = '',
+  ...rest
+}: {
+  href: string;
+  children: ReactNode;
+  /** brand — на светлой секции, white — на тёмной. */
+  tone?: 'brand' | 'white';
+  external?: boolean;
+  className?: string;
+} & Omit<ComponentProps<'a'>, 'href' | 'children'>) {
+  const classes = [
+    'lift group -my-2 inline-flex min-h-11 items-center gap-2 py-2 text-sm font-medium',
+    tone === 'white' ? 'text-white' : 'text-brand-600',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const inner = (
+    <>
+      {children}
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 18 18"
+        fill="none"
+        aria-hidden="true"
+        className="shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+      >
+        <path
+          d="M3 9h12M10 4l5 5-5 5"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
+  );
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classes}
+        {...rest}
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} prefetch={false} className={classes} {...rest}>
+      {inner}
+    </Link>
+  );
+}

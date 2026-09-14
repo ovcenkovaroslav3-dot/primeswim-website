@@ -12,7 +12,8 @@
     "test": "node --test \"src/**/*.test.ts\" \"server/**/*.test.ts\"",
     "check": "npm run typecheck && npm run lint && npm test",
     "build:lead": "node scripts/build-lead-function.mjs",
-    "shot": "node scripts/shot.mjs"
+    "shot": "node scripts/shot.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs"
   },
   "dependencies": {
     "next": "16.3.4",
@@ -28,6 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "playwright": "^1.62.1",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
