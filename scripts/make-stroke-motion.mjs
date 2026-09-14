@@ -194,9 +194,33 @@ for (const file of files.sort()) {
   const padded = Math.max(centeredHeight, panelHeight);
   const offsetY = padded / 2 - line.row;
   const pad = `pad=${line.width}:${padded}:0:${offsetY}:${PANEL_BG}`;
+
+  /*
+    ПРЯМАЯ ЛИНИЯ ВОДЫ ИЗ РОЛИКА СТИРАЕТСЯ, И ЭТО НЕ ПОТЕРЯ.
+
+    В исходнике уровень воды нарисован тонкой прямой на всю ширину кадра —
+    по ней же скрипт и выравнивает ролики между собой (см. `waterLineRow`
+    выше). Свою работу она к этому моменту уже сделала.
+
+    А на странице поверх неё лежит живая волна (`.stroke-waterline` в
+    globals.css), и две линии рядом дают ровно тот эффект, от которого волну
+    и заводили: прямая читается чертёжной осью, а волна при ней —
+    украшением на оси. Уровень воды должна показывать одна линия, и пусть
+    это будет та, которая похожа на воду.
+
+    `delogo` затягивает полосу интерполяцией сверху и снизу, а не заливает
+    цветом: там, где сквозь линию проходит тело пловца, восстановится тело, а
+    не фон. Отступ в один пиксель от краёв — требование самого фильтра,
+    рамка не должна касаться границы кадра.
+  */
+  const lineHalf = Math.max(3, Math.round((4 * line.width) / WIDTH));
+  const erase =
+    `delogo=x=1:y=${padded / 2 - lineHalf}:w=${line.width - 2}:h=${lineHalf * 2}`;
+
   const palette = PALETTE_NORMALIZATION[name];
   const filters = [
     pad,
+    erase,
     ...(palette ? [`geq=${paletteFilter(palette)}`] : []),
     `scale=${WIDTH}:-2`,
     ...(TEMPORAL_NORMALIZATION[name] ?? []),

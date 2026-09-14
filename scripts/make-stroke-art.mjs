@@ -249,10 +249,89 @@ const half = Math.min(centre, reach + margin);
 const cropTop = centre - half;
 const canvasHeight = half * 2;
 
+/*
+  ПРЯМАЯ ЛИНИЯ ВОДЫ СТИРАЕТСЯ, КОГДА ОТРАБОТАЛА.
+
+  В исходных рисунках уровень воды нарисован тонкой прямой на всю ширину —
+  по ней скрипт и выравнивает четыре стиля между собой. К этому моменту
+  выравнивание сделано, и прямая больше не нужна: на панели поверх лежит
+  живая волна (`.stroke-waterline` в globals.css), а две линии рядом дают
+  ровно то, от чего волну заводили — прямая читается чертёжной осью.
+
+  Просто обнулить полосу нельзя: силуэт — это одна альфа, и в ней прямая
+  ничем не отличается от тела пловца, которое её пересекает. Поэтому полоса
+  залечивается по соседним строкам: где сверху и снизу тело — остаётся тело,
+  где пусто — становится пусто. Та же логика, что у delogo в сборке роликов.
+*/
+/*
+  Полоса ищется в готовом холсте, а не берётся по центру.
+
+  Сначала её и правда считали центральной строкой — выравнивание же ведётся
+  по ней. Замер показал, что это неверно: у кроля она на 390-й строке, у
+  спины на 284-й, у брасса на 377-й. Стирание по центру промахивалось мимо
+  полосы и при этом выгрызало куски из пловца. Поэтому строка определяется
+  по самому холсту: прямая на всю ширину — единственное, что заполняет
+  больше двух третей строки.
+*/
+function findLineRows(data, height) {
+  const share = [];
+  for (let y = 0; y < height; y++) {
+    let opaque = 0;
+    for (let x = 0; x < WIDTH; x++) {
+      if (data[(y * WIDTH + x) * 4 + 3] > 8) opaque++;
+    }
+    share.push(opaque / WIDTH);
+  }
+
+  let peak = -1;
+  for (let y = 0; y < height; y++) {
+    if (share[y] > 0.85 && (peak === -1 || share[y] > share[peak])) peak = y;
+  }
+  if (peak === -1) return null;
+
+  let top = peak;
+  let bottom = peak;
+  while (top > 0 && share[top - 1] > 0.85) top--;
+  while (bottom < height - 1 && share[bottom + 1] > 0.85) bottom++;
+  return { top, bottom };
+}
+
+async function eraseWaterLine(buffer, height, name) {
+  const { data } = await sharp(buffer)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const found = findLineRows(data, height);
+  if (!found) {
+    throw new Error(
+      `${name}: прямая линия воды не найдена в собранном холсте — стирать нечего, проверьте исходник`,
+    );
+  }
+
+  /* соседи берутся сразу за полосой: по ним и решается, тело там или пусто */
+  const above = Math.max(0, found.top - 1);
+  const below = Math.min(height - 1, found.bottom + 1);
+
+  for (let x = 0; x < WIDTH; x++) {
+    const keep =
+      data[(above * WIDTH + x) * 4 + 3] > 8 &&
+      data[(below * WIDTH + x) * 4 + 3] > 8;
+    for (let y = found.top; y <= found.bottom; y++) {
+      data[(y * WIDTH + x) * 4 + 3] = keep ? 255 : 0;
+    }
+  }
+
+  return sharp(data, { raw: { width: WIDTH, height, channels: 4 } })
+    .png()
+    .toBuffer();
+}
+
 for (const c of centred) {
   c.buffer = await sharp(c.buffer)
     .extract({ left: 0, top: cropTop, width: WIDTH, height: canvasHeight })
     .toBuffer();
+  c.buffer = await eraseWaterLine(c.buffer, canvasHeight, c.name);
   c.height = canvasHeight;
 }
 
