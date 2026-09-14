@@ -290,6 +290,38 @@
     to { transform: scaleX(1); }
   }
 
+  /*
+    Знак едет остриём залитой линии. Шкала та же, что у заливки, поэтому
+    они не могут разъехаться.
+
+    Сдвиг на 100% — это 100% размера самого элемента, а не родителя. Обёртка
+    повторяет геометрию трека, значит её высота (на телефоне) и ширина (на
+    широком экране) равны длине пути: знак, приколотый к её началу, уезжает
+    ровно в конец. Иначе длину пришлось бы задавать числом, а она резиновая.
+  */
+  @keyframes progress-swim-y {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(0, 100%, 0); }
+  }
+  @keyframes progress-swim-x {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(100%, 0, 0); }
+  }
+
+  /*
+    По умолчанию знак стоит в конце пути — там же, где кончается залитая
+    линия, когда анимации нет. Так согласуются оба случая: и Firefox без
+    animation-timeline, и включённый запрет движения.
+  */
+  .progress-swimmer {
+    transform: translate3d(0, 100%, 0);
+  }
+  @media (min-width: 768px) {
+    .progress-swimmer {
+      transform: translate3d(100%, 0, 0);
+    }
+  }
+
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
       .parallax {
@@ -316,9 +348,20 @@
         will-change: transform;
       }
 
+      /* знак привязан к той же прокрутке, что и заливка под ним */
+      .progress-swimmer {
+        animation: progress-swim-y linear both;
+        animation-timeline: view();
+        will-change: transform;
+      }
+
       @media (min-width: 768px) {
         .progress-fill {
           animation-name: progress-fill-x;
+        }
+
+        .progress-swimmer {
+          animation-name: progress-swim-x;
         }
       }
     }
