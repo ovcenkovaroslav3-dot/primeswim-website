@@ -25,7 +25,7 @@
  * ЗАПУСК: node scripts/make-channel-cover.mjs
  */
 
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import sharp from 'sharp';
