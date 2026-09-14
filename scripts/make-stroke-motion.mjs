@@ -49,6 +49,33 @@ const PANEL_HEIGHT = 740;
 /* Фон панели — им же подкладываются поля, чтобы шва не было видно. */
 const PANEL_BG = '0x180229';
 
+/*
+  ЦВЕТ НОВЫХ РОЛИКОВ ПРИВОДИМ К ЭТАЛОНУ КРОЛЯ.
+
+  Seedance сохранила технику брасса и баттерфляя, но вернула их из другой
+  цветовой партии: почти чёрный фон, слишком тёмный брасс и светящийся
+  баттерфляй. На соседних вкладках это выглядит как два разных компонента.
+
+  Порог берётся по синему каналу: у фиолетового силуэта он далеко выше, чем
+  у фона и внутренних контуров. Мягкий диапазон оставляет сглаживание по
+  краям, а всё остальное переводится в две краски эталонного ролика:
+  #180229 для фона и #a040d0 для фигуры. Движение и проверенная техника при
+  этом не меняются.
+*/
+const PALETTE_NORMALIZATION = {
+  breaststroke: { threshold: 55, transition: 40 },
+  butterfly: { threshold: 70, transition: 80 },
+};
+
+function paletteFilter({ threshold, transition }) {
+  const mask = `clip((b(X,Y)-${threshold})/${transition},0,1)`;
+  return [
+    `r='24+136*${mask}'`,
+    `g='2+62*${mask}'`,
+    `b='41+167*${mask}'`,
+  ].join(':');
+}
+
 
 await mkdir(OUT, { recursive: true });
 
@@ -145,6 +172,12 @@ for (const file of files.sort()) {
   const padded = Math.max(centeredHeight, panelHeight);
   const offsetY = padded / 2 - line.row;
   const pad = `pad=${line.width}:${padded}:0:${offsetY}:${PANEL_BG}`;
+  const palette = PALETTE_NORMALIZATION[name];
+  const filters = [
+    pad,
+    ...(palette ? [`geq=${paletteFilter(palette)}`] : []),
+    `scale=${WIDTH}:-2`,
+  ].join(',');
 
   /*
     `scale=840:-2` — высота считается сама и округляется до чётного: H.264 с
@@ -155,7 +188,7 @@ for (const file of files.sort()) {
   */
   await run('ffmpeg', [
     '-v', 'error', '-y', '-i', input,
-    '-vf', `${pad},scale=${WIDTH}:-2`,
+    '-vf', filters,
     '-c:v', 'libx264', '-crf', '30', '-preset', 'slow',
     '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an',
     `${OUT}/${name}.mp4`,
@@ -163,7 +196,7 @@ for (const file of files.sort()) {
 
   await run('ffmpeg', [
     '-v', 'error', '-y', '-i', input,
-    '-vf', `${pad},scale=${WIDTH}:-2`,
+    '-vf', filters,
     '-c:v', 'libvpx-vp9', '-crf', '38', '-b:v', '0', '-row-mt', '1', '-an',
     `${OUT}/${name}.webm`,
   ]);
