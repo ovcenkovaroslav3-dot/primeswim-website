@@ -5,6 +5,7 @@ import { join } from 'node:path';
 
 import {
   heroImage,
+  heroImageNarrow,
   poolMainImage,
   poolPreviewImages,
   venuePreviewImages,
@@ -46,6 +47,13 @@ const PUBLIC = join(process.cwd(), 'public');
 */
 const sets: Record<string, MediaItem[]> = {
   heroImage: [heroImage],
+  /*
+    Копия первого экрана под телефон. Она уходит в <source media>, а на
+    ненайденный файл <picture> к запасному варианту не откатывается — без
+    неё телефон получил бы дыру вместо кадра, а десктоп ничего бы не
+    заметил, то есть поломку увидели бы позже всех.
+  */
+  heroImageNarrow: [heroImageNarrow],
   poolMainImage: [poolMainImage],
   poolPreviewImages,
   venuePreviewImages,

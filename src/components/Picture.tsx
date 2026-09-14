@@ -39,6 +39,12 @@ export function Picture({
     бы в общую очередь. Везде остальном — false.
   */
   priority = false,
+  /*
+    Другой файл для узких экранов — когда вёрстка показывает не весь кадр,
+    а обрезку, и полный файл туда возить незачем. Нужен только первому
+    экрану: у остальных снимков форма показа одна на все ширины.
+  */
+  narrow,
 }: {
   src: string;
   alt: string;
@@ -47,13 +53,36 @@ export function Picture({
   sizes?: string;
   className?: string;
   priority?: boolean;
+  narrow?: { src: string; media: string };
 }) {
   const jpeg = imageLoader({ src });
   const avif = imageLoader({ src: src.replace(/\.jpe?g$/i, '.avif') });
 
+  const narrowJpeg = narrow ? imageLoader({ src: narrow.src }) : null;
+  const narrowAvif = narrow
+    ? imageLoader({ src: narrow.src.replace(/\.jpe?g$/i, '.avif') })
+    : null;
+
   return (
     /* block: по умолчанию picture строчный и добавляет зазор под картинкой */
     <picture className="block">
+      {/*
+        Порядок здесь — это правило выбора, а не оформление. Браузер берёт
+        ПЕРВЫЙ <source>, у которого сошлись и media, и понятный ему формат,
+        поэтому узкие идут раньше общих: поставь их после — телефон успеет
+        выбрать полный кадр и до обрезки не дойдёт.
+
+        Пара на каждую ширину, а не один AVIF: браузер без поддержки AVIF
+        пропустит первый источник и возьмёт второй — обрезку в JPEG. Будь
+        он один, такой телефон свалился бы к <img> и увёз полный кадр.
+      */}
+      {narrow ? (
+        <>
+          <source media={narrow.media} type="image/avif" srcSet={narrowAvif!} />
+          <source media={narrow.media} type="image/jpeg" srcSet={narrowJpeg!} />
+        </>
+      ) : null}
+
       <source type="image/avif" srcSet={avif} sizes={sizes} />
       <img
         src={jpeg}

@@ -2,7 +2,7 @@ import { MascotOrca } from './MascotOrca';
 import { OrcaMark } from './OrcaMark';
 import { Picture } from './Picture';
 
-import { heroImage } from '@/content/media';
+import { heroImage, heroImageNarrow } from '@/content/media';
 
 /*
   Визуальная половина первого экрана.
@@ -62,6 +62,7 @@ export function HeroVisual({
           alt={heroImage.alt}
           width={heroImage.width}
           height={heroImage.height}
+          narrow={heroImageNarrow}
           priority
           sizes="(min-width: 1024px) 26rem, (min-width: 768px) 22rem, 92vw"
           className="aspect-4/3 w-full object-cover md:aspect-3/4"
