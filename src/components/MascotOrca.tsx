@@ -48,11 +48,16 @@ export function MascotOrca({ className = '' }: { className?: string }) {
 
   return (
     /*
-      Обёртка отвечает за посадку, внутренний слой — за движение. Разделение
-      нужно, чтобы анимация не спорила с позиционированием: у обёртки свои
-      absolute-координаты, у ребёнка только transform.
+      Три слоя, и у каждого одна работа: обёртка — посадка и продолжение
+      прыжка на прокрутке, средний слой — зависание в верхней точке, сама
+      картинка — отклик на курсор.
+
+      Делить пришлось потому, что transform у элемента один: две анимации на
+      одном узле не складываются — поздняя затирает раннюю. Разложенные по
+      слоям, они перемножаются. Посадке это не мешает: обёртка стоит на
+      top/right, а не на сдвиге.
     */
-    <div className={`pointer-events-none ${className}`.trim()}>
+    <div className={`praimi-arc pointer-events-none ${className}`.trim()}>
       <div className="praimi-hover relative">
         <picture className="block">
           <source

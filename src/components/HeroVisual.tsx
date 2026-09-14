@@ -33,7 +33,7 @@ export function HeroVisual({
   district: string;
 }) {
   return (
-    <figure className="reveal relative mx-auto w-full max-w-md md:max-w-none">
+    <figure className="praimi-stage reveal relative mx-auto w-full max-w-md md:max-w-none">
       {/*
         Талисман проходит поверх кадра, а не стоит рядом с ним.
 
