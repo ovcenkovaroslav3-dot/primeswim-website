@@ -318,9 +318,12 @@ async function eraseWaterLine(buffer, height, name) {
     значит «стереть», и из пловца выкусывается полоса во всю ширину. На
     баттерфляе так и вышло: три строки в ноль, фигура разрезана поперёк.
 
-    Теперь верхняя половина полосы берёт альфу строкой выше, нижняя — строкой
-    ниже. Граница материала восстанавливается с точностью до пикселя, а
-    вырезать тело такое правило не может в принципе.
+    Теперь вся полоса берёт альфу строкой НИЖЕ — со стороны воды. Делить её
+    пополам пробовали: верх брал строку сверху, и там, где край тела идёт по
+    самой линии (у баттерфляя так всю длину), сверху оказывался фон — тело
+    прорезалось щелью. Снизу же под линией всегда корпус или вода. Где по обе
+    стороны одно и то же, ничего не меняется; где край — тело подрастает вверх
+    на толщину полосы, а это несколько пикселей из семисот сорока.
   */
   /*
     Полоса расширяется на две строки в каждую сторону. У линии сглаженные
@@ -331,15 +334,12 @@ async function eraseWaterLine(buffer, height, name) {
   const BLEED = 2;
   const top = Math.max(0, found.top - BLEED);
   const bottom = Math.min(height - 1, found.bottom + BLEED);
-  const above = Math.max(0, top - 1);
   const below = Math.min(height - 1, bottom + 1);
-  const split = (top + bottom) / 2;
 
   for (let x = 0; x < WIDTH; x++) {
-    const fromAbove = data[(above * WIDTH + x) * 4 + 3];
     const fromBelow = data[(below * WIDTH + x) * 4 + 3];
     for (let y = top; y <= bottom; y++) {
-      data[(y * WIDTH + x) * 4 + 3] = y <= split ? fromAbove : fromBelow;
+      data[(y * WIDTH + x) * 4 + 3] = fromBelow;
     }
   }
 
