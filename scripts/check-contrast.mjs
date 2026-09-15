@@ -27,7 +27,7 @@
 
 import { chromium } from 'playwright';
 const base = 'http://localhost:3000';
-const pages = ['/', '/raspisanie/', '/price/', '/trener/', '/bassein/', '/roditelyam/', '/galereya/', '/sorevnovaniya/', '/policy/'];
+const pages = ['/', '/raspisanie/', '/price/', '/trener/', '/bassein/', '/roditelyam/', '/galereya/', '/sorevnovaniya/', '/dogovor/', '/policy/'];
 const browser = await chromium.launch({ channel: 'chrome' });
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 const seen = new Map();

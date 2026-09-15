@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ButtonLink, Section, SectionHeading } from '../ui';
 import { prices, pricesNote, pricesDisclaimer } from '@/content/prices';
 import { contacts } from '@/content/contacts';
@@ -115,8 +116,20 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
       </p>
 
       <p className="mt-8 max-w-3xl text-sm leading-relaxed text-ink-muted">
-        {pricesDisclaimer} Условия возврата и переноса занятий описаны в договоре,
-        который подписывается до начала занятий. Остались вопросы по оплате —{' '}
+        {pricesDisclaimer} Условия возврата и переноса занятий описаны{' '}
+        {/*
+          Ссылка появилась вместе со страницей договора. До этого здесь стояло
+          «описаны в договоре» без возможности его прочитать — обещание,
+          которое проверить нельзя, доверия не прибавляет.
+        */}
+        <Link
+          href="/dogovor/"
+          prefetch={false}
+          className="font-medium text-brand-600 underline underline-offset-4"
+        >
+          в договоре
+        </Link>
+        , который подписывается до начала занятий. Остались вопросы по оплате —{' '}
         <a
           href={contacts.social.telegramBooking}
           target="_blank"

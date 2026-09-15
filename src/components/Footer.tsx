@@ -108,6 +108,15 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/dogovor/"
+                  prefetch={false}
+                  className="inline-block py-1 transition-colors hover:text-lime-300"
+                >
+                  Договор на занятия
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/policy/"
                   prefetch={false}
                   className="inline-block py-1 transition-colors hover:text-lime-300"
