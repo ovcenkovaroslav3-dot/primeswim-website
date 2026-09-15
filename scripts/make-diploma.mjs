@@ -27,6 +27,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 
 import { orcaMarkup, VIEW_BOX } from './lib/orca-path.mjs';
+import { glyphsFrom, inlineGoogleFont } from './lib/google-font.mjs';
 
 const OUT = 'media-source/brand/diploma-a4.pdf';
 
@@ -89,64 +90,14 @@ const TEXT = {
 
 /*
   INTER ЗАБИРАЕТСЯ ПОДМНОЖЕСТВОМ ПОД КОНКРЕТНЫЕ БУКВЫ, И ЭТО НЕ ЭКОНОМИЯ.
-
-  Обычным способом он в PDF не попадает: Google отдаёт Inter переменным
-  шрифтом, а экспорт PDF из браузера переменные не вкладывает. Unbounded
-  вкладывается — он приходит одним начертанием. На машине без Inter мелкий
-  текст подменился бы, то есть бланк выглядел бы по-разному у разных людей.
-
-  Параметр `text=` возвращает статическое подмножество ровно под переданные
-  знаки — такое вкладывается. Набор берётся из TEXT выше, поэтому пропустить
-  букву нельзя: добавили слово на бланк — оно само попало в запрос.
-
-  Прописные добавляются отдельно, и это не перестраховка. Часть строк выводится
-  через `text-transform: uppercase`: в исходнике «Награждается», на листе
-  «НАГРАЖДАЕТСЯ». Подмножество приходит ровно по запрошенным знакам, прописных
-  в нём не было, и вся строка целиком уезжала в системный Segoe UI — при этом
-  на экране разница почти не видна, а в PDF вкладывался чужой шрифт.
+  Разбор приёма и подводных камней — в scripts/lib/google-font.mjs: он
+  понадобился и бланку согласия, поэтому переехал в общий модуль.
 */
-const interHref =
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400' +
-  '&text=' +
-  encodeURIComponent(
-    [
-      ...new Set(
-        Object.values(TEXT)
-          .flatMap((line) => [line, line.toUpperCase()])
-          .join(''),
-      ),
-    ]
-      .sort()
-      .join(''),
-  );
-
-/*
-  ШРИФТ ВШИВАЕТСЯ В СТРАНИЦУ ФАЙЛОМ, А НЕ ПОДКЛЮЧАЕТСЯ ССЫЛКОЙ.
-
-  Подключённый ссылкой Inter в страницу загружается и применяется — это
-  проверено, `document.fonts.check` отвечает утвердительно. Но в PDF он всё
-  равно не попадал: экспорт подменял его локальным Segoe UI и вкладывал уже
-  его. Чужой системный шрифт в раздаваемом файле — и вид разъезжается, и
-  лицензия сомнительна.
-
-  Скачанный и вшитый как data-URI файл экспорт вкладывает как свой. Побочно
-  это делает сборку устойчивее: на отрисовке сеть уже не нужна, а Google
-  запрашивается один раз, здесь.
-*/
-async function inlineInter() {
-  const chromeUa =
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +
-    '(KHTML, like Gecko) Chrome/120 Safari/537.36';
-  const css = await (
-    await fetch(interHref, { headers: { 'user-agent': chromeUa } })
-  ).text();
-  const url = css.match(/url\((https:[^)]+)\)/)?.[1];
-  if (!url) throw new Error('Google не отдал файл шрифта — проверьте запрос');
-  const font = Buffer.from(await (await fetch(url)).arrayBuffer());
-  return `@font-face{font-family:'Inter';font-style:normal;font-weight:400;src:url(data:font/woff2;base64,${font.toString('base64')}) format('woff2');}`;
-}
-
-const interFace = await inlineInter();
+const interFace = await inlineGoogleFont(
+  'Inter',
+  400,
+  glyphsFrom(Object.values(TEXT)),
+);
 
 const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
