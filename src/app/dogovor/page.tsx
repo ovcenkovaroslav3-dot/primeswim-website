@@ -95,7 +95,12 @@ export default function DogovorPage() {
         Отдельным разделом, а не пунктом договора, — так он и оформлен: это
         приложение, и подписывать его необязательно.
       */}
-      <section className="mt-10 rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8">
+      <section
+        id="photo"
+        className="mt-10 scroll-mt-24 rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8"
+      >
+        {/* якорь: на согласие ссылаются отдельно — родителя чаще всего
+            волнует именно съёмка ребёнка, а не договор целиком */}
         <h2 className="text-xl font-medium text-ink">{photoConsent.title}</h2>
         <p className="mt-2 text-sm text-ink-muted">{photoConsent.note}</p>
         {photoConsent.clauses.map((clause) => (
