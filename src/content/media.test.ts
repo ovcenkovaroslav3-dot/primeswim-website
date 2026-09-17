@@ -4,6 +4,8 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 import {
+  coachIntroVideo,
+  galleryVideos,
   heroImage,
   heroImageNarrow,
   poolMainImage,
@@ -60,6 +62,19 @@ const sets: Record<string, MediaItem[]> = {
   galleryGridImages,
   galleryHighlights,
   coachPhotos: coaches.map((coach) => coach.photo),
+  /*
+    Постеры роликов. Раньше они уходили атрибутом `poster` и через Picture не
+    проходили — теперь проходят, а значит подчиняются тому же правилу: нет
+    AVIF рядом, и <source> отдаёт 404, к запасному варианту браузер не
+    откатывается. У VideoItem поле называется poster, поэтому набор собирается
+    отдельно.
+  */
+  videoPosters: [coachIntroVideo, ...galleryVideos].map((video) => ({
+    src: video.poster,
+    alt: video.alt,
+    width: video.width,
+    height: video.height,
+  })),
 };
 
 for (const [name, items] of Object.entries(sets)) {

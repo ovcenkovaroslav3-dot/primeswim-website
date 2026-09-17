@@ -97,6 +97,21 @@ for (const p of pages) {
       if (!el.textContent?.trim() || el.children.length) continue;
       const st = getComputedStyle(el);
       if (st.visibility === 'hidden' || st.display === 'none' || +st.opacity < 0.1) continue;
+
+      /*
+        Текст только для программ чтения не меряем.
+
+        Приём `sr-only` прячет строку не прозрачностью и не display, а
+        обрезкой в один пиксель: clip-path плюс размер 1×1. Глазами такой
+        текст не виден вовсе, и его цвет ни на что не влияет — а проверка
+        честно считала контраст и требовала 4.5. Поймалось на кнопке
+        воспроизведения: подпись «Смотреть: …» унаследовала тёмные чернила
+        светлой секции поверх тёмной карточки ролика. Правило здесь было бы
+        ложным: чинить нечего, видимого текста нет.
+      */
+      const box = el.getBoundingClientRect();
+      if (box.width <= 1 || box.height <= 1) continue;
+      if (st.clipPath && st.clipPath !== 'none') continue;
       const b = el.getBoundingClientRect();
       if (b.width === 0 || b.height === 0) continue;
       // текст поверх фотографии посчитать нечем — подложка не однотонная

@@ -13,7 +13,8 @@
     "check": "npm run typecheck && npm run lint && npm test",
     "build:lead": "node scripts/build-lead-function.mjs",
     "shot": "node scripts/shot.mjs",
-    "check:contrast": "node scripts/check-contrast.mjs"
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "check:pages": "node scripts/check-pages.mjs"
   },
   "dependencies": {
     "next": "16.3.4",

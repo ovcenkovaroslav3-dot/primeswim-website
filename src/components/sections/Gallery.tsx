@@ -1,3 +1,4 @@
+import { VideoCard } from '../VideoCard';
 import { Picture } from '../Picture';
 import { Section, SectionHeading } from '../ui';
 import { galleryGridImages, galleryVideos } from '@/content/media';
@@ -53,19 +54,26 @@ export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         className="reveal mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3"
         style={{ ['--reveal-delay' as string]: '80ms' }}
       >
+        {/*
+          Ролики идут через общий VideoCard, а не своим <video>.
+
+          Так было не всегда, и разница в двух вещах. Первая видна:
+          собственный <video controls> кладёт снизу кадра серую панель
+          браузера — на странице, собранной по одной сетке и палитре, это
+          единственное место, которое выглядит вставкой с видеохостинга.
+          Вторая видна только в замере: атрибут `poster` не уважает ленивую
+          загрузку, и три постера тянулись при открытии страницы, 260 КБ до
+          всякой прокрутки. VideoCard показывает постер обычной картинкой, а
+          она грузится, когда доходит до экрана, и в AVIF.
+        */}
         {galleryVideos.map((video) => (
-          <li
-            key={video.src}
-            className="relative overflow-hidden rounded-[20px] bg-surface"
-          >
-            <video
+          <li key={video.src}>
+            <VideoCard
               src={video.src}
               poster={video.poster}
-              aria-label={video.alt}
-              controls
-              playsInline
-              preload="none"
-              className="block h-auto w-full"
+              label={video.alt}
+              width={video.width}
+              height={video.height}
             />
           </li>
         ))}
