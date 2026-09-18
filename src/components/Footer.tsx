@@ -24,6 +24,21 @@ export function Footer() {
             <h2 className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
               Контакты
             </h2>
+            {/*
+              ЗОНА НАЖАТИЯ 44 px ЗДЕСЬ БЕРЁТСЯ ОТРИЦАТЕЛЬНЫМ ОТСТУПОМ, А В
+              СОСЕДНЕМ СТОЛБЦЕ «РАЗДЕЛЫ» — НЕТ, И ЭТО НЕ РАЗНОБОЙ.
+
+              Приём работает, только когда между действиями есть что забрать.
+              Здесь ссылок две, и между ними лежит строка адреса — обычный
+              текст, в который никто не целится: после отрицательного отступа
+              между зонами остаётся 12 px, и промахнуться в соседнюю нельзя.
+
+              В «Разделах» ссылки идут подряд. Тот же приём наложил бы зоны
+              друг на друга на 8 px, и палец, метивший в «Галерею», попадал бы
+              в «Родителям» — это хуже мелкой зоны, а не лучше. Поэтому там
+              высота набирается по-настоящему, а под мышью снимается обратно;
+              почему — в комментарии у самого списка.
+            */}
             <ul className="mt-4 space-y-1 text-sm text-white/80">
               <li>
                 {/* цели те же, что и везде: подвал стоит на каждой странице,
@@ -31,7 +46,7 @@ export function Footer() {
                 <a
                   href={contacts.phone.href}
                   data-goal="click_phone"
-                  className="inline-block py-1 font-medium text-white transition-colors hover:text-lime-300"
+                  className="-my-2 inline-flex min-h-11 items-center font-medium text-white transition-colors hover:text-lime-300"
                 >
                   {contacts.phone.display}
                 </a>
@@ -43,7 +58,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-goal="click_route"
-                  className="inline-block py-1 underline underline-offset-4 transition-colors hover:text-lime-300"
+                  className="-my-2 inline-flex min-h-11 items-center underline underline-offset-4 transition-colors hover:text-lime-300"
                 >
                   Посмотреть на Яндекс Картах
                 </a>
@@ -86,13 +101,42 @@ export function Footer() {
               По наведению и касанию маршрут всё равно догружается —
               то есть при настоящем намерении скорость не теряется.
             */}
+            {/*
+              ОДИННАДЦАТЬ ССЫЛОК ПО 44 px ПОД ПАЛЬЦЕМ И ПО 28 ПОД МЫШЬЮ.
+
+              Стояли 28 — при собственном правиле сайта в 44. Ошибка тем
+              обиднее, что правило родилось ровно из такого замера: семь
+              ссылок «Всё расписание →» были ростом 28, их подняли через
+              ArrowLink, а подвал — самый частый список ссылок на сайте, он
+              стоит на каждой из одиннадцати страниц, — так и остался.
+
+              Наложить зоны отрицательным отступом, как у соседнего столбца,
+              здесь нельзя: ссылки идут подряд. Значит, высоту приходится
+              набирать по-настоящему, а это +176 px подвала.
+
+              На телефоне эти 176 px ничего не стоят: подвал лежит ниже
+              всего остального, а список наконец нажимается. На десктопе
+              они стоили заметно — столбец разъезжался на 824 px, и рядом
+              с ним два коротких столбца превращались в дыру.
+
+              Отсюда `pointer-fine`: под мышью шаг возвращается к прежним
+              28 px (подвал снова 648), под пальцем остаётся 44. Это не
+              лазейка в правиле, а его собственное обоснование: в DESIGN.md
+              44 px объяснены подушечкой пальца, и у мыши такой подушечки
+              нет. 28 px при этом выше минимума WCAG 2.5.8 (24).
+
+              Запасной вариант безопасный: если вариант `pointer-fine`
+              однажды перестанет собираться, класс просто не появится и
+              везде останется 44 — то есть сломается в сторону доступности,
+              а не от неё.
+            */}
             <ul className="mt-4 space-y-1 text-sm text-white/80">
               {sectionLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     prefetch={false}
-                    className="inline-block py-1 transition-colors hover:text-lime-300"
+                    className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300"
                   >
                     {link.title}
                   </Link>
@@ -101,7 +145,7 @@ export function Footer() {
               <li>
                 <Link
                   href="#booking"
-                  className="inline-block py-1 transition-colors hover:text-lime-300"
+                  className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300"
                 >
                   Запись на тренировку
                 </Link>
@@ -110,7 +154,7 @@ export function Footer() {
                 <Link
                   href="/dogovor/"
                   prefetch={false}
-                  className="inline-block py-1 transition-colors hover:text-lime-300"
+                  className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300"
                 >
                   Договор на занятия
                 </Link>
@@ -119,7 +163,7 @@ export function Footer() {
                 <Link
                   href="/policy/"
                   prefetch={false}
-                  className="inline-block py-1 transition-colors hover:text-lime-300"
+                  className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300"
                 >
                   Политика обработки персональных данных
                 </Link>
@@ -128,7 +172,7 @@ export function Footer() {
                 <Link
                   href="/soglasie/"
                   prefetch={false}
-                  className="inline-block py-1 transition-colors hover:text-lime-300"
+                  className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300"
                 >
                   Согласие на обработку персональных данных
                 </Link>

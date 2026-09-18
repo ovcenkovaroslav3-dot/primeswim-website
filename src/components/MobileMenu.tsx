@@ -143,7 +143,13 @@ export function MobileMenu() {
                     этом не потеряно: оно и раньше жило в aria-label="Меню
                     сайта" у самого диалога, слово на экране его лишь дублировало.
                   */}
-                  <Link href="/" onClick={() => setOpen(false)}>
+                  {/* 44 px, как у логотипа в шапке: там промах по надписи
+                      высотой 24 уже ловили, а эта копия осталась мимо */}
+                  <Link
+                    href="/"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex min-h-11 items-center"
+                  >
                     <Logo />
                     <span className="sr-only"> — на главную страницу</span>
                   </Link>
@@ -201,7 +207,10 @@ export function MobileMenu() {
                   <a
                     href={contacts.phone.href}
                     data-goal="click_phone"
-                    className="text-center text-lg font-light text-ink"
+                    /* 44 px, как у пунктов меню выше: номер стоит в том же
+                       столбце действий, что и кнопка записи, и промахиваться
+                       по нему из-за строчной высоты 28 не должен */
+                    className="flex min-h-11 items-center justify-center text-lg font-light text-ink"
                   >
                     {contacts.phone.display}
                   </a>

@@ -51,7 +51,16 @@ export function Contacts() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="mt-3 inline-block text-2xl font-extralight text-brand-600 underline-offset-4 hover:underline sm:text-3xl"
+            /*
+              Зона нажатия 44 px вместо 32. Номер набран крупно и оттого
+              выглядел просторным, но нажимается не кегль, а строчный бокс:
+              у extralight 24 px он выходил 32 — на палец мало. Это главный
+              номер школы на странице и отдельное действие, а не ссылка
+              внутри предложения, поэтому исключение из правила 44 px к нему
+              не относится. Отрицательный внешний отступ возвращает набранную
+              высоту в вёрстку — карточка «Связь» осталась прежней.
+            */
+            className="mt-1.5 -mb-1.5 inline-flex min-h-11 items-center text-2xl font-extralight text-brand-600 underline-offset-4 hover:underline sm:text-3xl"
           >
             {contacts.phone.display}
           </a>
