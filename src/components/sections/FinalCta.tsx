@@ -137,7 +137,7 @@ export function FinalCta({
 
         <h2
           id="booking-title"
-          className="reveal mt-6 text-[clamp(2.2rem,7vw,4.2rem)] leading-[1.02] font-extralight tracking-[-0.02em]"
+          className="reveal mt-6 text-[clamp(2.2rem,7vw,4.2rem)] leading-[1.02] font-normal tracking-[-0.02em]"
           style={{ ['--reveal-delay' as string]: '90ms' }}
         >
           Начните с первой тренировки

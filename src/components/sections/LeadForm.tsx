@@ -234,7 +234,7 @@ export function LeadForm() {
           motion="celebrate"
           className="mx-auto mt-4 w-[124px] sm:w-[142px]"
         />
-        <p className="mt-6 text-2xl font-extralight text-ink sm:text-3xl">
+        <p className="mt-6 text-2xl font-normal text-ink sm:text-3xl">
           Заявка принята
         </p>
         {ticket ? (

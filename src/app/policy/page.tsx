@@ -17,7 +17,7 @@ export default function PolicyPage() {
         ]}
       />
 
-      <h1 className="text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl">
+      <h1 className="text-3xl leading-[1.08] font-normal text-ink sm:text-4xl">
         Политика обработки персональных данных
       </h1>
       <p className="mt-4 text-ink-muted">
