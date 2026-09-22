@@ -105,7 +105,7 @@ export function Hero() {
         className="absolute inset-0 -z-10 bg-linear-to-b from-abyss-950/88 via-abyss-950/62 to-abyss-950/88 md:bg-linear-to-r md:from-abyss-950/94 md:via-abyss-950/58 md:to-abyss-950/28"
       />
 
-      <div className="hero-depart mx-auto w-full max-w-[75rem] px-5 pt-14 pb-16 sm:px-6 sm:pt-20 md:pt-28 md:pb-24">
+      <div className="hero-depart mx-auto w-full max-w-[75rem] px-4 pt-14 pb-16 sm:px-6 sm:pt-20 md:pt-28 md:pb-24">
         {/*
           Две колонки на десктопе, одна на телефоне. Фотография на телефоне
           идёт после кнопок, а не перед заголовком: сначала предложение,
