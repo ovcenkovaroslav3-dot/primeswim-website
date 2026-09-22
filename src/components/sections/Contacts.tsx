@@ -48,15 +48,21 @@ export function Contacts() {
             {contacts.address.street}
           </address>
 
-          <ButtonLink
-            href={contacts.address.yandexMaps}
-            external
-            variant="ghost"
-            data-goal="click_route"
-            className="mt-auto pt-6 self-start"
-          >
-            Построить маршрут на Яндекс Картах
-          </ButtonLink>
+          {/*
+            Отступ — на обёртке, а не на кнопке: pt-6 на самой кнопке раздувал
+            её изнутри, текст проседал к нижней кромке, а над кнопкой на
+            телефоне не оставалось зазора до адреса.
+          */}
+          <div className="mt-auto pt-6">
+            <ButtonLink
+              href={contacts.address.yandexMaps}
+              external
+              variant="ghost"
+              data-goal="click_route"
+            >
+              Построить маршрут на Яндекс Картах
+            </ButtonLink>
+          </div>
 
           {/*
             Карта не встраивается iframe-ом намеренно: сторонний скрипт тянет

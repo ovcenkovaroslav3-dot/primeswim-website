@@ -5,7 +5,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline';
 type ButtonSize = 'md' | 'lg';
 
 const base =
-  'lift inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
+  'lift inline-flex items-center justify-center gap-2 rounded-lg text-center font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
 
 const variants: Record<ButtonVariant, string> = {
   /*

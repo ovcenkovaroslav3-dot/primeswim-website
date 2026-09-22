@@ -145,7 +145,7 @@ export function PlanPreview() {
         секциями шла тёмная — CoachPreview. Своя тёмная полоса перед ней дала
         бы две тёмные подряд и сломала бы разбивку страницы.
       */}
-      <div className="reveal mt-4 flex flex-col gap-6 rounded-[20px] bg-brand-600 p-7 text-white sm:p-9 md:flex-row md:items-center md:justify-between md:gap-10">
+      <div className="reveal mt-4 flex flex-col gap-6 rounded-[20px] bg-brand-600 p-5 text-white sm:p-9 md:flex-row md:items-center md:justify-between md:gap-10">
         <div className="min-w-0">
           <p className="text-xl leading-snug font-light sm:text-2xl">
             Подберём группу по возрасту и уровню подготовки
@@ -161,7 +161,7 @@ export function PlanPreview() {
           variant="secondary"
           size="lg"
           data-goal="cta_booking"
-          className="shrink-0"
+          className="shrink-0 max-sm:px-3"
         >
           Записаться на пробное занятие
         </ButtonLink>
