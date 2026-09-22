@@ -37,7 +37,7 @@ export function Header() {
         строкой; полные названия остались в меню, подвале и «Контактах».
       */}
       <div className="border-b border-hairline bg-surface-alt">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-center gap-3 px-4 py-1 sm:gap-4 sm:px-6 lg:justify-end">
+        <div className="mx-auto flex w-full max-w-[75rem] items-center justify-center gap-3 px-4 py-1 sm:gap-4 sm:px-6 lg:justify-end">
           <span className="text-xs text-ink-muted sm:text-[13px]">
             Каналы школы
           </span>
@@ -46,7 +46,12 @@ export function Header() {
       </div>
 
       <header className="sticky top-0 z-50 border-b border-hairline bg-white/95 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
+        {/*
+          75rem, а не max-w-6xl: поля здесь внутри контейнера, а у Section —
+          снаружи. С 6xl логотип стоял на 24 px правее заголовков секций.
+          Так же устроены подвал, Hero и крошки внутренних страниц.
+        */}
+        <div className="mx-auto flex w-full max-w-[75rem] items-center gap-4 px-4 py-3 sm:px-6">
           {/*
             Пояснение лежит внутри ссылки скрытым текстом, а не в aria-label.
             С aria-label доступное имя было «PRIME SWIM — на главную страницу»,

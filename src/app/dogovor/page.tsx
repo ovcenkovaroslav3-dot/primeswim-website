@@ -34,7 +34,7 @@ export default function DogovorPage() {
       />
 
       <h1 className="text-3xl leading-[1.08] font-normal text-ink sm:text-4xl">
-        Договор на оказание физкультурно&#8209;оздоровительных услуг по плаванию
+        Договор на оказание физкультурно-оздоровительных услуг по плаванию
       </h1>
       <p className="mt-4 leading-relaxed text-ink-muted">
         Текст договора, который подписывается до начала занятий. Редакция от{' '}
