@@ -66,14 +66,10 @@ export function PlanPreview() {
             ))}
           </ul>
 
-          <p className="mt-6 border-t border-hairline pt-5 text-sm text-ink-muted">
-            Тренировка — 45 минут, группа до 12 человек.
-          </p>
-
           <ArrowLink
             href="/raspisanie/"
             data-goal="cta_schedule"
-            className="mt-5 self-start"
+            className="mt-6 self-start"
           >
             Всё расписание
           </ArrowLink>
