@@ -58,7 +58,7 @@ export const schedule: ScheduleSlot[] = [
     id: 'sun',
     day: 'Воскресенье',
     short: 'Вс',
-    times: ['12:00'],
+    times: ['11:45'],
     note: 'Дневная группа',
   },
 ];
