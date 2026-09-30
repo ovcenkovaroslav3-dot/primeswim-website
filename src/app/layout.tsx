@@ -75,7 +75,16 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col overflow-x-clip">
         <a
           href="#main"
-          className="sr-only rounded-lg bg-brand-600 px-4 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100"
+          /*
+            ОТСТУПЫ ЗАДАНЫ ПОД focus:, И ИНАЧЕ ОНИ НЕ РАБОТАЮТ. Утилита
+            not-sr-only помимо позиционирования сбрасывает padding в ноль и
+            перебивает обычные px-4 py-3 — ссылка в фокусе выходила плашкой
+            186×24, где текст лежит вплотную к краям цветного прямоугольника.
+            Высота набирается min-h-11: её not-sr-only не трогает (сбрасывает
+            height, а не min-height), поэтому 44 px держатся независимо от
+            того, в каком порядке Tailwind разложит утилиты.
+          */
+          className="sr-only rounded-lg bg-brand-600 text-white focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:inline-flex focus:min-h-11 focus:items-center focus:px-4"
         >
           Перейти к содержанию
         </a>

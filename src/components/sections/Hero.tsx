@@ -1,11 +1,9 @@
 import Link from 'next/link';
 
-import { Picture } from '../Picture';
-
+import { HeroVisual } from '../HeroVisual';
 import { WaterScene } from '../WaterScene';
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
-import { heroImage } from '@/content/media';
 import { prices } from '@/content/prices';
 import { coaches } from '@/content/coaches';
 
@@ -34,43 +32,49 @@ import { coaches } from '@/content/coaches';
 */
 
 /*
-  Цена первого экрана — минимальная стоимость занятия в абонементе.
+  Обе цены первого экрана, и обе рядом с кнопкой.
 
-  Здесь стояла цена пробного. Она выше цены регулярного занятия, и первым
-  же числом на экране завышала представление о школе: родитель видел 1 100 ₽
-  там, где на самом деле платит от 850 ₽ за тренировку.
+  Раньше здесь была одна — минимум абонемента, — и она лежала в полосе
+  фактов. Решение верное по сути: цена пробного выше цены регулярного
+  занятия, и первым же числом на экране завышала представление о школе.
+  Неверным было место. Полоса фактов стоит прямо под кнопкой «Записаться
+  на пробное занятие», и получалось, что число рядом с кнопкой — 850, а
+  пробное, на которое кнопка записывает, стоит 1 100. Формально не ложь:
+  подпись говорила «занятие в абонементе». Но родитель не читает подписи,
+  он читает число возле кнопки.
 
-  Минимум считается по тарифам, у которых цена указана за занятие (у пробного
-  единицы нет — это разовый платёж). Так строка не разъедется, если тарифы
-  поменяются или появится новый.
+  Теперь обе цены стоят одной строкой прямо под кнопками — там, где человек
+  решает нажимать. Ни одно число больше не остаётся без своего названия, и
+  из полосы фактов цена ушла: дважды писать 850 на одном экране незачем.
+
+  Минимум абонемента считается по тарифам, у которых цена указана за занятие
+  (у пробного единицы нет — это разовый платёж). Так строка не разъедется,
+  если тарифы поменяются или появится новый.
 */
 const perLessonPrices = prices
   .filter((price) => price.unit)
   .map((price) => price.amount);
 const fromPrice = perLessonPrices.length ? Math.min(...perLessonPrices) : null;
+const trialPrice = prices.find((price) => price.id === 'trial')?.amount ?? null;
 const coachYears = coaches[0]?.yearsExperience;
+const rub = (amount: number) => `${amount.toLocaleString('ru-RU')} ₽`;
 
 /*
-  Четыре факта первого экрана — те, о которых родитель спрашивает первым
-  делом. Раньше здесь были размеры бассейна (25 м, шесть дорожек): они
-  верны, но отвечают на вопрос, который задают уже после записи, и живут
-  на своей странице /bassein/.
+  Факты первого экрана — те, о которых родитель спрашивает первым делом.
+  Раньше здесь были размеры бассейна (25 м, шесть дорожек): они верны, но
+  отвечают на вопрос, который задают уже после записи, и живут на своей
+  странице /bassein/.
 
-  Цена и стаж берутся из тех же файлов, что и страницы стоимости и тренера, —
-  иначе первый экран однажды остался бы с ценой, которой уже нет.
+  Фактов немного намеренно: цена переехала в строку под кнопками — см.
+  комментарий выше. Стаж берётся из того же файла, что и страница тренера, —
+  иначе первый экран однажды остался бы с числом, которого уже нет.
 */
 const facts = [
-  {
-    value: fromPrice ? `от ${fromPrice.toLocaleString('ru-RU')} ₽` : null,
-    label: 'занятие в абонементе',
-  },
   { value: '45 мин', label: 'тренировка' },
   /*
-    «На дорожке», а не «в группе»: родителю важно, сколько детей делят воду
-    с его ребёнком, а не численность списка. Цифра та же — группа занимает
-    одну дорожку.
+    Факт «до 12 детей на дорожке» убран 28 сентября 2026 по просьбе
+    владельца: численность группы на первом экране больше не обещаем.
   */
-  { value: 'до 12', label: 'детей на дорожке' },
   { value: coachYears ? `${coachYears} лет` : null, label: 'опыт тренера' },
 ].filter((fact): fact is { value: string; label: string } =>
   Boolean(fact.value),
@@ -99,14 +103,31 @@ export function Hero() {
         className="absolute inset-0 -z-10 bg-linear-to-b from-abyss-950/88 via-abyss-950/62 to-abyss-950/88 md:bg-linear-to-r md:from-abyss-950/94 md:via-abyss-950/58 md:to-abyss-950/28"
       />
 
-      <div className="hero-depart mx-auto w-full max-w-6xl px-5 pt-24 pb-16 sm:px-6 md:pt-28 md:pb-24">
+      <div className="hero-depart mx-auto w-full max-w-[75rem] px-4 pt-14 pb-16 sm:px-6 sm:pt-20 md:pt-28 md:pb-24">
         {/*
           Две колонки на десктопе, одна на телефоне. Фотография на телефоне
           идёт после кнопок, а не перед заголовком: сначала предложение,
           потом доказательство — на маленьком экране картинка сверху отодвинула
           бы за сгиб ровно то, ради чего человек пришёл.
+
+          НО И НЕ ПОСЛЕДНЕЙ. Замер 19 сентября 2026: кадр бассейна начинался
+          на 906-м пикселе при сгибе 844 — то есть на телефоне первый экран
+          не показывал ни одной фотографии вообще. Единственное, что нельзя
+          подделать вёрсткой, в предложение не входило. Между кнопками и
+          кадром стояла полоса фактов, и она же его туда и отодвинула.
+
+          Полоса и кадр поменялись местами. Порядок «предложение → кнопка →
+          доказательство» цел: заголовок, лид, обе кнопки и цены остались
+          выше кадра и за сгиб не ушли. А факты под кадром ничего не теряют —
+          «45 минут» уже сказано словами в лиде.
+
+          ТЕХНИЧЕСКИ ЭТО flex НА ТЕЛЕФОНЕ И grid НА md. Иначе никак: полоса
+          фактов лежала внутри текстовой колонки, а вставить её нужно между
+          колонкой и соседней — порядком в сетке этого не сделать. Поэтому
+          блоков теперь три, на телефоне они идут колонкой в порядке разметки,
+          а на md фотография занимает вторую колонку и обе строки сразу.
         */}
-        <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-16">
+        <div className="flex flex-col gap-10 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:items-center md:gap-x-12 md:gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-x-16">
           <div className="min-w-0">
             <p
               className="reveal text-xs font-medium tracking-[0.28em] text-white/55 uppercase"
@@ -180,8 +201,46 @@ export function Hero() {
               </Link>
             </div>
 
+            {trialPrice && fromPrice ? (
+              <p
+                className="reveal mt-4 text-sm text-white/65"
+                style={{ ['--reveal-delay' as string]: '440ms' }}
+              >
+                Пробное занятие — {rub(trialPrice)}, дальше от{' '}
+                {rub(fromPrice)} за занятие в абонементе
+              </p>
+            ) : null}
+          </div>
+
+          {/*
+            mt-6 НА ТЕЛЕФОНЕ — ЭТО ЗАПАС ПОД КОСАТКУ, А НЕ ОТСТУП.
+
+            Она выходит за верхний край рамки на 18 % её высоты (см.
+            HeroVisual) и высоты не занимает вовсе — то есть съедает то, что
+            над кадром. Пока над кадром была пустота, это никому не мешало;
+            теперь там строка с ценами, и морда легла ровно на запятую после
+            «1 100 ₽».
+
+            24 пикселя — замер, а не круглое число: остриё стояло на 637-м
+            пикселе, вторая строка кончается на 658-м. Меньше — снова
+            задевает, больше — кадр без нужды уезжает за сгиб.
+
+            На md и выше косатка висит над своей колонкой, задевать ей нечего,
+            поэтому там запас снимается.
+          */}
+          <div
+            className="mt-6 md:col-start-2 md:row-start-1 md:row-span-2 md:mt-0"
+            style={{ ['--reveal-delay' as string]: '320ms' }}
+          >
+            <HeroVisual
+              venue={contacts.address.venue}
+              district={contacts.address.district}
+            />
+          </div>
+
+          <div className="min-w-0">
             <dl
-              className="reveal glass mt-10 grid max-w-xl grid-cols-2 gap-x-6 gap-y-5 rounded-[20px] p-5 sm:grid-cols-4 sm:gap-x-4 sm:p-6"
+              className="reveal glass grid max-w-xl grid-cols-2 gap-x-4 gap-y-5 rounded-[20px] p-5 sm:p-6"
               style={{ ['--reveal-delay' as string]: '480ms' }}
             >
               {facts.map((f) => (
@@ -189,7 +248,9 @@ export function Hero() {
                   <dt className="order-2 mt-1 text-xs leading-snug text-white/55">
                     {f.label}
                   </dt>
-                  <dd className="order-1 text-xl font-light tabular-nums text-white sm:text-2xl">
+                  {/* значения короткие и переносу не подлежат: на 768 «45 мин»
+                      ломалось на «45» и «мин» и читалось как два факта */}
+                  <dd className="order-1 text-xl font-light whitespace-nowrap tabular-nums text-white sm:text-2xl">
                     {f.value}
                   </dd>
                 </div>
@@ -203,47 +264,22 @@ export function Hero() {
               {contacts.address.short}
             </p>
           </div>
-
-          {/*
-            Фотография бассейна. priority — потому что это самый крупный
-            элемент экрана и он же кандидат в LCP: без приоритета браузер
-            дошёл бы до него в общей очереди.
-
-            sizes задан по колонке, а не по ширине окна. Свой загрузчик на
-            статике не создаёт вариантов по ширине (см. next.config.ts), но
-            атрибут остаётся верным описанием разметки — и станет рабочим в
-            тот день, когда появится нормальная сборка изображений.
-          */}
-          <figure
-            className="reveal relative mx-auto w-full max-w-sm md:max-w-none"
-            style={{ ['--reveal-delay' as string]: '320ms' }}
-          >
-            <div className="relative overflow-hidden rounded-[24px] border border-white/15 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]">
-              <Picture
-                src={heroImage.src}
-                alt={heroImage.alt}
-                width={heroImage.width}
-                height={heroImage.height}
-                priority
-                sizes="(min-width: 1024px) 26rem, (min-width: 768px) 22rem, 24rem"
-                className="h-[clamp(16rem,42vw,30rem)] w-full object-cover md:h-[clamp(22rem,46vw,34rem)]"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-b from-transparent to-abyss-950/85"
-              />
-              <figcaption className="absolute inset-x-0 bottom-0 p-5 text-sm leading-snug text-white/85">
-                {contacts.address.venue} · {contacts.address.district}
-              </figcaption>
-            </div>
-          </figure>
         </div>
       </div>
 
-      {/* переход в следующую секцию: сцена растворяется в светлом фоне */}
+      {/*
+        Переход в следующую секцию.
+
+        Растворяется в abyss-900, а не в белом. За первым экраном идёт
+        ProofStrip, и он тёмный: прежний градиент уводил низ сцены в белый,
+        после чего страница резко возвращалась в тёмное — между двумя тёмными
+        секциями лежала светлая полоса в палец шириной, читавшаяся как шов
+        или недогрузившийся блок. Теперь сцена уходит ровно в цвет того, что
+        под ней.
+      */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-surface"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-abyss-900"
       />
     </section>
   );

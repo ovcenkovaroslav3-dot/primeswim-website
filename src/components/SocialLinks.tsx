@@ -21,7 +21,6 @@ const links = [
     label: 'Telegram-канал',
     short: 'Telegram',
     tail: '-канал',
-    handle: 't.me/prime_swim',
     goal: 'click_telegram_channel',
   },
   {
@@ -29,7 +28,6 @@ const links = [
     label: 'Канал в MAX',
     short: 'MAX',
     tail: ' — канал школы',
-    handle: 'max.ru',
     goal: 'click_max_channel',
   },
   {
@@ -37,15 +35,19 @@ const links = [
     label: 'ВКонтакте',
     short: 'ВКонтакте',
     tail: ' — страница школы',
-    handle: 'vk.com/primeswim',
     goal: 'click_vk',
   },
 ];
 
 /**
  * `inline` — строка ссылок для подвала и мобильного меню.
- * `cards` — крупные плитки с адресом канала, для секции «Контакты».
  * `bar` — узкая строка для полоски над шапкой.
+ *
+ * Был ещё `cards` — крупные плитки с адресом канала. Стоял в одном месте,
+ * в секции «Контакты» на главной, и уехал вместе с ней 19 сентября 2026
+ * (разбор — в шапке Contacts.tsx). Вариант удалён, а не оставлен про запас:
+ * неиспользуемая ветка с собственной разметкой тихо расходится с остальными
+ * при первой же правке подписей или целей.
  */
 export function SocialLinks({
   inverted = false,
@@ -53,7 +55,7 @@ export function SocialLinks({
   align = 'start',
 }: {
   inverted?: boolean;
-  variant?: 'inline' | 'cards' | 'bar';
+  variant?: 'inline' | 'bar';
   /*
     Выравнивание строки ссылок. Обёртки с justify-center снаружи мало:
     при переносе список занимает всю доступную ширину, и вторая строка
@@ -82,54 +84,16 @@ export function SocialLinks({
                  палец на телефоне целится в 16, а с py-1 — в 24, ровно
                  в минимум WCAG 2.5.8. Высоту полоски это не меняет —
                  её собственные отступы уменьшены на столько же. */
-              className="inline-block py-1.5 text-xs font-medium text-brand-600 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
+              /*
+                Зона нажатия 36 px вместо 28: у «MAX» подпись из трёх букв, и
+                прежний квадрат 28×28 на телефоне промахивался чаще, чем
+                попадал. Отрицательный внешний отступ забирает добавленную
+                высоту обратно — полоса каналов осталась тонкой, как и была.
+              */
+              className="-my-1.5 inline-flex min-h-9 items-center py-1.5 text-xs font-medium text-brand-600 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
             >
               {link.short}
               <span className="sr-only">{link.tail}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  if (variant === 'cards') {
-    return (
-      <ul className="grid gap-3 sm:grid-cols-3">
-        {links.map((link) => (
-          <li key={link.href}>
-            <a
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-goal={link.goal}
-              className="lift flex min-h-16 items-center justify-between gap-3 rounded-2xl border border-hairline bg-surface px-5 py-4 transition-colors hover:border-brand-500"
-            >
-              <span>
-                <span className="block text-base font-medium text-ink">
-                  {link.label}
-                </span>
-                <span className="mt-0.5 block text-sm text-ink-muted">
-                  {link.handle}
-                </span>
-              </span>
-              {/* стрелка «наружу»: ссылка открывается в новой вкладке */}
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                aria-hidden="true"
-                fill="none"
-                className="shrink-0 text-brand-600"
-              >
-                <path
-                  d="M4 10L10 4M10 4H5M10 4v5"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
             </a>
           </li>
         ))}

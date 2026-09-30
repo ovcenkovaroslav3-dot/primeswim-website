@@ -1,4 +1,5 @@
 import { LeadForm } from './LeadForm';
+import { OrcaMark } from '../OrcaMark';
 import { WaterScene } from '../WaterScene';
 import { contacts } from '@/content/contacts';
 
@@ -114,6 +115,21 @@ export function FinalCta({
         </>
       )}
 
+      {/*
+        Косатка в толще — тот же знак, что и на первом экране, и это
+        намеренная рифма: страница открывается и закрывается одной фигурой.
+        Здесь она идёт вверх и вправо, к форме, а не поперёк экрана.
+
+        Почти прозрачная и без резких краёв: на тёмной воде это форма,
+        которую замечаешь вторым взглядом, а не картинка, с которой спорит
+        заголовок. Сама фигура декоративна и из чтения с экрана исключена.
+      */}
+      <OrcaMark
+        tone="white"
+        tilt={-16}
+        className="pointer-events-none absolute -top-6 -left-[12%] -z-10 w-[68%] opacity-[0.05] sm:-left-[6%] sm:w-[52%] md:-top-10 md:w-[44%]"
+      />
+
       <div className="relative mx-auto w-full max-w-3xl text-center">
         <p className="reveal text-xs font-medium tracking-[0.28em] text-white/50 uppercase">
           Первый шаг
@@ -121,7 +137,7 @@ export function FinalCta({
 
         <h2
           id="booking-title"
-          className="reveal mt-6 text-[clamp(2.2rem,7vw,4.2rem)] leading-[1.02] font-extralight tracking-[-0.02em]"
+          className="reveal mt-6 text-[clamp(2.2rem,7vw,4.2rem)] leading-[1.02] font-normal tracking-[-0.02em]"
           style={{ ['--reveal-delay' as string]: '90ms' }}
         >
           Начните с первой тренировки

@@ -4,7 +4,10 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 import {
+  coachIntroVideo,
+  galleryVideos,
   heroImage,
+  heroImageNarrow,
   poolMainImage,
   poolPreviewImages,
   venuePreviewImages,
@@ -46,12 +49,32 @@ const PUBLIC = join(process.cwd(), 'public');
 */
 const sets: Record<string, MediaItem[]> = {
   heroImage: [heroImage],
+  /*
+    Копия первого экрана под телефон. Она уходит в <source media>, а на
+    ненайденный файл <picture> к запасному варианту не откатывается — без
+    неё телефон получил бы дыру вместо кадра, а десктоп ничего бы не
+    заметил, то есть поломку увидели бы позже всех.
+  */
+  heroImageNarrow: [heroImageNarrow],
   poolMainImage: [poolMainImage],
   poolPreviewImages,
   venuePreviewImages,
   galleryGridImages,
   galleryHighlights,
   coachPhotos: coaches.map((coach) => coach.photo),
+  /*
+    Постеры роликов. Раньше они уходили атрибутом `poster` и через Picture не
+    проходили — теперь проходят, а значит подчиняются тому же правилу: нет
+    AVIF рядом, и <source> отдаёт 404, к запасному варианту браузер не
+    откатывается. У VideoItem поле называется poster, поэтому набор собирается
+    отдельно.
+  */
+  videoPosters: [coachIntroVideo, ...galleryVideos].map((video) => ({
+    src: video.poster,
+    alt: video.alt,
+    width: video.width,
+    height: video.height,
+  })),
 };
 
 for (const [name, items] of Object.entries(sets)) {

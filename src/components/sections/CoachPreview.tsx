@@ -1,7 +1,7 @@
-import Link from 'next/link';
-
-import { CoachPortrait } from '../CoachPortrait';
 import { coaches } from '@/content/coaches';
+import { coachIntroVideo } from '@/content/media';
+import { ArrowLink } from '../ui';
+import { VideoCard } from '../VideoCard';
 
 /*
   Тренер на главной — короткая карточка, а не вторая копия страницы.
@@ -24,7 +24,7 @@ export function CoachPreview() {
   return (
     <section
       aria-labelledby="coach-preview-title"
-      className="on-dark relative overflow-clip bg-abyss-900 px-4 py-14 text-white sm:px-6 sm:py-16 md:py-24"
+      className="on-dark relative overflow-clip bg-abyss-900 px-4 py-14 text-white sm:px-6 sm:py-16 md:py-28"
     >
       <div
         aria-hidden="true"
@@ -36,8 +36,28 @@ export function CoachPreview() {
       />
 
       <div className="relative mx-auto grid w-full max-w-6xl gap-10 md:grid-cols-[260px_1fr] md:items-center md:gap-14">
+        {/*
+          Вместо портрета — видео-знакомство: то же лицо, но человек ещё и
+          говорит. Портрет остался на /trener/, дублировать его здесь незачем.
+
+          preload="none" — на странице не грузится ни байта видео, пока
+          родитель не нажал play; до этого виден только постер, он же кадр
+          из самого ролика. Кадр вертикальный, 9:16, поэтому колонка держит
+          пропорции сама, без фиксированной высоты.
+
+          Своя кнопка воспроизведения вместо нативной панели: браузер рисует
+          её поверх постера серой полосой во всю ширину — единственное место
+          на сайте, выглядевшее вставкой с видеохостинга. Разбор — в
+          VideoCard.tsx. Автозапуска нет и не будет: в ролике речь.
+        */}
         <div className="reveal mx-auto w-full max-w-[260px]">
-          <CoachPortrait name={coach.name} photo={coach.photo} priority={false} />
+          <VideoCard
+            src={coachIntroVideo.src}
+            poster={coachIntroVideo.poster}
+            label={coachIntroVideo.alt}
+            width={coachIntroVideo.width}
+            height={coachIntroVideo.height}
+          />
         </div>
 
         <div className="reveal" style={{ ['--reveal-delay' as string]: '90ms' }}>
@@ -47,7 +67,7 @@ export function CoachPreview() {
 
           <h2
             id="coach-preview-title"
-            className="mt-4 text-3xl leading-[1.08] font-extralight tracking-[-0.02em] sm:text-4xl"
+            className="mt-4 text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl"
           >
             {coach.name}
           </h2>
@@ -68,29 +88,9 @@ export function CoachPreview() {
             {coach.bio[0]}
           </p>
 
-          <Link
-            href="/trener/"
-            prefetch={false}
-            className="lift group mt-7 -mb-1 inline-flex items-center gap-2 py-1 text-sm font-medium text-white"
-          >
+          <ArrowLink href="/trener/" tone="white" className="mt-8">
             О тренере и методике
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 18 18"
-              fill="none"
-              aria-hidden="true"
-              className="transition-transform duration-200 group-hover:translate-x-1"
-            >
-              <path
-                d="M3 9h12M10 4l5 5-5 5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+          </ArrowLink>
         </div>
       </div>
     </section>
