@@ -26,6 +26,9 @@
  * Без PHOTO берётся media-source/brand/rollup-swimmer.jpg. Фото — вертикаль
  * 3:4, верхняя треть тёмная (под заголовок).
  * DPI=100 (по умолчанию) — разрешение PNG-превью в натуральный размер.
+ * BLEED=5 — версия с вылетами: фон и фото уходят за обрез на 5 мм с каждой
+ * стороны, лист 860×2010 мм, всё остальное стоит на тех же местах. Нужна,
+ * если типография режет ткань после печати и просит запас под нож.
  */
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -34,11 +37,14 @@ import { chromium } from 'playwright';
 
 import { glyphsFrom, inlineGoogleFont } from './lib/google-font.mjs';
 
-const OUT = 'media-source/brand/rollup-85x200.pdf';
 const PHOTO = process.env.PHOTO ?? 'media-source/brand/rollup-swimmer.jpg';
 const DPI = Number(process.env.DPI ?? 100);
-const W = 850; // мм
+const W = 850; // мм, чистый формат
 const H = 2000; // мм
+const B = Number(process.env.BLEED ?? 0); // мм вылета с каждой стороны
+const PW = W + 2 * B; // мм, лист вместе с вылетами
+const PH = H + 2 * B;
+const OUT = `media-source/brand/rollup-85x200${B ? `-bleed${B}` : ''}.pdf`;
 
 async function pick(file, pattern, what) {
   const source = await readFile(file, 'utf8');
@@ -119,39 +125,41 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
 <title>PRIME SWIM — ролл-ап 85×200</title>
 <style>${display}${sans600}${sans700}${sans800}</style>
 <style>
-  @page { size: ${W}mm ${H}mm; margin: 0; }
+  @page { size: ${PW}mm ${PH}mm; margin: 0; }
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
     --abyss:#0b0114; --abyss-900:#180229; --abyss-800:#260640;
     --brand:#4f017b; --brand-500:#7a19b4; --brand-400:#9a3fd2;
     --lime:#c7fe03; --ink:#16101f;
   }
-  html,body{width:${W}mm;height:${H}mm}
+  html,body{width:${PW}mm;height:${PH}mm}
+  /* чистый формат внутри листа: все координаты ниже — от его угла */
+  .sheet{position:absolute;left:${B}mm;top:${B}mm;width:${W}mm;height:${H}mm}
   body{position:relative;overflow:hidden;color:#fff;
        font-family:Manrope,system-ui,sans-serif;
        background:var(--abyss);
        -webkit-print-color-adjust:exact;print-color-adjust:exact}
 
   /* ── фон: фирменный фиолетовый сверху уходит в толщу ── */
-  .bg{position:absolute;inset:0;
+  .bg{position:absolute;inset:-${B}mm;
       background:
         radial-gradient(120% 40% at 50% 0%, #6a0aa3 0%, var(--brand) 35%, transparent 75%),
         linear-gradient(180deg, var(--brand) 0mm, var(--abyss-900) 700mm, var(--abyss) 1300mm, var(--abyss-900) 1700mm, var(--brand) ${H}mm);}
 
   /* ── фото: без рамки, растворяется в фоне сверху и снизу ── */
-  .photo{position:absolute;left:0;width:${W}mm;top:340mm;height:${Math.round(W * 4 / 3)}mm;
+  .photo{position:absolute;left:-${B}mm;width:${PW}mm;top:340mm;height:${Math.round(W * 4 / 3)}mm;
          background:url(${photo}) center/cover no-repeat;
          -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 22%,#000 72%,transparent 95%);
                  mask-image:linear-gradient(180deg,transparent 0%,#000 22%,#000 72%,transparent 95%);}
   /* фиолетовый свет по краям кадра связывает фото с фоном */
-  .tint{position:absolute;left:0;width:${W}mm;top:340mm;height:${Math.round(W * 4 / 3)}mm;
+  .tint{position:absolute;left:-${B}mm;width:${PW}mm;top:340mm;height:${Math.round(W * 4 / 3)}mm;
         background:
           radial-gradient(60% 45% at 0% 55%, rgba(122,25,180,.55), transparent 70%),
           radial-gradient(55% 40% at 100% 70%, rgba(79,1,123,.6), transparent 70%);
         mix-blend-mode:screen;opacity:.7}
 
   /* динамические линии: дорожки бассейна под углом, лайм — одна линия */
-  .lanes{position:absolute;left:0;top:0;width:${W}mm;height:${H}mm}
+  .lanes{position:absolute;left:-${B}mm;top:0;width:${PW}mm;height:${H}mm}
 
   .safe{position:absolute;left:55mm;right:55mm}
 
@@ -224,11 +232,11 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   .qr-label::before{content:"";width:14mm;height:1.8mm;border-radius:1mm;background:var(--lime)}
   .qr-url{font-family:Unbounded,sans-serif;font-weight:800;white-space:nowrap;line-height:1;color:#fff}
   .qr-hint{font-weight:600;font-size:16mm;line-height:1.15;color:rgba(255,255,255,.78)}
-</style></head><body>
+</style></head><body><div class="sheet">
   <div class="bg"></div>
   <div class="photo"></div>
   <div class="tint"></div>
-  <svg class="lanes" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" fill="none">
+  <svg class="lanes" viewBox="${-B} 0 ${PW} ${H}" preserveAspectRatio="none" fill="none">
     <defs>
       <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
@@ -269,7 +277,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
       <div class="qr-hint">${TEXT.qrHint}</div>
     </div>
   </div>
-
+</div>
   <script>
     /* строка подгоняется под ширину: заголовок и телефон — во всю колонку */
     const MM = 96 / 25.4;
@@ -288,8 +296,8 @@ await mkdir('media-source/brand', { recursive: true });
 const browser = await chromium.launch(
   process.env.CHROME ? { executablePath: process.env.CHROME } : {},
 );
-const pxW = Math.round((W / 25.4) * 96);
-const pxH = Math.round((H / 25.4) * 96);
+const pxW = Math.round((PW / 25.4) * 96);
+const pxH = Math.round((PH / 25.4) * 96);
 const page = await browser.newPage({ viewport: { width: pxW, height: pxH } });
 await page.setContent(html, { waitUntil: 'load' });
 await page.evaluate(() => document.fonts.ready);
@@ -297,8 +305,8 @@ await page.evaluate(() => window.fit());
 await page.waitForTimeout(400);
 
 const pdf = await page.pdf({
-  width: `${W}mm`,
-  height: `${H}mm`,
+  width: `${PW}mm`,
+  height: `${PH}mm`,
   printBackground: true,
   margin: { top: '0', right: '0', bottom: '0', left: '0' },
 });
@@ -323,5 +331,5 @@ await small.waitForTimeout(400);
 await small.screenshot({ path: OUT.replace('.pdf', '-preview.png') });
 await browser.close();
 
-console.log(`${OUT} — ${W}×${H} мм, ${(pdf.length / 1024 / 1024).toFixed(1)} MB`);
-console.log(`${full} — ${Math.round((W / 25.4) * DPI)}×${Math.round((H / 25.4) * DPI)} px`);
+console.log(`${OUT} — ${PW}×${PH} мм, ${(pdf.length / 1024 / 1024).toFixed(1)} MB`);
+console.log(`${full} — ${Math.round((PW / 25.4) * DPI)}×${Math.round((PH / 25.4) * DPI)} px`);
