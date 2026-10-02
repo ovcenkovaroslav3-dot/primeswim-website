@@ -118,12 +118,12 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
         linear-gradient(180deg, var(--brand) 0mm, var(--abyss-900) 700mm, var(--abyss) 1300mm, var(--abyss-900) 1700mm, var(--brand) ${H}mm);}
 
   /* ── фото: без рамки, растворяется в фоне сверху и снизу ── */
-  .photo{position:absolute;left:0;width:${W}mm;top:430mm;height:${Math.round(W * 4 / 3)}mm;
+  .photo{position:absolute;left:0;width:${W}mm;top:360mm;height:${Math.round(W * 4 / 3)}mm;
          background:url(${photo}) center/cover no-repeat;
-         -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 26%,#000 66%,transparent 92%);
-                 mask-image:linear-gradient(180deg,transparent 0%,#000 26%,#000 66%,transparent 92%);}
+         -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 22%,#000 72%,transparent 95%);
+                 mask-image:linear-gradient(180deg,transparent 0%,#000 22%,#000 72%,transparent 95%);}
   /* фиолетовый свет по краям кадра связывает фото с фоном */
-  .tint{position:absolute;left:0;width:${W}mm;top:430mm;height:${Math.round(W * 4 / 3)}mm;
+  .tint{position:absolute;left:0;width:${W}mm;top:360mm;height:${Math.round(W * 4 / 3)}mm;
         background:
           radial-gradient(60% 45% at 0% 55%, rgba(122,25,180,.55), transparent 70%),
           radial-gradient(55% 40% at 100% 70%, rgba(79,1,123,.6), transparent 70%);
