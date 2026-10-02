@@ -68,7 +68,7 @@ const TEXT = {
   cta: 'Запишитесь на занятие',
   phone,
   site: 'primeswim.ru',
-  qr: 'Расписание и цены',
+  qr: 'Наш сайт',
 };
 
 if (!existsSync(PHOTO)) throw new Error(`Нет фотографии: ${PHOTO}`);
@@ -175,23 +175,43 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   .perk p{font-weight:700;font-size:28.5mm;white-space:nowrap;letter-spacing:-.01em;line-height:1.12;color:#fff}
 
   /* 5–6. запись: самый яркий блок листа */
-  .cta{top:1708mm;background:var(--lime);color:var(--ink);border-radius:22mm;
+  .cta{top:1728mm;background:var(--lime);color:var(--ink);border-radius:22mm;
        padding:26mm 30mm 24mm;text-align:center;box-shadow:0 8mm 24mm rgba(199,254,3,.18)}
   .cta .ask{font-family:Unbounded,sans-serif;font-weight:800;text-transform:uppercase;
             font-size:35mm;line-height:1.05;white-space:nowrap}
   .cta .tel{font-family:Unbounded,sans-serif;font-weight:800;white-space:nowrap;
             margin-top:12mm;line-height:1;color:var(--brand)}
   /*
-    QR — справа от пловца, на 0,75–0,95 м от пола: на этой высоте телефон
-    наводят не нагибаясь. Место выбрано по кадру — рука и брызги левее.
+    QR — справа от пловца, на 0,75–1 м от пола: на этой высоте телефон
+    наводят не нагибаясь. Внизу листа код оказался бы в 20 см от пола, а у
+    части стендов — за основанием. Место выбрано по кадру: рука и брызги
+    левее, правая колонка над водой свободна.
+
+    Карточка — стекло, как плашка преимуществ, чтобы код был частью листа, а
+    не наклейкой. Лаймовые уголки видоискателя говорят «наведи камеру» без
+    слов. Сам код тёмный на белом: инвертированный QR читают не все камеры.
+    Адрес сайта живёт здесь же и внизу листа не повторяется.
   */
-  .qr{position:absolute;right:55mm;top:1040mm;width:178mm;padding:14mm 14mm 11mm;
-      background:#fff;border-radius:14mm;text-align:center;color:var(--brand);
-      box-shadow:0 6mm 18mm rgba(11,1,20,.45)}
-  .qr-code{display:block;width:150mm;height:150mm}
-  .qr p{margin-top:8mm;font-weight:700;font-size:15.5mm;line-height:1.1;
-        text-transform:uppercase;letter-spacing:.02em}
-  .site{top:1918mm;text-align:center;font-weight:600;font-size:26mm;letter-spacing:.08em;color:rgba(255,255,255,.85)}
+  .qr{position:absolute;right:55mm;top:975mm;width:235mm;padding:15mm 16mm 16mm;
+      border-radius:20mm;text-align:center;
+      background:linear-gradient(180deg,rgba(24,2,41,.62),rgba(24,2,41,.82));
+      border:1.4mm solid rgba(255,255,255,.16);backdrop-filter:blur(6mm);
+      box-shadow:0 10mm 28mm rgba(11,1,20,.45)}
+  .qr-label{display:flex;align-items:center;justify-content:center;gap:5mm;
+            font-weight:700;font-size:17mm;line-height:1;letter-spacing:.22em;
+            padding-left:.22em;text-transform:uppercase;color:var(--lime)}
+  .qr-label::before,.qr-label::after{content:"";width:12mm;height:1.6mm;border-radius:1mm;
+            background:var(--lime);opacity:.7}
+  .qr-frame{position:relative;margin-top:11mm;padding:7mm}
+  .qr-frame i{position:absolute;width:30mm;height:30mm;border:0 solid var(--lime)}
+  .qr-frame .tl{top:0;left:0;border-top-width:3mm;border-left-width:3mm;border-top-left-radius:9mm}
+  .qr-frame .tr{top:0;right:0;border-top-width:3mm;border-right-width:3mm;border-top-right-radius:9mm}
+  .qr-frame .bl{bottom:0;left:0;border-bottom-width:3mm;border-left-width:3mm;border-bottom-left-radius:9mm}
+  .qr-frame .br{bottom:0;right:0;border-bottom-width:3mm;border-right-width:3mm;border-bottom-right-radius:9mm}
+  .qr-tile{background:#fff;border-radius:7mm;padding:9mm}
+  .qr-code{display:block;width:100%;height:auto}
+  .qr-url{margin-top:11mm;font-family:Unbounded,sans-serif;font-weight:800;white-space:nowrap;
+          line-height:1;color:#fff}
 </style></head><body>
   <div class="bg"></div>
   <div class="photo"></div>
@@ -228,8 +248,12 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
     <div class="ask fit" data-w="680">${TEXT.cta}</div>
     <div class="tel fit" data-w="680">${TEXT.phone}</div>
   </div>
-  <div class="qr">${qr}<p>${TEXT.qr.replace(' и ', '<br>и ')}</p></div>
-  <div class="safe site">${TEXT.site}</div>
+  <div class="qr">
+    <div class="qr-label">${TEXT.qr}</div>
+    <div class="qr-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+      <div class="qr-tile">${qr}</div></div>
+    <div class="qr-url fit" data-w="200">${TEXT.site}</div>
+  </div>
 
   <script>
     /* строка подгоняется под ширину: заголовок и телефон — во всю колонку */
