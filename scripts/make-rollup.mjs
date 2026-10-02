@@ -69,6 +69,7 @@ const TEXT = {
   phone,
   site: 'primeswim.ru',
   qr: 'Наш сайт',
+  qrHint: '← наведите камеру',
 };
 
 if (!existsSync(PHOTO)) throw new Error(`Нет фотографии: ${PHOTO}`);
@@ -159,12 +160,13 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   h1{position:absolute;left:55mm;right:55mm;top:500mm;font-family:Unbounded,sans-serif;font-weight:800;
      text-transform:uppercase;line-height:.98;letter-spacing:-.005em;text-align:center}
   h1 span{display:block;white-space:nowrap}
-  h1 .t2{color:var(--lime)}
+  /* зазор между строками: кратка над «Й» иначе задевает «Е» строкой выше */
+  h1 .t2{color:var(--lime);margin-top:10mm}
   .lead{top:735mm;text-align:center;font-weight:600;font-size:31mm;line-height:1.22;color:rgba(255,255,255,.92);
         text-wrap:balance;text-shadow:0 1mm 6mm rgba(11,1,20,.6)}
 
   /* 4. преимущества: стеклянная плашка поверх нижнего края фото */
-  .perks{top:1318mm;padding:26mm 28mm;border-radius:22mm;
+  .perks{top:1335mm;padding:26mm 28mm;border-radius:22mm;
          background:linear-gradient(180deg,rgba(24,2,41,.78),rgba(24,2,41,.9));
          border:1.4mm solid rgba(255,255,255,.12);
          backdrop-filter:blur(6mm);display:flex;flex-direction:column;gap:18mm}
@@ -175,43 +177,43 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   .perk p{font-weight:700;font-size:28.5mm;white-space:nowrap;letter-spacing:-.01em;line-height:1.12;color:#fff}
 
   /* 5–6. запись: самый яркий блок листа */
-  .cta{top:1728mm;background:var(--lime);color:var(--ink);border-radius:22mm;
+  .cta{top:1738mm;background:var(--lime);color:var(--ink);border-radius:22mm;
        padding:26mm 30mm 24mm;text-align:center;box-shadow:0 8mm 24mm rgba(199,254,3,.18)}
   .cta .ask{font-family:Unbounded,sans-serif;font-weight:800;text-transform:uppercase;
             font-size:35mm;line-height:1.05;white-space:nowrap}
   .cta .tel{font-family:Unbounded,sans-serif;font-weight:800;white-space:nowrap;
             margin-top:12mm;line-height:1;color:var(--brand)}
   /*
-    QR — справа от пловца, на 0,75–1 м от пола: на этой высоте телефон
-    наводят не нагибаясь. Внизу листа код оказался бы в 20 см от пола, а у
-    части стендов — за основанием. Место выбрано по кадру: рука и брызги
-    левее, правая колонка над водой свободна.
+    QR — на воде под подбородком пловца, на 0,7–0,9 м от пола: на этой высоте
+    телефон наводят не нагибаясь. Внизу листа код оказался бы в 20 см от
+    пола, а у части стендов — за основанием. Первый вариант стоял выше
+    справа и закрывал шапочку: карточка горизонтальная, чтобы уместиться
+    между головой и плашкой преимуществ.
 
     Карточка — стекло, как плашка преимуществ, чтобы код был частью листа, а
     не наклейкой. Лаймовые уголки видоискателя говорят «наведи камеру» без
     слов. Сам код тёмный на белом: инвертированный QR читают не все камеры.
     Адрес сайта живёт здесь же и внизу листа не повторяется.
   */
-  .qr{position:absolute;right:55mm;top:975mm;width:235mm;padding:15mm 16mm 16mm;
-      border-radius:20mm;text-align:center;
-      background:linear-gradient(180deg,rgba(24,2,41,.62),rgba(24,2,41,.82));
+  .qr{position:absolute;right:55mm;top:1095mm;display:flex;align-items:center;gap:20mm;
+      padding:14mm 26mm 14mm 14mm;border-radius:22mm;
+      background:linear-gradient(180deg,rgba(24,2,41,.66),rgba(24,2,41,.86));
       border:1.4mm solid rgba(255,255,255,.16);backdrop-filter:blur(6mm);
       box-shadow:0 10mm 28mm rgba(11,1,20,.45)}
-  .qr-label{display:flex;align-items:center;justify-content:center;gap:5mm;
-            font-weight:700;font-size:17mm;line-height:1;letter-spacing:.22em;
-            padding-left:.22em;text-transform:uppercase;color:var(--lime)}
-  .qr-label::before,.qr-label::after{content:"";width:12mm;height:1.6mm;border-radius:1mm;
-            background:var(--lime);opacity:.7}
-  .qr-frame{position:relative;margin-top:11mm;padding:7mm}
+  .qr-frame{position:relative;flex:none;width:168mm;padding:6mm}
   .qr-frame i{position:absolute;width:30mm;height:30mm;border:0 solid var(--lime)}
   .qr-frame .tl{top:0;left:0;border-top-width:3mm;border-left-width:3mm;border-top-left-radius:9mm}
   .qr-frame .tr{top:0;right:0;border-top-width:3mm;border-right-width:3mm;border-top-right-radius:9mm}
   .qr-frame .bl{bottom:0;left:0;border-bottom-width:3mm;border-left-width:3mm;border-bottom-left-radius:9mm}
   .qr-frame .br{bottom:0;right:0;border-bottom-width:3mm;border-right-width:3mm;border-bottom-right-radius:9mm}
-  .qr-tile{background:#fff;border-radius:7mm;padding:9mm}
+  .qr-tile{background:#fff;border-radius:7mm;padding:7mm}
   .qr-code{display:block;width:100%;height:auto}
-  .qr-url{margin-top:11mm;font-family:Unbounded,sans-serif;font-weight:800;white-space:nowrap;
-          line-height:1;color:#fff}
+  .qr-text{display:flex;flex-direction:column;align-items:flex-start;gap:12mm}
+  .qr-label{display:flex;align-items:center;gap:5mm;font-weight:700;font-size:18mm;line-height:1;
+            letter-spacing:.22em;text-transform:uppercase;color:var(--lime)}
+  .qr-label::before{content:"";width:14mm;height:1.8mm;border-radius:1mm;background:var(--lime)}
+  .qr-url{font-family:Unbounded,sans-serif;font-weight:800;white-space:nowrap;line-height:1;color:#fff}
+  .qr-hint{font-weight:600;font-size:16mm;line-height:1.15;color:rgba(255,255,255,.78)}
 </style></head><body>
   <div class="bg"></div>
   <div class="photo"></div>
@@ -249,10 +251,13 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
     <div class="tel fit" data-w="680">${TEXT.phone}</div>
   </div>
   <div class="qr">
-    <div class="qr-label">${TEXT.qr}</div>
     <div class="qr-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
       <div class="qr-tile">${qr}</div></div>
-    <div class="qr-url fit" data-w="200">${TEXT.site}</div>
+    <div class="qr-text">
+      <div class="qr-label">${TEXT.qr}</div>
+      <div class="qr-url fit" data-w="226">${TEXT.site}</div>
+      <div class="qr-hint">${TEXT.qrHint}</div>
+    </div>
   </div>
 
   <script>
