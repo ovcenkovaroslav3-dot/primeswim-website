@@ -27,6 +27,11 @@
            media-source/brand/diploma-a4.pdf    бланк на печать
            media-source/brand/diploma-a4.html   та же вёрстка, чтобы править руками
 
+    prime-swim-logo-vector.svg + rollup-swimmer.jpg + src/content/contacts.ts
+      └─ PHOTO=media-source/brand/rollup-swimmer.jpg node scripts/make-rollup.mjs
+           media-source/brand/rollup-85x200.pdf        ролл-ап 85×200 см в печать
+           media-source/brand/rollup-85x200-100dpi.png тот же лист растром
+
 Всё остальное — готовые кадры для публикации: их постят, а не пересобирают.
 
 **Сменив талисмана, пересоберите обе цепочки.** Обложка вшивает картинку в
@@ -48,6 +53,7 @@
 | `soglasie-foto-a4.pdf` | бланк согласия на съёмку ребёнка, A4 — печатать и подписывать |
 | `diploma-a4.pdf` | бланк диплома, A4 альбомная — печатать и заполнять от руки |
 | `diploma-a4.html` | вёрстка бланка: открыть в браузере, поправить слова |
+| `prime-swim-logo-vector.svg` | знак вектором (трассировка prime-swim-logo.jpg), фон прозрачный — для печати крупно |
 | `strokes/` | четыре плоских силуэта стилей, исходники |
 | `concepts/` | три стилевых кадра, из которых выбирали |
 
