@@ -68,6 +68,7 @@ const TEXT = {
   cta: 'Запишитесь на занятие',
   phone,
   site: 'primeswim.ru',
+  qr: 'Расписание и цены',
 };
 
 if (!existsSync(PHOTO)) throw new Error(`Нет фотографии: ${PHOTO}`);
@@ -77,6 +78,15 @@ const photo = `data:image/${photoExt};base64,${(await readFile(PHOTO)).toString(
 const logo = (await readFile('media-source/brand/prime-swim-logo-vector.svg', 'utf8'))
   .replace(/<!--[\s\S]*?-->/g, '')
   .replace('<svg ', '<svg class="logo" ');
+
+/*
+  QR ведёт на сайт с меткой utm: в Метрике видно, сколько людей пришло со
+  стенда. Код собран один раз (npm qrcode, коррекция Q, 37×37 модулей) и
+  лежит рядом файлом, чтобы сборке не нужна была ещё одна зависимость.
+  Модуль на листе — 4 мм: сканируется с двух метров и с потёртой ткани.
+*/
+const qr = (await readFile('media-source/brand/qr-primeswim-rollup.svg', 'utf8'))
+  .replace('<svg ', '<svg class="qr-code" ');
 
 const all = [...Object.values(TEXT).flat()];
 const display = await inlineGoogleFont('Unbounded', 800, glyphsFrom(all));
@@ -171,6 +181,16 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
             font-size:35mm;line-height:1.05;white-space:nowrap}
   .cta .tel{font-family:Unbounded,sans-serif;font-weight:800;white-space:nowrap;
             margin-top:12mm;line-height:1;color:var(--brand)}
+  /*
+    QR — справа от пловца, на 0,75–0,95 м от пола: на этой высоте телефон
+    наводят не нагибаясь. Место выбрано по кадру — рука и брызги левее.
+  */
+  .qr{position:absolute;right:55mm;top:1040mm;width:178mm;padding:14mm 14mm 11mm;
+      background:#fff;border-radius:14mm;text-align:center;color:var(--brand);
+      box-shadow:0 6mm 18mm rgba(11,1,20,.45)}
+  .qr-code{display:block;width:150mm;height:150mm}
+  .qr p{margin-top:8mm;font-weight:700;font-size:15.5mm;line-height:1.1;
+        text-transform:uppercase;letter-spacing:.02em}
   .site{top:1918mm;text-align:center;font-weight:600;font-size:26mm;letter-spacing:.08em;color:rgba(255,255,255,.85)}
 </style></head><body>
   <div class="bg"></div>
@@ -208,6 +228,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
     <div class="ask fit" data-w="680">${TEXT.cta}</div>
     <div class="tel fit" data-w="680">${TEXT.phone}</div>
   </div>
+  <div class="qr">${qr}<p>${TEXT.qr.replace(' и ', '<br>и ')}</p></div>
   <div class="safe site">${TEXT.site}</div>
 
   <script>
