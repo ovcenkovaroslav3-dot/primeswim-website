@@ -187,7 +187,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   .perks{top:1298mm;padding:22mm 28mm;border-radius:22mm;
          background:linear-gradient(180deg,rgba(24,2,41,.78),rgba(24,2,41,.9));
          border:1.4mm solid rgba(255,255,255,.12);
-         backdrop-filter:blur(6mm);display:flex;flex-direction:column;gap:12mm}
+         display:flex;flex-direction:column;gap:12mm}
   .perk{display:flex;align-items:center;gap:16mm}
   .perk .ic{flex:none;width:48mm;height:48mm;border-radius:50%;display:grid;place-items:center;
             background:rgba(199,254,3,.12);color:var(--lime)}
@@ -215,8 +215,13 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   */
   .qr{position:absolute;right:55mm;top:1075mm;display:flex;align-items:center;gap:20mm;
       padding:14mm 26mm 14mm 14mm;border-radius:22mm;
-      background:linear-gradient(180deg,rgba(24,2,41,.66),rgba(24,2,41,.86));
-      border:1.4mm solid rgba(255,255,255,.16);backdrop-filter:blur(6mm);
+      /*
+        Подложка плотная и без backdrop-filter: размытие под стеклом в PDF
+        из Chrome не попадает, и брызги просвечивали за подписью — на экране
+        этого не видно, на печати было бы.
+      */
+      background:linear-gradient(180deg,rgba(24,2,41,.86),rgba(24,2,41,.93));
+      border:1.4mm solid rgba(255,255,255,.16);
       box-shadow:0 10mm 28mm rgba(11,1,20,.45)}
   .qr-frame{position:relative;flex:none;width:168mm;padding:6mm}
   .qr-frame i{position:absolute;width:30mm;height:30mm;border:0 solid var(--lime)}
