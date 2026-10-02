@@ -3,8 +3,8 @@
  *
  * Стенд в холле бассейна. Его читают на ходу с 3–5 метров, поэтому на листе
  * шесть вещей в строгом порядке: знак → «школа плавания» → заголовок → пловец
- * → четыре преимущества → запись и телефон. Мелкого текста нет: самая мелкая
- * строка набрана 26 мм, это читается с пяти метров.
+ * → шесть преимуществ → запись и телефон. Всё, что читают издалека,
+ * набрано от 29 мм; мельче только подписи у QR — к нему подходят вплотную.
  *
  * ПОЧЕМУ PDF. Текст и знак уходят в типографию вектором и остаются резкими на
  * любом увеличении; растр — только фотография. Шрифты вшиваются (см.
@@ -64,6 +64,8 @@ const TEXT = {
     'Подход к каждому ученику',
     'Соревнования и спортивные разряды',
     'Спортивные сборы и развитие результата',
+    'Комьюнити единомышленников',
+    'Система лояльности',
   ],
   cta: 'Запишитесь на занятие',
   phone,
@@ -91,8 +93,14 @@ const qr = (await readFile('media-source/brand/qr-primeswim-rollup.svg', 'utf8')
 
 const all = [...Object.values(TEXT).flat()];
 const display = await inlineGoogleFont('Unbounded', 800, glyphsFrom(all));
-const inter600 = await inlineGoogleFont('Inter', 600, glyphsFrom(all));
-const inter700 = await inlineGoogleFont('Inter', 700, glyphsFrom(all));
+/*
+  Текст набран Manrope, а не Inter, как на сайте: на стенде Inter читался
+  офисным. Manrope — геометрический гротеск с кириллицей, в паре с Unbounded
+  даёт современный спортивный голос, и цифры у него ровные.
+*/
+const sans600 = await inlineGoogleFont('Manrope', 600, glyphsFrom(all));
+const sans700 = await inlineGoogleFont('Manrope', 700, glyphsFrom(all));
+const sans800 = await inlineGoogleFont('Manrope', 800, glyphsFrom(all));
 
 /* иконки: одна толщина линии, один размер, лайм — как пиктограммы на сайте */
 const icon = {
@@ -100,14 +108,16 @@ const icon = {
   person: `<circle cx="26" cy="14" r="7"/><path d="M12 44c0-9 6-15 14-15s14 6 14 15"/><path d="M37 8l3 3 6-7" />`,
   medal: `<path d="M17 4l9 15 9-15"/><circle cx="26" cy="32" r="13"/><path d="M26 25l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/>`,
   growth: `<path d="M6 44h40"/><path d="M8 36l11-11 8 8 15-17"/><path d="M33 16h9v9"/>`,
+  team: `<circle cx="26" cy="15" r="6"/><circle cx="11" cy="20" r="4.5"/><circle cx="41" cy="20" r="4.5"/><path d="M15 42c0-7 5-12 11-12s11 5 11 12"/><path d="M3 40c0-5 3-9 8-9"/><path d="M49 40c0-5-3-9-8-9"/>`,
+  loyalty: `<rect x="5" y="11" width="42" height="30" rx="5"/><path d="M26 17.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/>`,
 };
 const svgIcon = (body) =>
   `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
-const perkIcons = [icon.strokes, icon.person, icon.medal, icon.growth];
+const perkIcons = [icon.strokes, icon.person, icon.medal, icon.growth, icon.team, icon.loyalty];
 
 const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
 <title>PRIME SWIM — ролл-ап 85×200</title>
-<style>${display}${inter600}${inter700}</style>
+<style>${display}${sans600}${sans700}${sans800}</style>
 <style>
   @page { size: ${W}mm ${H}mm; margin: 0; }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -118,7 +128,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   }
   html,body{width:${W}mm;height:${H}mm}
   body{position:relative;overflow:hidden;color:#fff;
-       font-family:Inter,system-ui,sans-serif;
+       font-family:Manrope,system-ui,sans-serif;
        background:var(--abyss);
        -webkit-print-color-adjust:exact;print-color-adjust:exact}
 
@@ -129,12 +139,12 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
         linear-gradient(180deg, var(--brand) 0mm, var(--abyss-900) 700mm, var(--abyss) 1300mm, var(--abyss-900) 1700mm, var(--brand) ${H}mm);}
 
   /* ── фото: без рамки, растворяется в фоне сверху и снизу ── */
-  .photo{position:absolute;left:0;width:${W}mm;top:360mm;height:${Math.round(W * 4 / 3)}mm;
+  .photo{position:absolute;left:0;width:${W}mm;top:340mm;height:${Math.round(W * 4 / 3)}mm;
          background:url(${photo}) center/cover no-repeat;
          -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 22%,#000 72%,transparent 95%);
                  mask-image:linear-gradient(180deg,transparent 0%,#000 22%,#000 72%,transparent 95%);}
   /* фиолетовый свет по краям кадра связывает фото с фоном */
-  .tint{position:absolute;left:0;width:${W}mm;top:360mm;height:${Math.round(W * 4 / 3)}mm;
+  .tint{position:absolute;left:0;width:${W}mm;top:340mm;height:${Math.round(W * 4 / 3)}mm;
         background:
           radial-gradient(60% 45% at 0% 55%, rgba(122,25,180,.55), transparent 70%),
           radial-gradient(55% 40% at 100% 70%, rgba(79,1,123,.6), transparent 70%);
@@ -146,38 +156,38 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   .safe{position:absolute;left:55mm;right:55mm}
 
   /* 1. знак */
-  .logo{position:absolute;left:50%;transform:translateX(-50%);top:70mm;width:560mm;height:auto;
+  .logo{position:absolute;left:50%;transform:translateX(-50%);top:70mm;width:520mm;height:auto;
         filter:drop-shadow(0 4mm 10mm rgba(11,1,20,.35))}
 
   /* 2. школа плавания */
-  .school{top:395mm;text-align:center;font-weight:700;font-size:40mm;letter-spacing:.32em;
+  .school{top:373mm;text-align:center;font-weight:800;font-size:40mm;letter-spacing:.32em;
           text-transform:uppercase;padding-left:.32em;color:#fff}
   .school::before,.school::after{content:"";display:inline-block;vertical-align:middle;
           width:46mm;height:2.2mm;background:var(--lime);margin:0 14mm 1.2mm 0;border-radius:2mm}
   .school::after{margin:0 0 1.2mm -.32em;margin-left:calc(14mm - .32em)}
 
   /* 3. заголовок */
-  h1{position:absolute;left:55mm;right:55mm;top:500mm;font-family:Unbounded,sans-serif;font-weight:800;
+  h1{position:absolute;left:55mm;right:55mm;top:478mm;font-family:Unbounded,sans-serif;font-weight:800;
      text-transform:uppercase;line-height:.98;letter-spacing:-.005em;text-align:center}
   h1 span{display:block;white-space:nowrap}
   /* зазор между строками: кратка над «Й» иначе задевает «Е» строкой выше */
   h1 .t2{color:var(--lime);margin-top:10mm}
-  .lead{top:735mm;text-align:center;font-weight:600;font-size:31mm;line-height:1.22;color:rgba(255,255,255,.92);
+  .lead{top:713mm;text-align:center;font-weight:700;font-size:31mm;line-height:1.24;letter-spacing:-.005em;color:rgba(255,255,255,.92);
         text-wrap:balance;text-shadow:0 1mm 6mm rgba(11,1,20,.6)}
 
   /* 4. преимущества: стеклянная плашка поверх нижнего края фото */
-  .perks{top:1335mm;padding:26mm 28mm;border-radius:22mm;
+  .perks{top:1298mm;padding:22mm 28mm;border-radius:22mm;
          background:linear-gradient(180deg,rgba(24,2,41,.78),rgba(24,2,41,.9));
          border:1.4mm solid rgba(255,255,255,.12);
-         backdrop-filter:blur(6mm);display:flex;flex-direction:column;gap:18mm}
-  .perk{display:flex;align-items:center;gap:18mm}
-  .perk .ic{flex:none;width:58mm;height:58mm;border-radius:50%;display:grid;place-items:center;
+         backdrop-filter:blur(6mm);display:flex;flex-direction:column;gap:12mm}
+  .perk{display:flex;align-items:center;gap:16mm}
+  .perk .ic{flex:none;width:48mm;height:48mm;border-radius:50%;display:grid;place-items:center;
             background:rgba(199,254,3,.12);color:var(--lime)}
-  .perk .ic svg{width:38mm;height:38mm}
-  .perk p{font-weight:700;font-size:28.5mm;white-space:nowrap;letter-spacing:-.01em;line-height:1.12;color:#fff}
+  .perk .ic svg{width:31mm;height:31mm}
+  .perk p{font-weight:800;font-size:29mm;white-space:nowrap;letter-spacing:-.015em;line-height:1.12;color:#fff}
 
   /* 5–6. запись: самый яркий блок листа */
-  .cta{top:1738mm;background:var(--lime);color:var(--ink);border-radius:22mm;
+  .cta{top:1722mm;background:var(--lime);color:var(--ink);border-radius:22mm;
        padding:26mm 30mm 24mm;text-align:center;box-shadow:0 8mm 24mm rgba(199,254,3,.18)}
   .cta .ask{font-family:Unbounded,sans-serif;font-weight:800;text-transform:uppercase;
             font-size:35mm;line-height:1.05;white-space:nowrap}
@@ -195,7 +205,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
     слов. Сам код тёмный на белом: инвертированный QR читают не все камеры.
     Адрес сайта живёт здесь же и внизу листа не повторяется.
   */
-  .qr{position:absolute;right:55mm;top:1095mm;display:flex;align-items:center;gap:20mm;
+  .qr{position:absolute;right:55mm;top:1075mm;display:flex;align-items:center;gap:20mm;
       padding:14mm 26mm 14mm 14mm;border-radius:22mm;
       background:linear-gradient(180deg,rgba(24,2,41,.66),rgba(24,2,41,.86));
       border:1.4mm solid rgba(255,255,255,.16);backdrop-filter:blur(6mm);
@@ -209,7 +219,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   .qr-tile{background:#fff;border-radius:7mm;padding:7mm}
   .qr-code{display:block;width:100%;height:auto}
   .qr-text{display:flex;flex-direction:column;align-items:flex-start;gap:12mm}
-  .qr-label{display:flex;align-items:center;gap:5mm;font-weight:700;font-size:18mm;line-height:1;
+  .qr-label{display:flex;align-items:center;gap:5mm;font-weight:800;font-size:18mm;line-height:1;
             letter-spacing:.22em;text-transform:uppercase;color:var(--lime)}
   .qr-label::before{content:"";width:14mm;height:1.8mm;border-radius:1mm;background:var(--lime)}
   .qr-url{font-family:Unbounded,sans-serif;font-weight:800;white-space:nowrap;line-height:1;color:#fff}
