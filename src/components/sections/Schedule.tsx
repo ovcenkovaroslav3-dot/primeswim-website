@@ -7,19 +7,25 @@ import { site } from '@/content/site';
   Расписание.
 
   Сверху — полоса недели целиком, а не только дни с занятиями. Так виден
-  ритм: две тренировки в будни и две в выходные, между ними перерыв.
+  ритм: четыре тренировки в будни и две в выходные, между ними перерыв.
   Четыре карточки вразнобой этого не показывали.
+
+  В будни групп две подряд, поэтому время в дне идёт списком: одна строка
+  на день скрывала бы вторую группу.
 
   Полоса помечена как изображение с текстовым описанием: по отдельности
   «Пн Вт Ср» ничего не сообщают программе чтения с экрана, а списком дней
   с занятиями — сообщают.
 
-  Длительность занятия вынесена во вступление: раньше «45 минут» стояло
-  в каждой карточке и работало шумом, а не информацией.
+  Длительность занятия на странице расписания не повторяется: раньше
+  «45 минут» стояло в каждой карточке, потом во вступлении; 28 сентября
+  2026 владелец попросил убрать и оттуда.
 */
 export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   const active = new Map(schedule.map((s) => [s.short, s]));
-  const activeDays = schedule.map((s) => `${s.day.toLowerCase()} в ${s.time}`);
+  const activeDays = schedule.map(
+    (s) => `${s.day.toLowerCase()} в ${s.times.join(' и ')}`,
+  );
 
   return (
     <Section id="schedule" labelledBy="schedule-title" className="bg-surface-alt">
@@ -50,7 +56,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
             >
               <span
                 className={`text-xs font-medium tracking-[0.14em] uppercase ${
-                  slot ? 'text-brand-600' : 'text-ink-muted/60'
+                  slot ? 'text-brand-600' : 'text-ink-muted'
                 }`}
               >
                 {d}
@@ -64,12 +70,32 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
                   slot ? 'bg-brand-500' : 'bg-ink-muted/25'
                 }`}
               />
+              {/*
+                В пустой день стоит не тире, а черта.
+
+                Тире было текстом цветом ink-muted/45 — контраст 1,9 при
+                требуемых 4,5. Поднять цвет нельзя: заметный прочерк спорит со
+                временем в соседних ячейках, ради чего затемнение и делалось.
+                Выхода два, и верный здесь второй: черта — графический
+                элемент, а не текст, к ней требование 4,5 не относится, а
+                выглядит она ровно так же. Смысл «занятий нет» несут подпись
+                дня и список ниже, а не сам знак.
+              */}
               <span
-                className={`mt-2 hidden text-sm tabular-nums sm:block sm:text-base ${
-                  slot ? 'font-light text-ink' : 'text-ink-muted/45'
-                }`}
+                className="mt-2 hidden text-sm tabular-nums sm:block sm:text-base"
               >
-                {slot ? slot.time : '—'}
+                {slot ? (
+                  slot.times.map((time) => (
+                    <span key={time} className="block font-light text-ink">
+                      {time}
+                    </span>
+                  ))
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    className="mx-auto mt-2.5 block h-px w-4 bg-ink-muted/40"
+                  />
+                )}
               </span>
             </div>
           );
@@ -85,9 +111,14 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
           >
             <span className="text-sm text-ink-soft">{slot.day}</span>
             <span className="text-right">
-              <span className="block text-lg font-light tabular-nums text-ink">
-                {slot.time}
-              </span>
+              {slot.times.map((time) => (
+                <span
+                  key={time}
+                  className="block text-lg font-light tabular-nums text-ink"
+                >
+                  {time}
+                </span>
+              ))}
               <span className="block text-xs text-ink-muted">{slot.note}</span>
             </span>
           </li>
@@ -103,7 +134,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
             href={contacts.social.telegramBooking}
             external
             variant="primary"
-            data-goal="click_telegram"
+            data-goal="click_telegram_booking"
           >
             {site.cta.telegram}
           </ButtonLink>
@@ -111,7 +142,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
             href={contacts.social.max}
             external
             variant="ghost"
-            data-goal="click_max"
+            data-goal="click_max_booking"
           >
             {site.cta.max}
           </ButtonLink>

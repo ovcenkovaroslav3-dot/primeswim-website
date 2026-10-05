@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 
 import { useConsent, useHydrated, writeConsent } from '@/lib/consent';
 
@@ -11,52 +12,202 @@ import { useConsent, useHydrated, writeConsent } from '@/lib/consent';
   ссылка в углу: без реальной возможности отказаться информирование не имеет
   смысла, счётчик всё равно подключился бы.
 
+  ВОПРОС ЗАДАЁТСЯ НЕ СРАЗУ, А КОГДА ПЕРВЫЙ ЭКРАН УЖЕ ПРОЧИТАН.
+
+  Панель висит снизу и на телефоне начинается на 727-м пикселе — ровно там,
+  где на главной стоит кадр бассейна. Замер 19 сентября 2026: посетитель,
+  пришедший впервые, не видел фотографию вообще, её закрывала эта панель.
+  А фотография — единственное на первом экране, что нельзя подделать
+  вёрсткой.
+
+  Сжать панель до высоты, при которой кадр выглядывает, нельзя: пол — 117 px
+  (см. ниже). Поджать первый экран на 70 px — значит навсегда испортить
+  вёрстку ради одного мгновения: панель разовая, после ответа её больше
+  никто никогда не увидит.
+
+  Поэтому подвинут не экран, а момент. Спрашиваем, когда посетитель
+  прокрутил половину экрана, либо через восемь секунд, если он читает не
+  прокручивая. Первый экран остаётся чистым, а вопрос приходит тогда, когда
+  человек уже понял, куда попал.
+
+  ЭТО НЕ ОСЛАБЛЯЕТ СОГЛАСИЕ, И ВОТ ПОЧЕМУ. Метрика подключается только при
+  `granted` (см. Analytics.tsx): до ответа стороннего скрипта на странице нет
+  вовсе. Отложен вопрос, а не защита — пока его не задали, не собирается
+  ничего, то есть промедление работает в сторону посетителя, а не против
+  него. Задерживать саму обработку было бы нарушением; задерживать вопрос,
+  когда обработки нет, — нет.
+
+  Восемь секунд нужны ровно за тем, чтобы не потерять тех, кто не прокручивает
+  и нажимает «Записаться» прямо с первого экрана: без запаса по времени их
+  визит не попал бы в отчёт вообще.
+
   До первого рендера в браузере состояние неизвестно (localStorage на сервере
   нет), поэтому баннера нет и в разметке — иначе он мигал бы у тех, кто уже
   ответил, и ломал гидратацию.
 
-  z-50 держит панель над липкой кнопкой записи (z-40): вопрос разовый, и
-  перекрыть кнопку на несколько секунд лучше, чем показать две полосы разом.
+  z-50 держит панель над липкой кнопкой записи (z-40), но кнопку больше не
+  перекрывает: панель отдаёт свою высоту в переменную --cookie-notice-h, и
+  кнопка встаёт ровно над ней. Почему так — в комментарии у эффекта ниже.
+
+  НА ТЕЛЕФОНЕ ПАНЕЛЬ КОРОТКАЯ. Она занимала 207 px из 844 — почти четверть
+  первого экрана, то есть съедала место, отведённое под само предложение.
+  Текст на узком экране сокращён до сути: что подключается и что без согласия
+  этого не происходит. Подробности не потеряны — полный разбор в политике,
+  ссылка рядом. На широком экране остался прежний развёрнутый текст: там
+  высота ничего не стоит.
+
+  ВТОРОЕ СОКРАЩЕНИЕ, 19 сентября 2026: 135 → 117 px. Текст встал в две
+  строки вместо трёх и заодно начинается теперь с самого главного — не с
+  того, что Метрика делает, а с того, чего она без согласия НЕ делает.
+
+  Ни один факт не убран. Кто (Метрика), что (cookie и IP-адрес), при каком
+  условии (без согласия — не), где прочесть целиком (ссылка). Ушли два
+  слова: «вашего» из «без вашего согласия» и глагол «подключается».
+  Проверено замером на 390, 360 и 320 px — до 360 включительно текст держит
+  две строки, на 320 разъезжается в три, и это принимается: 320 сегодня
+  встречается реже, чем стоит ради него портить формулировку.
+
+  ПОЛ ПО ВЫСОТЕ — 117 px, И НИЖЕ НЕ ОПУСТИТЬСЯ БЕЗ ПОТЕРЬ. Складывается из
+  44 px кнопок (правило зоны нажатия, см. DESIGN.md), 24 px собственных
+  отступов, 36 px текста в две строки и 12 px зазора между ними. Одна строка
+  текста дала бы 99 px, но за неё пришлось бы выкинуть из уведомления либо
+  IP-адрес, либо имя счётчика. Восемнадцать пикселей того не стоят.
+
+  Обе кнопки при этом равнозначны и одинакового размера. Спрятать отказ в
+  ссылку значило бы сделать согласие безальтернативным — тогда информирование
+  теряет смысл, а счётчик подключался бы фактически без выбора.
 */
 export function CookieNotice() {
   const consent = useConsent();
   const hydrated = useHydrated();
+  const ref = useRef<HTMLDivElement>(null);
+  const [asked, setAsked] = useState(false);
+  const visible = hydrated && consent === null && asked;
 
-  if (!hydrated || consent !== null) return null;
+  /*
+    Момент вопроса: половина экрана прокрутки или восемь секунд.
+
+    Порог считается от высоты окна, а не в пикселях: половина телефона и
+    половина ноутбука — это разные числа, а смысл один, «первый экран
+    прочитан».
+
+    Первый вызов onScroll до подписки — на случай перезагрузки посреди
+    страницы: там прокрутка уже случилась и события больше не будет.
+  */
+  useEffect(() => {
+    if (consent !== null || asked) return;
+
+    const show = () => setAsked(true);
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.5) show();
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    const timer = window.setTimeout(show, 8000);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.clearTimeout(timer);
+    };
+  }, [consent, asked]);
+
+  /*
+    Панель сообщает свою высоту всей странице через CSS-переменную.
+
+    Нужна она кнопке записи: раньше кнопка просто пряталась, пока висит
+    этот вопрос, и в комментарии ниже стояло «перекрыть кнопку на
+    несколько секунд лучше, чем показать две полосы разом». На деле
+    секунды кончались не у всех: кто не отвечал на вопрос вовсе — а таких
+    большинство, — проходил весь сайт с телефона без кнопки записи.
+    Проверено на боевом сайте 7 сентября 2026.
+
+    Переменная, а не прямая связь между компонентами: кнопка ничего не
+    знает про эту панель, а панель — про кнопку. Высота меняется вместе с
+    переносами текста, поэтому ResizeObserver, а не разовый замер.
+  */
+  useEffect(() => {
+    const element = ref.current;
+    if (!visible || !element) return;
+
+    const root = document.documentElement;
+    const apply = () =>
+      root.style.setProperty(
+        '--cookie-notice-h',
+        `${Math.round(element.getBoundingClientRect().height)}px`,
+      );
+
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty('--cookie-notice-h');
+    };
+  }, [visible]);
+
+  if (!visible) return null;
 
   return (
     <div
+      ref={ref}
       role="dialog"
       aria-label="Использование cookie"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-white/95 px-4 py-4 backdrop-blur sm:px-6"
-      style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))' }}
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-white/95 px-4 py-3 backdrop-blur sm:px-6 sm:py-4"
+      style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
     >
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <p className="max-w-[68ch] text-sm leading-relaxed text-ink-soft">
-          Мы используем Яндекс Метрику, чтобы понимать, как посетители
-          пользуются сайтом. Она сохраняет cookie и обрабатывает IP-адрес.
-          Без вашего согласия счётчик не подключается. Подробнее — в{' '}
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+        <p className="max-w-[68ch] text-[13px] leading-snug text-ink-soft sm:text-sm sm:leading-relaxed">
+          {/*
+            Короткая версия — до 640 px, развёрнутая — дальше. Обе описывают
+            одно и то же: без согласия счётчик не подключается.
+          */}
+          <span className="sm:hidden">
+            Без согласия Метрика не ставит cookie и не обрабатывает IP-адрес.
+            Подробнее — в{' '}
+          </span>
+          <span className="hidden sm:inline">
+            Мы используем Яндекс Метрику, чтобы понимать, как посетители
+            пользуются сайтом. Она сохраняет cookie и обрабатывает IP-адрес.
+            Без вашего согласия счётчик не подключается. Подробнее — в{' '}
+          </span>
+          {/*
+            prefetch={false}: баннер стоит на каждой странице, и без этого
+            Next тянул страницу политики целиком всем подряд — 51 КБ до
+            первого касания. По ссылке в баннере согласия переходят единицы,
+            и им лишняя доля секунды не помешает.
+          */}
           <Link
-            href="/policy"
+            href="/policy/"
+            prefetch={false}
             className="font-medium text-brand-600 underline underline-offset-4"
           >
-            политике обработки персональных данных
+            политике
+            <span className="hidden sm:inline"> обработки персональных данных</span>
           </Link>
           .
         </p>
 
+        {/* кнопки делят ширину поровну: ни одна не выглядит основной по размеру */}
         <div className="flex shrink-0 gap-3">
           <button
             type="button"
             onClick={() => writeConsent('denied')}
-            className="lift inline-flex min-h-11 items-center justify-center rounded-[10px] border border-hairline px-5 text-sm font-medium text-ink-soft transition-colors hover:bg-surface-alt"
+            /*
+              На узком экране подпись из двух слов переносилась внутри кнопки
+              и вставала в две строки против одной у соседней — при равных
+              по замыслу кнопках это читалось как «главная тут одна». Кегль
+              на телефоне на шаг мельче, дальше прежний.
+            */
+            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-[10px] border border-hairline px-3 text-[13px] font-medium whitespace-nowrap text-ink-soft transition-colors hover:bg-surface-alt sm:flex-none sm:px-5 sm:text-sm"
           >
             Только необходимые
           </button>
           <button
             type="button"
             onClick={() => writeConsent('granted')}
-            className="lift inline-flex min-h-11 items-center justify-center rounded-[10px] bg-lime-400 px-5 text-sm font-semibold text-abyss-950 transition-colors hover:bg-lime-300"
+            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-[10px] bg-lime-400 px-4 text-sm font-semibold text-abyss-950 transition-colors hover:bg-lime-300 sm:flex-none sm:px-5"
           >
             Принять
           </button>

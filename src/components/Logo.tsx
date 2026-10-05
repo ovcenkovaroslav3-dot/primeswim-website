@@ -1,18 +1,55 @@
+import { OrcaMark } from './OrcaMark';
+
 /**
- * Текстовый логотип PRIME SWIM.
- * Свёрстан текстом, а не картинкой: чёткий на любом экране и не тормозит первый экран.
+ * Знак PRIME SWIM: косатка плюс текстовая надпись.
  *
- * Слова написаны слитно, поэтому разделяет их только цвет. На тёмном это пара
- * из фирменных белого и лайма. На светлом лайм пришлось бы тушить до
- * оливкового — он читается грязно, поэтому там знак целиком фиолетовый, а
- * границу слова держит перепад светлоты внутри одного тона.
+ * Надпись свёрстана текстом, а не картинкой: чёткая на любом экране и не
+ * тормозит первый экран. Слова написаны слитно, поэтому разделяет их только
+ * цвет. На тёмном это пара из фирменных белого и лайма. На светлом лайм
+ * пришлось бы тушить до оливкового — он читается грязно, поэтому там знак
+ * целиком фиолетовый, а границу слова держит перепад светлоты внутри одного
+ * тона.
+ *
+ * КОСАТКА ПОЯВИЛАСЬ В ЛОГОТИПЕ 13 сентября 2026 и стоит здесь не для
+ * украшения. Надпись «PRIMESWIM» ничем не отличается от полусотни таких же
+ * надписей в выдаче по запросу «плавание для детей»: её нельзя узнать в
+ * ленте, на футболке или на дипломе, пока не прочитаешь. Силуэт узнаётся
+ * раньше чтения — на это и рассчитан (разбор пропорций — в OrcaMark.tsx).
+ *
+ * ПОЧЕМУ ОН СПРЯТАН НА УЗКОМ ЭКРАНЕ. В шапке на 1024 пикселях меню, телефон
+ * и кнопка записи уже стоят впритык — это разобрано в комментарии к
+ * навигации в Header.tsx. Знак с отступом прибавляет к строке 28 пикселей и
+ * на этой ширине выталкивал кнопку за край. Поэтому в шапке он появляется с
+ * 1280, а на телефоне и планшете остаётся одна надпись. В подвале, в меню и
+ * на первом экране места хватает, и там знак стоит всегда.
  */
-export function Logo({ inverted = false }: { inverted?: boolean }) {
+export function Logo({
+  inverted = false,
+  mark = 'always',
+}: {
+  inverted?: boolean;
+  /** always — знак виден всегда, wide — только с 1280, off — одна надпись. */
+  mark?: 'always' | 'wide' | 'off';
+}) {
+  const markClass =
+    mark === 'off'
+      ? null
+      : mark === 'wide'
+        ? 'hidden w-6 shrink-0 xl:block'
+        : 'w-6 shrink-0 sm:w-7';
+
   return (
-    <span className="font-display text-xl leading-none font-extrabold tracking-tight sm:text-2xl lg:text-xl xl:text-2xl">
-      <span className={inverted ? 'text-white' : 'text-brand-600'}>PRIME</span>
-      <span className={inverted ? 'text-lime-400' : 'text-brand-400'}>
-        SWIM
+    <span className="inline-flex items-center gap-2.5">
+      {markClass ? (
+        <OrcaMark tone={inverted ? 'white' : 'brand'} className={markClass} />
+      ) : null}
+      <span className="font-display text-xl leading-none font-extrabold tracking-tight sm:text-2xl lg:text-xl xl:text-2xl">
+        <span className={inverted ? 'text-white' : 'text-brand-600'}>
+          PRIME
+        </span>
+        <span className={inverted ? 'text-lime-400' : 'text-brand-400'}>
+          SWIM
+        </span>
       </span>
     </span>
   );

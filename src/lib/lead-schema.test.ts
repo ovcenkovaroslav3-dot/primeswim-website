@@ -19,7 +19,7 @@ function makeLead(overrides: Partial<LeadInput> = {}): LeadInput {
     program: 'beginners',
     comment: '',
     consent: true,
-    company: '',
+    hpx7: '',
     ...overrides,
   };
 }

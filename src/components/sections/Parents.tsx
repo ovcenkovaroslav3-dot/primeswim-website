@@ -12,6 +12,14 @@ import { startingPoints, firstLesson } from '@/content/journey';
   поэтому шаги пронумерованы.
 */
 export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+  /*
+    На своей странице headingAs — h1, и вложенные заголовки без сдвига
+    пропустили бы уровень (h1 сразу в h3, минуя h2). На главной headingAs
+    остаётся h2, и вложенные уровни те же, что были: h3 и h4.
+  */
+  const CaseHeading = headingAs === 'h1' ? 'h2' : 'h3';
+  const StepHeading = headingAs === 'h1' ? 'h3' : 'h4';
+
   return (
     <Section id="parents" labelledBy="parents-title" className="bg-surface">
       <SectionHeading
@@ -29,13 +37,13 @@ export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
             className="reveal rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-7"
             style={{ ['--reveal-delay' as string]: `${i * 70}ms` }}
           >
-            <h3 className="flex items-start gap-3 text-lg font-medium text-ink">
+            <CaseHeading className="flex items-start gap-3 text-lg font-medium text-ink">
               <span
                 aria-hidden="true"
                 className="mt-2 size-2 shrink-0 rounded-full bg-brand-500"
               />
               {p.situation}
-            </h3>
+            </CaseHeading>
             <p className="mt-3 pl-5 text-sm leading-relaxed text-ink-soft">
               {p.answer}
             </p>
@@ -44,9 +52,9 @@ export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
       </ul>
 
       <div className="reveal mt-16 rounded-[20px] bg-abyss-900 p-8 text-white sm:p-10">
-        <h3 className="text-xl font-light sm:text-2xl">
+        <CaseHeading className="text-xl font-light sm:text-2xl">
           Как проходит первое занятие
-        </h3>
+        </CaseHeading>
 
         <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {firstLesson.map((s, i) => (
@@ -54,7 +62,7 @@ export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
               <p className="text-xs font-medium tracking-[0.2em] text-lime-300/80 tabular-nums">
                 {String(i + 1).padStart(2, '0')}
               </p>
-              <h4 className="mt-3 font-medium text-white">{s.title}</h4>
+              <StepHeading className="mt-3 font-medium text-white">{s.title}</StepHeading>
               <p className="mt-2 text-sm leading-relaxed text-white/65">
                 {s.description}
               </p>

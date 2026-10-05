@@ -1,4 +1,5 @@
 import { stages } from "@/content/method";
+import { OrcaMark } from "../OrcaMark";
 
 /*
   Чему научится ребёнок.
@@ -25,6 +26,28 @@ export function Progress() {
       aria-labelledby="progress-title"
       className="on-dark relative overflow-clip bg-abyss-900 px-4 py-14 text-white sm:px-6 sm:py-16 md:py-28"
     >
+      {/*
+        Знак идёт вверх вместе со ступенями.
+
+        Раздел про то, как ребёнок растёт от первого вдоха до стартовой
+        тумбы, и знак повторяет это направление: снизу-слева вверх-направо,
+        тем же наклоном, что и на первом экране. Плоский силуэт, а не
+        объёмный талисман, — объёмный на сайте появляется ровно один раз,
+        на первом экране, и повтор отнял бы у него вес. Правило записано
+        в DESIGN.md: рендер для присутствия, вектор для знаков.
+
+        ПРОЗРАЧНОСТЬ ЗДЕСЬ МЕНЬШЕ, ЧЕМ НА СОРЕВНОВАНИЯХ, И ЭТО НЕ ОПЕЧАТКА.
+        Там 3,5% на abyss-950, здесь 2% на abyss-900 — фон светлее, да ещё
+        подсвечен двумя пятнами, и та же величина давала отчётливую серую
+        фигуру, спорившую с заголовком. Число подбирается по снимку каждый
+        раз заново, переносить его между секциями нельзя.
+      */}
+      <OrcaMark
+        tone="white"
+        tilt={-16}
+        className="pointer-events-none absolute top-6 right-4 w-[56%] opacity-[0.02] sm:w-[44%] lg:w-[34%]"
+      />
+
       {/* свет в глубине: два мягких пятна вместо плоской заливки */}
       <div
         aria-hidden="true"
@@ -45,12 +68,12 @@ export function Progress() {
 
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">
-          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Путь ребёнка
           </p>
           <h2
             id="progress-title"
-            className="text-3xl leading-[1.08] font-extralight sm:text-4xl md:text-[44px]"
+            className="text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl md:text-[44px]"
           >
             От первого вдоха в воду до стартовой тумбы
           </h2>
@@ -68,6 +91,39 @@ export function Progress() {
             aria-hidden="true"
             className="pointer-events-none absolute top-2 bottom-2 left-[7px] w-px bg-lime-400/15 md:top-[7px] md:right-2 md:bottom-auto md:left-2 md:h-px md:w-auto"
           />
+          {/*
+            Прайми едет остриём залитой линии.
+
+            Раздел про то, как ребёнок проходит путь от первого вдоха до
+            стартовой тумбы, и знак идёт этот путь вместе с ним: не украшение
+            сбоку, а само остриё того, что растёт при прокрутке. Шкала у неё
+            та же, что у заливки, поэтому разъехаться они не могут.
+
+            ПОЧЕМУ ОБЁРТКА ВО ВСЮ ДЛИНУ ТРЕКА. Проценты в translate считаются
+            от размера самого элемента, а не родителя, и сдвинуть точку «на
+            всю длину линии» напрямую нечем — длина резиновая. Обёртка
+            повторяет геометрию трека, знак приколот к её началу, и сдвиг на
+            100% своей высоты переносит его ровно в конец пути.
+
+            Плоский силуэт, а не объёмный талисман: объёмный появляется на
+            сайте один раз, на первом экране, и повтор отнял бы у него вес
+            (правило в DESIGN.md — рендер для присутствия, вектор для знаков).
+            Лаймовый, потому что он и есть продолжение лаймовой линии.
+
+            Где animation-timeline не поддержан, заливка остаётся видна на всю
+            длину — знак по умолчанию стоит в конце, то есть на её конце.
+            Деградация такая же молчаливая.
+          */}
+          <div
+            aria-hidden="true"
+            className="progress-swimmer pointer-events-none absolute top-2 bottom-2 left-[7px] w-px md:top-[7px] md:right-2 md:bottom-auto md:left-2 md:h-px md:w-auto"
+          >
+            <OrcaMark
+              tone="currentColor"
+              className="absolute top-0 left-1/2 w-6 -translate-x-1/2 -translate-y-1/2 rotate-90 text-lime-300 md:top-1/2 md:left-0 md:w-7 md:rotate-0"
+            />
+          </div>
+
           {/* заливка поверх трека: растёт от начала к концу по мере прокрутки */}
           <div
             aria-hidden="true"

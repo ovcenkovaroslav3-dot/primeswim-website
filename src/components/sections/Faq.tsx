@@ -1,4 +1,4 @@
-import { Section, SectionHeading } from '../ui';
+import { ArrowLink, Section, SectionHeading } from '../ui';
 import { JsonLd } from '../StructuredData';
 import { faq } from '@/content/faq';
 import { contacts } from '@/content/contacts';
@@ -6,17 +6,37 @@ import { contacts } from '@/content/contacts';
 /*
   Частые вопросы.
 
-  Кроме блока на странице отдают FAQPage. Разметка допустима именно здесь:
-  вопросы и ответы видны посетителю целиком — details/summary прячет их до
-  клика, но текст лежит в разметке страницы, а не подгружается скриптом.
-  Разметить скрытый или несуществующий на странице текст было бы нарушением
-  требований поисковых систем.
+  Блок стоит на двух страницах, и они устроены по-разному.
 
-  Блок стоит ровно на одной странице (/roditelyam), поэтому разметка живёт
-  в самом компоненте: продублировать её на второй странице невозможно, пока
-  компонент используется один раз.
+  На /roditelyam/ — все вопросы и разметка FAQPage. Разметка допустима
+  именно там: вопросы и ответы видны посетителю целиком, details/summary
+  прячет их до клика, но текст лежит в разметке страницы, а не подгружается
+  скриптом. Размечать скрытый или несуществующий на странице текст было бы
+  нарушением требований поисковых систем.
+
+  На главной — короткая выборка и БЕЗ разметки. Отдавать FAQPage с двух
+  адресов сразу нельзя: поиск увидел бы две страницы, претендующие на один
+  и тот же расширенный сниппет, и это работает против обеих. Плюс на главной
+  показаны не все вопросы — размечать пришлось бы обрезанный список.
+
+  Поэтому и `limit`, и `withSchema` задаются страницей, а не угадываются
+  внутри компонента: место, где блок стоит, знает страница.
 */
-export function Faq() {
+export function Faq({
+  limit,
+  withSchema = true,
+  moreHref,
+}: {
+  /** Сколько вопросов показать. Без значения — все. */
+  limit?: number;
+  /** Отдавать ли разметку FAQPage. Ровно одна страница сайта должна отдавать true. */
+  withSchema?: boolean;
+  /** Куда вести за остальными вопросами, если список обрезан. */
+  moreHref?: string;
+} = {}) {
+  const items = limit ? faq.slice(0, limit) : faq;
+  const hasMore = Boolean(moreHref) && items.length < faq.length;
+
   const faqPage = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -29,7 +49,7 @@ export function Faq() {
 
   return (
     <Section id="faq" labelledBy="faq-title" className="bg-surface-alt">
-      <JsonLd data={faqPage} />
+      {withSchema ? <JsonLd data={faqPage} /> : null}
       <SectionHeading
         id="faq-title"
         eyebrow="Вопросы"
@@ -38,7 +58,7 @@ export function Faq() {
 
       {/* Нативные details/summary: работают без JavaScript и с клавиатуры */}
       <div className="mt-12 grid gap-3 lg:grid-cols-2">
-        {faq.map((item) => (
+        {items.map((item) => (
           <details
             key={item.id}
             className="group rounded-[20px] border border-hairline bg-surface px-6 open:border-brand-200"
@@ -64,12 +84,19 @@ export function Faq() {
         ))}
       </div>
 
+      {hasMore ? (
+        <ArrowLink href={moreHref as string} className="mt-8">
+          Все вопросы и что взять на первое занятие
+        </ArrowLink>
+      ) : null}
+
       <p className="mt-8 text-ink-soft">
         Не нашли ответ? Напишите нам в{' '}
         <a
           href={contacts.social.telegramBooking}
           target="_blank"
           rel="noopener noreferrer"
+          data-goal="click_telegram_booking"
           className="font-medium text-brand-600 underline underline-offset-4"
         >
           Telegram
@@ -77,6 +104,7 @@ export function Faq() {
         или позвоните по телефону{' '}
         <a
           href={contacts.phone.href}
+          data-goal="click_phone"
           className="font-medium text-brand-600 underline underline-offset-4"
         >
           {contacts.phone.display}

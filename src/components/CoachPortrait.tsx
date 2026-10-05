@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { Picture } from './Picture';
 
 /*
   Портрет тренера.
@@ -14,9 +14,20 @@ import Image from 'next/image';
 export function CoachPortrait({
   name,
   photo,
+  /*
+    Грузить ли портрет с приоритетом.
+
+    На /trener/ — да: там это главная картинка страницы и почти наверняка
+    её LCP-элемент. На главной — нет: там портрет стоит глубоко внизу, а
+    приоритет отдан фотографии бассейна на первом экране. Два приоритетных
+    изображения в одном документе соревнуются друг с другом, и выигрывает
+    от этого ни одно.
+  */
+  priority = true,
 }: {
   name: string;
-  photo?: { src: string; alt: string };
+  photo?: { src: string; alt: string; width: number; height: number };
+  priority?: boolean;
 }) {
   if (photo) {
     return (
@@ -25,19 +36,20 @@ export function CoachPortrait({
         светлый квадрат просвечивал бы каймой, пока снимок грузится.
       */
       <div className="zoom-frame relative aspect-square w-full overflow-hidden rounded-[16px] bg-abyss-800">
-        <Image
+        <Picture
           src={photo.src}
           alt={photo.alt}
-          fill
+          width={photo.width}
+          height={photo.height}
           /*
-            Единственная крупная картинка страницы тренера и почти наверняка
-            её LCP-элемент. По умолчанию next/image грузит изображения лениво:
-            браузер узнавал о снимке только после разбора разметки и стилей,
-            и главный элемент страницы появлялся последним.
+            На странице тренера — приоритет: по умолчанию картинки грузятся
+            лениво, браузер узнавал о снимке только после разбора разметки и
+            стилей, и главный элемент страницы появлялся последним.
+            На главной приоритет снимается — см. параметр выше.
           */
-          priority
+          priority={priority}
           sizes="(max-width: 1024px) 100vw, 320px"
-          className="object-cover"
+          className="absolute inset-0 size-full object-cover"
         />
       </div>
     );

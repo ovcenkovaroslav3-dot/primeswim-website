@@ -17,7 +17,7 @@ export default function PolicyPage() {
         ]}
       />
 
-      <h1 className="text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl">
+      <h1 className="text-3xl leading-[1.08] font-normal text-ink sm:text-4xl">
         Политика обработки персональных данных
       </h1>
       <p className="mt-4 text-ink-muted">
@@ -33,7 +33,7 @@ export default function PolicyPage() {
           {legal.inn ? `, ИНН ${legal.inn}` : ''}
           {legal.ogrnip ? `, ОГРНИП ${legal.ogrnip}` : ''}
           {legal.registrar
-            ? `, зарегистрирован ${legal.registrar}`
+            ? `, регистрирующий орган — ${legal.registrar}`
             : ''} — далее «Оператор», владелец сайта primeswim.ru.
         </p>
         {!legal.inn || !legal.ogrnip ? (
@@ -87,6 +87,18 @@ export default function PolicyPage() {
               className="font-medium text-brand-600 underline underline-offset-4"
             >
               {contacts.phone.display}
+            </a>
+            ;
+          </li>
+          <li>
+            MAX:{' '}
+            <a
+              href={contacts.social.max}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-brand-600 underline underline-offset-4"
+            >
+              чат школы
             </a>
             ;
           </li>

@@ -1,4 +1,5 @@
 import { LeadForm } from './LeadForm';
+import { OrcaMark } from '../OrcaMark';
 import { WaterScene } from '../WaterScene';
 import { contacts } from '@/content/contacts';
 
@@ -11,9 +12,9 @@ import { contacts } from '@/content/contacts';
 
   Якорь `booking` сохранён — на него ведут все кнопки записи со страницы.
 
-  Форма работает без сервера: проверяет поля в браузере и открывает Telegram
-  с готовым сообщением. Мессенджеры рядом — для тех, кому проще написать
-  сразу, без формы.
+  Форма отправляет заявку по-настоящему: проверяет поля, передаёт их на
+  приёмник, и тот кладёт заявку ботом в MAX (см. server/lead). Мессенджеры
+  рядом — для тех, кому проще написать сразу, без формы.
 
   ФОН ЗАВИСИТ ОТ ТОГО, ГДЕ СТОИТ СЕКЦИЯ. Сцена воды была задумана как рифма
   к первому экрану — «сайт открывается и закрывается одинаково», и это
@@ -47,7 +48,7 @@ function MessengerCard({
       target="_blank"
       rel="noopener noreferrer"
       data-goal={goal}
-      className="group lift glass flex min-h-24 flex-col justify-center rounded-[16px] p-6 text-left transition-colors duration-200 hover:border-lime-300/60"
+      className="group lift glass flex min-h-24 flex-col justify-center rounded-[16px] p-6 text-left transition-colors duration-200 hover:border-white/35"
     >
       <span className="flex items-center gap-2 text-lg font-medium text-white">
         {title}
@@ -57,7 +58,7 @@ function MessengerCard({
           viewBox="0 0 18 18"
           fill="none"
           aria-hidden="true"
-          className="text-lime-300 transition-transform duration-200 group-hover:translate-x-1"
+          className="text-white/60 transition-transform duration-200 group-hover:translate-x-1"
         >
           <path
             d="M4 14 14 4M6 4h8v8"
@@ -114,14 +115,29 @@ export function FinalCta({
         </>
       )}
 
+      {/*
+        Косатка в толще — тот же знак, что и на первом экране, и это
+        намеренная рифма: страница открывается и закрывается одной фигурой.
+        Здесь она идёт вверх и вправо, к форме, а не поперёк экрана.
+
+        Почти прозрачная и без резких краёв: на тёмной воде это форма,
+        которую замечаешь вторым взглядом, а не картинка, с которой спорит
+        заголовок. Сама фигура декоративна и из чтения с экрана исключена.
+      */}
+      <OrcaMark
+        tone="white"
+        tilt={-16}
+        className="pointer-events-none absolute -top-6 -left-[12%] -z-10 w-[68%] opacity-[0.05] sm:-left-[6%] sm:w-[52%] md:-top-10 md:w-[44%]"
+      />
+
       <div className="relative mx-auto w-full max-w-3xl text-center">
-        <p className="reveal text-xs font-medium tracking-[0.28em] text-lime-300 uppercase">
+        <p className="reveal text-xs font-medium tracking-[0.28em] text-white/50 uppercase">
           Первый шаг
         </p>
 
         <h2
           id="booking-title"
-          className="reveal mt-6 text-[clamp(2.2rem,7vw,4.2rem)] leading-[1.02] font-extralight"
+          className="reveal mt-6 text-[clamp(2.2rem,7vw,4.2rem)] leading-[1.02] font-normal tracking-[-0.02em]"
           style={{ ['--reveal-delay' as string]: '90ms' }}
         >
           Начните с первой тренировки
@@ -143,13 +159,13 @@ export function FinalCta({
             href={contacts.social.telegramBooking}
             title="Telegram"
             description={`Ответим ${contacts.workingHours.display.toLowerCase()}`}
-            goal="click_telegram"
+            goal="click_telegram_booking"
           />
           <MessengerCard
             href={contacts.social.max}
             title="MAX"
             description="Если удобнее — пишите сюда"
-            goal="click_max"
+            goal="click_max_booking"
           />
         </div>
 
@@ -165,7 +181,7 @@ export function FinalCta({
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="text-lg font-light text-lime-300 underline-offset-4 hover:underline"
+            className="text-lg font-light text-white underline underline-offset-4 decoration-white/40 hover:decoration-white"
           >
             {contacts.phone.display}
           </a>

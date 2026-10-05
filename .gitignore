@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...кроме образца: секретов в нём нет, а без него в свежем клоне негде
+# посмотреть, какие переменные вообще бывают. README на него ссылается.
+!.env.example
 
 # vercel
 .vercel
@@ -46,3 +49,18 @@ next-env.d.ts
 
 # graphify (генерируется скилом graphify)
 graphify-out/
+
+# сборка функции приёма заявок (собирается командой npm run build:lead)
+/server/lead/dist/
+/server/lead/lead-function.zip
+
+# настройки Codex CLI на этой машине — дублируют проектный .mcp.json
+/.codex/
+
+# рабочие файлы ruflo (база памяти, индекс и политики) — машинные, не общие
+/.swarm/
+/.claude-flow/
+/.hive-mind/
+/.claude/memory.db
+/.claude/proven-config.json
+/.claude/.proven-config-version

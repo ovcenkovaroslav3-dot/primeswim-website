@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // сборка функции приёма заявок: чужой код от esbuild, править нечего
+    "server/lead/dist/**",
   ]),
 ]);
 

@@ -1,151 +1,285 @@
 import Link from 'next/link';
 
+import { HeroVisual } from '../HeroVisual';
 import { WaterScene } from '../WaterScene';
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
+import { prices } from '@/content/prices';
+import { coaches } from '@/content/coaches';
 
 /*
   Первый экран.
 
-  Фон — абстрактная толща воды на WebGL: глубина, световые шахты, каустика,
-  пузырьки. Никаких фотографий, поэтому экран одинаково хорош до и после
-  фотосессии, а вес страницы не растёт.
+  Раньше он продавал бренд раньше услуги: во всю ширину шла надпись PRIME SWIM,
+  фоном — абстрактная вода, а настоящий заголовок был скрыт через sr-only.
+  Родитель видел красивую заставку, но не получал ни одного доказательства,
+  куда он приведёт ребёнка: ни бассейна, ни цены, ни тренера.
+
+  Теперь экран отвечает на четыре вопроса до прокрутки: что за занятия, для
+  кого, где и сколько стоит первый шаг. Фирменный язык при этом остался —
+  та же толща воды на WebGL, тот же лайм на главном акценте, та же
+  проявляющаяся типографика.
+
+  Фотография — настоящий кадр бассейна МГИК, того самого, где идут занятия
+  (см. content/media.ts). Это единственное на экране, что нельзя подделать
+  версткой, поэтому она стоит рядом с заголовком, а не где-то ниже.
+  Кадров занятия с детьми именно в МГИК пока нет — подставлять сюда снимок
+  с другой площадки нельзя, это было бы обещанием не того места.
 
   Текст проявляется из-под масок с нарастающей задержкой. Разметка при этом
-  остаётся обычной: без JavaScript классы `.reveal-mask` не активируются,
+  остаётся обычной: без JavaScript классы `.reveal` не активируются,
   и содержимое просто видно — экран не пустеет.
 */
 
+/*
+  Обе цены первого экрана, и обе рядом с кнопкой.
+
+  Раньше здесь была одна — минимум абонемента, — и она лежала в полосе
+  фактов. Решение верное по сути: цена пробного выше цены регулярного
+  занятия, и первым же числом на экране завышала представление о школе.
+  Неверным было место. Полоса фактов стоит прямо под кнопкой «Записаться
+  на пробное занятие», и получалось, что число рядом с кнопкой — 850, а
+  пробное, на которое кнопка записывает, стоит 1 100. Формально не ложь:
+  подпись говорила «занятие в абонементе». Но родитель не читает подписи,
+  он читает число возле кнопки.
+
+  Теперь обе цены стоят одной строкой прямо под кнопками — там, где человек
+  решает нажимать. Ни одно число больше не остаётся без своего названия, и
+  из полосы фактов цена ушла: дважды писать 850 на одном экране незачем.
+
+  Минимум абонемента считается по тарифам, у которых цена указана за занятие
+  (у пробного единицы нет — это разовый платёж). Так строка не разъедется,
+  если тарифы поменяются или появится новый.
+*/
+const perLessonPrices = prices
+  .filter((price) => price.unit)
+  .map((price) => price.amount);
+const fromPrice = perLessonPrices.length ? Math.min(...perLessonPrices) : null;
+const trialPrice = prices.find((price) => price.id === 'trial')?.amount ?? null;
+const coachYears = coaches[0]?.yearsExperience;
+const rub = (amount: number) => `${amount.toLocaleString('ru-RU')} ₽`;
+
+/*
+  Факты первого экрана — те, о которых родитель спрашивает первым делом.
+  Раньше здесь были размеры бассейна (25 м, шесть дорожек): они верны, но
+  отвечают на вопрос, который задают уже после записи, и живут на своей
+  странице /bassein/.
+
+  Фактов немного намеренно: цена переехала в строку под кнопками — см.
+  комментарий выше. Стаж берётся из того же файла, что и страница тренера, —
+  иначе первый экран однажды остался бы с числом, которого уже нет.
+*/
 const facts = [
-  { value: '25 м', label: 'дорожка' },
-  { value: '6', label: 'дорожек' },
-  { value: '45 мин', label: 'занятие' },
-  { value: 'до 12', label: 'человек в группе' },
-];
+  { value: '45 мин', label: 'тренировка' },
+  /*
+    Факт «до 12 детей на дорожке» убран 28 сентября 2026 по просьбе
+    владельца: численность группы на первом экране больше не обещаем.
+  */
+  { value: coachYears ? `${coachYears} лет` : null, label: 'опыт тренера' },
+].filter((fact): fact is { value: string; label: string } =>
+  Boolean(fact.value),
+);
 
 export function Hero() {
   return (
     <section
       aria-labelledby="hero-title"
-      className="on-dark relative isolate min-h-[100svh] overflow-clip bg-abyss-950 text-white"
+      className="on-dark relative isolate overflow-clip bg-abyss-950 text-white"
     >
       <div className="absolute inset-0 -z-10">
         <WaterScene />
       </div>
 
-      {/* ширма под текстом: слева плотнее, вправо открывает сцену */}
+      {/*
+        Ширма под текстом: слева плотнее, вправо открывает сцену.
+
+        Плотнее прежней — текста на экране стало больше, и он весь лежит
+        поверх движущейся воды. Правый край всё равно оставлен приоткрытым:
+        затемнить его до конца значило бы выключить сцену, ради которой она
+        и написана. Фотография ширмы не касается — она выше по слою.
+      */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-linear-to-b from-abyss-950/85 via-abyss-950/45 to-abyss-950/80 md:bg-linear-to-r md:from-abyss-950/92 md:via-abyss-950/35 md:to-transparent"
+        className="absolute inset-0 -z-10 bg-linear-to-b from-abyss-950/88 via-abyss-950/62 to-abyss-950/88 md:bg-linear-to-r md:from-abyss-950/94 md:via-abyss-950/58 md:to-abyss-950/28"
       />
 
-      <div className="hero-depart mx-auto flex min-h-[100svh] w-full max-w-6xl flex-col justify-center px-5 pt-26 pb-20 sm:px-6 md:pt-28 md:pb-24">
-        <p
-          className="reveal text-xs font-medium tracking-[0.28em] text-lime-300 uppercase"
-          style={{ ['--reveal-delay' as string]: '80ms' }}
-        >
-          {site.hero.kicker}
-        </p>
-
+      <div className="hero-depart mx-auto w-full max-w-[75rem] px-4 pt-14 pb-16 sm:px-6 sm:pt-20 md:pt-28 md:pb-24">
         {/*
-          Заголовок и крупная надпись разделены.
+          Две колонки на десктопе, одна на телефоне. Фотография на телефоне
+          идёт после кнопок, а не перед заголовком: сначала предложение,
+          потом доказательство — на маленьком экране картинка сверху отодвинула
+          бы за сгиб ровно то, ради чего человек пришёл.
 
-          Раньше H1 содержал и то и другое: скрытую строку для чтения плюс
-          два блока со словами PRIME и SWIM. В тексте заголовка они шли
-          подряд без пробелов, и поиску доставалось «…в ХимкахPRIMESWIM» —
-          склейка, похожая на набивку ключами.
+          НО И НЕ ПОСЛЕДНЕЙ. Замер 19 сентября 2026: кадр бассейна начинался
+          на 906-м пикселе при сгибе 844 — то есть на телефоне первый экран
+          не показывал ни одной фотографии вообще. Единственное, что нельзя
+          подделать вёрсткой, в предложение не входило. Между кнопками и
+          кадром стояла полоса фактов, и она же его туда и отодвинула.
 
-          Теперь H1 — это ровно заголовок, а надпись рядом остаётся
-          оформлением и скрыта от чтения: на экране ничего не изменилось,
-          но в разметке заголовок читается как написан.
+          Полоса и кадр поменялись местами. Порядок «предложение → кнопка →
+          доказательство» цел: заголовок, лид, обе кнопки и цены остались
+          выше кадра и за сгиб не ушли. А факты под кадром ничего не теряют —
+          «45 минут» уже сказано словами в лиде.
 
-          Порядок слов в нём тоже не случаен: сначала запрос, потом бренд.
-          Школа новая, «PRIME SWIM» пока никто не ищет — начинать заголовок
-          с неизвестного названия значит потратить впустую самую весомую
-          его часть.
+          ТЕХНИЧЕСКИ ЭТО flex НА ТЕЛЕФОНЕ И grid НА md. Иначе никак: полоса
+          фактов лежала внутри текстовой колонки, а вставить её нужно между
+          колонкой и соседней — порядком в сетке этого не сделать. Поэтому
+          блоков теперь три, на телефоне они идут колонкой в порядке разметки,
+          а на md фотография занимает вторую колонку и обе строки сразу.
         */}
-        <h1 id="hero-title" className="sr-only">
-          {site.hero.kicker} — {site.hero.wordmark.join(' ')}
-        </h1>
-
-        <div
-          aria-hidden="true"
-          className="mt-6 font-display leading-[0.86] font-extrabold tracking-[-0.03em]"
-        >
-          {site.hero.wordmark.map((word, i) => (
-            <span
-              key={word}
-              className="reveal-mask block"
-              style={{ ['--reveal-delay' as string]: `${160 + i * 110}ms` }}
+        <div className="flex flex-col gap-10 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:items-center md:gap-x-12 md:gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-x-16">
+          <div className="min-w-0">
+            <p
+              className="reveal text-xs font-medium tracking-[0.28em] text-white/55 uppercase"
+              style={{ ['--reveal-delay' as string]: '80ms' }}
             >
-              <span
-                className={
-                  i === 0
-                    ? 'block text-[clamp(3.2rem,15vw,10.5rem)] text-white'
-                    : 'block text-[clamp(3.2rem,15vw,10.5rem)] text-lime-300'
-                }
+              {site.hero.kicker}
+            </p>
+
+            {/*
+              Заголовок один и он видимый. Порядок слов не случаен: сначала
+              запрос, потом площадка. Школа новая, «PRIME SWIM» пока никто не
+              ищет — начинать заголовок с неизвестного названия значило бы
+              потратить впустую самую весомую его часть. Логотип остался
+              в шапке, во весь экран его повторять незачем.
+
+              UNBOUNDED В EXTRABOLD ЗДЕСЬ НАМЕРЕННО, И ЭТО РЕШЕНИЕ ВЛАДЕЛЬЦА.
+              Пробовали набрать заголовок волосяным Inter — тем же, что и все
+              заголовки ниже (SectionHeading в ui.tsx): по букве DESIGN.md
+              так ровнее, «авторитет берётся сдержанностью, а не весом», и
+              первый экран перестаёт выглядеть отдельным сайтом. Вариант
+              отклонён — школе нужен голос погромче, чем у референса.
+
+              Значит, Unbounded на сайте живёт в двух ролях: логотип и этот
+              заголовок. Третьей не заводить — в остальных заголовках его
+              нет, и разнобой начнётся именно оттуда.
+
+              Лайм на площадке тоже остаётся. Он здесь второй по счёту после
+              кнопки, и это предел: всё остальное на первом экране с лайма
+              снято (надзаголовок, полоса фактов под ним) — см. ProofStrip.
+            */}
+            <h1
+              id="hero-title"
+              className="reveal mt-5 font-display text-[clamp(2.1rem,6.2vw,4rem)] leading-[1.04] font-extrabold tracking-[-0.02em] text-balance"
+              style={{ ['--reveal-delay' as string]: '160ms' }}
+            >
+              {site.hero.title}
+              {' — '}
+              <span className="text-lime-300">{site.hero.titleAccent}</span>
+            </h1>
+
+            <p
+              className="reveal mt-6 max-w-[46ch] text-base leading-relaxed text-white/80 sm:text-lg"
+              style={{ ['--reveal-delay' as string]: '280ms' }}
+            >
+              {site.hero.offer}
+            </p>
+
+            <div
+              className="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
+              style={{ ['--reveal-delay' as string]: '380ms' }}
+            >
+              <Link
+                href="#booking"
+                data-goal="cta_booking"
+                className="lift glow-accent inline-flex min-h-13 items-center justify-center rounded-[10px] bg-lime-400 px-7 text-center text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-lime-300"
               >
-                {word}
-              </span>
-            </span>
-          ))}
-        </div>
-
-        <p
-          className="reveal mt-8 max-w-[34ch] text-lg leading-relaxed text-white/75 sm:text-xl"
-          style={{ ['--reveal-delay' as string]: '420ms' }}
-        >
-          {site.hero.offer}
-        </p>
-
-        <div
-          className="reveal mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
-          style={{ ['--reveal-delay' as string]: '540ms' }}
-        >
-          <Link
-            href="#booking"
-            data-goal="cta_booking"
-            className="lift glow-accent inline-flex min-h-13 items-center justify-center rounded-[10px] bg-lime-400 px-7 text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-lime-300"
-          >
-            {site.cta.primary}
-          </Link>
-          <Link
-            href="#programs"
-            data-goal="cta_schedule"
-            className="lift inline-flex min-h-13 items-center justify-center rounded-[10px] border border-white/25 px-7 text-[15px] font-medium text-white transition-colors duration-200 hover:border-white/50 hover:bg-white/10"
-          >
-            Посмотреть программу
-          </Link>
-        </div>
-
-        <dl
-          className="reveal glass mt-14 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-6 rounded-[20px] p-6 sm:grid-cols-4 sm:gap-x-4"
-          style={{ ['--reveal-delay' as string]: '660ms' }}
-        >
-          {facts.map((f) => (
-            <div key={f.label} className="flex flex-col">
-              <dt className="order-2 mt-1 text-xs leading-snug text-white/55">
-                {f.label}
-              </dt>
-              <dd className="order-1 text-2xl font-light tabular-nums text-white">
-                {f.value}
-              </dd>
+                {site.cta.primary}
+              </Link>
+              {/*
+                Вторая кнопка ведёт на страницу расписания, а не на якорь
+                главной: разделы разъехались по своим адресам, и «Посмотреть
+                программу» вело в блок направлений — не туда, где родитель
+                ищет время занятий.
+              */}
+              <Link
+                href="/raspisanie/"
+                data-goal="cta_schedule"
+                className="lift inline-flex min-h-13 items-center justify-center rounded-[10px] border border-white/25 px-7 text-center text-[15px] font-medium text-white transition-colors duration-200 hover:border-white/50 hover:bg-white/10"
+              >
+                Расписание занятий
+              </Link>
             </div>
-          ))}
-        </dl>
 
-        <p
-          className="reveal mt-8 text-sm text-white/65"
-          style={{ ['--reveal-delay' as string]: '760ms' }}
-        >
-          {contacts.address.short}
-        </p>
+            {trialPrice && fromPrice ? (
+              <p
+                className="reveal mt-4 text-sm text-white/65"
+                style={{ ['--reveal-delay' as string]: '440ms' }}
+              >
+                Пробное занятие — {rub(trialPrice)}, дальше от{' '}
+                {rub(fromPrice)} за занятие в абонементе
+              </p>
+            ) : null}
+          </div>
+
+          {/*
+            mt-6 НА ТЕЛЕФОНЕ — ЭТО ЗАПАС ПОД КОСАТКУ, А НЕ ОТСТУП.
+
+            Она выходит за верхний край рамки на 18 % её высоты (см.
+            HeroVisual) и высоты не занимает вовсе — то есть съедает то, что
+            над кадром. Пока над кадром была пустота, это никому не мешало;
+            теперь там строка с ценами, и морда легла ровно на запятую после
+            «1 100 ₽».
+
+            24 пикселя — замер, а не круглое число: остриё стояло на 637-м
+            пикселе, вторая строка кончается на 658-м. Меньше — снова
+            задевает, больше — кадр без нужды уезжает за сгиб.
+
+            На md и выше косатка висит над своей колонкой, задевать ей нечего,
+            поэтому там запас снимается.
+          */}
+          <div
+            className="mt-6 md:col-start-2 md:row-start-1 md:row-span-2 md:mt-0"
+            style={{ ['--reveal-delay' as string]: '320ms' }}
+          >
+            <HeroVisual
+              venue={contacts.address.venue}
+              district={contacts.address.district}
+            />
+          </div>
+
+          <div className="min-w-0">
+            <dl
+              className="reveal glass grid max-w-xl grid-cols-2 gap-x-4 gap-y-5 rounded-[20px] p-5 sm:p-6"
+              style={{ ['--reveal-delay' as string]: '480ms' }}
+            >
+              {facts.map((f) => (
+                <div key={f.label} className="flex flex-col">
+                  <dt className="order-2 mt-1 text-xs leading-snug text-white/55">
+                    {f.label}
+                  </dt>
+                  {/* значения короткие и переносу не подлежат: на 768 «45 мин»
+                      ломалось на «45» и «мин» и читалось как два факта */}
+                  <dd className="order-1 text-xl font-light whitespace-nowrap tabular-nums text-white sm:text-2xl">
+                    {f.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
+            <p
+              className="reveal mt-6 text-sm text-white/65"
+              style={{ ['--reveal-delay' as string]: '560ms' }}
+            >
+              {contacts.address.short}
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* переход в следующую секцию: сцена растворяется в светлом фоне */}
+      {/*
+        Переход в следующую секцию.
+
+        Растворяется в abyss-900, а не в белом. За первым экраном идёт
+        ProofStrip, и он тёмный: прежний градиент уводил низ сцены в белый,
+        после чего страница резко возвращалась в тёмное — между двумя тёмными
+        секциями лежала светлая полоса в палец шириной, читавшаяся как шов
+        или недогрузившийся блок. Теперь сцена уходит ровно в цвет того, что
+        под ней.
+      */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-surface"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-abyss-900"
       />
     </section>
   );

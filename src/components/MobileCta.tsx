@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import { contacts } from '@/content/contacts';
-import { useConsent, useHydrated } from '@/lib/consent';
 
 /*
   Липкая кнопка записи на телефоне.
@@ -17,16 +16,6 @@ import { useConsent, useHydrated } from '@/lib/consent';
 */
 export function MobileCta() {
   const [shown, setShown] = useState(false);
-
-  /*
-    Пока посетитель не ответил на вопрос про cookie, снизу уже стоит баннер
-    высотой ~230 px. Панель записи вставала под него вплотную, и на телефоне
-    получался сплошной белый блок почти в треть экрана. Показываем панель
-    только после того, как баннер ушёл.
-  */
-  const consent = useConsent();
-  const hydrated = useHydrated();
-  const noticeVisible = hydrated && consent === null;
 
   useEffect(() => {
     const hero = document.querySelector('section');
@@ -70,12 +59,27 @@ export function MobileCta() {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-white/92 px-4 pt-3 backdrop-blur transition-transform duration-300 lg:hidden ${
-        shown && !noticeVisible ? 'translate-y-0' : 'translate-y-full'
+      className={`fixed inset-x-0 z-40 border-t border-hairline bg-white/92 px-4 pt-3 backdrop-blur transition-[transform,bottom] duration-300 lg:hidden ${
+        shown ? 'translate-y-0' : 'translate-y-full'
       }`}
-      style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
+      /*
+        Стоит НАД баннером про cookie, а не под ним и не вместо него.
+
+        Раньше панель просто не показывалась, пока висит вопрос про cookie.
+        Замысел был бережный — не городить две полосы разом, — но вопрос
+        разовый только у тех, кто на него отвечает. Кто пролистывал баннер
+        мимо, весь визит ходил по сайту без кнопки записи; на телефоне это
+        единственная кнопка, которая всегда под рукой.
+
+        Высоту баннера сообщает он сам, через --cookie-notice-h. Пока
+        баннера нет, переменная не задана и панель садится на низ экрана.
+      */
+      style={{
+        bottom: 'var(--cookie-notice-h, 0px)',
+        paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))',
+      }}
       // пока панель спрятана, её содержимое не должно попадать в обход с клавиатуры
-      inert={!shown || noticeVisible || undefined}
+      inert={!shown || undefined}
     >
       <div className="mx-auto flex max-w-md items-center gap-3">
         <a

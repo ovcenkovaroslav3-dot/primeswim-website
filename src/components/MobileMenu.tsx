@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 
 import { navLinks } from "./Header";
 import { contacts } from "@/content/contacts";
+import { Logo } from "./Logo";
 import { SocialLinks } from "./SocialLinks";
 import { buttonClass } from "./ui";
 
@@ -34,10 +35,49 @@ export function MobileMenu() {
 
     panelRef.current?.querySelector<HTMLElement>("a, button")?.focus();
 
+    /*
+      Перехват клавиатуры: Escape закрывает, Tab не выпускает.
+
+      ЗАПЕРЕТЬ ФОКУС ОБЯЗАНЫ, раз панель объявлена `aria-modal="true"`. Этот
+      атрибут велит программе чтения не видеть ничего за панелью — но Tab он
+      не трогает: с последнего пункта меню фокус уходил на страницу позади,
+      закрытую затемнением. Человек, идущий с клавиатуры, оказывался в
+      содержимом, которого не видит, и обратно в меню возвращался только
+      пройдя её насквозь.
+
+      Список собирается на каждое нажатие, а не один раз: панель короткая,
+      обход дешёвый, а вот запомнить набор нельзя — ссылки в ней меняются
+      вместе с разделами.
+    */
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setOpen(false);
         triggerRef.current?.focus();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const panel = panelRef.current;
+      if (!panel) return;
+
+      const stops = [
+        ...panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ),
+      ].filter((el) => el.offsetParent !== null);
+      if (!stops.length) return;
+
+      const first = stops[0];
+      const last = stops[stops.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && (active === first || !panel.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !panel.contains(active))) {
+        event.preventDefault();
+        first.focus();
       }
     }
 
@@ -95,7 +135,24 @@ export function MobileMenu() {
                 className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-white p-6 shadow-xl"
               >
                 <div className="mb-8 flex items-center justify-between">
-                  <p className="text-lg font-light text-ink">Меню</p>
+                  {/*
+                    Знак, а не слово «Меню». Открытая панель закрывает шапку
+                    целиком, и на весь экран не оставалось ни одного упоминания
+                    школы — а это единственный экран, который человек на
+                    телефоне видит перед выбором раздела. Название панели при
+                    этом не потеряно: оно и раньше жило в aria-label="Меню
+                    сайта" у самого диалога, слово на экране его лишь дублировало.
+                  */}
+                  {/* 44 px, как у логотипа в шапке: там промах по надписи
+                      высотой 24 уже ловили, а эта копия осталась мимо */}
+                  <Link
+                    href="/"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex min-h-11 items-center"
+                  >
+                    <Logo />
+                    <span className="sr-only"> — на главную страницу</span>
+                  </Link>
                   <button
                     type="button"
                     onClick={() => {
@@ -142,19 +199,22 @@ export function MobileMenu() {
                   <Link
                     href="#booking"
                     onClick={() => setOpen(false)}
+                    data-goal="cta_booking"
                     className={buttonClass("primary", "lg", "w-full")}
                   >
-                    Записаться на тренировку
+                    Записаться на пробное занятие
                   </Link>
                   <a
                     href={contacts.phone.href}
-                    className="text-center text-lg font-light text-ink"
+                    data-goal="click_phone"
+                    /* 44 px, как у пунктов меню выше: номер стоит в том же
+                       столбце действий, что и кнопка записи, и промахиваться
+                       по нему из-за строчной высоты 28 не должен */
+                    className="flex min-h-11 items-center justify-center text-lg font-light text-ink"
                   >
                     {contacts.phone.display}
                   </a>
-                  <div className="flex justify-center">
-                    <SocialLinks />
-                  </div>
+                  <SocialLinks align="center" />
                 </div>
               </div>
             </div>,

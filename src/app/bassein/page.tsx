@@ -24,7 +24,7 @@ export default function PoolPage() {
         не появляется — это одна и та же школа, описанная дважды.
       */}
       <StructuredData />
-      <div className="mx-auto w-full max-w-6xl px-4 pt-10 sm:px-6">
+      <div className="mx-auto w-full max-w-[75rem] px-4 pt-10 sm:px-6">
         <Breadcrumbs
           items={[
             { label: 'Главная', href: '/' },

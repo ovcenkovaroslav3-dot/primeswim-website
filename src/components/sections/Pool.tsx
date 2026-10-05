@@ -1,10 +1,10 @@
-import Image from 'next/image';
-
+import { Picture } from '../Picture';
 import { ButtonLink, buttonClass } from '../ui';
 
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
-import { poolImages, venueImages } from '@/content/media';
+import { poolMainImage, poolPreviewImages, venuePreviewImages } from '@/content/media';
+import { routeSteps, routeTransit } from '@/content/route';
 
 /*
   Где проходят тренировки.
@@ -16,8 +16,20 @@ import { poolImages, venueImages } from '@/content/media';
   оказывалась только в начале и в конце. Эта секция стоит ровно посередине
   того разрыва.
 */
-export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
-  const [mainPhoto, ...restPhotos] = poolImages;
+export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+  const Heading = headingAs;
+  // «Как добраться» на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
+  const RouteHeading = headingAs === 'h1' ? 'h2' : 'h3';
+
+  /*
+    Крупная плитка берёт оригинал, мелкие — уменьшенные копии.
+
+    Первый снимок показывается примерно в 560 px, и копия шире оригинала
+    (1050 px) всё равно не получится — пересжатие только добавило бы вес.
+    Остальные плитки идут в 270 px, там оригинал избыточен вчетверо.
+  */
+  const mainPhoto = poolMainImage;
+  const restPhotos = poolPreviewImages;
 
   return (
     <section
@@ -36,12 +48,12 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
 
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="reveal max-w-3xl">
-          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+          <p className="mb-4 text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Бассейн
           </p>
           <Heading
             id="pool-title"
-            className="text-3xl leading-[1.08] font-extralight sm:text-4xl md:text-[44px]"
+            className="text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl md:text-[44px]"
           >
             {site.pool.title}
           </Heading>
@@ -67,7 +79,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
         <div className="reveal glass mt-10 rounded-[20px] p-6 sm:p-7">
           <dl className="grid gap-6 sm:grid-cols-2">
             <div>
-              <dt className="text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+              <dt className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
                 Адрес
               </dt>
               <dd className="mt-3">
@@ -83,7 +95,7 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
             </div>
 
             <div>
-              <dt className="text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+              <dt className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
                 Чаша и занятие
               </dt>
               <dd className="mt-3 leading-relaxed text-white/80">
@@ -113,18 +125,65 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
           </div>
         </div>
 
+        {/*
+          Как добраться.
+
+          Бассейн стоит на территории института, и попасть в него нельзя,
+          просто подойдя к зданию: сначала КПП. До этого блока сайт про это
+          не говорил вовсе — родитель узнавал о пропускном режиме, уже стоя
+          у ворот с ребёнком. Это и есть та самая локальная тревога перед
+          первым визитом, ради которой блок написан.
+
+          Шаги пронумерованы, потому что порядок настоящий, а не оформление.
+
+          Про дорогу от КПП до самого бассейна здесь ничего нет намеренно —
+          владелец её пока не описал, а придумывать путь к месту, куда
+          человек везёт ребёнка, нельзя. Пока эту работу делает фотография
+          корпуса ниже: здание узнаваемое. См. content/route.ts.
+        */}
+        <div className="reveal mt-10 rounded-[20px] border border-white/12 p-6 sm:p-7">
+          <RouteHeading className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
+            Как добраться
+          </RouteHeading>
+
+          <ol className="mt-6 grid gap-6 sm:grid-cols-3">
+            {routeSteps.map((step, i) => (
+              <li key={step.id} className="flex gap-4">
+                <span
+                  aria-hidden="true"
+                  className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-lime-400/50 text-sm tabular-nums text-lime-300"
+                >
+                  {i + 1}
+                </span>
+                <span>
+                  <span className="block font-medium text-white">
+                    {step.title}
+                  </span>
+                  <span className="mt-2 block text-sm leading-relaxed text-white/70">
+                    {step.description}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ol>
+
+          <p className="mt-6 border-t border-white/12 pt-5 text-sm leading-relaxed text-white/70">
+            Ближайшая остановка — «{routeTransit.stop}»: {routeTransit.note}.
+          </p>
+        </div>
+
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div
             className="reveal zoom-frame relative aspect-[3/4] overflow-hidden rounded-[20px] bg-abyss-800 sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]"
             style={{ ['--reveal-delay' as string]: '60ms' }}
           >
-            <Image
+            <Picture
               src={mainPhoto.src}
               alt={mainPhoto.alt}
-              fill
-              loading="lazy"
+              width={mainPhoto.width}
+              height={mainPhoto.height}
               sizes="(max-width: 640px) 100vw, 50vw"
-              className="object-cover"
+              className="absolute inset-0 size-full object-cover"
             />
           </div>
 
@@ -134,18 +193,18 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
               className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-abyss-800"
               style={{ ['--reveal-delay' as string]: `${120 + i * 60}ms` }}
             >
-              <Image
+              <Picture
                 src={photo.src}
                 alt={photo.alt}
-                fill
-                loading="lazy"
+                width={photo.width}
+                height={photo.height}
                 sizes="(max-width: 640px) 100vw, 25vw"
-                className="object-cover"
+                className="absolute inset-0 size-full object-cover"
               />
             </div>
           ))}
 
-          {venueImages.map((photo, i) => (
+          {venuePreviewImages.map((photo, i) => (
             <div
               key={photo.src}
               className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-abyss-800"
@@ -153,13 +212,13 @@ export function Pool({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } 
                 ['--reveal-delay' as string]: `${120 + (restPhotos.length + i) * 60}ms`,
               }}
             >
-              <Image
+              <Picture
                 src={photo.src}
                 alt={photo.alt}
-                fill
-                loading="lazy"
+                width={photo.width}
+                height={photo.height}
                 sizes="(max-width: 640px) 100vw, 25vw"
-                className="object-cover"
+                className="absolute inset-0 size-full object-cover"
               />
             </div>
           ))}

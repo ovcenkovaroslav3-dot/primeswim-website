@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ButtonLink, Section, SectionHeading } from '../ui';
 import { prices, pricesNote, pricesDisclaimer } from '@/content/prices';
 import { contacts } from '@/content/contacts';
@@ -5,6 +6,9 @@ import { contacts } from '@/content/contacts';
 const formatter = new Intl.NumberFormat('ru-RU');
 
 export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+  // название тарифа на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
+  const PriceHeading = headingAs === 'h1' ? 'h2' : 'h3';
+
   return (
     <Section id="prices" labelledBy="prices-title" className="bg-surface">
       <SectionHeading
@@ -51,13 +55,13 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
               {price.badge}
             </p>
 
-            <h3
+            <PriceHeading
               className={`relative mt-4 text-xl font-light ${
                 price.featured ? 'text-white' : 'text-ink'
               }`}
             >
               {price.title}
-            </h3>
+            </PriceHeading>
 
             <p
               className={`mt-1 text-sm ${
@@ -93,6 +97,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
             <ButtonLink
               href="#booking"
               variant={price.featured ? 'secondary' : 'ghost'}
+              data-goal="cta_booking"
               className="relative mt-auto w-full"
             >
               Записаться
@@ -111,12 +116,25 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
       </p>
 
       <p className="mt-8 max-w-3xl text-sm leading-relaxed text-ink-muted">
-        {pricesDisclaimer} Условия возврата и переноса занятий описаны в договоре,
-        который подписывается до начала занятий. Остались вопросы по оплате —{' '}
+        {pricesDisclaimer} Условия возврата и переноса занятий описаны{' '}
+        {/*
+          Ссылка появилась вместе со страницей договора. До этого здесь стояло
+          «описаны в договоре» без возможности его прочитать — обещание,
+          которое проверить нельзя, доверия не прибавляет.
+        */}
+        <Link
+          href="/dogovor/"
+          prefetch={false}
+          className="font-medium text-brand-600 underline underline-offset-4"
+        >
+          в договоре
+        </Link>
+        , который подписывается до начала занятий. Остались вопросы по оплате —{' '}
         <a
           href={contacts.social.telegramBooking}
           target="_blank"
           rel="noopener noreferrer"
+          data-goal="click_telegram_booking"
           className="font-medium text-brand-600 underline underline-offset-4"
         >
           напишите нам в Telegram

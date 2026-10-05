@@ -33,7 +33,7 @@ export default function NotFound() {
 
         <h1
           id="notfound-title"
-          className="mt-6 text-[clamp(1.6rem,5vw,2.4rem)] leading-tight font-extralight"
+          className="mt-6 text-[clamp(1.6rem,5vw,2.4rem)] leading-tight font-normal"
         >
           Такой страницы нет
         </h1>

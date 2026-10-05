@@ -5,7 +5,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline';
 type ButtonSize = 'md' | 'lg';
 
 const base =
-  'lift inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
+  'lift inline-flex items-center justify-center gap-2 rounded-lg text-center font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
 
 const variants: Record<ButtonVariant, string> = {
   /*
@@ -132,6 +132,29 @@ export function SectionHeading({
   */
   as?: 'h1' | 'h2';
 }) {
+  /*
+    ВЕС 400, А НЕ 200, И ЭТО ИСПРАВЛЕНИЕ НЕДОДЕЛКИ, А НЕ НОВЫЙ ВКУС.
+
+    Волосяные заголовки пришли от прежнего ориентира, Aqua Voice: его
+    центральный тезис — «авторитет берётся сдержанностью, а не весом»,
+    weight 200 в заголовках. 10 сентября 2026 владелец отклонил половину
+    тезиса: заголовок первого экрана остался Unbounded extrabold, школе
+    нужен голос громче. Ориентир 13 сентября сменили на WHOOP. А заголовки
+    секций так и остались от Aqua Voice — их никто не пересматривал.
+
+    Получался раскол: h1 в 800 кричит, следом девять h2 в 200 шепчут, между
+    ними ничего. У нового ориентира display набран весом 400 при body 400,
+    то есть иерархия строится размером, а не тонкостью. К нему и приведено.
+
+    Числа волосяными остались намеренно — «13 лет», «850 ₽», «45 мин». Это
+    другой приём: крупная тонкая цифра рядом с плотной подписью читается как
+    величина, а не как заголовок, и с h2 не конкурирует.
+
+    Цена замерена: страница подросла на 47 px из 9210 — на десктопе на две
+    строки разъезжается один заголовок из восьми, «Три цели, с которыми к
+    нам приходят». 300 и 400 по вёрстке не отличаются вовсе, разница между
+    ними только на глаз, и на тёмных секциях 400 выигрывает заметно.
+  */
   const alignment = align === 'center' ? 'text-center mx-auto' : '';
 
   return (
@@ -146,8 +169,8 @@ export function SectionHeading({
         id={id}
         className={
           size === 'statement'
-            ? 'text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-extralight text-ink'
-            : 'text-3xl leading-[1.08] font-extralight text-ink sm:text-4xl md:text-[44px]'
+            ? 'text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-normal tracking-[-0.02em] text-ink'
+            : 'text-3xl leading-[1.08] font-normal tracking-[-0.02em] text-ink sm:text-4xl md:text-[44px]'
         }
       >
         {title}
@@ -156,5 +179,86 @@ export function SectionHeading({
         <p className="mt-5 max-w-[62ch] text-base leading-relaxed text-ink-soft">{lead}</p>
       ) : null}
     </div>
+  );
+}
+
+/*
+  Стрелка «читать дальше».
+
+  Один компонент вместо семи копий. Раньше каждая секция несла свой
+  инлайновый SVG и свой набор классов — разметка совпадала дословно, а
+  отступы расходились, и по странице гуляла высота ссылки.
+
+  ГЛАВНОЕ ЗДЕСЬ — ВЫСОТА. Все эти ссылки были ростом 28 px: на телефоне это
+  вдвое меньше подушечки пальца, и промах по «Всё расписание» или
+  «О тренере» уводил человека не туда. Теперь min-h-11 — те же 44 px, что
+  у кнопок, ниже этого на сайте не опускается ни одна зона нажатия.
+
+  Отрицательный внешний отступ возвращает набранный рост обратно в вёрстку:
+  нажимать стало удобнее, а ритм абзацев остался прежним.
+*/
+export function ArrowLink({
+  href,
+  children,
+  tone = 'brand',
+  external = false,
+  className = '',
+  ...rest
+}: {
+  href: string;
+  children: ReactNode;
+  /** brand — на светлой секции, white — на тёмной. */
+  tone?: 'brand' | 'white';
+  external?: boolean;
+  className?: string;
+} & Omit<ComponentProps<'a'>, 'href' | 'children'>) {
+  const classes = [
+    'lift group -my-2 inline-flex min-h-11 items-center gap-2 py-2 text-sm font-medium',
+    tone === 'white' ? 'text-white' : 'text-brand-600',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const inner = (
+    <>
+      {children}
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 18 18"
+        fill="none"
+        aria-hidden="true"
+        className="shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+      >
+        <path
+          d="M3 9h12M10 4l5 5-5 5"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
+  );
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classes}
+        {...rest}
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} prefetch={false} className={classes} {...rest}>
+      {inner}
+    </Link>
   );
 }

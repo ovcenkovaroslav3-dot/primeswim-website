@@ -1,7 +1,7 @@
-import Image from 'next/image';
-
+import { VideoCard } from '../VideoCard';
+import { Picture } from '../Picture';
 import { Section, SectionHeading } from '../ui';
-import { galleryImages, galleryVideos } from '@/content/media';
+import { galleryGridImages, galleryVideos } from '@/content/media';
 
 /*
   Галерея.
@@ -30,6 +30,14 @@ import { galleryImages, galleryVideos } from '@/content/media';
   Обычная grid-сетка не фрагментируется по колонкам, и слой видео остаётся
   на своём месте. Поэтому здесь именно grid — менять его на columns нельзя,
   даже если захочется вписать видео обратно в мазонри.
+
+  ФОТОГРАФИИ БЕРУТСЯ ИЗ media/preview/grid, а не из архивных оригиналов.
+  Колонка занимает максимум 357 px на десктопе и 171 px на телефоне, а
+  файлы были шириной 1280–1500 px: страница отдавала 4 871 KB, чтобы
+  показать снимки размером с почтовую марку. Копии шириной 720 — это
+  двойная плотность для самой широкой колонки, на экране разницы нет,
+  вес 2 323 KB. Увеличить кадр по клику здесь нельзя, лайтбокса нет,
+  поэтому и полное разрешение показывать некуда.
 */
 export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   return (
@@ -46,19 +54,26 @@ export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         className="reveal mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3"
         style={{ ['--reveal-delay' as string]: '80ms' }}
       >
+        {/*
+          Ролики идут через общий VideoCard, а не своим <video>.
+
+          Так было не всегда, и разница в двух вещах. Первая видна:
+          собственный <video controls> кладёт снизу кадра серую панель
+          браузера — на странице, собранной по одной сетке и палитре, это
+          единственное место, которое выглядит вставкой с видеохостинга.
+          Вторая видна только в замере: атрибут `poster` не уважает ленивую
+          загрузку, и три постера тянулись при открытии страницы, 260 КБ до
+          всякой прокрутки. VideoCard показывает постер обычной картинкой, а
+          она грузится, когда доходит до экрана, и в AVIF.
+        */}
         {galleryVideos.map((video) => (
-          <li
-            key={video.src}
-            className="relative overflow-hidden rounded-[20px] bg-surface"
-          >
-            <video
+          <li key={video.src}>
+            <VideoCard
               src={video.src}
               poster={video.poster}
-              aria-label={video.alt}
-              controls
-              playsInline
-              preload="none"
-              className="block h-auto w-full"
+              label={video.alt}
+              width={video.width}
+              height={video.height}
             />
           </li>
         ))}
@@ -68,17 +83,16 @@ export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         className="reveal mt-4 columns-2 gap-4 lg:columns-3"
         style={{ ['--reveal-delay' as string]: '120ms' }}
       >
-        {galleryImages.map((photo) => (
+        {galleryGridImages.map((photo) => (
           <li
             key={photo.src}
             className="zoom-frame relative mb-4 overflow-hidden rounded-[20px] bg-surface break-inside-avoid"
           >
-            <Image
+            <Picture
               src={photo.src}
               alt={photo.alt}
               width={photo.width}
               height={photo.height}
-              loading="lazy"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
               className="block h-auto w-full object-cover"
             />

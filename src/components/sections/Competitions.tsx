@@ -1,3 +1,4 @@
+import { OrcaMark } from "../OrcaMark";
 import { competitionPillars } from "@/content/journey";
 
 /*
@@ -14,7 +15,11 @@ import { competitionPillars } from "@/content/journey";
   Эмоциональный блок без фотографий: работают крупная типографика, глубина
   и структура. Тёмная секция задаёт паузу между светлыми.
 */
-export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+export function Competitions({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
+  const Heading = headingAs;
+  // заголовок ступени на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
+  const PillarHeading = headingAs === 'h1' ? 'h2' : 'h3';
+
   return (
     <section
       id="competitions"
@@ -38,19 +43,42 @@ export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' |
         }}
       />
 
+      {/*
+        Фирменный знак. Единственная страница, кроме главной, где он появляется
+        крупно, и выбрана она не случайно: тут речь про старты, сборы и
+        разряды — то есть ровно про то, что косатка и обозначает. Ставить её
+        на каждой странице нельзя, знак теряет вес от повтора (правило — в
+        DESIGN.md).
+
+        Идёт вверх-вправо, в ту же сторону, что и ступени карточек ниже.
+
+        ДВЕ ВЕЛИЧИНЫ ЗДЕСЬ ПОДОБРАНЫ ПО СНИМКУ, А НЕ НА ГЛАЗ. Первая проба
+        стояла на 6 % и вылезала за правый край: фон секции — abyss-950,
+        самый тёмный на сайте, и белое пятно на нём читается заметно сильнее,
+        чем на первом экране при той же цифре. Получилась крупная серая
+        фигура с обрезанной головой, то есть ровно то, чего знак не должен
+        делать, — иллюстрация вместо присутствия. Теперь 3,5 % и фигура
+        целиком в кадре.
+      */}
+      <OrcaMark
+        tone="white"
+        tilt={-16}
+        className="pointer-events-none absolute top-2 right-2 w-[68%] opacity-[0.035] sm:w-[52%] lg:top-6 lg:right-6 lg:w-[40%]"
+      />
+
       <div className="relative mx-auto w-full max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-16">
           <div className="reveal">
-            <p className="mb-4 text-xs font-medium tracking-[0.2em] text-lime-300 uppercase">
+            <p className="mb-4 text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
               Спорт
             </p>
             <Heading
               id="competitions-title"
-              className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-extralight"
+              className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-normal tracking-[-0.02em]"
             >
               Спортивное плавание,
               <br />
-              <span className="text-lime-300">соревнования и разряды</span>
+              <span className="font-normal">соревнования и разряды</span>
             </Heading>
           </div>
 
@@ -79,7 +107,7 @@ export function Competitions({ headingAs: Heading = 'h2' }: { headingAs?: 'h1' |
                 {String(i + 1).padStart(2, "0")}
               </span>
 
-              <h3 className="mt-4 text-xl font-light text-white">{p.title}</h3>
+              <PillarHeading className="mt-4 text-xl font-light text-white">{p.title}</PillarHeading>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-white/65">
                 {p.description}
               </p>
