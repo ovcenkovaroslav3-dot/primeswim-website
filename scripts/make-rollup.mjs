@@ -29,6 +29,14 @@
  * BLEED=5 — версия с вылетами: фон и фото уходят за обрез на 5 мм с каждой
  * стороны, лист 860×2010 мм, всё остальное стоит на тех же местах. Нужна,
  * если типография режет ткань после печати и просит запас под нож.
+ * MOUNT=50 — запас снизу под крепление в кассету: лист 850×2050 мм, фон
+ * продолжается вниз, раскладка не двигается.
+ * LIME=#accf11 — лайм для печати в CMYK. #c7fe03 лежит за охватом FOGRA39,
+ * и любой интент профиля уводит его в жёлтый (C25 Y93, тон 62° вместо 73°).
+ * #accf11 профиль ISO Coated v2 переводит в C40 M0 Y98 K0 — салатовый.
+ * Подменяется цвет в вёрстке, а не в готовом растре: тогда края букв и
+ * полупрозрачные элементы пересчитываются вместе с ним, без ореолов.
+ * Перевод в CMYK — scripts/rollup-cmyk.py.
  */
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -42,9 +50,11 @@ const DPI = Number(process.env.DPI ?? 100);
 const W = 850; // мм, чистый формат
 const H = 2000; // мм
 const B = Number(process.env.BLEED ?? 0); // мм вылета с каждой стороны
+const M = Number(process.env.MOUNT ?? 0); // мм запаса снизу под крепление
+const LIME = process.env.LIME ?? '#c7fe03';
 const PW = W + 2 * B; // мм, лист вместе с вылетами
-const PH = H + 2 * B;
-const OUT = `media-source/brand/rollup-85x200${B ? `-bleed${B}` : ''}.pdf`;
+const PH = H + 2 * B + M;
+const OUT = `media-source/brand/rollup-85x${(H + M) / 10}${B ? `-bleed${B}` : ''}${LIME === '#c7fe03' ? '' : '-print'}.pdf`;
 
 async function pick(file, pattern, what) {
   const source = await readFile(file, 'utf8');
@@ -121,6 +131,7 @@ const svgIcon = (body) =>
   `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
 const perkIcons = [icon.strokes, icon.person, icon.medal, icon.growth, icon.team, icon.loyalty];
 
+const lime = LIME.match(/[0-9a-f]{2}/gi).map((h) => parseInt(h, 16)).join(',');
 const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
 <title>PRIME SWIM — ролл-ап 85×200</title>
 <style>${display}${sans600}${sans700}${sans800}</style>
@@ -141,7 +152,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
        -webkit-print-color-adjust:exact;print-color-adjust:exact}
 
   /* ── фон: фирменный фиолетовый сверху уходит в толщу ── */
-  .bg{position:absolute;inset:-${B}mm;
+  .bg{position:absolute;inset:-${B}mm -${B}mm -${B + M}mm;
       background:
         radial-gradient(120% 40% at 50% 0%, #6a0aa3 0%, var(--brand) 35%, transparent 75%),
         linear-gradient(180deg, var(--brand) 0mm, var(--abyss-900) 700mm, var(--abyss) 1300mm, var(--abyss-900) 1700mm, var(--brand) ${H}mm);}
@@ -294,7 +305,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
       el.style.display = '';
     });
   </script>
-</body></html>`;
+</body></html>`.replaceAll('#c7fe03', LIME).replaceAll('199,254,3', lime);
 
 await mkdir('media-source/brand', { recursive: true });
 
