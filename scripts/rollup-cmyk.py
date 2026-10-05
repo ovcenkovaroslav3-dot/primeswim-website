@@ -19,6 +19,11 @@ zlib. Лежит в исходниках Scribus; скачивается по з
 ЛАЙМ. Растр на вход подаётся уже с печатным лаймом (LIME=#accf11 в
 make-rollup.mjs) — иначе #c7fe03 уйдёт в жёлтый. Почему так — там же.
 
+ДВА ФАЙЛА. Типография принимает TIFF без слоёв или PDF/X-1a — пишутся оба.
+PDF несёт тот же CMYK-растр без потерь (Flate, не JPEG), профиль FOGRA39
+как OutputIntent и метки PDF/X-1a:2001; версия PDF 1.3, без прозрачностей.
+Для PDF нужен pikepdf, без него пишется только TIFF.
+
 ЗАПУСК (в окружении с Pillow):
   MOUNT=50 LIME=#accf11 DPI=150 node scripts/make-rollup.mjs
   python3 scripts/rollup-cmyk.py media-source/brand/rollup-85x205-print-150dpi.png
@@ -27,7 +32,9 @@ make-rollup.mjs) — иначе #c7fe03 уйдёт в жёлтый. Почему
 import hashlib
 import io
 import sys
+import time
 import urllib.request
+import zlib
 from pathlib import Path
 
 from PIL import Image, ImageCms
@@ -77,6 +84,65 @@ def main(src: str) -> None:
     mm = lambda px: round(px / DPI * 25.4, 1)
     print(f'{dst} — {w}×{h} px = {mm(w)}×{mm(h)} мм при {DPI} dpi, '
           f'{dst.stat().st_size / 1024 / 1024:.0f} МБ')
+
+    try:
+        import pikepdf
+    except ImportError:
+        print('pikepdf не установлен — PDF/X-1a не собран')
+        return
+    pdf_path = dst.with_suffix('.pdf')
+    write_pdfx1a(pikepdf, out, icc, pdf_path)
+    print(f'{pdf_path} — PDF/X-1a, {pdf_path.stat().st_size / 1024 / 1024:.0f} МБ')
+
+
+def write_pdfx1a(pikepdf, img: Image.Image, icc: bytes, path: Path) -> None:
+    """Одна страница в размер ролл-апа: CMYK-растр без потерь и FOGRA39."""
+    N = pikepdf.Name
+    w, h = img.size
+    w_pt, h_pt = w / DPI * 72, h / DPI * 72
+    pdf = pikepdf.new()
+
+    image = pikepdf.Stream(pdf, zlib.compress(img.tobytes(), 6))
+    image.Type, image.Subtype = N.XObject, N.Image
+    image.Width, image.Height = w, h
+    image.ColorSpace, image.BitsPerComponent = N.DeviceCMYK, 8
+    image.Filter = N.FlateDecode
+
+    box = [0, 0, w_pt, h_pt]
+    page = pikepdf.Dictionary(
+        Type=N.Page,
+        MediaBox=box,
+        TrimBox=box,
+        Resources=pikepdf.Dictionary(XObject=pikepdf.Dictionary(Im0=image)),
+        Contents=pikepdf.Stream(pdf, f'q {w_pt:.4f} 0 0 {h_pt:.4f} 0 0 cm /Im0 Do Q'.encode()),
+    )
+    pdf.pages.append(pikepdf.Page(page))
+
+    profile = pikepdf.Stream(pdf, icc)
+    profile.N = 4
+    pdf.Root.OutputIntents = pikepdf.Array([pikepdf.Dictionary(
+        Type=N.OutputIntent,
+        S=N.GTS_PDFX,
+        OutputConditionIdentifier='FOGRA39',
+        OutputCondition='Coated FOGRA39 (ISO 12647-2:2004)',
+        RegistryName='http://www.color.org',
+        Info='ISO Coated v2 300% (basICColor)',
+        DestOutputProfile=profile,
+    )])
+
+    stamp = time.strftime("D:%Y%m%d%H%M%S+00'00'", time.gmtime())
+    pdf.docinfo[N.Title] = 'PRIME SWIM — ролл-ап 85×205'
+    pdf.docinfo[N.CreationDate] = stamp
+    pdf.docinfo[N.ModDate] = stamp
+    pdf.docinfo[N.Trapped] = N('/False')
+    pdf.docinfo[N.GTS_PDFXVersion] = 'PDF/X-1:2001'
+    pdf.docinfo[N.GTS_PDFXConformance] = 'PDF/X-1a:2001'
+
+    pdf.save(
+        path,
+        force_version='1.3',
+        object_stream_mode=pikepdf.ObjectStreamMode.disable,
+    )
 
 
 if __name__ == '__main__':
