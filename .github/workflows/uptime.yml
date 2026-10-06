@@ -78,3 +78,61 @@ jobs:
             echo "::error::В sitemap.xml всего $urls адресов — ожидалось не меньше 5"
             exit 1
           fi
+
+      - name: Приёмник заявок жив и пускает сайт
+        env:
+          LEAD_ENDPOINT: ${{ vars.LEAD_ENDPOINT }}
+        run: |
+          # Сайт может отвечать 200, а форма — молча не работать: функция
+          # упала, сменился адрес или ALLOWED_ORIGINS перестал пускать сайт.
+          # Настоящую заявку отсюда не шлём — она упала бы в чат школы.
+          # Проверяем всё, что можно проверить без доставки: функция
+          # отвечает, CORS пускает сайт, заявка доходит до проверки полей.
+          # Токен бота и чат так не проверить: обработчик смотрит их только
+          # после проверки полей, то есть перед настоящей отправкой.
+          if [ -z "$LEAD_ENDPOINT" ]; then
+            echo "::error::Переменная репозитория LEAD_ENDPOINT пуста — форма на сайте не отправляет заявки"
+            exit 1
+          fi
+          site=https://www.primeswim.ru
+
+          # Холодный старт функции бывает в несколько секунд — даём вторую попытку.
+          for attempt in 1 2; do
+            headers=$(mktemp)
+            code=$(curl -sS --max-time 25 -o /dev/null -D "$headers" -w '%{http_code}' \
+              -X OPTIONS "$LEAD_ENDPOINT" \
+              -H "Origin: $site" \
+              -H 'Access-Control-Request-Method: POST' \
+              -H 'Access-Control-Request-Headers: content-type' || echo 000)
+            [ "$code" = "204" ] && break
+            [ "$attempt" = 1 ] && sleep 10
+          done
+          if [ "$code" != "204" ]; then
+            echo "::error::Предзапрос CORS к приёмнику вернул $code вместо 204"
+            exit 1
+          fi
+          if ! grep -qi "^access-control-allow-origin: $site" "$headers"; then
+            echo "::error::Приёмник не пускает $site (нет access-control-allow-origin) — проверьте ALLOWED_ORIGINS"
+            exit 1
+          fi
+          echo "CORS: 204, $site разрешён."
+
+          # Пустая заявка с сайта — 400 от проверки полей. 5xx значит, что
+          # функция падает; 403 — что сайт выпал из ALLOWED_ORIGINS.
+          code=$(curl -sS --max-time 25 -o /dev/null -w '%{http_code}' \
+            -X POST "$LEAD_ENDPOINT" -H "Origin: $site" \
+            -H 'content-type: application/json' -d '{}' || echo 000)
+          if [ "$code" != "400" ]; then
+            echo "::error::Пустая заявка с сайта получила $code вместо 400"
+            exit 1
+          fi
+          echo "Пустая заявка: 400, проверка полей работает."
+
+          # Запрос не с сайта — 403: заслон по Origin на месте.
+          code=$(curl -sS --max-time 25 -o /dev/null -w '%{http_code}' \
+            -X POST "$LEAD_ENDPOINT" -H 'content-type: application/json' -d '{}' || echo 000)
+          if [ "$code" != "403" ]; then
+            echo "::error::Запрос без Origin получил $code вместо 403"
+            exit 1
+          fi
+          echo "Без Origin: 403, чужие запросы отсекаются."
