@@ -1,5 +1,8 @@
 """
-Ролл-ап в CMYK для типографии: TIFF, ISO Coated v2 (FOGRA39), LZW.
+Печатные материалы в CMYK для типографии: TIFF, ISO Coated v2 (FOGRA39), LZW.
+
+Ролл-ап (make-rollup.mjs) и листовка A4 (make-flyer.mjs) собираются в RGB
+PNG в натуральный размер; этот скрипт переводит такой PNG в CMYK.
 
 Требования типографии к макету ролл-апа: CMYK Coated FOGRA39, 150–300 dpi,
 шрифты в кривых, прозрачности разобраны или растрированы, TIFF без слоёв и
@@ -24,13 +27,19 @@ PDF несёт тот же CMYK-растр без потерь (Flate, не JPEG
 как OutputIntent и метки PDF/X-1a:2001; версия PDF 1.3, без прозрачностей.
 Для PDF нужен pikepdf, без него пишется только TIFF.
 
-ЗАПУСК (в окружении с Pillow):
+ЗАПУСК (в окружении с Pillow; DPI — как у PNG, BLEED — вылет в мм, если есть):
   MOUNT=50 LIME=#accf11 DPI=150 node scripts/make-rollup.mjs
-  python3 scripts/rollup-cmyk.py media-source/brand/rollup-85x205-print-150dpi.png
+  DPI=150 python3 scripts/print-cmyk.py media-source/brand/rollup-85x205-print-150dpi.png
+
+  BLEED=3 LIME=#accf11 DPI=300 node scripts/make-flyer.mjs
+  DPI=300 BLEED=3 python3 scripts/print-cmyk.py media-source/brand/flyer-a4-bleed3-print-300dpi.png
+
+С вылетом в PDF пишется TrimBox по чистому формату: типография видит, где резать.
 """
 
 import hashlib
 import io
+import os
 import sys
 import time
 import urllib.request
@@ -46,7 +55,8 @@ ICC_URL = (
     'master/resources/profiles/ISOcoated_v2_300_bas.icc'
 )
 ICC_MD5 = 'c8c55f9a599dfc08df0c71b0e460468f'
-DPI = 150
+DPI = int(os.environ.get('DPI', 150))
+BLEED_MM = float(os.environ.get('BLEED', 0))
 
 
 def fogra39() -> bytes:
@@ -73,6 +83,7 @@ def main(src: str) -> None:
     )
 
     dst = Path(src).with_name(Path(src).stem.replace(f'-{DPI}dpi', '') + '-cmyk.tif')
+    title = dst.stem
     out.save(
         dst,
         compression='tiff_lzw',
@@ -91,12 +102,12 @@ def main(src: str) -> None:
         print('pikepdf не установлен — PDF/X-1a не собран')
         return
     pdf_path = dst.with_suffix('.pdf')
-    write_pdfx1a(pikepdf, out, icc, pdf_path)
+    write_pdfx1a(pikepdf, out, icc, pdf_path, title)
     print(f'{pdf_path} — PDF/X-1a, {pdf_path.stat().st_size / 1024 / 1024:.0f} МБ')
 
 
-def write_pdfx1a(pikepdf, img: Image.Image, icc: bytes, path: Path) -> None:
-    """Одна страница в размер ролл-апа: CMYK-растр без потерь и FOGRA39."""
+def write_pdfx1a(pikepdf, img: Image.Image, icc: bytes, path: Path, title: str) -> None:
+    """Одна страница: CMYK-растр без потерь, FOGRA39, TrimBox по чистому формату."""
     N = pikepdf.Name
     w, h = img.size
     w_pt, h_pt = w / DPI * 72, h / DPI * 72
@@ -109,10 +120,12 @@ def write_pdfx1a(pikepdf, img: Image.Image, icc: bytes, path: Path) -> None:
     image.Filter = N.FlateDecode
 
     box = [0, 0, w_pt, h_pt]
+    b = BLEED_MM / 25.4 * 72
     page = pikepdf.Dictionary(
         Type=N.Page,
         MediaBox=box,
-        TrimBox=box,
+        BleedBox=box,
+        TrimBox=[b, b, w_pt - b, h_pt - b],
         Resources=pikepdf.Dictionary(XObject=pikepdf.Dictionary(Im0=image)),
         Contents=pikepdf.Stream(pdf, f'q {w_pt:.4f} 0 0 {h_pt:.4f} 0 0 cm /Im0 Do Q'.encode()),
     )
@@ -131,7 +144,7 @@ def write_pdfx1a(pikepdf, img: Image.Image, icc: bytes, path: Path) -> None:
     )])
 
     stamp = time.strftime("D:%Y%m%d%H%M%S+00'00'", time.gmtime())
-    pdf.docinfo[N.Title] = 'PRIME SWIM — ролл-ап 85×205'
+    pdf.docinfo[N.Title] = f'PRIME SWIM — {title}'
     pdf.docinfo[N.CreationDate] = stamp
     pdf.docinfo[N.ModDate] = stamp
     pdf.docinfo[N.Trapped] = N('/False')

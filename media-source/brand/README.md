@@ -152,7 +152,7 @@ CMYK Coated FOGRA39, 150 dpi, текст в кривых, прозрачност
 Снизу добавлено 5 см под крепление — лист 850×2050 мм:
 
     MOUNT=50 LIME=#accf11 DPI=150 node scripts/make-rollup.mjs
-    python3 scripts/rollup-cmyk.py media-source/brand/rollup-85x205-print-150dpi.png
+    python3 scripts/print-cmyk.py media-source/brand/rollup-85x205-print-150dpi.png
       → rollup-85x205-print-cmyk.tif   TIFF CMYK, LZW, ~80 МБ
       → rollup-85x205-print-cmyk.pdf   PDF/X-1a:2001, OutputIntent FOGRA39
 
@@ -162,3 +162,18 @@ CMYK Coated FOGRA39, 150 dpi, текст в кривых, прозрачност
 
 Размытие под «стеклом» (backdrop-filter) в PDF из Chrome не попадает,
 поэтому подложки на листе сделаны плотными и без него.
+
+## Листовка A4
+
+Для расклейки у входов в школы. Та же иерархия, что у ролл-апа, переложенная
+под A4, плюс адрес бассейна; QR тот же, что на стенде.
+
+    PHOTO=media-source/brand/rollup-swimmer.jpg node scripts/make-flyer.mjs
+      → flyer-a4.pdf                     RGB, вектор — офисный принтер
+    BLEED=3 LIME=#accf11 DPI=300 node scripts/make-flyer.mjs
+    DPI=300 BLEED=3 python3 scripts/print-cmyk.py media-source/brand/flyer-a4-bleed3-print-300dpi.png
+      → flyer-a4-bleed3-print-cmyk.pdf  PDF/X-1a, CMYK FOGRA39, 300 dpi, вылеты 3 мм — типография
+
+Важное лежит не ближе 10 мм к краю: офисный принтер не пропечатывает 4–5 мм,
+и белая рамка срежет только фон.
+

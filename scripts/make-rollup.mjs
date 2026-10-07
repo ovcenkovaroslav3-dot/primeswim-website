@@ -36,14 +36,24 @@
  * #accf11 профиль ISO Coated v2 переводит в C40 M0 Y98 K0 — салатовый.
  * Подменяется цвет в вёрстке, а не в готовом растре: тогда края букв и
  * полупрозрачные элементы пересчитываются вместе с ним, без ореолов.
- * Перевод в CMYK — scripts/rollup-cmyk.py.
+ * Перевод в CMYK — scripts/print-cmyk.py.
  */
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import { chromium } from 'playwright';
 
-import { glyphsFrom, inlineGoogleFont } from './lib/google-font.mjs';
+import {
+  COPY,
+  FIT_SCRIPT,
+  PERK_ICONS,
+  SCREEN_LIME,
+  brandFonts,
+  loadContacts,
+  loadLogo,
+  loadPhoto,
+  svgIcon,
+  withLime,
+} from './lib/print-brand.mjs';
 
 const PHOTO = process.env.PHOTO ?? 'media-source/brand/rollup-swimmer.jpg';
 const DPI = Number(process.env.DPI ?? 100);
@@ -51,52 +61,17 @@ const W = 850; // мм, чистый формат
 const H = 2000; // мм
 const B = Number(process.env.BLEED ?? 0); // мм вылета с каждой стороны
 const M = Number(process.env.MOUNT ?? 0); // мм запаса снизу под крепление
-const LIME = process.env.LIME ?? '#c7fe03';
+const LIME = process.env.LIME ?? SCREEN_LIME;
 const PW = W + 2 * B; // мм, лист вместе с вылетами
 const PH = H + 2 * B + M;
-const OUT = `media-source/brand/rollup-85x${(H + M) / 10}${B ? `-bleed${B}` : ''}${LIME === '#c7fe03' ? '' : '-print'}.pdf`;
-
-async function pick(file, pattern, what) {
-  const source = await readFile(file, 'utf8');
-  const hit = source.match(pattern);
-  if (!hit) throw new Error(`В ${file} не найдено: ${what}`);
-  return hit[1];
-}
+const OUT = `media-source/brand/rollup-85x${(H + M) / 10}${B ? `-bleed${B}` : ''}${LIME === SCREEN_LIME ? '' : '-print'}.pdf`;
 
 /* телефон — из того же файла, что и сайт */
-const phone = await pick(
-  'src/content/contacts.ts',
-  /display:\s*'([^']+)'/,
-  'телефон',
-);
+const { phone } = await loadContacts();
+const TEXT = { ...COPY, phone };
 
-const TEXT = {
-  school: 'школа плавания',
-  title1: 'Плавание',
-  title2: 'для детей',
-  lead: 'От первых уверенных движений в воде до соревнований и спортивных разрядов',
-  perks: [
-    'Обучаем всем 4 стилям плавания',
-    'Подход к каждому ученику',
-    'Соревнования и спортивные разряды',
-    'Спортивные сборы и развитие результата',
-    'Комьюнити единомышленников',
-    'Система лояльности',
-  ],
-  cta: 'Запишитесь на занятие',
-  phone,
-  site: 'primeswim.ru',
-  qr: 'Наш сайт',
-  qrHint: '← наведите камеру',
-};
-
-if (!existsSync(PHOTO)) throw new Error(`Нет фотографии: ${PHOTO}`);
-const photoExt = PHOTO.toLowerCase().endsWith('.png') ? 'png' : 'jpeg';
-const photo = `data:image/${photoExt};base64,${(await readFile(PHOTO)).toString('base64')}`;
-
-const logo = (await readFile('media-source/brand/prime-swim-logo-vector.svg', 'utf8'))
-  .replace(/<!--[\s\S]*?-->/g, '')
-  .replace('<svg ', '<svg class="logo" ');
+const photo = await loadPhoto(PHOTO);
+const logo = await loadLogo();
 
 /*
   QR ведёт на сайт с меткой utm: в Метрике видно, сколько людей пришло со
@@ -108,33 +83,11 @@ const qr = (await readFile('media-source/brand/qr-primeswim-rollup.svg', 'utf8')
   .replace('<svg ', '<svg class="qr-code" ');
 
 const all = [...Object.values(TEXT).flat()];
-const display = await inlineGoogleFont('Unbounded', 800, glyphsFrom(all));
-/*
-  Текст набран Manrope, а не Inter, как на сайте: на стенде Inter читался
-  офисным. Manrope — геометрический гротеск с кириллицей, в паре с Unbounded
-  даёт современный спортивный голос, и цифры у него ровные.
-*/
-const sans600 = await inlineGoogleFont('Manrope', 600, glyphsFrom(all));
-const sans700 = await inlineGoogleFont('Manrope', 700, glyphsFrom(all));
-const sans800 = await inlineGoogleFont('Manrope', 800, glyphsFrom(all));
+const fonts = await brandFonts(all);
 
-/* иконки: одна толщина линии, один размер, лайм — как пиктограммы на сайте */
-const icon = {
-  strokes: `<path d="M6 34c5 0 5-4 10-4s5 4 10 4 5-4 10-4 5 4 10 4"/><path d="M6 44c5 0 5-4 10-4s5 4 10 4 5-4 10-4 5 4 10 4"/><circle cx="31" cy="11" r="5"/><path d="M12 24l10-6 8 5 10-6"/>`,
-  person: `<circle cx="26" cy="14" r="7"/><path d="M12 44c0-9 6-15 14-15s14 6 14 15"/><path d="M37 8l3 3 6-7" />`,
-  medal: `<path d="M17 4l9 15 9-15"/><circle cx="26" cy="32" r="13"/><path d="M26 25l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/>`,
-  growth: `<path d="M6 44h40"/><path d="M8 36l11-11 8 8 15-17"/><path d="M33 16h9v9"/>`,
-  team: `<circle cx="26" cy="15" r="6"/><circle cx="11" cy="20" r="4.5"/><circle cx="41" cy="20" r="4.5"/><path d="M15 42c0-7 5-12 11-12s11 5 11 12"/><path d="M3 40c0-5 3-9 8-9"/><path d="M49 40c0-5-3-9-8-9"/>`,
-  loyalty: `<rect x="5" y="11" width="42" height="30" rx="5"/><path d="M26 17.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/>`,
-};
-const svgIcon = (body) =>
-  `<svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
-const perkIcons = [icon.strokes, icon.person, icon.medal, icon.growth, icon.team, icon.loyalty];
-
-const lime = LIME.match(/[0-9a-f]{2}/gi).map((h) => parseInt(h, 16)).join(',');
-const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
+const markup = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
 <title>PRIME SWIM — ролл-ап 85×200</title>
-<style>${display}${sans600}${sans700}${sans800}</style>
+<style>${fonts}</style>
 <style>
   @page { size: ${PW}mm ${PH}mm; margin: 0; }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -277,7 +230,7 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
   <p class="safe lead">${TEXT.lead}</p>
 
   <div class="safe perks">
-    ${TEXT.perks.map((t, i) => `<div class="perk"><span class="ic">${svgIcon(perkIcons[i])}</span><p>${t}</p></div>`).join('')}
+    ${TEXT.perks.map((t, i) => `<div class="perk"><span class="ic">${svgIcon(PERK_ICONS[i])}</span><p>${t}</p></div>`).join('')}
   </div>
 
   <div class="safe cta">
@@ -294,18 +247,9 @@ const html = `<!doctype html><html lang="ru"><head><meta charset="utf-8">
     </div>
   </div>
 </div>
-  <script>
-    /* строка подгоняется под ширину: заголовок и телефон — во всю колонку */
-    const MM = 96 / 25.4;
-    window.fit = () => document.querySelectorAll('.fit').forEach((el) => {
-      el.style.display = 'inline-block';
-      el.style.fontSize = '100mm';
-      const k = (Number(el.dataset.w) * MM) / el.getBoundingClientRect().width;
-      el.style.fontSize = 100 * k + 'mm';
-      el.style.display = '';
-    });
-  </script>
-</body></html>`.replaceAll('#c7fe03', LIME).replaceAll('199,254,3', lime);
+  ${FIT_SCRIPT}
+</body></html>`;
+const html = withLime(markup, LIME);
 
 await mkdir('media-source/brand', { recursive: true });
 
