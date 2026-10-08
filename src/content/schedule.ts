@@ -70,3 +70,40 @@ export const schedule: ScheduleSlot[] = [
 */
 export const scheduleIntro =
   'Все занятия проходят в бассейне МГИК в Химках, мкрн. Левобережный. Занятия подходят детям с любым уровнем подготовки — точную группу подберём по возрасту и опыту ребёнка.';
+
+/**
+ * Каждое время занятия отдельным вариантом — для выбора в заявке, в подборе
+ * группы и для кнопок «записаться на это время» в расписании.
+ *
+ * Строится из `schedule`, а не набирается рядом: поменяли время в массиве
+ * выше — оно поменялось и в форме, и в подборе. Второго списка, который
+ * однажды разойдётся с первым, здесь нет.
+ *
+ * Значение вида `mon-19:00`: день и время однозначно, читается в отчёте.
+ */
+export type SlotOption = {
+  value: string;
+  /** «Понедельник, 19:00» — для формы и сообщения школе */
+  label: string;
+  /** «Пн 19:00» — для коротких кнопок */
+  short: string;
+  /** Суббота или воскресенье — для фильтра «будни / выходные» */
+  weekend: boolean;
+};
+
+export function slotValue(dayId: string, time: string): string {
+  return `${dayId}-${time}`;
+}
+
+export const slotOptions: SlotOption[] = schedule.flatMap((slot) =>
+  slot.times.map((time) => ({
+    value: slotValue(slot.id, time),
+    label: `${slot.day}, ${time}`,
+    short: `${slot.short} ${time}`,
+    weekend: weekDays.indexOf(slot.short as (typeof weekDays)[number]) >= 5,
+  })),
+);
+
+export function findSlot(value: string): SlotOption | undefined {
+  return slotOptions.find((option) => option.value === value);
+}
