@@ -31,10 +31,17 @@ const STORAGE_KEY = 'primeswim:booking-prefill';
 export function requestBooking(prefill: BookingPrefill): void {
   if (typeof window === 'undefined') return;
 
-  const form = document.getElementById('booking');
-  if (form) {
+  const section = document.getElementById('booking');
+  if (section) {
     window.dispatchEvent(new CustomEvent<BookingPrefill>(BOOKING_EVENT, { detail: prefill }));
-    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    /*
+      Прокручиваем к самой форме, а не к началу блока записи. Над формой
+      стоят заголовок и карточки мессенджеров, и на телефоне (замер 8 октября
+      2026, iPhone 13) форма начиналась на 749-м пикселе при экране в 664:
+      родитель видел заголовок, но не поля, которые для него уже заполнили.
+      Отступ под липкую шапку задаёт scroll-mt у формы.
+    */
+    (section.querySelector('form') ?? section).scrollIntoView({ behavior: 'smooth', block: 'start' });
     return;
   }
 

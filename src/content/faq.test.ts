@@ -20,3 +20,9 @@ test('ответ про пробное называет его цену из п�
 test('у вопросов уникальные id', () => {
   assert.equal(new Set(faq.map((item) => item.id)).size, faq.length);
 });
+
+test('ответ про пробное говорит, что оно в группе и не входит в абонемент', () => {
+  const answer = faq.find((item) => item.id === 'trial')?.answer ?? '';
+  assert.match(answer, /вместе с группой/);
+  assert.match(answer, /в абонемент не засчитывается/);
+});
