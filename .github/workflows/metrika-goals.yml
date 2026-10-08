@@ -1,0 +1,36 @@
+name: Цели Метрики
+
+# Заводит в счётчике цели для событий сайта, которых там ещё нет
+# (scripts/metrika-goals.mjs). Запускается вручную: Actions → «Цели Метрики»
+# → Run workflow. Первый запуск лучше сделать без «apply» — он только
+# покажет, что будет создано.
+#
+# Зачем через Actions: облачному агенту API Метрики закрыто прокси, а раннер
+# GitHub ходит в сеть напрямую — так же, как в uptime.yml.
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Создать недостающие цели (без галочки — только показать план)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  goals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Цели Метрики
+        env:
+          # OAuth-токен Яндекса с правом изменять параметры счётчика.
+          # Хранится только в секретах репозитория.
+          METRIKA_TOKEN: ${{ secrets.METRIKA_TOKEN }}
+        run: node scripts/metrika-goals.mjs ${{ inputs.apply && '--apply' || '' }}

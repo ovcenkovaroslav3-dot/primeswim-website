@@ -35,32 +35,44 @@
  * ПЕРСОНАЛЬНЫЕ ДАННЫЕ НЕ ПЕРЕДАЮТСЯ. Ни имя, ни телефон, ни возраст ребёнка,
  * ни комментарий не попадают в params ни одной цели.
  */
-export type AnalyticsGoal =
-  | 'click_phone'
+/**
+ * Цели и их названия в кабинете Метрики.
+ *
+ * Список один: из него выводится тип `AnalyticsGoal`, и по нему же
+ * scripts/metrika-goals.mjs заводит недостающие цели в счётчике. Добавили
+ * событие здесь — оно и типизировано в коде, и появится в Метрике при
+ * следующем запуске воркфлоу «Цели Метрики», а не останется «отправляется,
+ * но в отчёте не видно».
+ */
+export const goalTitles = {
+  click_phone: 'Нажали на телефон',
   /** Личный чат записи — сюда пишут заявку. */
-  | 'click_telegram_booking'
-  | 'click_max_booking'
+  click_telegram_booking: 'Telegram: личный чат записи',
+  click_max_booking: 'MAX: личный чат записи',
   /** Публичные каналы школы — их читают, а не пишут в них. */
-  | 'click_telegram_channel'
-  | 'click_max_channel'
-  | 'click_vk'
-  | 'click_route'
-  | 'cta_booking'
-  | 'cta_schedule'
+  click_telegram_channel: 'Telegram: канал школы',
+  click_max_channel: 'MAX: канал школы',
+  click_vk: 'Переход во ВКонтакте',
+  click_route: 'Маршрут на Яндекс Картах',
+  cta_booking: 'Кнопка «Записаться»',
+  cta_schedule: 'Кнопка «Расписание»',
   /** Форма записи доехала до экрана — один раз за загрузку. */
-  | 'view_form'
+  view_form: 'Форма записи на экране',
   /** Первое касание любого поля формы — один раз на экземпляр формы. */
-  | 'start_form'
+  start_form: 'Начали заполнять форму',
   /** Подбор группы: первый ответ и показанный результат. */
-  | 'quiz_start'
-  | 'quiz_complete'
+  quiz_start: 'Подбор группы: начали',
+  quiz_complete: 'Подбор группы: результат',
   /** Из подбора перешли к заявке с подставленными полями. */
-  | 'quiz_to_form'
+  quiz_to_form: 'Подбор группы → форма',
   /** Нажали на время в расписании — оно подставилось в заявку. */
-  | 'pick_slot'
+  pick_slot: 'Выбрали время в расписании',
   /** Сервер подтвердил: заявка доставлена в MAX и получила номер. */
-  | 'lead_delivered'
-  | 'view_contacts';
+  lead_delivered: 'Заявка доставлена',
+  view_contacts: 'Контакты на экране',
+} as const;
+
+export type AnalyticsGoal = keyof typeof goalTitles;
 
 export const metrikaId = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID?.trim() || null;
 
