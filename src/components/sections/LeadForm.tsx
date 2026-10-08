@@ -353,7 +353,7 @@ export function LeadForm() {
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="on-light rounded-[20px] bg-surface p-6 sm:p-8"
+      className="on-light scroll-mt-24 rounded-[20px] bg-surface p-6 sm:p-8"
     >
       <div className="grid gap-5">
         {note ? (
