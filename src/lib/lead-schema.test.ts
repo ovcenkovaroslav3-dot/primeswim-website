@@ -6,7 +6,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { validateLead, normalizePhone, type LeadInput } from './lead-schema.ts';
+import {
+  validateLead,
+  normalizePhone,
+  formatPhone,
+  composeLeadComment,
+  LEAD_COMMENT_MAX,
+  type LeadInput,
+} from './lead-schema.ts';
 
 const validPrograms = new Set(['', 'beginners', 'technique', 'sport']);
 const validAges = new Set(['under-7', '7-8', '9-10', '11-12', '13-14', '15+']);
@@ -80,4 +87,40 @@ test('без возраста заявка не проходит: без нег�
 
 test('возраст вне списка не принимается', () => {
   assert.ok(check(makeLead({ age: '99' })).age);
+});
+
+test('номер приводится к +7 (XXX) XXX-XX-XX с восьмёркой, семёркой и без кода', () => {
+  assert.equal(formatPhone('89912299977'), '+7 (991) 229-99-77');
+  assert.equal(formatPhone('+7 991 229 99 77'), '+7 (991) 229-99-77');
+  assert.equal(formatPhone('9912299977'), '+7 (991) 229-99-77');
+  assert.equal(formatPhone('8 (991) 229-99-77'), '+7 (991) 229-99-77');
+});
+
+test('непохожий на российский номер не переписывается', () => {
+  assert.equal(formatPhone('+44 20 7946 0958'), '+44 20 7946 0958');
+  assert.equal(formatPhone('8991'), '8991');
+  assert.equal(formatPhone(''), '');
+});
+
+test('отформатированный номер проходит проверку', () => {
+  const errors = validateLead(makeLead({ phone: formatPhone('89912299977') }), validPrograms, validAges);
+  assert.equal(errors.phone, undefined);
+});
+
+test('комментарий собирается из времени, подбора и текста родителя', () => {
+  assert.equal(
+    composeLeadComment({ comment: '  боится воды ', slotLabel: 'Понедельник, 19:00', note: 'Подбор на сайте: x.' }),
+    'Удобное время: Понедельник, 19:00.\nПодбор на сайте: x.\nбоится воды',
+  );
+  assert.equal(composeLeadComment({ comment: '' }), '');
+  assert.equal(composeLeadComment({ comment: 'текст', slotLabel: null, note: '' }), 'текст');
+});
+
+test('длинный комментарий вместе с подбором ловится той же проверкой', () => {
+  const comment = composeLeadComment({
+    comment: 'а'.repeat(LEAD_COMMENT_MAX - 10),
+    slotLabel: 'Суббота, 11:00',
+  });
+  const errors = validateLead(makeLead({ comment }), validPrograms, validAges);
+  assert.ok(errors.comment);
 });

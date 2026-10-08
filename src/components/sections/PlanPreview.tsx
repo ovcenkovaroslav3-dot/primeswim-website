@@ -1,4 +1,5 @@
-import { ArrowLink, ButtonLink, Section, SectionHeading } from '../ui';
+import { ArrowLink, Section, SectionHeading } from '../ui';
+import { GroupPicker } from '../GroupPicker';
 import { schedule } from '@/content/schedule';
 import { prices, pricesNote } from '@/content/prices';
 
@@ -140,28 +141,13 @@ export function PlanPreview() {
         ритм чередования полос (см. page.tsx) требует, чтобы за двумя светлыми
         секциями шла тёмная — CoachPreview. Своя тёмная полоса перед ней дала
         бы две тёмные подряд и сломала бы разбивку страницы.
-      */}
-      <div className="reveal mt-4 flex flex-col gap-6 rounded-[20px] bg-brand-600 p-5 text-white sm:p-9 md:flex-row md:items-center md:justify-between md:gap-10">
-        <div className="min-w-0">
-          <p className="text-xl leading-snug font-light sm:text-2xl">
-            Подберём группу по возрасту и уровню подготовки
-          </p>
-          <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-white/70">
-            Напишите — назовём ближайшее свободное время и ответим на вопросы
-            до первого занятия.
-          </p>
-        </div>
 
-        <ButtonLink
-          href="#booking"
-          variant="secondary"
-          size="lg"
-          data-goal="cta_booking"
-          className="shrink-0 max-sm:px-3"
-        >
-          Записаться на пробное занятие
-        </ButtonLink>
-      </div>
+        8 октября 2026 плашка стала подбором группы (GroupPicker): то же
+        место, тот же цвет и то же обещание, только родитель получает ответ
+        сразу, а форма записи открывается уже заполненной. Прямая ссылка к
+        заявке осталась в самой плашке — для тех, кто уже решил.
+      */}
+      <GroupPicker />
     </Section>
   );
 }

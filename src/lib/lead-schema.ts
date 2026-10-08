@@ -60,6 +60,9 @@ export const initialLeadState: LeadFormState = {
   values: emptyLeadValues,
 };
 
+/** Потолок длины комментария — вместе с выбранным временем и подбором. */
+export const LEAD_COMMENT_MAX = 600;
+
 /** Оставляем только цифры, чтобы не зависеть от того, как человек ввёл номер. */
 export function normalizePhone(value: string): string {
   return value.replace(/\D/g, '');
@@ -98,7 +101,7 @@ export function validateLead(
     errors.program = 'Выберите направление из списка.';
   }
 
-  if (input.comment.length > 600) {
+  if (input.comment.length > LEAD_COMMENT_MAX) {
     errors.comment = 'Комментарий слишком длинный — уложитесь в 600 символов.';
   }
 
@@ -160,3 +163,47 @@ export function parseLeadInput(raw: unknown): LeadInput | null {
  * работа, за которую платит владелец функции.
  */
 export const LEAD_REQUEST_MAX_BYTES = 8 * 1024;
+
+/**
+ * Приводит российский номер к виду +7 (999) 123-45-67.
+ *
+ * Вызывается, когда поле теряет фокус, а не на каждое нажатие: маска «по
+ * ходу ввода» прыгает курсором при правке середины номера и мешает вставке
+ * из буфера. Здесь человек вводит как привык — с восьмёркой, со скобками,
+ * без пробелов, — а по выходу из поля видит номер в привычном виде и может
+ * сразу заметить лишнюю или потерянную цифру.
+ *
+ * Всё, что на российский номер не похоже (иностранный, недобранный),
+ * возвращается как было: переписывать то, в чём не уверены, нельзя.
+ */
+export function formatPhone(value: string): string {
+  const digits = normalizePhone(value);
+  let local: string | null = null;
+  if (digits.length === 11 && (digits[0] === '7' || digits[0] === '8')) local = digits.slice(1);
+  else if (digits.length === 10 && digits[0] === '9') local = digits;
+  if (!local) return value;
+  return `+7 (${local.slice(0, 3)}) ${local.slice(3, 6)}-${local.slice(6, 8)}-${local.slice(8)}`;
+}
+
+/**
+ * Комментарий заявки вместе с выбранным временем и ответами подбора.
+ *
+ * Отдельных полей под время и подбор у приёмника нет, и это осознанно:
+ * функция в облаке разворачивается отдельно от сайта, и новое поле, которое
+ * она пока не знает, она бы молча отбросила. Комментарий она уже принимает,
+ * проверяет по длине и кладёт в сообщение школе — поэтому выбор уходит
+ * в нём, первой строкой, и доходит без единой правки на сервере.
+ */
+export function composeLeadComment(parts: {
+  comment: string;
+  slotLabel?: string | null;
+  note?: string | null;
+}): string {
+  return [
+    parts.slotLabel ? `Удобное время: ${parts.slotLabel}.` : '',
+    parts.note ?? '',
+    parts.comment.trim(),
+  ]
+    .filter(Boolean)
+    .join('\n');
+}

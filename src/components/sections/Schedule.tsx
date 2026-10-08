@@ -1,7 +1,8 @@
 import { ButtonLink, Section, SectionHeading } from '../ui';
-import { schedule, scheduleIntro, weekDays } from '@/content/schedule';
+import { schedule, scheduleIntro, slotValue, weekDays } from '@/content/schedule';
 import { contacts } from '@/content/contacts';
 import { site } from '@/content/site';
+import { SlotBookButton } from '../SlotBookButton';
 
 /*
   Расписание.
@@ -102,24 +103,36 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
         })}
       </div>
 
+      {/*
+        Время нажимается: оно подставляется в заявку внизу страницы. Подсказка
+        стоит над списком, а не под ним — иначе кнопки выглядят просто
+        цифрами, и про возможность узнают только случайно.
+      */}
+      <p className="reveal mt-8 text-sm text-ink-soft">
+        Нажмите на удобное время — подставим его в заявку. Свободное место в
+        группе подтвердит администратор.
+      </p>
+
       <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {schedule.map((slot, i) => (
           <li
             key={slot.id}
-            className="reveal flex items-baseline justify-between gap-3 rounded-[14px] border border-hairline bg-surface px-5 py-4"
+            className="reveal flex items-start justify-between gap-3 rounded-[14px] border border-hairline bg-surface px-5 py-4"
             style={{ ['--reveal-delay' as string]: `${i * 60}ms` }}
           >
-            <span className="text-sm text-ink-soft">{slot.day}</span>
-            <span className="text-right">
+            <span className="text-sm text-ink-soft">
+              {slot.day}
+              <span className="mt-1 block text-xs text-ink-muted">{slot.note}</span>
+            </span>
+            <span className="flex flex-col items-end gap-2">
               {slot.times.map((time) => (
-                <span
+                <SlotBookButton
                   key={time}
-                  className="block text-lg font-light tabular-nums text-ink"
-                >
-                  {time}
-                </span>
+                  value={slotValue(slot.id, time)}
+                  time={time}
+                  label={`${slot.day}, ${time}`}
+                />
               ))}
-              <span className="block text-xs text-ink-muted">{slot.note}</span>
             </span>
           </li>
         ))}

@@ -52,7 +52,17 @@ const dpr = opt('dpr', mobile ? 3 : 2);
 const channels = flags.has('--chromium') ? ['chromium'] : ['chromium', 'chrome', 'msedge'];
 let browser;
 let used;
-for (const channel of channels) {
+// В облачной среде браузер лежит отдельным файлом, а не каналом Playwright:
+// путь к нему передаётся переменной SHOT_EXECUTABLE и пробуется первым.
+if (process.env.SHOT_EXECUTABLE) {
+  try {
+    browser = await chromium.launch({ executablePath: process.env.SHOT_EXECUTABLE });
+    used = process.env.SHOT_EXECUTABLE;
+  } catch {
+    // не вышло — дальше обычный перебор каналов
+  }
+}
+for (const channel of browser ? [] : channels) {
   try {
     browser = await chromium.launch({ channel });
     used = channel;

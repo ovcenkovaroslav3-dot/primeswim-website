@@ -8,13 +8,18 @@ import { buttonClass } from '../ui';
 import { readSource } from '@/lib/campaign-source';
 import { contacts } from '@/content/contacts';
 import { programOptions, validProgramIds, ageOptions, validAgeIds } from '@/content/programs';
+import { findSlot, slotOptions } from '@/content/schedule';
 import {
   validateLead,
   emptyLeadValues,
+  composeLeadComment,
+  formatPhone,
+  LEAD_COMMENT_MAX,
   type LeadErrors,
   type LeadValues,
 } from '@/lib/lead-schema';
 import { trackGoal } from '@/lib/analytics';
+import { BOOKING_EVENT, takePendingBooking, type BookingPrefill } from '@/lib/booking';
 
 /*
   Настоящая отправка заявки — форма больше не открывает мессенджер.
@@ -78,6 +83,16 @@ function makeRequestId(): string {
 
 type Status = 'idle' | 'sending' | 'sent' | 'failed';
 
+/*
+  Сколько ждать ответа приёмника. Без предела зависшее соединение (слабая
+  сеть в бассейне, холодный старт функции, оборванный мобильный интернет)
+  оставляло кнопку в «Отправляем…» навсегда — родитель не видел ни успеха,
+  ни ошибки и не получал запасного пути. Двадцать секунд с запасом
+  покрывают холодный старт; после них показываем ошибку и контакты.
+  Повторная отправка безопасна: ключ запроса тот же, дубля не будет.
+*/
+const SEND_TIMEOUT_MS = 20_000;
+
 export function LeadForm() {
   const [values, setValues] = useState<LeadValues>(emptyLeadValues);
   const [errors, setErrors] = useState<LeadErrors>({});
@@ -85,7 +100,60 @@ export function LeadForm() {
   const [ticket, setTicket] = useState('');
   const [failure, setFailure] = useState('');
   const [trap, setTrap] = useState('');
+  /** Удобное время — значение из slotOptions, пусто = «подберите сами». */
+  const [slot, setSlot] = useState('');
+  /** Ответы подбора группы, если родитель пришёл из него. */
+  const [note, setNote] = useState('');
   const sentRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  /*
+    Подстановка из подбора группы и из расписания. Источник один — событие
+    или отложенный выбор (lib/booking.ts); значения проверяются по тем же
+    спискам, что и при отправке, и неизвестное просто не подставляется.
+  */
+  useEffect(() => {
+    const apply = (prefill: BookingPrefill | null) => {
+      if (!prefill) return;
+      setValues((v) => ({
+        ...v,
+        age: prefill.age && validAgeIds.has(prefill.age) ? prefill.age : v.age,
+        program:
+          prefill.program !== undefined && validProgramIds.has(prefill.program)
+            ? prefill.program
+            : v.program,
+      }));
+      if (prefill.slot !== undefined) setSlot(findSlot(prefill.slot) ? prefill.slot : '');
+      if (prefill.note !== undefined) setNote(prefill.note);
+      setErrors({});
+      setStatus((current) => (current === 'failed' ? 'idle' : current));
+    };
+    apply(takePendingBooking());
+    const onBooking = (event: Event) => apply((event as CustomEvent<BookingPrefill>).detail);
+    window.addEventListener(BOOKING_EVENT, onBooking);
+    return () => window.removeEventListener(BOOKING_EVENT, onBooking);
+  }, []);
+
+  /*
+    «Форму увидели» — один раз за загрузку. Вместе с start_form и
+    lead_delivered это воронка самой формы: дошли → начали → отправили.
+    Без первой ступени не понять, теряются люди на полях или не доезжают.
+  */
+  useEffect(() => {
+    const node = formRef.current;
+    if (!node || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          trackGoal('view_form');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   /*
     Успех заменяет форму целиком — и до этой правки не сообщал об этом никак.
@@ -125,12 +193,18 @@ export function LeadForm() {
     setErrors((e) => ({ ...e, [key]: undefined }));
   };
 
+  const comment = composeLeadComment({
+    comment: values.comment,
+    slotLabel: findSlot(slot)?.label,
+    note,
+  });
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (status === 'sending') return;
 
     const found = validateLead(
-      { ...values, hpx7: trap },
+      { ...values, comment, hpx7: trap },
       validProgramIds,
       validAgeIds,
     );
@@ -153,12 +227,17 @@ export function LeadForm() {
     setStatus('sending');
     setFailure('');
 
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), SEND_TIMEOUT_MS);
+
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           ...values,
+          comment,
           hpx7: trap,
           requestId: requestId.current,
           page: window.location.pathname,
@@ -192,9 +271,16 @@ export function LeadForm() {
       );
       setStatus('failed');
     } catch {
-      // сеть, блокировщик, оборванное соединение — родителю нужен запасной путь
-      setFailure('Заявка не ушла — похоже, пропала связь. Напишите или позвоните нам напрямую.');
+      // сеть, блокировщик, оборванное соединение, истёкшее ожидание —
+      // родителю нужен запасной путь
+      setFailure(
+        controller.signal.aborted
+          ? 'Сервер долго не отвечает. Попробуйте отправить ещё раз — дубля не будет — или напишите нам напрямую.'
+          : 'Заявка не ушла — похоже, пропала связь. Напишите или позвоните нам напрямую.',
+      );
       setStatus('failed');
+    } finally {
+      window.clearTimeout(timer);
     }
   };
 
@@ -264,11 +350,34 @@ export function LeadForm() {
 
   return (
     <form
+      ref={formRef}
       onSubmit={onSubmit}
       noValidate
       className="on-light rounded-[20px] bg-surface p-6 sm:p-8"
     >
       <div className="grid gap-5">
+        {note ? (
+          /*
+            Родитель пришёл из подбора группы. Показываем, что именно уйдёт
+            школе вместе с заявкой, — и даём это убрать: ответы подбора не
+            должны уезжать молча.
+          */
+          <div className="flex items-start justify-between gap-3 rounded-[14px] border border-brand-200 bg-brand-50 px-4 py-3 text-sm leading-relaxed text-ink-soft">
+            <p>
+              <span className="font-medium text-ink">Подставили из подбора.</span>{' '}
+              Возраст, направление и время можно поменять — ответы подбора
+              уйдут школе вместе с заявкой.
+            </p>
+            <button
+              type="button"
+              onClick={() => setNote('')}
+              className="shrink-0 font-medium text-brand-600 underline underline-offset-4"
+            >
+              Убрать
+            </button>
+          </div>
+        ) : null}
+
         <div>
           <label htmlFor="lead-name" className={labelClass}>
             Имя <span className="text-red-600">*</span>
@@ -307,6 +416,10 @@ export function LeadForm() {
             disabled={sending}
             value={values.phone}
             onChange={(e) => set('phone', e.target.value)}
+            onBlur={(e) => {
+              const formatted = formatPhone(e.target.value);
+              if (formatted !== e.target.value) setValues((v) => ({ ...v, phone: formatted }));
+            }}
             aria-invalid={Boolean(errors.phone)}
             aria-describedby={errors.phone ? 'lead-phone-error' : 'lead-phone-hint'}
             placeholder="+7 900 000-00-00"
@@ -379,6 +492,40 @@ export function LeadForm() {
           </div>
         </div>
 
+        {/*
+          Удобное время. Необязательное: «подберите сами» — честный ответ
+          для того, кто ещё не знает. Список строится из того же расписания,
+          что и страница /raspisanie/, поэтому разойтись с ним не может.
+          Наличие мест здесь не обещается — его подтверждает администратор.
+        */}
+        <div>
+          <label htmlFor="lead-slot" className={labelClass}>
+            Удобное время
+          </label>
+          <select
+            id="lead-slot"
+            name="slot"
+            disabled={sending}
+            value={slot}
+            onChange={(e) => {
+              markStarted();
+              setSlot(e.target.value);
+            }}
+            aria-describedby="lead-slot-hint"
+            className={`${fieldClass} border-hairline`}
+          >
+            <option value="">Подберите сами</option>
+            {slotOptions.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+          <p id="lead-slot-hint" className="mt-2 text-sm text-ink-muted">
+            Свободное место в группе подтвердит администратор.
+          </p>
+        </div>
+
         <div>
           <label htmlFor="lead-comment" className={labelClass}>
             Комментарий
@@ -387,13 +534,13 @@ export function LeadForm() {
             id="lead-comment"
             name="comment"
             rows={3}
-            maxLength={600}
+            maxLength={LEAD_COMMENT_MAX}
             disabled={sending}
             value={values.comment}
             onChange={(e) => set('comment', e.target.value)}
             aria-invalid={Boolean(errors.comment)}
             aria-describedby="lead-comment-medical"
-            placeholder="Опыт занятий, удобное время, вопросы"
+            placeholder="Опыт занятий, вопросы"
             className={`${fieldClass} resize-y ${fieldBorder(Boolean(errors.comment))}`}
           />
           {/*
