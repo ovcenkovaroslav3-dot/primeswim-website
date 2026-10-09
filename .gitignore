@@ -54,7 +54,7 @@ graphify-out/
 /server/lead/dist/
 /server/lead/lead-function.zip
 
-# настройки Codex CLI на этой машине — дублируют проектный .mcp.json
+# настройки Codex CLI на этой машине — локальные, не общие
 /.codex/
 
 # рабочие файлы ruflo (база памяти, индекс и политики) — машинные, не общие

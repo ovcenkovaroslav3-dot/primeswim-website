@@ -36,3 +36,15 @@ node scripts/shot.mjs <url> [файл.png] [--mobile] [--width=N] [--height=N] [
   том же `evaluate`, что и `scrollTo`, — вернётся позиция до прокрутки;
 - Яндекс Метрика держит соединение, `waitUntil: 'networkidle'` не дожидается
   никогда — используется `'load'`.
+
+# Instagram-скиллы (ig-*)
+
+Скиллы `.claude/skills/ig-*` взяты из
+[Jakeschincariol/instagram-agent-skill](https://github.com/Jakeschincariol/instagram-agent-skill)
+(MIT). Они ничего не публикуют — только готовят тексты, сценарии и разборы.
+
+Облачный контейнер эфемерный, поэтому вместо `~/.claude/instagram/` скиллы
+используют файлы в репозитории:
+
+- `~/.claude/instagram/voice.md` → `.claude/instagram/voice.md` (голос PRIME SWIM);
+- `~/.claude/instagram/log.md` → `.claude/instagram/log.md`.
