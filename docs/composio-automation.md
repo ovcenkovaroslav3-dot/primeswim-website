@@ -9,10 +9,13 @@
 
 - В Claude Code установлен официальный плагин `composio@composio` версии
   `0.2.4` на уровне пользователя.
-- В `.mcp.json` проекта добавлен официальный удалённый сервер
-  `https://connect.composio.dev/mcp` под именем `composio-connect`.
-- Проектный MCP одобрен в Claude Code; OAuth завершён, и проверка
-  `claude mcp list` показывает `composio-connect` в состоянии `Connected`.
+- 9 октября 2026 года Composio подключён как коннектор claude.ai
+  (`https://connect.composio.dev/mcp`, инструменты `mcp__Composio__*`). Он
+  работает и в облачных сессиях, и в локальном Claude Code под тем же
+  аккаунтом claude.ai. Прежний проектный сервер `composio-connect` из
+  `.mcp.json` удалён: в облаке сетевая политика окружения не пропускала его
+  к `connect.composio.dev`, а коннектор этого ограничения не имеет.
+- Через коннектор подключён Instagram `@primeswim.khimki` (аккаунт автора).
 - В личном разделе Composio `Connected` подтверждено: `No connected apps yet`.
   В разделе shared connections также нет подключений. Значит Gmail, Google
   Calendar, GitHub и другие внешние аккаунты сейчас не подключены.
