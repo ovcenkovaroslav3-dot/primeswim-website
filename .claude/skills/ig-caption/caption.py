@@ -35,7 +35,7 @@ HASHTAG_LIMIT = 5        # Instagram's cap per post or reel since 18 Dec 2025,
                          # rather than many generic ones, can improve both your
                          # content's performance and people's experience".
 
-HASHTAG_RE = re.compile(r"(?:^|\s)(#[A-Za-z0-9_]+)")
+HASHTAG_RE = re.compile(r"(?:^|\s)(#\w+)")  # \w — чтобы считались и русские хештеги
 MENTION_RE = re.compile(r"(?:^|\s)(@[A-Za-z0-9_.]+)")
 LINK_RE = re.compile(r"https?://\S+|\bwww\.\S+|\b[a-z0-9-]+\.(?:com|co|io|net|org|ai|app)/\S*",
                      re.IGNORECASE)
@@ -51,6 +51,12 @@ ASKS = [
     (re.compile(r"(?i)\blink in (?:my )?bio\b"), "link in bio"),
     (re.compile(r"(?i)\b(?:swipe|tap) (?:through|left|right|for|to)\b"), "swipe or tap"),
     (re.compile(r"(?i)\btell me\b|\bwhat would you\b|\bwhich one\b"), "answer a question"),
+    # Русские формулировки тех же просьб.
+    (re.compile(r"(?i)напишите (?:в директ|в личку|в комментари\w*|слово)"), "comment a keyword"),
+    (re.compile(r"(?i)\bсохраните\b"), "save this"),
+    (re.compile(r"(?i)\b(?:отправьте|перешлите|поделитесь)\b"), "share this"),
+    (re.compile(r"(?i)\bподпишитесь\b"), "follow"),
+    (re.compile(r"(?i)ссылка в (?:профиле|шапке)"), "link in bio"),
 ]
 
 FILLER_TAGS = {"#viral", "#fyp", "#explore", "#explorepage", "#foryou", "#foryoupage",
