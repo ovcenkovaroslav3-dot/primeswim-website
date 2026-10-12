@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { faq } from './faq.ts';
+import { faq, faqOnPrices, faqOnSchedule } from './faq.ts';
 import { prices } from './prices.ts';
 
 const rub = (value: number) => `${value.toLocaleString('ru-RU')} ₽`;
@@ -25,4 +25,9 @@ test('ответ про пробное говорит, что оно в груп
   const answer = faq.find((item) => item.id === 'trial')?.answer ?? '';
   assert.match(answer, /вместе с группой/);
   assert.match(answer, /в абонемент не засчитывается/);
+});
+
+test('подборки вопросов для расписания и цен ссылаются на существующие вопросы', () => {
+  const ids = new Set(faq.map((item) => item.id));
+  for (const id of [...faqOnSchedule, ...faqOnPrices]) assert.ok(ids.has(id), `нет вопроса с id «${id}»`);
 });

@@ -21,12 +21,20 @@ import { contacts } from '@/content/contacts';
 
   Поэтому и `limit`, и `withSchema` задаются страницей, а не угадываются
   внутри компонента: место, где блок стоит, знает страница.
+
+  На /raspisanie/ и /price/ — подборка по `ids` (списки в content/faq.ts),
+  тоже без разметки. Добавлено 12 октября 2026 по SEO-аудиту: у этих двух
+  страниц почти не было своего текста, только таблица и цифры, а вопросы,
+  которые родитель задаёт рядом с расписанием и ценой, уже согласованы.
 */
 export function Faq({
+  ids,
   limit,
   withSchema = true,
   moreHref,
 }: {
+  /** Какие вопросы показать и в каком порядке. Без значения — по порядку из faq. */
+  ids?: readonly string[];
   /** Сколько вопросов показать. Без значения — все. */
   limit?: number;
   /** Отдавать ли разметку FAQPage. Ровно одна страница сайта должна отдавать true. */
@@ -34,7 +42,8 @@ export function Faq({
   /** Куда вести за остальными вопросами, если список обрезан. */
   moreHref?: string;
 } = {}) {
-  const items = limit ? faq.slice(0, limit) : faq;
+  const picked = ids ? ids.flatMap((id) => faq.filter((item) => item.id === id)) : faq;
+  const items = limit ? picked.slice(0, limit) : picked;
   const hasMore = Boolean(moreHref) && items.length < faq.length;
 
   const faqPage = {

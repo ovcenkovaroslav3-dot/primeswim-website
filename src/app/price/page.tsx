@@ -1,6 +1,8 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { Faq } from '@/components/sections/Faq';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Prices } from '@/components/sections/Prices';
+import { faqOnPrices } from '@/content/faq';
 import { pageMetadata, seo } from '@/content/seo';
 
 export const metadata = pageMetadata(seo.prices);
@@ -21,6 +23,8 @@ export default function PricesPage() {
       </div>
 
       <Prices headingAs="h1" />
+
+      <Faq ids={faqOnPrices} withSchema={false} moreHref="/roditelyam/" />
 
       <FinalCta />
     </>

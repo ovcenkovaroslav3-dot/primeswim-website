@@ -19,6 +19,10 @@ export type FaqItem = {
   answer: string;
 };
 
+/** Вопросы рядом с расписанием и ценами — выборки для /raspisanie/ и /price/, без разметки FAQPage. */
+export const faqOnSchedule = ['trial', 'age', 'group-size', 'missed'] as const;
+export const faqOnPrices = ['trial', 'missed', 'group-size'] as const;
+
 export const faq: FaqItem[] = [
   {
     id: 'age',
