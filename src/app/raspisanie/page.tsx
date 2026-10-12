@@ -1,6 +1,8 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { Faq } from '@/components/sections/Faq';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Schedule } from '@/components/sections/Schedule';
+import { faqOnSchedule } from '@/content/faq';
 import { pageMetadata, seo } from '@/content/seo';
 
 export const metadata = pageMetadata(seo.schedule);
@@ -22,6 +24,8 @@ export default function SchedulePage() {
       </div>
 
       <Schedule headingAs="h1" />
+
+      <Faq ids={faqOnSchedule} withSchema={false} moreHref="/roditelyam/" />
 
       <FinalCta />
     </>
