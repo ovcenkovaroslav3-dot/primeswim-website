@@ -17,8 +17,9 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [{ userAgent: '*', allow: '/' }],
+    // Host не указывается: Яндекс перестал его читать в 2018 году, главное
+    // зеркало он определяет по 301 с голого домена на www.
     sitemap: `${site.url}/sitemap.xml`,
-    host: site.url,
   };
 }
 

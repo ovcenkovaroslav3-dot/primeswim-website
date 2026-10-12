@@ -74,9 +74,13 @@ export function VideoCard({
       */}
       {started ? null : (
         <div aria-hidden="true" className="absolute inset-0">
+          {/*
+            Обёртка скрыта от скринридеров (ролик уже назван через aria-label),
+            поэтому alt здесь читает только поиск по картинкам — для него и подписан.
+          */}
           <Picture
             src={poster}
-            alt=""
+            alt={label}
             width={width}
             height={height}
             className="block h-full w-full object-cover"

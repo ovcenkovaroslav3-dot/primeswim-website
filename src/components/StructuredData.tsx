@@ -11,6 +11,7 @@ import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
 import { coaches } from '@/content/coaches';
 import { prices } from '@/content/prices';
+import { logo } from '@/content/media';
 import { ogImage, seo } from '@/content/seo';
 
 /** Устойчивые идентификаторы: по ним разные куски разметки ссылаются друг на друга. */
@@ -45,7 +46,8 @@ export function StructuredData() {
     url: `${site.url}/`,
     // без картинки поиск подставляет к карточке что придётся или ничего
     image: ogImage.url,
-    logo: ogImage.url,
+    // логотип отдельно от обложки: поиск ждёт квадрат, а обложка 1200×630
+    logo: `${site.url}${logo.src}`,
     telephone: contacts.phone.display,
     email: contacts.legal.email,
     address: {

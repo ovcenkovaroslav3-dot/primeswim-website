@@ -11,6 +11,10 @@ import { site } from '@/content/site';
 
   Все адреса со слешем на конце: сборка настроена на trailingSlash, и без
   него адрес в карте не совпадал бы с каноническим.
+
+  lastmod не ставится. Раньше здесь была дата сборки, одна на все страницы:
+  после любой правки «изменились» все одиннадцать, и поисковики, заметив, что
+  дата не говорит правды, перестают ей верить. Лучше без даты, чем с ложной.
 */
 const routes = [
   { path: '/', priority: 1, changeFrequency: 'weekly' as const },
@@ -27,11 +31,8 @@ const routes = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-
   return routes.map((route) => ({
     url: `${site.url}${route.path}`,
-    lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
