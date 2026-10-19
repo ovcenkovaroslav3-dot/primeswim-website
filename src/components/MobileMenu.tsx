@@ -33,6 +33,14 @@ export function MobileMenu() {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
+    // При переходе на десктоп панель скрывается CSS: снимаем и блокировку прокрутки.
+    const desktop = window.matchMedia("(min-width: 64rem)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setOpen(false);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    closeOnDesktop();
+
     panelRef.current?.querySelector<HTMLElement>("a, button")?.focus();
 
     /*
@@ -85,6 +93,7 @@ export function MobileMenu() {
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      desktop.removeEventListener("change", closeOnDesktop);
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [open]);
