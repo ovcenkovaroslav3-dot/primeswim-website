@@ -1,9 +1,10 @@
 import Link from 'next/link';
 
+import { BookingLink } from './BookingLink';
 import { Logo } from './Logo';
 import { MobileMenu } from './MobileMenu';
 import { SocialLinks } from './SocialLinks';
-import { ButtonLink } from './ui';
+import { buttonClass } from './ui';
 import { contacts } from '@/content/contacts';
 
 /*
@@ -104,9 +105,9 @@ export function Header() {
               видимой на узких экранах и разрывала шапку.
             */}
             <span className="hidden sm:block">
-              <ButtonLink href="#booking" variant="primary" data-goal="cta_booking">
+              <BookingLink className={buttonClass('primary')} data-goal="cta_booking">
                 Записаться
-              </ButtonLink>
+              </BookingLink>
             </span>
             <MobileMenu />
           </div>

@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 
 import { navLinks } from "./Header";
 import { contacts } from "@/content/contacts";
+import { BookingLink } from "./BookingLink";
 import { Logo } from "./Logo";
 import { SocialLinks } from "./SocialLinks";
 import { buttonClass } from "./ui";
@@ -205,14 +206,13 @@ export function MobileMenu() {
                 </nav>
 
                 <div className="mt-8 flex flex-col gap-4 border-t border-hairline pt-6">
-                  <Link
-                    href="#booking"
+                  <BookingLink
                     onClick={() => setOpen(false)}
                     data-goal="cta_booking"
                     className={buttonClass("primary", "lg", "w-full")}
                   >
                     Записаться на пробное занятие
-                  </Link>
+                  </BookingLink>
                   <a
                     href={contacts.phone.href}
                     data-goal="click_phone"

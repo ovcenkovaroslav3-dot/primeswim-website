@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { BookingLink } from './BookingLink';
 import { Logo } from './Logo';
 import { SocialLinks } from './SocialLinks';
 import { sectionLinks } from '@/content/sections';
@@ -157,12 +158,9 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <Link
-                  href="#booking"
-                  className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300"
-                >
+                <BookingLink className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300">
                   Запись на тренировку
-                </Link>
+                </BookingLink>
               </li>
               <li>
                 <Link
