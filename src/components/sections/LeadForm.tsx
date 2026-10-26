@@ -495,7 +495,7 @@ export function LeadForm() {
 
           <div>
             <label htmlFor="lead-program" className={labelClass}>
-              Направление
+              Чему хотите научиться
             </label>
             <select
               id="lead-program"

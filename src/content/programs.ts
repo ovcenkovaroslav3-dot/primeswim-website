@@ -91,7 +91,7 @@ export const programOptions = [
   ...programs.map((program) => ({ value: program.id, label: program.title })),
 ];
 
-/** Допустимые значения поля «Направление» — используются при проверке заявки. */
+/** Допустимые значения поля «Чему хотите научиться» (раньше подпись была «Направление») — используются при проверке заявки. */
 export const validProgramIds: ReadonlySet<string> = new Set(
   programOptions.map((option) => option.value),
 );

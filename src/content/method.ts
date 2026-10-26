@@ -115,7 +115,7 @@ export const proofPoints: ProofPoint[] = [
   },
   {
     id: 'coach',
-    value: 'КМС по плаванию',
+    value: 'Кандидат в мастера спорта по плаванию',
     label: 'занятия ведёт основатель школы',
   },
   {
