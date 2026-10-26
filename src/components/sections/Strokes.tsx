@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 
 import { strokes } from '@/content/method';
+import { sectionTitleClass } from '../ui';
 import imageLoader from '@/lib/image-loader';
 
 /*
@@ -138,7 +139,7 @@ export function Strokes() {
           </p>
           <h2
             id="strokes-title"
-            className="text-3xl leading-[1.08] font-normal tracking-[-0.02em] text-ink sm:text-4xl md:text-[44px]"
+            className={`${sectionTitleClass} text-ink`}
           >
             Четыре стиля, а не один
           </h2>
@@ -168,7 +169,7 @@ export function Strokes() {
                 aria-controls={`${uid}-panel-${s.id}`}
                 tabIndex={i === active ? 0 : -1}
                 onClick={() => setActive(i)}
-                className={`min-h-11 rounded-[10px] px-4 text-sm font-medium transition-colors duration-200 ${
+                className={`min-h-11 rounded-control px-4 text-sm font-medium transition-colors duration-200 ${
                   i === active
                     ? 'bg-abyss-900 text-white'
                     : 'border border-hairline bg-surface-alt text-ink-soft hover:border-brand-300 hover:text-ink'
@@ -183,7 +184,7 @@ export function Strokes() {
             role="tabpanel"
             id={`${uid}-panel-${stroke.id}`}
             aria-labelledby={`${uid}-tab-${stroke.id}`}
-            className="mt-6 grid gap-8 rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-12"
+            className="mt-6 grid gap-8 rounded-card border border-hairline bg-surface-alt p-6 sm:p-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-12"
           >
             <div>
               <p className="text-xs font-medium tracking-[0.2em] text-brand-600 uppercase">

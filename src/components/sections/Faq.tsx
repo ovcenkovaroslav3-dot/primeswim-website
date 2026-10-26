@@ -70,7 +70,7 @@ export function Faq({
         {items.map((item) => (
           <details
             key={item.id}
-            className="group rounded-[20px] border border-hairline bg-surface px-6 open:border-brand-200"
+            className="group rounded-card border border-hairline bg-surface px-6 open:border-brand-200"
           >
             <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-ink marker:content-none">
               {item.question}

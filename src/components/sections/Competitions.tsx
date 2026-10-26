@@ -96,7 +96,7 @@ export function Competitions({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } =
           {competitionPillars.map((p, i) => (
             <li
               key={p.id}
-              className="reveal glass flex flex-col rounded-[20px] p-7 sm:p-8"
+              className="reveal glass flex flex-col rounded-card p-7 sm:p-8"
               style={{
                 ["--reveal-delay" as string]: `${i * 100}ms`,
                 // ступени: каждая следующая опора выше предыдущей

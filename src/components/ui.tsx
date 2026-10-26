@@ -5,7 +5,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline';
 type ButtonSize = 'md' | 'lg';
 
 const base =
-  'lift inline-flex items-center justify-center gap-2 rounded-lg text-center font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60';
+  'lift inline-flex items-center justify-center gap-2 rounded-control text-center font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60';
 
 const variants: Record<ButtonVariant, string> = {
   /*
@@ -31,6 +31,9 @@ const sizes: Record<ButtonSize, string> = {
   md: 'min-h-11 px-5 py-2.5 text-sm',
   lg: 'min-h-13 px-7 py-3.5 text-base',
 };
+
+/** Общий вид заголовка раздела; цвет добавляет вызывающий — на светлом и тёмном он разный. */
+export const sectionTitleClass = 'text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl md:text-[44px]';
 
 export function buttonClass(
   variant: ButtonVariant = 'primary',
@@ -170,7 +173,7 @@ export function SectionHeading({
         className={
           size === 'statement'
             ? 'text-[clamp(2rem,5vw,3.4rem)] leading-[1.04] font-normal tracking-[-0.02em] text-ink'
-            : 'text-3xl leading-[1.08] font-normal tracking-[-0.02em] text-ink sm:text-4xl md:text-[44px]'
+            : `${sectionTitleClass} text-ink`
         }
       >
         {title}

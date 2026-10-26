@@ -34,7 +34,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
               единственный возникал разом и на фоне остального выглядел
               статичной вставкой.
             */
-            className={`reveal lift flex flex-col rounded-[20px] border p-7 ${
+            className={`reveal lift flex flex-col rounded-card border p-7 ${
               price.featured
                 ? 'relative overflow-hidden border-abyss-800 bg-abyss-900 text-white'
                 : 'border-hairline bg-surface-alt'
@@ -111,7 +111,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
         заголовком. Это выгода, а не сноска, поэтому она вынесена под тарифы
         отдельной плашкой — до юридических оговорок, а не после них.
       */}
-      <p className="reveal mt-6 rounded-[20px] border border-brand-100 bg-brand-50 px-7 py-5 text-sm leading-relaxed text-ink-soft">
+      <p className="reveal mt-6 rounded-card border border-brand-100 bg-brand-50 px-7 py-5 text-sm leading-relaxed text-ink-soft">
         {pricesNote}
       </p>
 

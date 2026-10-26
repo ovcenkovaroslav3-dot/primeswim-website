@@ -61,7 +61,7 @@ const labelClass = 'mb-2 block text-sm font-medium text-ink';
   читаются и на светлом, и при увеличении.
 */
 const fieldClass =
-  'min-h-12 w-full rounded-[10px] border bg-surface px-4 py-3 text-ink transition-colors placeholder:text-ink-muted focus:border-brand-500 disabled:opacity-60';
+  'min-h-12 w-full rounded-control border bg-surface px-4 py-3 text-ink transition-colors placeholder:text-ink-muted focus:border-brand-500 disabled:opacity-60';
 
 /** Адрес приёмника заявок. Пустой — значит форма отправлять некуда. */
 const endpoint = process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim() || '';
@@ -104,6 +104,8 @@ export function LeadForm() {
   const [slot, setSlot] = useState('');
   /** Ответы подбора группы, если родитель пришёл из него. */
   const [note, setNote] = useState('');
+  /** Время пришло из расписания (без ответов подбора) и ещё не тронуто руками. */
+  const [slotFromSchedule, setSlotFromSchedule] = useState(false);
   const sentRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -125,6 +127,16 @@ export function LeadForm() {
       }));
       if (prefill.slot !== undefined) setSlot(findSlot(prefill.slot) ? prefill.slot : '');
       if (prefill.note !== undefined) setNote(prefill.note);
+      /*
+        Из расписания приходит одно время без заметки, и страница прокручивается
+        к форме: без подтверждения непонятно, что время подставилось. Из подбора
+        заметка есть — там своя плашка, вторую не показываем.
+      */
+      if (prefill.slot !== undefined || prefill.note !== undefined) {
+        setSlotFromSchedule(
+          prefill.note === undefined && prefill.slot !== undefined && Boolean(findSlot(prefill.slot)),
+        );
+      }
       setErrors({});
       setStatus((current) => (current === 'failed' ? 'idle' : current));
     };
@@ -290,7 +302,7 @@ export function LeadForm() {
         ref={sentRef}
         role="status"
         tabIndex={-1}
-        className="on-light rounded-[20px] bg-surface p-8 text-center sm:p-12"
+        className="on-light rounded-card bg-surface p-8 text-center sm:p-12"
       >
         {/*
           Прайми выпрыгивает один раз, когда карточка появилась.
@@ -347,13 +359,14 @@ export function LeadForm() {
   }
 
   const sending = status === 'sending';
+  const selectedSlot = findSlot(slot);
 
   return (
     <form
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="on-light scroll-mt-24 rounded-[20px] bg-surface p-6 sm:p-8"
+      className="on-light scroll-mt-24 rounded-card bg-surface p-6 sm:p-8"
     >
       <div className="grid gap-5">
         {note ? (
@@ -375,6 +388,15 @@ export function LeadForm() {
             >
               Убрать
             </button>
+          </div>
+        ) : slotFromSchedule && selectedSlot ? (
+          // тот же вид, что у плашки подбора: это один и тот же вид подтверждения
+          <div
+            role="status"
+            className="rounded-[14px] border border-brand-200 bg-brand-50 px-4 py-3 text-sm leading-relaxed text-ink-soft"
+          >
+            <span className="font-medium text-ink">Время подставили:</span> {selectedSlot.label}.
+            Его можно поменять в поле «Удобное время» ниже.
           </div>
         ) : null}
 
@@ -510,6 +532,7 @@ export function LeadForm() {
             onChange={(e) => {
               markStarted();
               setSlot(e.target.value);
+              setSlotFromSchedule(false);
             }}
             aria-describedby="lead-slot-hint"
             className={`${fieldClass} border-hairline`}

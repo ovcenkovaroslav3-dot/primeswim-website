@@ -38,7 +38,7 @@ export function PlanPreview() {
 
       <div className="mt-10 grid gap-4 sm:mt-12 lg:grid-cols-2">
         {/* расписание */}
-        <div className="reveal flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8">
+        <div className="reveal flex flex-col rounded-card border border-hairline bg-surface-alt p-6 sm:p-8">
           <h3 className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
             Расписание
           </h3>
@@ -77,7 +77,7 @@ export function PlanPreview() {
         </div>
 
         {/* стоимость */}
-        <div className="reveal flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8">
+        <div className="reveal flex flex-col rounded-card border border-hairline bg-surface-alt p-6 sm:p-8">
           <h3 className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
             Стоимость
           </h3>

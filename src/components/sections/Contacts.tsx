@@ -37,7 +37,7 @@ export function Contacts() {
       {/* карточки тянутся по высоте, кнопки уходят к нижнему краю:
           иначе адресная колонка выглядела наполовину пустой */}
       <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-2">
-        <div className="flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7">
+        <div className="flex flex-col rounded-card border border-hairline bg-surface-alt p-7">
           <h3 className="text-lg font-light text-ink">Адрес</h3>
           <address className="mt-3 text-lg leading-relaxed text-ink-soft not-italic">
             {contacts.address.venue}
@@ -71,7 +71,7 @@ export function Contacts() {
           */}
         </div>
 
-        <div className="flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-7">
+        <div className="flex flex-col rounded-card border border-hairline bg-surface-alt p-7">
           <h3 className="text-lg font-light text-ink">Связь</h3>
 
           <a

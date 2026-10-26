@@ -1,4 +1,5 @@
 import { stages } from "@/content/method";
+import { sectionTitleClass } from "../ui";
 import { OrcaMark } from "../OrcaMark";
 
 /*
@@ -73,7 +74,7 @@ export function Progress() {
           </p>
           <h2
             id="progress-title"
-            className="text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl md:text-[44px]"
+            className={sectionTitleClass}
           >
             От первого вдоха в воду до стартовой тумбы
           </h2>

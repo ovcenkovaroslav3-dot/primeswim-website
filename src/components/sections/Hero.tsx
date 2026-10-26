@@ -182,7 +182,7 @@ export function Hero() {
               <Link
                 href="#booking"
                 data-goal="cta_booking"
-                className="lift glow-accent inline-flex min-h-13 items-center justify-center rounded-[10px] bg-lime-400 px-7 text-center text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-lime-300"
+                className="lift glow-accent inline-flex min-h-13 items-center justify-center rounded-control bg-lime-400 px-7 text-center text-[15px] font-semibold text-abyss-950 transition-colors duration-200 hover:bg-lime-300"
               >
                 {site.cta.primary}
               </Link>
@@ -195,7 +195,7 @@ export function Hero() {
               <Link
                 href="/raspisanie/"
                 data-goal="cta_schedule"
-                className="lift inline-flex min-h-13 items-center justify-center rounded-[10px] border border-white/25 px-7 text-center text-[15px] font-medium text-white transition-colors duration-200 hover:border-white/50 hover:bg-white/10"
+                className="lift inline-flex min-h-13 items-center justify-center rounded-control border border-white/25 px-7 text-center text-[15px] font-semibold text-white transition-colors duration-200 hover:border-white/50 hover:bg-white/10"
               >
                 Расписание занятий
               </Link>
@@ -240,7 +240,7 @@ export function Hero() {
 
           <div className="min-w-0">
             <dl
-              className="reveal glass grid max-w-xl grid-cols-2 gap-x-4 gap-y-5 rounded-[20px] p-5 sm:p-6"
+              className="reveal glass grid max-w-xl grid-cols-2 gap-x-4 gap-y-5 rounded-card p-5 sm:p-6"
               style={{ ['--reveal-delay' as string]: '480ms' }}
             >
               {facts.map((f) => (

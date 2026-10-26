@@ -137,7 +137,7 @@ export function PoolPreview() {
           {[building, gate].filter(Boolean).map((photo, i) => (
             <div
               key={photo.src}
-              className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-abyss-800 lg:aspect-auto"
+              className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-card bg-abyss-800 lg:aspect-auto"
               style={{ ['--reveal-delay' as string]: `${80 + i * 80}ms` }}
             >
               <Picture

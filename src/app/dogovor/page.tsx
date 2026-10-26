@@ -97,7 +97,7 @@ export default function DogovorPage() {
       */}
       <section
         id="photo"
-        className="mt-10 scroll-mt-24 rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-8"
+        className="mt-10 scroll-mt-24 rounded-card border border-hairline bg-surface-alt p-6 sm:p-8"
       >
         {/* якорь: на согласие ссылаются отдельно — родителя чаще всего
             волнует именно съёмка ребёнка, а не договор целиком */}

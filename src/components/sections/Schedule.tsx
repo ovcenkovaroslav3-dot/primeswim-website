@@ -28,8 +28,17 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
     (s) => `${s.day.toLowerCase()} в ${s.times.join(' и ')}`,
   );
 
+  /*
+    Низ без отступа: следующая секция (вопросы) на таком же фоне, и её верхний
+    отступ уже отделяет блоки. Два отступа подряд давали пустую полосу ~250 px
+    без границы цвета, по которой её можно было бы прочесть как разрыв.
+  */
   return (
-    <Section id="schedule" labelledBy="schedule-title" className="bg-surface-alt">
+    <Section
+      id="schedule"
+      labelledBy="schedule-title"
+      className="bg-surface-alt pb-0 sm:pb-0 md:pb-0"
+    >
       <SectionHeading
         as={headingAs}
         id="schedule-title"
@@ -138,7 +147,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
         ))}
       </ul>
 
-      <div className="reveal mt-8 flex flex-col items-start gap-4 rounded-[20px] border border-hairline bg-surface p-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="reveal mt-8 flex flex-col items-start gap-4 rounded-card border border-hairline bg-surface p-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-ink-soft">
           Не нашли удобное время? Напишите — подберём группу под ваш график.
         </p>

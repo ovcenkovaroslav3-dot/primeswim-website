@@ -1,4 +1,5 @@
 import { CoachPortrait } from "../CoachPortrait";
+import { sectionTitleClass } from "../ui";
 import { coaches } from "@/content/coaches";
 
 /*
@@ -50,7 +51,7 @@ export function Coaches({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
           </p>
           <Heading
             id="trainers-title"
-            className="text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl md:text-[44px]"
+            className={sectionTitleClass}
           >
             Тренер по плаванию в Химках
           </Heading>

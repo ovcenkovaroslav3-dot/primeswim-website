@@ -200,14 +200,14 @@ export function CookieNotice() {
               по замыслу кнопках это читалось как «главная тут одна». Кегль
               на телефоне на шаг мельче, дальше прежний.
             */
-            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-[10px] border border-hairline px-3 text-[13px] font-medium whitespace-nowrap text-ink-soft transition-colors hover:bg-surface-alt sm:flex-none sm:px-5 sm:text-sm"
+            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-control border border-hairline px-3 text-[13px] font-semibold whitespace-nowrap text-ink-soft transition-colors hover:bg-surface-alt sm:flex-none sm:px-5 sm:text-sm"
           >
             Только необходимые
           </button>
           <button
             type="button"
             onClick={() => writeConsent('granted')}
-            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-[10px] bg-lime-400 px-4 text-sm font-semibold text-abyss-950 transition-colors hover:bg-lime-300 sm:flex-none sm:px-5"
+            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-control bg-lime-400 px-4 text-sm font-semibold text-abyss-950 transition-colors hover:bg-lime-300 sm:flex-none sm:px-5"
           >
             Принять
           </button>

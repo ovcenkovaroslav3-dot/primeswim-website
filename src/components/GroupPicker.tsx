@@ -67,7 +67,7 @@ const choices: Record<Step, { value: string; label: string }[]> = {
 };
 
 const chipClass =
-  'min-h-12 rounded-[12px] border border-white/25 bg-white/5 px-4 py-3 text-left text-[15px] text-white transition-colors hover:border-lime-300 hover:bg-white/10';
+  'min-h-12 rounded-control border border-white/25 bg-white/5 px-4 py-3 text-left text-[15px] text-white transition-colors hover:border-lime-300 hover:bg-white/10';
 
 export function GroupPicker() {
   const [answers, setAnswers] = useState<Partial<PickerAnswers>>({});
@@ -128,7 +128,7 @@ export function GroupPicker() {
   return (
     <div
       id="podbor"
-      className="reveal mt-4 scroll-mt-24 rounded-[20px] bg-brand-600 p-5 text-white sm:p-9"
+      className="reveal mt-4 scroll-mt-24 rounded-card bg-brand-600 p-5 text-white sm:p-9"
     >
       <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-6">
         <h3 className="text-xl leading-snug font-light sm:text-2xl">
@@ -255,7 +255,7 @@ export function GroupPicker() {
             <button
               type="button"
               onClick={book}
-              className="lift inline-flex min-h-13 items-center justify-center rounded-lg bg-white px-7 py-3.5 text-base font-medium text-abyss-900 transition-colors hover:bg-lime-100"
+              className="lift inline-flex min-h-13 items-center justify-center rounded-control bg-white px-7 py-3.5 text-base font-semibold text-abyss-900 transition-colors hover:bg-lime-100"
             >
               Записаться на пробное
             </button>

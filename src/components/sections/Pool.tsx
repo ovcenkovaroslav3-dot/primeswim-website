@@ -1,5 +1,5 @@
 import { Picture } from '../Picture';
-import { ButtonLink, buttonClass } from '../ui';
+import { ButtonLink, buttonClass, sectionTitleClass } from '../ui';
 
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
@@ -53,7 +53,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           </p>
           <Heading
             id="pool-title"
-            className="text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl md:text-[44px]"
+            className={sectionTitleClass}
           >
             {site.pool.title}
           </Heading>
@@ -76,7 +76,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           ослабляет — поэтому строка собирается из одного источника
           (content/contacts.ts) и правится только там.
         */}
-        <div className="reveal glass mt-10 rounded-[20px] p-6 sm:p-7">
+        <div className="reveal glass mt-10 rounded-card p-6 sm:p-7">
           <dl className="grid gap-6 sm:grid-cols-2">
             <div>
               <dt className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
@@ -141,7 +141,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           человек везёт ребёнка, нельзя. Пока эту работу делает фотография
           корпуса ниже: здание узнаваемое. См. content/route.ts.
         */}
-        <div className="reveal mt-10 rounded-[20px] border border-white/12 p-6 sm:p-7">
+        <div className="reveal mt-10 rounded-card border border-white/12 p-6 sm:p-7">
           <RouteHeading className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Как добраться
           </RouteHeading>
@@ -174,7 +174,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div
-            className="reveal zoom-frame relative aspect-[3/4] overflow-hidden rounded-[20px] bg-abyss-800 sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]"
+            className="reveal zoom-frame relative aspect-[3/4] overflow-hidden rounded-card bg-abyss-800 sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-[420px]"
             style={{ ['--reveal-delay' as string]: '60ms' }}
           >
             <Picture
@@ -190,7 +190,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           {restPhotos.map((photo, i) => (
             <div
               key={photo.src}
-              className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-abyss-800"
+              className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-card bg-abyss-800"
               style={{ ['--reveal-delay' as string]: `${120 + i * 60}ms` }}
             >
               <Picture
@@ -207,7 +207,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           {venuePreviewImages.map((photo, i) => (
             <div
               key={photo.src}
-              className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-[20px] bg-abyss-800"
+              className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-card bg-abyss-800"
               style={{
                 ['--reveal-delay' as string]: `${120 + (restPhotos.length + i) * 60}ms`,
               }}

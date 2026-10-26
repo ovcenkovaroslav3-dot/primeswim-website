@@ -86,7 +86,7 @@ export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         {galleryGridImages.map((photo) => (
           <li
             key={photo.src}
-            className="zoom-frame relative mb-4 overflow-hidden rounded-[20px] bg-surface break-inside-avoid"
+            className="zoom-frame relative mb-4 overflow-hidden rounded-card bg-surface break-inside-avoid"
           >
             <Picture
               src={photo.src}

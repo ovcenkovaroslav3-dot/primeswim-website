@@ -38,7 +38,7 @@ export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         {startingPoints.map((p, i) => (
           <li
             key={p.id}
-            className="reveal rounded-[20px] border border-hairline bg-surface-alt p-6 sm:p-7"
+            className="reveal rounded-card border border-hairline bg-surface-alt p-6 sm:p-7"
             style={{ ['--reveal-delay' as string]: `${i * 70}ms` }}
           >
             <CaseHeading className="flex items-start gap-3 text-lg font-medium text-ink">
@@ -55,7 +55,7 @@ export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         ))}
       </ul>
 
-      <div className="reveal mt-16 rounded-[20px] bg-abyss-900 p-8 text-white sm:p-10">
+      <div className="reveal mt-16 rounded-card bg-abyss-900 p-8 text-white sm:p-10">
         <CaseHeading className="text-xl font-light sm:text-2xl">
           Как проходит первое занятие
         </CaseHeading>

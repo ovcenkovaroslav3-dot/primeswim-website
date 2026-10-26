@@ -46,7 +46,7 @@ export function Reviews({ limit }: { limit?: number } = {}) {
 
       <ul className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <li
-          className="reveal relative flex flex-col overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white md:col-span-2 lg:row-span-2 lg:p-10"
+          className="reveal relative flex flex-col overflow-clip rounded-card bg-abyss-900 p-8 text-white md:col-span-2 lg:row-span-2 lg:p-10"
         >
           <div
             aria-hidden="true"
@@ -74,7 +74,7 @@ export function Reviews({ limit }: { limit?: number } = {}) {
         {rest.map((review, i) => (
           <li
             key={review.id}
-            className="reveal flex flex-col rounded-[20px] border border-hairline bg-surface-alt p-6"
+            className="reveal flex flex-col rounded-card border border-hairline bg-surface-alt p-6"
             style={{ ['--reveal-delay' as string]: `${60 + i * 60}ms` }}
           >
             <blockquote className="flex-1 text-sm leading-relaxed text-ink-soft">

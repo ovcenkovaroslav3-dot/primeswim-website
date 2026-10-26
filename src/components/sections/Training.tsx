@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { sectionTitleClass } from '../ui';
 import { trainingSteps } from '@/content/training';
 
 /*
@@ -60,7 +61,7 @@ export function Training() {
           </p>
           <h2
             id="training-title"
-            className="text-3xl leading-[1.08] font-normal tracking-[-0.02em] text-ink sm:text-4xl md:text-[44px]"
+            className={`${sectionTitleClass} text-ink`}
           >
             Что происходит в эти 45 минут
           </h2>
@@ -73,7 +74,7 @@ export function Training() {
         <div className="mt-14 lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           {/* залипающая панель: только на широком экране */}
           <div className="hidden lg:sticky lg:top-28 lg:block lg:h-fit">
-            <div className="relative overflow-clip rounded-[20px] bg-abyss-900 p-8 text-white">
+            <div className="relative overflow-clip rounded-card bg-abyss-900 p-8 text-white">
               <div
                 aria-hidden="true"
                 className="parallax pointer-events-none absolute -top-20 -right-16 size-56 rounded-full bg-brand-300/18 blur-3xl"
@@ -126,7 +127,7 @@ export function Training() {
                   itemsRef.current[i] = el;
                 }}
                 data-active={i === active}
-                className="reveal rounded-[20px] border border-hairline bg-surface-alt p-6 transition-colors duration-300 data-[active=true]:border-brand-300 sm:p-7"
+                className="reveal rounded-card border border-hairline bg-surface-alt p-6 transition-colors duration-300 data-[active=true]:border-brand-300 sm:p-7"
                 style={{ ['--reveal-delay' as string]: `${i * 60}ms` }}
               >
                 <div className="flex items-baseline gap-4">
