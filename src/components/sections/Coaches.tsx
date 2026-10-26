@@ -83,6 +83,11 @@ export function Coaches({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
                   {coach.name}
                 </CoachName>
                 <p className="mt-2 text-white/70">{coach.role}</p>
+                {/* образование — рядом с ролью и стажем: это один блок сведений
+                    о тренере, которые школа обязана показать (ч. 5 ст. 32 ФЗ-273) */}
+                <p className="mt-2 text-sm text-white/60">
+                  Образование: {coach.education.toLowerCase()}
+                </p>
 
                 {coach.bio.map((paragraph) => (
                   <p

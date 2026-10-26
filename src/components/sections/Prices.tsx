@@ -1,9 +1,26 @@
 import Link from 'next/link';
 import { ButtonLink, Section, SectionHeading } from '../ui';
-import { prices, pricesNote, pricesDisclaimer } from '@/content/prices';
+import { prices, pricesNote, pricesDisclaimer, type Price } from '@/content/prices';
 import { contacts } from '@/content/contacts';
 
 const formatter = new Intl.NumberFormat('ru-RU');
+
+/*
+  Строка «В месяц» считается из цены и числа занятий, а не хранится готовой
+  суммой: поменяли цену занятия — месячная строка пересчиталась сама и не
+  разошлась с крупной цифрой над ней. Число занятий — данные тарифа
+  (content/prices.ts, 26.10.2026, подтверждено владельцем).
+*/
+function monthlyLine(price: Price): string | null {
+  const m = price.monthLessons;
+  if (!m) return null;
+  const from = formatter.format(price.amount * m.min);
+  if (m.max === undefined) {
+    return `В месяц: от ${from} ₽ (от ${m.min} занятий)`;
+  }
+  const to = formatter.format(price.amount * m.max);
+  return `В месяц: ${from}–${to} ₽ (${m.min}–${m.max} занятий)`;
+}
 
 export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   // название тарифа на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
@@ -25,85 +42,97 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
       />
 
       <ul className="mt-12 grid gap-6 md:grid-cols-3">
-        {prices.map((price, i) => (
-          <li
-            key={price.id}
-            /*
-              Карточки появляются с той же задержкой, что и во всех остальных
-              секциях. Раньше их не было в общем ритме: блок со стоимостью
-              единственный возникал разом и на фоне остального выглядел
-              статичной вставкой.
-            */
-            className={`reveal lift flex flex-col rounded-card border p-7 ${
-              price.featured
-                ? 'relative overflow-hidden border-abyss-800 bg-abyss-900 text-white'
-                : 'border-hairline bg-surface-alt'
-            }`}
-            style={{ ['--reveal-delay' as string]: `${i * 90}ms` }}
-          >
-            {price.featured ? (
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -top-20 -right-14 size-48 rounded-full bg-brand-300/18 blur-3xl"
-              />
-            ) : null}
-            <p
-              className={`relative text-xs font-medium tracking-[0.2em] uppercase ${
-                price.featured ? 'text-white/70' : 'text-ink-muted'
+        {prices.map((price, i) => {
+          const monthly = monthlyLine(price);
+          return (
+            <li
+              key={price.id}
+              /*
+                Карточки появляются с той же задержкой, что и во всех остальных
+                секциях. Раньше их не было в общем ритме: блок со стоимостью
+                единственный возникал разом и на фоне остального выглядел
+                статичной вставкой.
+              */
+              className={`reveal lift flex flex-col rounded-card border p-7 ${
+                price.featured
+                  ? 'relative overflow-hidden border-abyss-800 bg-abyss-900 text-white'
+                  : 'border-hairline bg-surface-alt'
               }`}
+              style={{ ['--reveal-delay' as string]: `${i * 90}ms` }}
             >
-              {price.badge}
-            </p>
-
-            <PriceHeading
-              className={`relative mt-4 text-xl font-light ${
-                price.featured ? 'text-white' : 'text-ink'
-              }`}
-            >
-              {price.title}
-            </PriceHeading>
-
-            <p
-              className={`mt-1 text-sm ${
-                price.featured ? 'text-white/75' : 'text-ink-muted'
-              }`}
-            >
-              {price.note}
-            </p>
-
-            <p className="relative mt-6 mb-7 flex items-baseline gap-1.5">
-              {/* у выделенного тарифа сумма крупнее: разницу должно быть видно
-                  раньше, чем читатель дойдёт до цифр */}
-              <span
-                className={`font-extralight tabular-nums ${
-                  price.featured
-                    ? 'text-5xl text-lime-300'
-                    : 'text-4xl text-ink'
+              {price.featured ? (
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -top-20 -right-14 size-48 rounded-full bg-brand-300/18 blur-3xl"
+                />
+              ) : null}
+              <p
+                className={`relative text-xs font-medium tracking-[0.2em] uppercase ${
+                  price.featured ? 'text-white/70' : 'text-ink-muted'
                 }`}
               >
-                {formatter.format(price.amount)} ₽
-              </span>
-              {price.unit ? (
+                {price.badge}
+              </p>
+
+              <PriceHeading
+                className={`relative mt-4 text-xl font-light ${
+                  price.featured ? 'text-white' : 'text-ink'
+                }`}
+              >
+                {price.title}
+              </PriceHeading>
+
+              <p
+                className={`mt-1 text-sm ${
+                  price.featured ? 'text-white/75' : 'text-ink-muted'
+                }`}
+              >
+                {price.note}
+              </p>
+
+              <p className={`relative mt-6 flex items-baseline gap-1.5 ${monthly ? '' : 'mb-7'}`}>
+                {/* у выделенного тарифа сумма крупнее: разницу должно быть видно
+                    раньше, чем читатель дойдёт до цифр */}
                 <span
-                  className={`text-sm ${
-                    price.featured ? 'text-white/70' : 'text-ink-muted'
+                  className={`font-extralight tabular-nums ${
+                    price.featured
+                      ? 'text-5xl text-lime-300'
+                      : 'text-4xl text-ink'
                   }`}
                 >
-                  {price.unit}
+                  {formatter.format(price.amount)} ₽
                 </span>
+                {price.unit ? (
+                  <span
+                    className={`text-sm ${
+                      price.featured ? 'text-white/70' : 'text-ink-muted'
+                    }`}
+                  >
+                    {price.unit}
+                  </span>
+                ) : null}
+              </p>
+              {monthly ? (
+                <p
+                  className={`relative mt-2 mb-7 text-sm ${
+                    price.featured ? 'text-white/75' : 'text-ink-muted'
+                  }`}
+                >
+                  {monthly}
+                </p>
               ) : null}
-            </p>
 
-            <ButtonLink
-              href="#booking"
-              variant={price.featured ? 'secondary' : 'ghost'}
-              data-goal="cta_booking"
-              className="relative mt-auto w-full"
-            >
-              Записаться
-            </ButtonLink>
-          </li>
-        ))}
+              <ButtonLink
+                href="#booking"
+                variant={price.featured ? 'secondary' : 'ghost'}
+                data-goal="cta_booking"
+                className="relative mt-auto w-full"
+              >
+                Записаться
+              </ButtonLink>
+            </li>
+          );
+        })}
       </ul>
 
       {/*
