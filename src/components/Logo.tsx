@@ -44,10 +44,10 @@ export function Logo({
         <OrcaMark tone={inverted ? 'white' : 'brand'} className={markClass} />
       ) : null}
       <span className="font-display text-xl leading-none font-extrabold tracking-tight sm:text-2xl lg:text-xl xl:text-2xl">
-        <span className={inverted ? 'text-white' : 'text-brand-600'}>
+        <span className={inverted ? 'text-white' : 'text-brand-600 dark:text-brand-100'}>
           PRIME
         </span>
-        <span className={inverted ? 'text-lime-400' : 'text-brand-400'}>
+        <span className={inverted ? 'text-lime-400' : 'text-brand-400 dark:text-brand-300'}>
           SWIM
         </span>
       </span>

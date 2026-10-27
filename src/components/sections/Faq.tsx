@@ -70,13 +70,13 @@ export function Faq({
         {items.map((item) => (
           <details
             key={item.id}
-            className="group rounded-card border border-hairline bg-surface px-6 open:border-brand-200"
+            className="group rounded-card border border-hairline bg-surface px-6 open:border-brand-200 dark:open:border-brand-500"
           >
             <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-ink marker:content-none">
               {item.question}
               <span
                 aria-hidden="true"
-                className="grid size-7 shrink-0 place-items-center rounded-full border border-hairline text-brand-600 transition-transform group-open:rotate-45"
+                className="grid size-7 shrink-0 place-items-center rounded-full border border-hairline text-brand-600 dark:text-brand-200 transition-transform group-open:rotate-45"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path
@@ -106,7 +106,7 @@ export function Faq({
           target="_blank"
           rel="noopener noreferrer"
           data-goal="click_telegram_booking"
-          className="font-medium text-brand-600 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
         >
           Telegram
         </a>{' '}
@@ -114,7 +114,7 @@ export function Faq({
         <a
           href={contacts.phone.href}
           data-goal="click_phone"
-          className="font-medium text-brand-600 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
         >
           {contacts.phone.display}
         </a>

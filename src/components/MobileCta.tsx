@@ -60,7 +60,7 @@ export function MobileCta() {
 
   return (
     <div
-      className={`fixed inset-x-0 z-40 border-t border-hairline bg-white/92 px-4 pt-3 backdrop-blur transition-[transform,bottom] duration-300 lg:hidden ${
+      className={`fixed inset-x-0 z-40 border-t border-hairline bg-surface/92 px-4 pt-3 backdrop-blur transition-[transform,bottom] duration-300 lg:hidden ${
         shown ? 'translate-y-0' : 'translate-y-full'
       }`}
       /*

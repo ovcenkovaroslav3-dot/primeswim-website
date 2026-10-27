@@ -96,7 +96,7 @@ export function Reviews({ limit }: { limit?: number } = {}) {
           href={reviewsSource.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-brand-600 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
         >
           Открыть карточку школы
         </a>

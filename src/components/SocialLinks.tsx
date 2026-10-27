@@ -90,7 +90,7 @@ export function SocialLinks({
                 попадал. Отрицательный внешний отступ забирает добавленную
                 высоту обратно — полоса каналов осталась тонкой, как и была.
               */
-              className="-my-1.5 inline-flex min-h-9 items-center py-1.5 text-xs font-medium text-brand-600 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
+              className="-my-1.5 inline-flex min-h-9 items-center py-1.5 text-xs font-medium text-brand-600 dark:text-brand-200 underline-offset-4 transition-colors hover:underline sm:text-[13px]"
             >
               {link.short}
               <span className="sr-only">{link.tail}</span>
@@ -103,7 +103,7 @@ export function SocialLinks({
 
   const itemClass = inverted
     ? 'border-white/30 text-white hover:border-lime-300 hover:text-lime-300'
-    : 'border-hairline text-ink-soft hover:border-brand-500 hover:text-brand-600';
+    : 'border-hairline text-ink-soft hover:border-brand-500 dark:hover:border-brand-300 hover:text-brand-600 dark:hover:text-brand-200';
 
   return (
     <ul

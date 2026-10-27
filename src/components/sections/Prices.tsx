@@ -140,7 +140,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
         заголовком. Это выгода, а не сноска, поэтому она вынесена под тарифы
         отдельной плашкой — до юридических оговорок, а не после них.
       */}
-      <p className="reveal mt-6 rounded-card border border-brand-100 bg-brand-50 px-7 py-5 text-sm leading-relaxed text-ink-soft">
+      <p className="reveal mt-6 rounded-card border border-brand-100 bg-brand-50 px-7 dark:border-brand-700 dark:bg-brand-900/40 py-5 text-sm leading-relaxed text-ink-soft">
         {pricesNote}
       </p>
 
@@ -154,7 +154,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
         <Link
           href="/dogovor/"
           prefetch={false}
-          className="font-medium text-brand-600 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
         >
           в договоре
         </Link>
@@ -164,7 +164,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           target="_blank"
           rel="noopener noreferrer"
           data-goal="click_telegram_booking"
-          className="font-medium text-brand-600 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
         >
           напишите нам в Telegram
         </a>

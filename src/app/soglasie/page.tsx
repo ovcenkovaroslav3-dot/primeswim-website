@@ -77,7 +77,7 @@ export default function ConsentPage() {
             телефон:{' '}
             <a
               href={contacts.phone.href}
-              className="font-medium text-brand-600 underline underline-offset-4"
+              className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
             >
               {contacts.phone.display}
             </a>{' '}
@@ -90,7 +90,7 @@ export default function ConsentPage() {
               href={contacts.social.max}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-brand-600 underline underline-offset-4"
+              className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
             >
               чат школы
             </a>
@@ -105,7 +105,7 @@ export default function ConsentPage() {
         <Link
           href="/policy/"
           prefetch={false}
-          className="font-medium text-brand-600 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
         >
           политике обработки персональных данных
         </Link>

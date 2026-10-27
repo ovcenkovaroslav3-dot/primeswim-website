@@ -66,7 +66,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
             >
               <span
                 className={`text-xs font-medium tracking-[0.14em] uppercase ${
-                  slot ? 'text-brand-600' : 'text-ink-muted'
+                  slot ? 'text-brand-600 dark:text-brand-200' : 'text-ink-muted'
                 }`}
               >
                 {d}
@@ -77,7 +77,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
               */}
               <span
                 className={`mt-2 size-1.5 rounded-full sm:hidden ${
-                  slot ? 'bg-brand-500' : 'bg-ink-muted/25'
+                  slot ? 'bg-brand-500 dark:bg-brand-300' : 'bg-ink-muted/25'
                 }`}
               />
               {/*

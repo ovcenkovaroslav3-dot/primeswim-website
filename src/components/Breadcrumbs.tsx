@@ -55,7 +55,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
                       а не текст. Отрицательный внешний отступ возвращает
                       набранную высоту обратно, цепочка осталась однострочной.
                     */
-                    className="-my-1.5 inline-flex min-h-8 items-center py-1.5 transition-colors hover:text-brand-600"
+                    className="-my-1.5 inline-flex min-h-8 items-center py-1.5 transition-colors hover:text-brand-600 dark:hover:text-brand-200"
                   >
                     {item.label}
                   </Link>

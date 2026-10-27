@@ -15,7 +15,7 @@
  *
  * Запуск:
  *   node scripts/shot.mjs <url> [файл.png] [--mobile] [--width=N] [--height=N]
- *                              [--viewport] [--native] [--chromium]
+ *                              [--viewport] [--native] [--chromium] [--dark]
  *
  * Примеры:
  *   node scripts/shot.mjs http://localhost:3000 shot.png
@@ -75,6 +75,7 @@ for (const channel of browser ? [] : channels) {
 const context = await browser.newContext({
   viewport,
   deviceScaleFactor: dpr,
+  colorScheme: flags.has('--dark') ? 'dark' : 'light',
   ...(mobile ? { isMobile: true, hasTouch: true, userAgent: devices['iPhone 13'].userAgent } : {}),
 });
 const page = await context.newPage();

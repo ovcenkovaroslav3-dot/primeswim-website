@@ -142,7 +142,7 @@ export function MobileMenu() {
                 role="dialog"
                 aria-modal="true"
                 aria-label="Меню сайта"
-                className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-white p-6 shadow-xl"
+                className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-surface p-6 shadow-xl"
               >
                 <div className="mb-8 flex items-center justify-between">
                   {/*
@@ -196,7 +196,7 @@ export function MobileMenu() {
                         <Link
                           href={link.href}
                           onClick={() => setOpen(false)}
-                          className="flex min-h-12 items-center rounded-xl px-3 text-lg font-medium text-ink transition-colors hover:bg-surface-alt hover:text-brand-600"
+                          className="flex min-h-12 items-center rounded-xl px-3 text-lg font-medium text-ink transition-colors hover:bg-surface-alt hover:text-brand-600 dark:hover:text-brand-200"
                         >
                           {link.label}
                         </Link>

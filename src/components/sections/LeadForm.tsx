@@ -67,7 +67,7 @@ const fieldClass =
 const endpoint = process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim() || '';
 
 function fieldBorder(hasError: boolean) {
-  return hasError ? 'border-red-400' : 'border-hairline';
+  return hasError ? 'border-red-400' : 'border-hairline dark:border-ink-muted/60';
 }
 
 /**
@@ -349,7 +349,7 @@ export function LeadForm() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="font-medium text-brand-600 underline underline-offset-4"
+            className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
           >
             {contacts.phone.display}
           </a>
@@ -375,7 +375,7 @@ export function LeadForm() {
             школе вместе с заявкой, — и даём это убрать: ответы подбора не
             должны уезжать молча.
           */
-          <div className="flex items-start justify-between gap-3 rounded-[14px] border border-brand-200 bg-brand-50 px-4 py-3 text-sm leading-relaxed text-ink-soft">
+          <div className="flex items-start justify-between gap-3 rounded-[14px] border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft">
             <p>
               <span className="font-medium text-ink">Подставили из подбора.</span>{' '}
               Возраст, направление и время можно поменять — ответы подбора
@@ -384,7 +384,7 @@ export function LeadForm() {
             <button
               type="button"
               onClick={() => setNote('')}
-              className="shrink-0 font-medium text-brand-600 underline underline-offset-4"
+              className="shrink-0 font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
             >
               Убрать
             </button>
@@ -393,7 +393,7 @@ export function LeadForm() {
           // тот же вид, что у плашки подбора: это один и тот же вид подтверждения
           <div
             role="status"
-            className="rounded-[14px] border border-brand-200 bg-brand-50 px-4 py-3 text-sm leading-relaxed text-ink-soft"
+            className="rounded-[14px] border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft"
           >
             <span className="font-medium text-ink">Время подставили:</span> {selectedSlot.label}.
             Его можно поменять в поле «Удобное время» ниже.
@@ -402,7 +402,7 @@ export function LeadForm() {
 
         <div>
           <label htmlFor="lead-name" className={labelClass}>
-            Имя <span className="text-red-600">*</span>
+            Имя <span className="text-red-600 dark:text-red-300">*</span>
           </label>
           <input
             id="lead-name"
@@ -418,7 +418,7 @@ export function LeadForm() {
             className={`${fieldClass} ${fieldBorder(Boolean(errors.name))}`}
           />
           {errors.name ? (
-            <p id="lead-name-error" className="mt-2 text-sm text-red-700">
+            <p id="lead-name-error" className="mt-2 text-sm text-red-700 dark:text-red-300">
               {errors.name}
             </p>
           ) : null}
@@ -426,7 +426,7 @@ export function LeadForm() {
 
         <div>
           <label htmlFor="lead-phone" className={labelClass}>
-            Телефон <span className="text-red-600">*</span>
+            Телефон <span className="text-red-600 dark:text-red-300">*</span>
           </label>
           {/* маску не ставим: она мешает вставке и нестандартным номерам */}
           <input
@@ -448,7 +448,7 @@ export function LeadForm() {
             className={`${fieldClass} ${fieldBorder(Boolean(errors.phone))}`}
           />
           {errors.phone ? (
-            <p id="lead-phone-error" className="mt-2 text-sm text-red-700">
+            <p id="lead-phone-error" className="mt-2 text-sm text-red-700 dark:text-red-300">
               {errors.phone}
             </p>
           ) : (
@@ -461,7 +461,7 @@ export function LeadForm() {
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <label htmlFor="lead-age" className={labelClass}>
-              Возраст ребёнка <span className="text-red-600">*</span>
+              Возраст ребёнка <span className="text-red-600 dark:text-red-300">*</span>
             </label>
             <select
               id="lead-age"
@@ -483,7 +483,7 @@ export function LeadForm() {
               ))}
             </select>
             {errors.age ? (
-              <p id="lead-age-error" className="mt-2 text-sm text-red-700">
+              <p id="lead-age-error" className="mt-2 text-sm text-red-700 dark:text-red-300">
                 {errors.age}
               </p>
             ) : values.age === 'under-7' ? (
@@ -586,7 +586,7 @@ export function LeadForm() {
             вопросы обсудим отдельно после обращения.
           </p>
           {errors.comment ? (
-            <p className="mt-2 text-sm text-red-700">{errors.comment}</p>
+            <p className="mt-2 text-sm text-red-700 dark:text-red-300">{errors.comment}</p>
           ) : null}
         </div>
 
@@ -622,7 +622,7 @@ export function LeadForm() {
               checked={values.consent}
               onChange={(e) => set('consent', e.target.checked)}
               aria-invalid={Boolean(errors.consent)}
-              className="mt-0.5 size-6 shrink-0 accent-brand-600"
+              className="mt-0.5 size-6 shrink-0 accent-brand-600 dark:accent-brand-300"
             />
             {/*
               Формулировка длиннее обычной галочки намеренно. Согласие по
@@ -645,7 +645,7 @@ export function LeadForm() {
               <Link
                 href="/soglasie/"
                 prefetch={false}
-                className="font-medium text-brand-600 underline underline-offset-4"
+                className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
               >
                 согласие на обработку
               </Link>{' '}
@@ -654,7 +654,7 @@ export function LeadForm() {
               <Link
                 href="/policy/"
                 prefetch={false}
-                className="font-medium text-brand-600 underline underline-offset-4"
+                className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
               >
                 политики обработки персональных данных
               </Link>
@@ -662,7 +662,7 @@ export function LeadForm() {
             </span>
           </label>
           {errors.consent ? (
-            <p className="mt-2 text-sm text-red-700">{errors.consent}</p>
+            <p className="mt-2 text-sm text-red-700 dark:text-red-300">{errors.consent}</p>
           ) : null}
         </div>
 
@@ -674,7 +674,7 @@ export function LeadForm() {
           */
           <div
             role="alert"
-            className="rounded-[14px] border border-red-300 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-900"
+            className="rounded-[14px] border border-red-300 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-900 dark:border-red-400 dark:bg-red-950/40 dark:text-red-200"
           >
             <p>{failure}</p>
             <p className="mt-2">

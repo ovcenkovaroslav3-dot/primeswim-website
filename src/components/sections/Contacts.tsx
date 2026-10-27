@@ -86,7 +86,7 @@ export function Contacts() {
               не относится. Отрицательный внешний отступ возвращает набранную
               высоту в вёрстку — карточка «Связь» осталась прежней.
             */
-            className="mt-1.5 -mb-1.5 inline-flex min-h-11 items-center text-2xl font-extralight text-brand-600 underline-offset-4 hover:underline sm:text-3xl"
+            className="mt-1.5 -mb-1.5 inline-flex min-h-11 items-center text-2xl font-extralight text-brand-600 dark:text-brand-200 underline-offset-4 hover:underline sm:text-3xl"
           >
             {contacts.phone.display}
           </a>

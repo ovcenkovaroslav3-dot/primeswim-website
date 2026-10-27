@@ -62,7 +62,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#4f017b',
+  /*
+    Цвет строки состояния и адресной строки мобильного браузера. Две записи с
+    media: светлая тема держит фирменный фиолетовый, тёмная — толщу abyss-950,
+    иначе на тёмном экране сверху оставалась бы яркая фиолетовая полоса.
+    Манифест такого не умеет (там одно значение), он остаётся фиолетовым.
+  */
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#4f017b' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0114' },
+  ],
   width: 'device-width',
   initialScale: 1,
 };

@@ -32,7 +32,19 @@ const pages = ['/', '/raspisanie/', '/price/', '/trener/', '/bassein/', '/rodite
 const browser = await chromium.launch(
   process.env.SHOT_EXECUTABLE ? { executablePath: process.env.SHOT_EXECUTABLE } : { channel: 'chrome' },
 );
-const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+/*
+  Схем две. По умолчанию страницы проходят дважды: в светлой теме системы и в
+  тёмной (prefers-color-scheme, который Playwright выставляет через
+  colorScheme контекста). Флаги --light и --dark оставляют одну из них.
+  Тёмная нужна не для проформы: светлые поверхности там перекрашены токенами,
+  а фиолетовый текст, красные ошибки и плашки — вариантами dark:, и ошибиться
+  в любом из этих мест можно, не задев светлую тему.
+*/
+const argv = process.argv.slice(2);
+const schemes = argv.includes('--dark') ? ['dark'] : argv.includes('--light') ? ['light'] : ['light', 'dark'];
+let total = 0;
+for (const scheme of schemes) {
+const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: scheme });
 const seen = new Map();
 for (const p of pages) {
   const page = await ctx.newPage();
@@ -71,6 +83,30 @@ for (const p of pages) {
         const [L, A, B] = nums;
         const a = css.includes('/') ? nums[3] : 1;
         return [...oklabToRgb(L, A, B), a === undefined ? 1 : a];
+      }
+      if (css.startsWith('lab(')) {
+        /*
+          Chrome отдаёт в lab() цвета, которые Tailwind задаёт через oklch, —
+          например text-red-300 из тёмной темы. Без этой ветки значение
+          разбиралось как sRGB, и «красная» звёздочка оказывалась
+          rgb(77,36,16): проверка рапортовала нарушение, которого нет.
+          Пересчёт: CIE Lab (D50) → XYZ → адаптация к D65 по Брэдфорду →
+          линейный sRGB.
+        */
+        const [L, A, B] = nums;
+        const a = css.includes('/') ? nums[3] : 1;
+        const fy = (L + 16) / 116, fx = fy + A / 500, fz = fy - B / 200;
+        const inv = (t) => (t ** 3 > 216 / 24389 ? t ** 3 : (116 * t - 16) / (24389 / 27));
+        const X = 0.3457 / 0.3585 * inv(fx), Y = inv(fy), Z = (1 - 0.3457 - 0.3585) / 0.3585 * inv(fz);
+        const x = 0.9555766 * X - 0.0230393 * Y + 0.0631636 * Z;
+        const y = -0.0282895 * X + 1.0099416 * Y + 0.0210077 * Z;
+        const z = 0.0122982 * X - 0.020483 * Y + 1.3299098 * Z;
+        return [
+          srgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z),
+          srgb(-0.969266 * x + 1.8760108 * y + 0.041556 * z),
+          srgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z),
+          a === undefined ? 1 : a,
+        ];
       }
       if (css.startsWith('oklch')) {
         const [L, C, H] = nums;
@@ -148,5 +184,9 @@ const rows = [...seen.values()].sort((a, b) => a.r - b.r);
 for (const b of rows) {
   console.log(`${String(b.r).padStart(5)} (нужно ${b.need})  ${String(b.size).padStart(2)}px/${b.w}  ${b.fg.padEnd(20)} на ${b.bg.padEnd(16)} ×${b.n}  «${b.txt}»  ${b.page}`);
 }
-console.log(rows.length ? `\nразных сочетаний ниже AA: ${rows.length}` : '\nвсё проходит WCAG AA');
+console.log(rows.length ? `\n[${scheme}] разных сочетаний ниже AA: ${rows.length}` : `\n[${scheme}] всё проходит WCAG AA`);
+total += rows.length;
+await ctx.close();
+}
 await browser.close();
+process.exitCode = total ? 1 : 0;

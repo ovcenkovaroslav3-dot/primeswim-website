@@ -154,7 +154,7 @@ export function CookieNotice() {
       ref={ref}
       role="dialog"
       aria-label="Использование cookie"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-white/95 px-4 py-3 backdrop-blur sm:px-6 sm:py-4"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-surface/95 px-4 py-3 backdrop-blur sm:px-6 sm:py-4"
       style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
@@ -181,7 +181,7 @@ export function CookieNotice() {
           <Link
             href="/policy/"
             prefetch={false}
-            className="font-medium text-brand-600 underline underline-offset-4"
+            className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
           >
             политике
             <span className="hidden sm:inline"> обработки персональных данных</span>

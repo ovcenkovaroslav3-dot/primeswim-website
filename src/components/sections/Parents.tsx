@@ -44,7 +44,7 @@ export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
             <CaseHeading className="flex items-start gap-3 text-lg font-medium text-ink">
               <span
                 aria-hidden="true"
-                className="mt-2 size-2 shrink-0 rounded-full bg-brand-500"
+                className="mt-2 size-2 shrink-0 rounded-full bg-brand-500 dark:bg-brand-300"
               />
               {p.situation}
             </CaseHeading>

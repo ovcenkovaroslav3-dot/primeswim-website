@@ -217,7 +217,7 @@ export function ArrowLink({
 } & Omit<ComponentProps<'a'>, 'href' | 'children'>) {
   const classes = [
     'lift group -my-2 inline-flex min-h-11 items-center gap-2 py-2 text-sm font-medium',
-    tone === 'white' ? 'text-white' : 'text-brand-600',
+    tone === 'white' ? 'text-white' : 'text-brand-600 dark:text-brand-200',
     className,
   ]
     .filter(Boolean)

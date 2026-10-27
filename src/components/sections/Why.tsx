@@ -61,7 +61,7 @@ export function Why() {
           >
             {item.metric ? (
               <p className="mb-5 flex items-baseline gap-2">
-                <span className="text-4xl font-extralight tabular-nums text-brand-600">
+                <span className="text-4xl font-extralight tabular-nums text-brand-600 dark:text-brand-200">
                   {item.metric}
                 </span>
                 <span className="text-sm text-ink-muted">

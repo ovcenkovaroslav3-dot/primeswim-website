@@ -97,7 +97,7 @@ export function PlanPreview() {
                 <span className="shrink-0 text-right">
                   <span
                     className={`text-lg font-light tabular-nums ${
-                      price.featured ? 'text-brand-600' : 'text-ink'
+                      price.featured ? 'text-brand-600 dark:text-brand-200' : 'text-ink'
                     }`}
                   >
                     {price.amount.toLocaleString('ru-RU')} ₽

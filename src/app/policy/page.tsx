@@ -37,10 +37,10 @@ export default function PolicyPage() {
             : ''} — далее «Оператор», владелец сайта primeswim.ru.
         </p>
         {!legal.inn || !legal.ogrnip ? (
-          <p className="mt-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900">
+          <p className="mt-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900 dark:border-amber-500 dark:bg-amber-950/40 dark:text-amber-100">
             <strong>[ТРЕБУЕТ УТОЧНЕНИЯ]</strong> Не заполнены реквизиты
             оператора: ИНН и ОГРНИП. Заполните их в файле{' '}
-            <code className="rounded bg-amber-100 px-1">
+            <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/60">
               src/content/contacts.ts
             </code>{' '}
             до публикации — без них документ юридически неполный. Этот блок
@@ -84,7 +84,7 @@ export default function PolicyPage() {
             телефон:{' '}
             <a
               href={contacts.phone.href}
-              className="font-medium text-brand-600 underline underline-offset-4"
+              className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
             >
               {contacts.phone.display}
             </a>
@@ -96,7 +96,7 @@ export default function PolicyPage() {
               href={contacts.social.max}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-brand-600 underline underline-offset-4"
+              className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
             >
               чат школы
             </a>
@@ -108,7 +108,7 @@ export default function PolicyPage() {
               href={contacts.social.telegramBooking}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-brand-600 underline underline-offset-4"
+              className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
             >
               @primeswim_khimki
             </a>

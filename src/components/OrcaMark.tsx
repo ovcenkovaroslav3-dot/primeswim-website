@@ -75,7 +75,7 @@ export function OrcaMark({
   const solid = tone !== 'brand';
   const bodyFill =
     tone === 'brand'
-      ? 'var(--color-brand-600)'
+      ? 'var(--orca-brand, var(--color-brand-600))'
       : tone === 'white'
         ? '#ffffff'
         : tone === 'ink'

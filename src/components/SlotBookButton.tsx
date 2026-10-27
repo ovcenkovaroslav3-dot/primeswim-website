@@ -32,12 +32,12 @@ export function SlotBookButton({
         requestBooking({ slot: value });
       }}
       aria-label={`Записаться на пробное: ${label}`}
-      className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-brand-300 bg-surface px-4 text-lg font-light tabular-nums text-ink transition-colors hover:border-brand-500 hover:bg-brand-50"
+      className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-brand-300 bg-surface px-4 text-lg font-light tabular-nums text-ink transition-colors hover:border-brand-500 hover:bg-brand-50 dark:hover:border-brand-200 dark:hover:bg-brand-900/40"
     >
       {time}
       <span
         aria-hidden="true"
-        className="text-sm text-brand-600 transition-transform group-hover:translate-x-0.5"
+        className="text-sm text-brand-600 dark:text-brand-200 transition-transform group-hover:translate-x-0.5"
       >
         →
       </span>

@@ -75,7 +75,14 @@ const HAS_MOTION = new Set([
   ПЕТЛЯ ГРЕБКА.
 
   У стиля есть короткий ролик: тот же плоский силуэт, но руки идут полный
-  цикл. Ролик подставляется вместо картинки, когда движение разрешено.
+  цикл. По умолчанию показана картинка; ролик подставляется вместо неё
+  только после нажатия «Показать движение» и только если движение разрешено.
+
+  ПОЧЕМУ НЕ АВТОВОСПРОИЗВЕДЕНИЕ. Дизайн-аудит 26.10.2026 (принцип Рамса
+  «экологичность») отметил любое видео, которое играет само: оно тратит
+  трафик и батарею того, кто его не просил. Решение владельца — без
+  автозапуска. Ролик весит около 100 КБ на стиль и теперь скачивается лишь
+  по запросу; пока кнопку не нажали, в разметке нет даже элемента <video>.
 
   ПОЧЕМУ НЕ ПОКАДРОВАЯ АНИМАЦИЯ. Пробовали первой: четыре положения рук,
   снятые по отдельности, и смена по opacity. Не сложилось по двум причинам
@@ -88,8 +95,9 @@ const HAS_MOTION = new Set([
   ПОЧЕМУ ВЫБОР ДЕЛАЕТСЯ В JAVASCRIPT, А НЕ В CSS. Спрятать ролик правилом
   `prefers-reduced-motion` можно, но он всё равно скачается: около ста
   килобайт тому, кто попросил у системы поменьше движения. Поэтому на
-  сервере рисуется картинка, а ролик подставляется уже в браузере и только
-  если движение разрешено. Заодно нет расхождения разметки при гидратации.
+  сервере рисуется картинка, а кнопка и ролик появляются уже в браузере и
+  только если движение разрешено. Заодно нет расхождения разметки при
+  гидратации: сервер и первый кадр клиента одинаково рисуют картинку.
 */
 function useMotionAllowed() {
   const [allowed, setAllowed] = useState(false);
@@ -107,6 +115,9 @@ function useMotionAllowed() {
 
 export function Strokes() {
   const [active, setActive] = useState(0);
+  // Выбор «показать движение» держится при переключении вкладок: человек уже
+  // согласился, и заставлять его нажимать заново для каждого стиля незачем.
+  const [playing, setPlaying] = useState(false);
   const uid = useId();
   const tabsRef = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -125,6 +136,7 @@ export function Strokes() {
 
   const stroke = strokes[active];
   const motionAllowed = useMotionAllowed() && HAS_MOTION.has(stroke.id);
+  const showVideo = motionAllowed && playing;
 
   return (
     <section
@@ -187,7 +199,7 @@ export function Strokes() {
             className="mt-6 grid gap-8 rounded-card border border-hairline bg-surface-alt p-6 sm:p-8 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-12"
           >
             <div>
-              <p className="text-xs font-medium tracking-[0.2em] text-brand-600 uppercase">
+              <p className="text-xs font-medium tracking-[0.2em] text-brand-600 uppercase dark:text-brand-200">
                 {stroke.short}
               </p>
               <h3 className="mt-4 text-2xl font-light text-ink sm:text-3xl">
@@ -208,7 +220,7 @@ export function Strokes() {
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-[7px] size-1.5 shrink-0 rounded-full bg-brand-500"
+                      className="mt-[7px] size-1.5 shrink-0 rounded-full bg-brand-500 dark:bg-brand-300"
                     />
                     {item}
                   </li>
@@ -307,11 +319,12 @@ export function Strokes() {
                   key={`${stroke.id}-art`}
                   className="absolute inset-0"
                 >
-                  {motionAllowed ? (
+                  {showVideo ? (
                     /*
-                      Ролик беззвучный, зациклен и играет сам: это не контент,
-                      а иллюстрация движения, и кнопка воспроизведения тут была
-                      бы лишним действием. playsInline обязателен — без него
+                      Ролик беззвучный и зациклен, но запускается только по
+                      нажатию кнопки ниже (аудит 26.10.2026, решение владельца:
+                      без автозапуска), поэтому autoPlay здесь законен — это
+                      действие пользователя. playsInline обязателен — без него
                       iOS открывает видео на весь экран по первому касанию.
                     */
                     <video
@@ -365,6 +378,30 @@ export function Strokes() {
                     </picture>
                   )}
                 </div>
+
+                {/*
+                  Кнопка поверх иллюстрации, слева внизу: там у силуэта
+                  пусто, а справа у браузеров обычно свои наложения. Зона
+                  нажатия 44 px по DESIGN.md. Подпись визуально короткая,
+                  а доступное имя называет стиль — вкладки переключаются, и
+                  «Показать движение» без уточнения ничего бы не сказало.
+                  Состояние отдаёт aria-pressed, поэтому имя не меняется.
+                  При reduced motion кнопки нет вовсе, как и ролика.
+                */}
+                {motionAllowed && (
+                  <button
+                    type="button"
+                    aria-pressed={playing}
+                    aria-label={`Показать движение: ${stroke.name}`}
+                    onClick={() => setPlaying((p) => !p)}
+                    className="absolute bottom-3 left-3 z-20 inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full bg-abyss-900/70 px-4 text-sm font-medium text-white backdrop-blur-sm transition-colors duration-200 hover:bg-abyss-900/90"
+                  >
+                    <span aria-hidden="true">{playing ? '❚❚' : '▶'}</span>
+                    <span aria-hidden="true">
+                      {playing ? 'Остановить' : 'Показать движение'}
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
           </div>

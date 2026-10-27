@@ -46,7 +46,7 @@ export function Header() {
         </div>
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-hairline bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-hairline bg-surface/95 backdrop-blur">
         {/*
           75rem, а не max-w-6xl: поля здесь внутри контейнера, а у Section —
           снаружи. С 6xl логотип стоял на 24 px правее заголовков секций.
@@ -82,7 +82,7 @@ export function Header() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="inline-block py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-600"
+                    className="inline-block py-2 text-sm font-medium text-ink-soft transition-colors hover:text-brand-600 dark:hover:text-brand-200"
                   >
                     {link.label}
                   </Link>
@@ -95,7 +95,7 @@ export function Header() {
             <a
               href={contacts.phone.href}
               data-goal="click_phone"
-              className="hidden py-2 text-sm font-medium whitespace-nowrap text-ink transition-colors hover:text-brand-600 md:inline-block"
+              className="hidden py-2 text-sm font-medium whitespace-nowrap text-ink transition-colors hover:text-brand-600 dark:hover:text-brand-200 md:inline-block"
             >
               {contacts.phone.display}
             </a>

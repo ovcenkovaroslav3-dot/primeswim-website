@@ -82,7 +82,7 @@ export default function DogovorPage() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="font-medium text-brand-600 underline underline-offset-4"
+            className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
           >
             {contacts.phone.display}
           </a>{' '}
