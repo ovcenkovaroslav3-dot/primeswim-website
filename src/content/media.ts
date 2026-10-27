@@ -112,6 +112,60 @@ export const venueImages: MediaItem[] = [
 
 /** Галерея «PRIME SWIM в жизни». */
 export const galleryImages: MediaItem[] = [
+  /*
+    Семь кадров с тренировки в МГИК — собственные, снятые на этой площадке.
+    Получены 26.10.2026; владелец подтвердил 27.10.2026, что согласие
+    родителей на публикацию есть и что это тренировка PRIME SWIM. Площадку
+    узнаём по залу: белые тумбы с синим верхом, флажки, стальные фермы
+    крыши и панорамные окна — как на снимках бассейна выше.
+
+    Стоят первыми намеренно: раздел «PRIME SWIM в жизни» должен начинаться
+    с кадров из того бассейна, куда придёт ребёнок, а не с наград и
+    выездных соревнований. Остальные кадры ниже сняты на других площадках.
+    Метаданные (EXIF, GPS, XMP) из файлов вырезаны.
+  */
+  {
+    src: '/media/gallery/mgik-warmup-close.jpg',
+    alt: 'Дети в шапочках и очках поднимают руки на разминке у шкафчиков в бассейне МГИК перед тренировкой PRIME SWIM',
+    width: 1125,
+    height: 1500,
+  },
+  {
+    src: '/media/gallery/mgik-warmup-blocks.jpg',
+    alt: 'Группа PRIME SWIM на разминке у стартовых тумб бассейна МГИК: дети приседают, взрослый показывает упражнение',
+    width: 1125,
+    height: 1500,
+  },
+  {
+    src: '/media/gallery/mgik-warmup-deck.jpg',
+    alt: 'Группа PRIME SWIM на разминке вдоль бортика бассейна МГИК: дети стоят с поднятыми руками перед тренировкой',
+    width: 1125,
+    height: 1500,
+  },
+  {
+    src: '/media/gallery/mgik-kids-at-edge-kickboards.jpg',
+    alt: 'Дети держатся за бортик с досками для плавания в бассейне МГИК',
+    width: 1125,
+    height: 1500,
+  },
+  {
+    src: '/media/gallery/mgik-lanes-swimmers-edge.jpg',
+    alt: 'Тренировка PRIME SWIM: дети плывут по дорожкам бассейна МГИК, двое отдыхают у бортика',
+    width: 1125,
+    height: 1500,
+  },
+  {
+    src: '/media/gallery/mgik-lanes-swimmers-roof.jpg',
+    alt: 'Зал бассейна МГИК во время тренировки: дети плывут по дорожкам под стальными фермами крыши',
+    width: 1125,
+    height: 1500,
+  },
+  {
+    src: '/media/gallery/mgik-lanes-single-swimmer.jpg',
+    alt: 'Тренировка PRIME SWIM: пловец на дорожке бассейна МГИК, вид от бортика вдоль разделительной дорожки',
+    width: 1125,
+    height: 1500,
+  },
   {
     src: '/media/gallery/award-handshake.jpg',
     alt: 'Тренер пожимает руку юному пловцу с медалью после соревнований',
@@ -318,15 +372,26 @@ function derivative(
  * Без этого страница запросит файл, которого нет, и картинка будет битой —
  * <picture> на 404 к запасному варианту не откатывается.
  */
+/*
+  ЧЕТЫРЕ ПЕРВЫХ КАДРА — МГИК, 27 октября 2026. Это снимки с тренировки в
+  нашем бассейне (разминка, дети у бортика, две дорожки с пловцами) —
+  родителю на главной важнее всего видеть, куда придёт ребёнок. Они
+  заменили четыре кадра с других площадок: `team-group-competition`
+  (выездные соревнования), `two-girls-pink-fins` (награждение),
+  `teen-swimmers-long-fins` (взрослая группа в другом бассейне) и
+  `kids-yellow-kickboards` (тема досок теперь у снимка детей у бортика).
+  Все четыре остаются в полной галерее. Из трёх почти одинаковых кадров
+  дорожек взяты два разных — без пары-двойника.
+*/
 const highlightSources = [
+  '/media/gallery/mgik-warmup-close.jpg',
+  '/media/gallery/mgik-kids-at-edge-kickboards.jpg',
+  '/media/gallery/mgik-lanes-swimmers-edge.jpg',
+  '/media/gallery/mgik-lanes-single-swimmer.jpg',
   '/media/gallery/coach-briefing-at-blocks.jpg',
   '/media/gallery/kickboard-drill-lineup.jpg',
   '/media/gallery/coach-with-young-swimmers.jpg',
   '/media/gallery/two-kids-goggles-thumbs-up.jpg',
-  '/media/gallery/kids-yellow-kickboards.jpg',
-  '/media/gallery/two-girls-pink-fins.jpg',
-  '/media/gallery/teen-swimmers-long-fins.jpg',
-  '/media/gallery/team-group-competition.jpg',
 ];
 
 /** Сторона квадратной плитки. 276 px на десктопе при 2x — 552, берём 560. */

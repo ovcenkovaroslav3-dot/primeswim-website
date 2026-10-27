@@ -6,7 +6,7 @@ import { pageMetadata, seo } from '@/content/seo';
 export const metadata = pageMetadata(seo.gallery);
 
 /*
-  Галерея. Самая тяжёлая секция сайта — 23 фотографии и 3 видео.
+  Галерея. Самая тяжёлая секция сайта — 30 фотографий и 3 видео.
   На главной она одна давала треть длины страницы.
 */
 export default function GalleryPage() {
