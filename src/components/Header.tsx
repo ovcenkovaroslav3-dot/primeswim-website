@@ -39,7 +39,7 @@ export function Header() {
       */}
       <div className="border-b border-hairline bg-surface-alt">
         <div className="mx-auto flex w-full max-w-[75rem] items-center justify-center gap-3 px-4 py-1 sm:gap-4 sm:px-6 lg:justify-end">
-          <span className="text-xs text-ink-muted sm:text-[13px]">
+          <span className="text-xs text-ink-muted">
             Каналы школы
           </span>
           <SocialLinks variant="bar" />

@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { ButtonLink, Section, SectionHeading } from '../ui';
+import { Section, SectionHeading } from '../ui';
+import { TariffBookButton } from '../TariffBookButton';
 import { prices, pricesNote, pricesDisclaimer, type Price } from '@/content/prices';
 import { contacts } from '@/content/contacts';
 
@@ -20,6 +21,15 @@ function monthlyLine(price: Price): string | null {
   }
   const to = formatter.format(price.amount * m.max);
   return `В месяц: ${from}–${to} ₽ (${m.min}–${m.max} занятий)`;
+}
+
+/*
+  Что уходит в комментарий формы при выборе тарифа. Собирается из тех же
+  данных, что и карточка, чтобы строка не разошлась с ценой на экране.
+*/
+function tariffComment(price: Price): string {
+  const sum = `${formatter.format(price.amount)} ₽`;
+  return `Интересует тариф: ${price.title} (${price.unit ? `${sum} за занятие` : sum})`;
 }
 
 export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
@@ -122,14 +132,14 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
                 </p>
               ) : null}
 
-              <ButtonLink
-                href="#booking"
+              <TariffBookButton
+                comment={tariffComment(price)}
                 variant={price.featured ? 'secondary' : 'ghost'}
                 data-goal="cta_booking"
                 className="relative mt-auto w-full"
               >
                 Записаться
-              </ButtonLink>
+              </TariffBookButton>
             </li>
           );
         })}

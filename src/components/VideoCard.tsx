@@ -65,7 +65,7 @@ export function VideoCard({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-[16px] bg-abyss-800 ${className}`.trim()}
+      className={`relative overflow-hidden rounded-inset bg-abyss-800 ${className}`.trim()}
     >
       {/*
         Постер лежит поверх ролика картинкой и снимается по нажатию. У <video>

@@ -100,12 +100,15 @@ export function LeadForm() {
   const [ticket, setTicket] = useState('');
   const [failure, setFailure] = useState('');
   const [trap, setTrap] = useState('');
-  /** Удобное время — значение из slotOptions, пусто = «подберите сами». */
+  /** Удобное время — значение из slotOptions, пусто = «пусть подберёт администратор». */
   const [slot, setSlot] = useState('');
   /** Ответы подбора группы, если родитель пришёл из него. */
   const [note, setNote] = useState('');
   /** Время пришло из расписания (без ответов подбора) и ещё не тронуто руками. */
   const [slotFromSchedule, setSlotFromSchedule] = useState(false);
+  /** Текст тарифа, подставленный в комментарий со страницы цен; пусто — не подставляли. */
+  const [tariffComment, setTariffComment] = useState('');
+  const tariffRef = useRef('');
   const sentRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -127,6 +130,18 @@ export function LeadForm() {
       }));
       if (prefill.slot !== undefined) setSlot(findSlot(prefill.slot) ? prefill.slot : '');
       if (prefill.note !== undefined) setNote(prefill.note);
+      if (prefill.comment) {
+        /*
+          Тариф подставляем, только если родитель ещё ничего не писал в
+          комментарии, — либо если там лежит тариф, подставленный раньше (выбрал
+          другой). Набранное руками не затираем.
+        */
+        const next = prefill.comment;
+        const previous = tariffRef.current;
+        tariffRef.current = next;
+        setTariffComment(next);
+        setValues((v) => (v.comment === '' || v.comment === previous ? { ...v, comment: next } : v));
+      }
       /*
         Из расписания приходит одно время без заметки, и страница прокручивается
         к форме: без подтверждения непонятно, что время подставилось. Из подбора
@@ -375,7 +390,7 @@ export function LeadForm() {
             школе вместе с заявкой, — и даём это убрать: ответы подбора не
             должны уезжать молча.
           */
-          <div className="flex items-start justify-between gap-3 rounded-[14px] border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft">
+          <div className="flex items-start justify-between gap-3 rounded-inset border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft">
             <p>
               <span className="font-medium text-ink">Подставили из подбора.</span>{' '}
               Возраст, направление и время можно поменять — ответы подбора
@@ -393,10 +408,25 @@ export function LeadForm() {
           // тот же вид, что у плашки подбора: это один и тот же вид подтверждения
           <div
             role="status"
-            className="rounded-[14px] border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft"
+            className="rounded-inset border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft"
           >
             <span className="font-medium text-ink">Время подставили:</span> {selectedSlot.label}.
             Его можно поменять в поле «Удобное время» ниже.
+          </div>
+        ) : null}
+
+        {!note && tariffComment && values.comment === tariffComment ? (
+          /*
+            Тариф со страницы цен лёг в комментарий. Плашка того же вида, что у
+            времени из расписания; пропадает, как только родитель правит текст,
+            и не показывается вместе с плашкой подбора (там своё объяснение).
+          */
+          <div
+            role="status"
+            className="rounded-inset border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft"
+          >
+            <span className="font-medium text-ink">Тариф подставили</span> в комментарий — его можно
+            изменить или стереть.
           </div>
         ) : null}
 
@@ -537,7 +567,7 @@ export function LeadForm() {
             aria-describedby="lead-slot-hint"
             className={`${fieldClass} border-hairline`}
           >
-            <option value="">Подберите сами</option>
+            <option value="">Пусть подберёт администратор</option>
             {slotOptions.map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
@@ -674,7 +704,7 @@ export function LeadForm() {
           */
           <div
             role="alert"
-            className="rounded-[14px] border border-red-300 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-900 dark:border-red-400 dark:bg-red-950/40 dark:text-red-200"
+            className="rounded-inset border border-red-300 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-900 dark:border-red-400 dark:bg-red-950/40 dark:text-red-200"
           >
             <p>{failure}</p>
             <p className="mt-2">

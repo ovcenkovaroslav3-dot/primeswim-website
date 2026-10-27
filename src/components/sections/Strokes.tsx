@@ -239,7 +239,7 @@ export function Strokes() {
               Лайма в секции теперь нет вовсе, и это правильно по системе:
               акцент принадлежит действию, а здесь объяснение, а не действие.
             */}
-            <div className="relative overflow-hidden rounded-[16px] bg-abyss-900">
+            <div className="relative overflow-hidden rounded-inset bg-abyss-900">
               {/*
                 НАД ЛИНИЕЙ ВОЗДУХ, ПОД НЕЙ ВОДА — И ЭТО ЕДИНСТВЕННОЕ, ЧТО
                 ЗАПОЛНЯЕТ ПАНЕЛЬ.

@@ -35,7 +35,7 @@ export function CoachPortrait({
         Подложка тёмная, а не светлая: секция с тренерами лежит на толще, и
         светлый квадрат просвечивал бы каймой, пока снимок грузится.
       */
-      <div className="zoom-frame relative aspect-square w-full overflow-hidden rounded-[16px] bg-abyss-800">
+      <div className="zoom-frame relative aspect-square w-full overflow-hidden rounded-inset bg-abyss-800">
         <Picture
           src={photo.src}
           alt={photo.alt}
@@ -63,7 +63,7 @@ export function CoachPortrait({
 
   return (
     <div
-      className="relative aspect-square w-full overflow-hidden rounded-[16px] bg-abyss-900"
+      className="relative aspect-square w-full overflow-hidden rounded-inset bg-abyss-900"
       role="img"
       aria-label={`${name} — портрет появится после фотосъёмки`}
     >

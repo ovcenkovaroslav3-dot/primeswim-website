@@ -67,7 +67,7 @@ const choices: Record<Step, { value: string; label: string }[]> = {
 };
 
 const chipClass =
-  'min-h-12 rounded-control border border-white/25 bg-white/5 px-4 py-3 text-left text-[15px] text-white transition-colors hover:border-lime-300 hover:bg-white/10';
+  'min-h-12 rounded-control border border-white/25 bg-white/5 px-3 py-3 text-left text-base text-white sm:px-4 transition-colors hover:border-lime-300 hover:bg-white/10';
 
 export function GroupPicker() {
   const [answers, setAnswers] = useState<Partial<PickerAnswers>>({});

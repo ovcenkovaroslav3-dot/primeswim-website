@@ -48,7 +48,7 @@ function MessengerCard({
       target="_blank"
       rel="noopener noreferrer"
       data-goal={goal}
-      className="group lift glass flex min-h-24 flex-col justify-center rounded-[16px] p-6 text-left transition-colors duration-200 hover:border-white/35"
+      className="group lift glass flex min-h-24 flex-col justify-center rounded-inset p-6 text-left transition-colors duration-200 hover:border-white/35"
     >
       <span className="flex items-center gap-2 text-lg font-medium text-white">
         {title}

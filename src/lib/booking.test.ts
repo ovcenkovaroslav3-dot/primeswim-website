@@ -4,11 +4,12 @@ import { test } from 'node:test';
 import { sanitizePrefill } from './booking.ts';
 
 test('из хранилища берутся только строки известных полей', () => {
-  assert.deepEqual(sanitizePrefill({ age: '9-10', program: 'sport', slot: 'mon-19:00', note: 'x', phone: '+7999' }), {
+  assert.deepEqual(sanitizePrefill({ age: '9-10', program: 'sport', slot: 'mon-19:00', note: 'x', comment: 'тариф', phone: '+7999' }), {
     age: '9-10',
     program: 'sport',
     slot: 'mon-19:00',
     note: 'x',
+    comment: 'тариф',
   });
 });
 
@@ -19,4 +20,9 @@ test('мусор не превращается в подстановку', () =>
   assert.equal(odd?.age, undefined);
   assert.equal(odd?.program, undefined);
   assert.equal(odd?.note?.length, 240);
+});
+
+test('комментарий тарифа — только строка и не длиннее 240 знаков', () => {
+  assert.equal(sanitizePrefill({ comment: 'a'.repeat(1000) })?.comment?.length, 240);
+  assert.equal(sanitizePrefill({ comment: 42 })?.comment, undefined);
 });

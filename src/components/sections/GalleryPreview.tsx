@@ -41,7 +41,7 @@ export function GalleryPreview() {
         {galleryHighlights.map((photo, i) => (
           <li
             key={photo.src}
-            className="reveal zoom-frame relative aspect-square overflow-hidden rounded-[16px] bg-surface"
+            className="reveal zoom-frame relative aspect-square overflow-hidden rounded-inset bg-surface"
             style={{ ['--reveal-delay' as string]: `${(i % 4) * 60}ms` }}
           >
             <Picture

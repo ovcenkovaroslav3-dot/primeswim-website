@@ -23,6 +23,8 @@ export type BookingPrefill = {
   slot?: string;
   /** Что ответил родитель в подборе — уходит школе вместе с заявкой */
   note?: string;
+  /** Выбранный тариф со страницы цен — встаёт в комментарий формы, если он пуст */
+  comment?: string;
 };
 
 export const BOOKING_EVENT = 'primeswim:booking';
@@ -82,5 +84,6 @@ export function sanitizePrefill(raw: unknown): BookingPrefill | null {
     program: pick('program', 40),
     slot: pick('slot', 40),
     note: pick('note', 240),
+    comment: pick('comment', 240),
   };
 }

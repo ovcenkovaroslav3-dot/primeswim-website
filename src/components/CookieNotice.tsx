@@ -158,7 +158,7 @@ export function CookieNotice() {
       style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
-        <p className="max-w-[68ch] text-[13px] leading-snug text-ink-soft sm:text-sm sm:leading-relaxed">
+        <p className="max-w-[68ch] text-sm leading-snug text-ink-soft sm:leading-relaxed">
           {/*
             Короткая версия — до 640 px, развёрнутая — дальше. Обе описывают
             одно и то же: без согласия счётчик не подключается.
@@ -200,7 +200,7 @@ export function CookieNotice() {
               по замыслу кнопках это читалось как «главная тут одна». Кегль
               на телефоне на шаг мельче, дальше прежний.
             */
-            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-control border border-hairline px-3 text-[13px] font-semibold whitespace-nowrap text-ink-soft transition-colors hover:bg-surface-alt sm:flex-none sm:px-5 sm:text-sm"
+            className="lift inline-flex min-h-11 flex-1 items-center justify-center rounded-control border border-hairline px-3 text-sm font-semibold whitespace-nowrap text-ink-soft transition-colors hover:bg-surface-alt sm:flex-none sm:px-5"
           >
             Только необходимые
           </button>

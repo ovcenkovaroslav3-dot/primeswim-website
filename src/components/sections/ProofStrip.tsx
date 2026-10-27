@@ -62,7 +62,7 @@ export function ProofStrip() {
               не туда, где её ждёшь, — утилита считает по порядку в разметке,
               а не по тому, где элемент оказался в сетке.
             */
-            className={`reveal text-sm leading-snug sm:text-[15px] lg:pr-6 ${
+            className={`reveal text-sm leading-snug sm:text-base lg:pr-6 ${
               i > 0
                 ? 'border-t border-white/15 pt-4 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6'
                 : ''

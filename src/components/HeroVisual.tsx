@@ -80,12 +80,12 @@ export function HeroVisual({
         */}
         <div className="glass absolute top-3 left-3 flex items-center gap-2 rounded-full py-1.5 pr-3.5 pl-2.5 sm:top-4 sm:left-4">
           <OrcaMark tone="white" className="w-5 shrink-0" />
-          <span className="font-display text-[11px] leading-none font-extrabold tracking-tight text-white">
+          <span className="font-display text-xs leading-none font-extrabold tracking-tight text-white">
             PRIME SWIM
           </span>
         </div>
 
-        <figcaption className="absolute inset-x-0 bottom-0 p-4 text-xs leading-snug text-white/85 sm:text-[13px]">
+        <figcaption className="absolute inset-x-0 bottom-0 p-4 text-xs leading-snug text-white/85">
           {venue} · {district}
         </figcaption>
       </div>

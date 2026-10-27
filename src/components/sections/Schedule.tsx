@@ -58,7 +58,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
             <div
               key={d}
               aria-hidden="true"
-              className={`flex flex-col items-center rounded-[14px] border py-4 ${
+              className={`flex flex-col items-center rounded-inset border py-4 ${
                 slot
                   ? 'border-brand-300 bg-surface'
                   : 'border-transparent bg-surface/40'
@@ -126,7 +126,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
         {schedule.map((slot, i) => (
           <li
             key={slot.id}
-            className="reveal flex items-start justify-between gap-3 rounded-[14px] border border-hairline bg-surface px-5 py-4"
+            className="reveal flex items-start justify-between gap-3 rounded-inset border border-hairline bg-surface px-5 py-4"
             style={{ ['--reveal-delay' as string]: `${i * 60}ms` }}
           >
             <span className="text-sm text-ink-soft">

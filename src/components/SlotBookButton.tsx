@@ -31,7 +31,7 @@ export function SlotBookButton({
         trackGoal('pick_slot', { slot: value });
         requestBooking({ slot: value });
       }}
-      aria-label={`Записаться на пробное: ${label}`}
+      aria-label={`Выбрать время: ${label} — подставим в заявку`}
       className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-brand-300 bg-surface px-4 text-lg font-light tabular-nums text-ink transition-colors hover:border-brand-500 hover:bg-brand-50 dark:hover:border-brand-200 dark:hover:bg-brand-900/40"
     >
       {time}
