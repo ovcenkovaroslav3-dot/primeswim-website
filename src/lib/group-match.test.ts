@@ -60,5 +60,5 @@ test('варианты времени построены из расписани
   assert.equal(slotOptions.length, total);
   assert.equal(new Set(slotOptions.map((s) => s.value)).size, total);
   assert.ok(slotOptions.find((s) => s.value === 'sat-11:00')?.weekend);
-  assert.equal(slotOptions.find((s) => s.value === 'mon-19:00')?.weekend, false);
+  assert.equal(slotOptions.find((s) => s.value === 'mon-19:45')?.weekend, false);
 });
