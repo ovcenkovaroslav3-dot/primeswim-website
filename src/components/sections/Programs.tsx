@@ -64,9 +64,9 @@ export function Programs() {
         lead="Обучение плаванию детей с нуля и спортивная секция в одной школе: ребёнок попадает в группу по возрасту и уровню подготовки, поэтому программа подходит и новичку, и тому, кто уже плавает."
       />
 
-      <ul className="mt-12 grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr]">
+      <ul className="mt-12 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr]">
         <li
-          className="reveal relative overflow-clip rounded-card bg-abyss-900 p-8 text-white sm:col-span-2 lg:col-span-1 lg:p-10"
+          className="reveal relative overflow-clip rounded-card bg-abyss-900 p-6 text-white sm:col-span-2 sm:p-8 lg:col-span-1 lg:p-10"
           style={{ ['--reveal-delay' as string]: '60ms' }}
         >
           <div
@@ -116,7 +116,7 @@ export function Programs() {
         {rest.map((program, i) => (
           <li
             key={program.id}
-            className="reveal flex flex-col rounded-card border border-hairline bg-surface p-7"
+            className="reveal flex flex-col rounded-card border border-hairline bg-surface p-6 sm:p-8"
             style={{ ['--reveal-delay' as string]: `${140 + i * 80}ms` }}
           >
             <h3 className="text-xl font-light text-ink">{program.title}</h3>

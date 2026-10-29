@@ -103,7 +103,7 @@ export function Hero() {
         className="absolute inset-0 -z-10 bg-linear-to-b from-abyss-950/88 via-abyss-950/62 to-abyss-950/88 md:bg-linear-to-r md:from-abyss-950/94 md:via-abyss-950/58 md:to-abyss-950/28"
       />
 
-      <div className="hero-depart mx-auto w-full max-w-[75rem] px-4 pt-14 pb-16 sm:px-6 sm:pt-20 md:pt-28 md:pb-24">
+      <div className="hero-depart mx-auto w-full max-w-[75rem] px-4 pt-8 pb-16 sm:px-6 sm:pt-20 md:pt-28 md:pb-24">
         {/*
           Две колонки на десктопе, одна на телефоне. Фотография на телефоне
           идёт после кнопок, а не перед заголовком: сначала предложение,
@@ -127,10 +127,10 @@ export function Hero() {
           блоков теперь три, на телефоне они идут колонкой в порядке разметки,
           а на md фотография занимает вторую колонку и обе строки сразу.
         */}
-        <div className="flex flex-col gap-10 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:items-center md:gap-x-12 md:gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-x-16">
+        <div className="flex flex-col gap-8 sm:gap-10 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:items-center md:gap-x-12 md:gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-x-16">
           <div className="min-w-0">
             <p
-              className="reveal text-xs font-medium tracking-[0.28em] text-white/55 uppercase"
+              className="reveal text-xs font-medium tracking-[0.14em] text-white/55 sm:tracking-[0.28em] uppercase"
               style={{ ['--reveal-delay' as string]: '80ms' }}
             >
               {site.hero.kicker}
@@ -160,7 +160,7 @@ export function Hero() {
             */}
             <h1
               id="hero-title"
-              className="reveal mt-5 font-display text-[clamp(2.1rem,6.2vw,4rem)] leading-[1.04] font-extrabold tracking-[-0.02em] text-balance"
+              className="reveal mt-4 font-display sm:mt-5 text-[clamp(2.1rem,6.2vw,4rem)] leading-[1.04] font-extrabold tracking-[-0.02em] text-balance"
               style={{ ['--reveal-delay' as string]: '160ms' }}
             >
               {site.hero.title}
@@ -169,14 +169,14 @@ export function Hero() {
             </h1>
 
             <p
-              className="reveal mt-6 max-w-[46ch] text-base leading-relaxed text-white/80 sm:text-lg"
+              className="reveal mt-4 max-w-[46ch] sm:mt-6 text-base leading-relaxed text-white/80 sm:text-lg"
               style={{ ['--reveal-delay' as string]: '280ms' }}
             >
               {site.hero.offer}
             </p>
 
             <div
-              className="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
+              className="reveal mt-6 flex flex-col sm:mt-8 gap-3 sm:flex-row sm:items-center"
               style={{ ['--reveal-delay' as string]: '380ms' }}
             >
               <Link
@@ -212,24 +212,9 @@ export function Hero() {
             ) : null}
           </div>
 
-          {/*
-            mt-6 НА ТЕЛЕФОНЕ — ЭТО ЗАПАС ПОД КОСАТКУ, А НЕ ОТСТУП.
-
-            Она выходит за верхний край рамки на 18 % её высоты (см.
-            HeroVisual) и высоты не занимает вовсе — то есть съедает то, что
-            над кадром. Пока над кадром была пустота, это никому не мешало;
-            теперь там строка с ценами, и морда легла ровно на запятую после
-            «1 100 ₽».
-
-            24 пикселя — замер, а не круглое число: остриё стояло на 637-м
-            пикселе, вторая строка кончается на 658-м. Меньше — снова
-            задевает, больше — кадр без нужды уезжает за сгиб.
-
-            На md и выше косатка висит над своей колонкой, задевать ей нечего,
-            поэтому там запас снимается.
-          */}
+          {/* Запас над кадром нужен выступающей за его край косатке. */}
           <div
-            className="mt-6 md:col-start-2 md:row-start-1 md:row-span-2 md:mt-0"
+            className="mt-4 sm:mt-6 md:col-start-2 md:row-start-1 md:row-span-2 md:mt-0"
             style={{ ['--reveal-delay' as string]: '320ms' }}
           >
             <HeroVisual

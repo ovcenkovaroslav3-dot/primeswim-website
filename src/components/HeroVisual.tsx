@@ -54,7 +54,7 @@ export function HeroVisual({
         подобраны по снимку заново — при смене позы их придётся подбирать
         снова, переносить числа нельзя.
       */}
-      <MascotOrca className="absolute -top-[18%] -right-[6%] z-20 w-[54%] drop-shadow-[0_28px_40px_rgba(11,1,20,0.5)] sm:-right-[8%] sm:w-[50%] md:-top-[26%] md:-right-[18%] md:w-[74%]" />
+      <MascotOrca className="absolute -top-[18%] -right-[6%] z-20 w-[46%] drop-shadow-[0_28px_40px_rgba(11,1,20,0.5)] sm:-right-[8%] sm:w-[50%] md:-top-[26%] md:-right-[18%] md:w-[74%]" />
 
       <div className="zoom-frame relative overflow-hidden rounded-card border border-white/15 bg-abyss-900 shadow-[0_40px_90px_-40px_rgba(0,0,0,0.95)]">
         <Picture
