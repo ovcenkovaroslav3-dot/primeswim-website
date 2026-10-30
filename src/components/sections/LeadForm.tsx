@@ -111,6 +111,8 @@ export function LeadForm() {
   const tariffRef = useRef('');
   const sentRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const wishesRef = useRef<HTMLDetailsElement>(null);
+  const pendingErrorFocus = useRef<string | null>(null);
 
   /*
     Подстановка из подбора группы и из расписания. Источник один — событие
@@ -120,6 +122,7 @@ export function LeadForm() {
   useEffect(() => {
     const apply = (prefill: BookingPrefill | null) => {
       if (!prefill) return;
+      if (wishesRef.current) wishesRef.current.open = true;
       setValues((v) => ({
         ...v,
         age: prefill.age && validAgeIds.has(prefill.age) ? prefill.age : v.age,
@@ -226,6 +229,18 @@ export function LeadForm() {
     note,
   });
 
+  const focusErrors = (found: LeadErrors) => {
+    if ((found.program || found.comment) && wishesRef.current) wishesRef.current.open = true;
+    pendingErrorFocus.current = Object.keys(found)[0] ?? null;
+  };
+
+  useEffect(() => {
+    if (status === 'sending' || !pendingErrorFocus.current) return;
+    const field = pendingErrorFocus.current;
+    pendingErrorFocus.current = null;
+    document.getElementById(`lead-${field}`)?.focus();
+  }, [errors, status]);
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (status === 'sending') return;
@@ -238,8 +253,7 @@ export function LeadForm() {
     setErrors(found);
     if (Object.keys(found).length > 0) {
       // переводим фокус на первое проблемное поле, а не просто краснеем
-      const first = Object.keys(found)[0];
-      document.getElementById(`lead-${first}`)?.focus();
+      focusErrors(found);
       return;
     }
 
@@ -286,8 +300,7 @@ export function LeadForm() {
       if (data?.errors) {
         setErrors(data.errors as LeadErrors);
         setStatus('idle');
-        const first = Object.keys(data.errors)[0];
-        document.getElementById(`lead-${first}`)?.focus();
+        focusErrors(data.errors as LeadErrors);
         return;
       }
 
@@ -488,137 +501,152 @@ export function LeadForm() {
           )}
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <div>
-            <label htmlFor="lead-age" className={labelClass}>
-              Возраст ребёнка <span className="text-red-600 dark:text-red-300">*</span>
-            </label>
-            <select
-              id="lead-age"
-              name="age"
-              disabled={sending}
-              value={values.age}
-              onChange={(e) => set('age', e.target.value)}
-              aria-invalid={Boolean(errors.age)}
-              aria-describedby={
-                values.age === 'under-7' ? 'lead-age-note' : errors.age ? 'lead-age-error' : undefined
-              }
-              className={`${fieldClass} ${fieldBorder(Boolean(errors.age))}`}
-            >
-              <option value="">Выберите возраст</option>
-              {ageOptions.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-            {errors.age ? (
-              <p id="lead-age-error" className="mt-2 text-sm text-red-700 dark:text-red-300">
-                {errors.age}
-              </p>
-            ) : values.age === 'under-7' ? (
-              <p id="lead-age-note" className="mt-2 text-sm text-ink-muted">
-                Обычно набираем с 7 лет — напишите, обсудим ваш случай.
-              </p>
-            ) : null}
-          </div>
-
-          <div>
-            <label htmlFor="lead-program" className={labelClass}>
-              Чему хотите научиться
-            </label>
-            <select
-              id="lead-program"
-              name="program"
-              disabled={sending}
-              value={values.program}
-              onChange={(e) => set('program', e.target.value)}
-              className={`${fieldClass} ${fieldBorder(Boolean(errors.program))}`}
-            >
-              {programOptions.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/*
-          Удобное время. Необязательное: «подберите сами» — честный ответ
-          для того, кто ещё не знает. Список строится из того же расписания,
-          что и страница /raspisanie/, поэтому разойтись с ним не может.
-          Наличие мест здесь не обещается — его подтверждает администратор.
-        */}
         <div>
-          <label htmlFor="lead-slot" className={labelClass}>
-            Удобное время
+          <label htmlFor="lead-age" className={labelClass}>
+            Возраст ребёнка <span className="text-red-600 dark:text-red-300">*</span>
           </label>
           <select
-            id="lead-slot"
-            name="slot"
+            id="lead-age"
+            name="age"
             disabled={sending}
-            value={slot}
-            onChange={(e) => {
-              markStarted();
-              setSlot(e.target.value);
-              setSlotFromSchedule(false);
-            }}
-            aria-describedby="lead-slot-hint"
-            className={`${fieldClass} border-hairline`}
+            value={values.age}
+            onChange={(e) => set('age', e.target.value)}
+            aria-invalid={Boolean(errors.age)}
+            aria-describedby={
+              values.age === 'under-7' ? 'lead-age-note' : errors.age ? 'lead-age-error' : undefined
+            }
+            className={`${fieldClass} ${fieldBorder(Boolean(errors.age))}`}
           >
-            <option value="">Пусть подберёт администратор</option>
-            {slotOptions.map((o) => (
+            <option value="">Выберите возраст</option>
+            {ageOptions.map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
               </option>
             ))}
           </select>
-          <p id="lead-slot-hint" className="mt-2 text-sm text-ink-muted">
-            Свободное место в группе подтвердит администратор.
-          </p>
-        </div>
-
-        <div>
-          <label htmlFor="lead-comment" className={labelClass}>
-            Комментарий
-          </label>
-          <textarea
-            id="lead-comment"
-            name="comment"
-            rows={3}
-            maxLength={LEAD_COMMENT_MAX}
-            disabled={sending}
-            value={values.comment}
-            onChange={(e) => set('comment', e.target.value)}
-            aria-invalid={Boolean(errors.comment)}
-            aria-describedby="lead-comment-medical"
-            placeholder="Опыт занятий, вопросы"
-            className={`${fieldClass} resize-y ${fieldBorder(Boolean(errors.comment))}`}
-          />
-          {/*
-            Предупреждение о медицинских сведениях.
-
-            Свободное поле рядом со словом «ребёнок» само провоцирует
-            родителя написать диагноз. Данные о здоровье — специальная
-            категория персональных данных (ст. 10 152-ФЗ), и получать их
-            в обычной форме записи школа не должна. Дешевле не спрашивать,
-            чем потом обеспечивать особый режим хранения.
-
-            Стоит до поля в потоке чтения через aria-describedby и видимо —
-            под ним, где взгляд оказывается перед началом ввода.
-
-            [ТРЕБУЕТ ПРОВЕРКИ ЮРИСТОМ] Формулировка и то, как медицинские
-            вопросы обсуждаются после обращения, — за пределами кода.
-          */}
-          <p id="lead-comment-medical" className="mt-2 text-sm text-ink-muted">
-            Не указывайте диагнозы и другие медицинские сведения. Медицинские
-            вопросы обсудим отдельно после обращения.
-          </p>
-          {errors.comment ? (
-            <p className="mt-2 text-sm text-red-700 dark:text-red-300">{errors.comment}</p>
+          {errors.age ? (
+            <p id="lead-age-error" className="mt-2 text-sm text-red-700 dark:text-red-300">
+              {errors.age}
+            </p>
+          ) : values.age === 'under-7' ? (
+            <p id="lead-age-note" className="mt-2 text-sm text-ink-muted">
+              Обычно набираем с 7 лет — напишите, обсудим ваш случай.
+            </p>
           ) : null}
         </div>
+
+        <details ref={wishesRef} className="group rounded-inset border border-hairline px-4">
+          <summary className="flex min-h-11 cursor-pointer items-center justify-between gap-3 py-3 font-medium text-ink">
+            Дополнительные пожелания
+            <svg aria-hidden="true" className="size-5 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="none">
+              <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </summary>
+          <p className="text-sm text-ink-muted">Направление, время и комментарий — необязательно</p>
+          <div className="grid gap-5 pt-4 pb-5">
+            <div>
+              <label htmlFor="lead-program" className={labelClass}>
+                Чему хотите научиться
+              </label>
+              <select
+                id="lead-program"
+                name="program"
+                disabled={sending}
+                value={values.program}
+                onChange={(e) => set('program', e.target.value)}
+                aria-invalid={Boolean(errors.program)}
+                aria-describedby={errors.program ? 'lead-program-error' : undefined}
+                className={`${fieldClass} ${fieldBorder(Boolean(errors.program))}`}
+              >
+                {programOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+              {errors.program ? (
+                <p id="lead-program-error" className="mt-2 text-sm text-red-700 dark:text-red-300">{errors.program}</p>
+              ) : null}
+            </div>
+
+            {/*
+              Удобное время. Необязательное: «подберите сами» — честный ответ
+              для того, кто ещё не знает. Список строится из того же расписания,
+              что и страница /raspisanie/, поэтому разойтись с ним не может.
+              Наличие мест здесь не обещается — его подтверждает администратор.
+            */}
+            <div>
+              <label htmlFor="lead-slot" className={labelClass}>
+                Удобное время
+              </label>
+              <select
+                id="lead-slot"
+                name="slot"
+                disabled={sending}
+                value={slot}
+                onChange={(e) => {
+                  markStarted();
+                  setSlot(e.target.value);
+                  setSlotFromSchedule(false);
+                }}
+                aria-describedby="lead-slot-hint"
+                className={`${fieldClass} border-hairline`}
+              >
+                <option value="">Пусть подберёт администратор</option>
+                {slotOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+              <p id="lead-slot-hint" className="mt-2 text-sm text-ink-muted">
+                Свободное место в группе подтвердит администратор.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="lead-comment" className={labelClass}>
+                Комментарий
+              </label>
+              <textarea
+                id="lead-comment"
+                name="comment"
+                rows={3}
+                maxLength={LEAD_COMMENT_MAX}
+                disabled={sending}
+                value={values.comment}
+                onChange={(e) => set('comment', e.target.value)}
+                aria-invalid={Boolean(errors.comment)}
+                aria-describedby={errors.comment ? 'lead-comment-medical lead-comment-error' : 'lead-comment-medical'}
+                placeholder="Опыт занятий, вопросы"
+                className={`${fieldClass} resize-y ${fieldBorder(Boolean(errors.comment))}`}
+              />
+              {/*
+                Предупреждение о медицинских сведениях.
+
+                Свободное поле рядом со словом «ребёнок» само провоцирует
+                родителя написать диагноз. Данные о здоровье — специальная
+                категория персональных данных (ст. 10 152-ФЗ), и получать их
+                в обычной форме записи школа не должна. Дешевле не спрашивать,
+                чем потом обеспечивать особый режим хранения.
+
+                Стоит до поля в потоке чтения через aria-describedby и видимо —
+                под ним, где взгляд оказывается перед началом ввода.
+
+                [ТРЕБУЕТ ПРОВЕРКИ ЮРИСТОМ] Формулировка и то, как медицинские
+                вопросы обсуждаются после обращения, — за пределами кода.
+              */}
+              <p id="lead-comment-medical" className="mt-2 text-sm text-ink-muted">
+                Не указывайте диагнозы и другие медицинские сведения. Медицинские
+                вопросы обсудим отдельно после обращения.
+              </p>
+              {errors.comment ? (
+                <p id="lead-comment-error" className="mt-2 text-sm text-red-700 dark:text-red-300">{errors.comment}</p>
+              ) : null}
+            </div>
+
+          </div>
+        </details>
 
         {/*
           Honeypot: скрыт от людей, но доступен ботам.

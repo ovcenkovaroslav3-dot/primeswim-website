@@ -39,11 +39,11 @@ export function Logo({
         : 'w-6 shrink-0 sm:w-7';
 
   return (
-    <span className="inline-flex items-center gap-2.5">
+    <span className="inline-flex min-w-0 items-center gap-2.5">
       {markClass ? (
         <OrcaMark tone={inverted ? 'white' : 'brand'} className={markClass} />
       ) : null}
-      <span className="font-display text-xl leading-none font-extrabold tracking-tight sm:text-2xl lg:text-xl xl:text-2xl">
+      <span className="flex min-w-0 flex-wrap font-display text-xl leading-none font-extrabold tracking-tight sm:text-2xl lg:text-xl xl:text-2xl">
         <span className={inverted ? 'text-white' : 'text-brand-600 dark:text-brand-100'}>
           PRIME
         </span>

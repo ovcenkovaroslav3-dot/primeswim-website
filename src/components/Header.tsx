@@ -38,7 +38,7 @@ export function Header() {
         строкой; полные названия остались в меню, подвале и «Контактах».
       */}
       <div className="border-b border-hairline bg-surface-alt">
-        <div className="mx-auto flex w-full max-w-[75rem] items-center justify-center gap-3 px-4 py-1 sm:gap-4 sm:px-6 lg:justify-end">
+        <div className="mx-auto flex w-full max-w-[75rem] flex-wrap items-center justify-center gap-3 px-4 py-1 sm:gap-4 sm:px-6 lg:justify-end">
           <span className="text-xs text-ink-muted">
             Каналы школы
           </span>
@@ -52,7 +52,7 @@ export function Header() {
           снаружи. С 6xl логотип стоял на 24 px правее заголовков секций.
           Так же устроены подвал, Hero и крошки внутренних страниц.
         */}
-        <div className="mx-auto flex w-full max-w-[75rem] items-center gap-4 px-4 py-3 sm:px-6">
+        <div className="mx-auto flex w-full max-w-[75rem] flex-wrap items-center gap-4 px-4 py-3 sm:px-6">
           {/*
             Пояснение лежит внутри ссылки скрытым текстом, а не в aria-label.
             С aria-label доступное имя было «PRIME SWIM — на главную страницу»,
@@ -65,7 +65,7 @@ export function Header() {
               по ней. Рядом стоит кнопка записи высотой 44, и промах по
               логотипу на телефоне попадал в пустоту между ними.
             */}
-            <Link href="/" className="inline-flex min-h-11 shrink-0 items-center">
+            <Link href="/" className="inline-flex min-h-11 min-w-0 max-w-full items-center">
             <Logo mark="wide" />
             <span className="sr-only"> — на главную страницу</span>
           </Link>

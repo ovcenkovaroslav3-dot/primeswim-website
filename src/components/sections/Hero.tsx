@@ -121,14 +121,14 @@ export function Hero() {
           выше кадра и за сгиб не ушли. А факты под кадром ничего не теряют —
           «45 минут» уже сказано словами в лиде.
 
-          ТЕХНИЧЕСКИ ЭТО flex НА ТЕЛЕФОНЕ И grid НА md. Иначе никак: полоса
+          ТЕХНИЧЕСКИ ЭТО flex ДО lg И grid НА lg. Иначе никак: полоса
           фактов лежала внутри текстовой колонки, а вставить её нужно между
           колонкой и соседней — порядком в сетке этого не сделать. Поэтому
           блоков теперь три, на телефоне они идут колонкой в порядке разметки,
-          а на md фотография занимает вторую колонку и обе строки сразу.
+          а на lg фотография занимает вторую колонку и обе строки сразу.
         */}
-        <div className="flex flex-col gap-8 sm:gap-10 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] md:items-center md:gap-x-12 md:gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-x-16">
-          <div className="min-w-0">
+        <div className="flex flex-col gap-8 sm:gap-10 lg:grid lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-center lg:gap-x-12 lg:gap-y-10 xl:gap-x-16">
+          <div className="min-w-0 lg:max-w-none md:max-w-[46rem]">
             <p
               className="reveal text-xs font-medium tracking-[0.14em] text-white/55 sm:tracking-[0.28em] uppercase"
               style={{ ['--reveal-delay' as string]: '80ms' }}
@@ -160,7 +160,7 @@ export function Hero() {
             */}
             <h1
               id="hero-title"
-              className="reveal mt-4 font-display sm:mt-5 text-[clamp(2.1rem,6.2vw,4rem)] leading-[1.04] font-extrabold tracking-[-0.02em] text-balance"
+              className="reveal mt-4 font-display sm:mt-5 text-[clamp(2.1rem,6.2vw,4rem)] lg:text-[clamp(2.1rem,5vw,4rem)] xl:text-[clamp(2.1rem,6.2vw,4rem)] leading-[1.04] font-extrabold tracking-[-0.02em] text-balance [overflow-wrap:anywhere] hyphens-auto"
               style={{ ['--reveal-delay' as string]: '160ms' }}
             >
               {site.hero.title}
@@ -214,7 +214,7 @@ export function Hero() {
 
           {/* Запас над кадром нужен выступающей за его край косатке. */}
           <div
-            className="mt-4 sm:mt-6 md:col-start-2 md:row-start-1 md:row-span-2 md:mt-0"
+            className="mt-4 sm:mt-6 md:mt-10 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mt-0"
             style={{ ['--reveal-delay' as string]: '320ms' }}
           >
             <HeroVisual

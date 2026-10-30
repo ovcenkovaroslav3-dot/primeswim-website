@@ -144,7 +144,7 @@ export function MobileMenu() {
                 aria-label="Меню сайта"
                 className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-surface p-6 shadow-xl"
               >
-                <div className="mb-8 flex items-center justify-between">
+                <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
                   {/*
                     Знак, а не слово «Меню». Открытая панель закрывает шапку
                     целиком, и на весь экран не оставалось ни одного упоминания
@@ -158,7 +158,7 @@ export function MobileMenu() {
                   <Link
                     href="/"
                     onClick={() => setOpen(false)}
-                    className="inline-flex min-h-11 items-center"
+                    className="inline-flex min-h-11 min-w-0 max-w-full items-center"
                   >
                     <Logo />
                     <span className="sr-only"> — на главную страницу</span>

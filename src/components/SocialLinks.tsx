@@ -72,7 +72,7 @@ export function SocialLinks({
       голосовое управление находит ссылку по видимому слову (WCAG 2.5.3).
     */
     return (
-      <ul className="flex items-center gap-3 sm:gap-4">
+      <ul className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
         {links.map((link) => (
           <li key={link.href}>
             <a
