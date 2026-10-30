@@ -25,9 +25,11 @@ export function SlotBookButton({
   label: string;
 }) {
   return (
-    <button
-      type="button"
-      onClick={() => {
+    <a
+      href="#booking"
+      onClick={(event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
         trackGoal('pick_slot', { slot: value });
         requestBooking({ slot: value });
       }}
@@ -41,6 +43,6 @@ export function SlotBookButton({
       >
         →
       </span>
-    </button>
+    </a>
   );
 }

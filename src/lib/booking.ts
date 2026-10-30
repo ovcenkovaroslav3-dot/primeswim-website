@@ -33,6 +33,13 @@ const STORAGE_KEY = 'primeswim:booking-prefill';
 export function requestBooking(prefill: BookingPrefill): void {
   if (typeof window === 'undefined') return;
 
+  // Сохраняем выбор до события: форма может ещё не подключить слушатель.
+  try {
+    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(prefill));
+  } catch {
+    // Если хранилище недоступно, работающий слушатель получит событие.
+  }
+
   const section = document.getElementById('booking');
   if (section) {
     window.dispatchEvent(new CustomEvent<BookingPrefill>(BOOKING_EVENT, { detail: prefill }));
@@ -47,11 +54,6 @@ export function requestBooking(prefill: BookingPrefill): void {
     return;
   }
 
-  try {
-    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(prefill));
-  } catch {
-    // без хранилища просто перейдём к форме
-  }
   // Сейчас подбор и кнопки времени стоят только на страницах с формой, так
   // что это запасной путь. Полная загрузка здесь уместна: форма заберёт
   // выбор из хранилища при монтировании.

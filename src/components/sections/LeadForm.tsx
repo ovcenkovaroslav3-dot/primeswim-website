@@ -159,7 +159,10 @@ export function LeadForm() {
       setStatus((current) => (current === 'failed' ? 'idle' : current));
     };
     apply(takePendingBooking());
-    const onBooking = (event: Event) => apply((event as CustomEvent<BookingPrefill>).detail);
+    const onBooking = (event: Event) => {
+      takePendingBooking();
+      apply((event as CustomEvent<BookingPrefill>).detail);
+    };
     window.addEventListener(BOOKING_EVENT, onBooking);
     return () => window.removeEventListener(BOOKING_EVENT, onBooking);
   }, []);
