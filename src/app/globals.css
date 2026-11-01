@@ -947,3 +947,49 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Пузырьки вокруг Прайми — без JS, новых библиотек и дополнительных запросов. */
+.praimi-bubbles {
+  position: absolute;
+  z-index: 19;
+  pointer-events: none;
+  inset: -9% -8% 45% 42%;
+  overflow: visible;
+}
+.praimi-bubbles span {
+  position: absolute;
+  bottom: 0;
+  left: 18%;
+  width: 10px;
+  aspect-ratio: 1;
+  border: 1px solid rgb(221 249 255 / 58%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, rgb(255 255 255 / 35%), transparent 62%);
+  box-shadow: inset -2px -2px 6px rgb(179 208 255 / 20%);
+  opacity: 0;
+}
+.praimi-bubbles span:nth-child(2) { left: 39%; width: 7px; }
+.praimi-bubbles span:nth-child(3) { left: 67%; width: 13px; }
+.praimi-bubbles span:nth-child(4) { left: 85%; width: 6px; }
+@keyframes praimi-bubble-rise {
+  0% { transform: translate3d(0, 0, 0) scale(.7); opacity: 0; }
+  16% { opacity: .6; }
+  78% { opacity: .45; }
+  100% { transform: translate3d(15px, -115px, 0) scale(1.1); opacity: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .praimi-stage .praimi-bubbles span { animation: praimi-bubble-rise 5.8s ease-in infinite; }
+  .praimi-stage .praimi-bubbles span:nth-child(2) { animation-delay: -1.6s; animation-duration: 6.4s; }
+  .praimi-stage .praimi-bubbles span:nth-child(3) { animation-delay: -3.3s; animation-duration: 7.1s; }
+  .praimi-stage .praimi-bubbles span:nth-child(4) { animation-delay: -4.8s; animation-duration: 5.4s; }
+  /* Прайми отвечает на наведение/фокус кнопки записи дополнительным сиянием. */
+  section:has([data-goal="cta_booking"]:is(:hover, :focus-visible)) .praimi-stage .praimi-shine {
+    opacity: .75;
+    animation-duration: 2.2s;
+  }
+}
+@media (max-width: 767px) {
+  .praimi-bubbles { inset: -5% -2% 55% 45%; }
+  .praimi-bubbles span:nth-child(n+3) { display: none; }
+}
