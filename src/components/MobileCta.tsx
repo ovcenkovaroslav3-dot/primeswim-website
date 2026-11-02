@@ -60,7 +60,7 @@ export function MobileCta() {
 
   return (
     <div
-      className={`fixed inset-x-0 z-40 border-t border-hairline bg-surface/92 px-4 pt-3 backdrop-blur transition-[transform,bottom] duration-300 lg:hidden ${
+      className={`fixed inset-x-0 z-40 border-t border-hairline bg-surface/92 px-4 pt-2 backdrop-blur transition-[transform,bottom] duration-300 lg:hidden ${
         shown ? 'translate-y-0' : 'translate-y-full'
       }`}
       /*
@@ -77,7 +77,7 @@ export function MobileCta() {
       */
       style={{
         bottom: 'var(--cookie-notice-h, 0px)',
-        paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))',
+        paddingBottom: 'max(0.5rem, calc(env(safe-area-inset-bottom) - var(--cookie-notice-h, 0px)))',
       }}
       // пока панель спрятана, её содержимое не должно попадать в обход с клавиатуры
       inert={!shown || undefined}

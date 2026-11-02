@@ -23,8 +23,7 @@ import { coaches } from '@/content/coaches';
   Фотография — настоящий кадр бассейна МГИК, того самого, где идут занятия
   (см. content/media.ts). Это единственное на экране, что нельзя подделать
   версткой, поэтому она стоит рядом с заголовком, а не где-то ниже.
-  Кадров занятия с детьми именно в МГИК пока нет — подставлять сюда снимок
-  с другой площадки нельзя, это было бы обещанием не того места.
+  На снимке — тренировка детей в бассейне МГИК.
 
   Текст проявляется из-под масок с нарастающей задержкой. Разметка при этом
   остаётся обычной: без JavaScript классы `.reveal` не активируются,
@@ -217,10 +216,7 @@ export function Hero() {
             className="mt-4 sm:mt-6 md:mt-10 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mt-0"
             style={{ ['--reveal-delay' as string]: '320ms' }}
           >
-            <HeroVisual
-              venue={contacts.address.venue}
-              district={contacts.address.district}
-            />
+            <HeroVisual />
           </div>
 
           <div className="min-w-0">

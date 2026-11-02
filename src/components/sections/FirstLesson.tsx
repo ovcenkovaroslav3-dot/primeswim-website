@@ -1,0 +1,31 @@
+import { ArrowLink } from '../ui';
+
+const steps = [
+  { title: 'Подберите группу', text: 'Оставьте заявку: администратор подберёт группу по возрасту и уровню подготовки ребёнка и согласует время.' },
+  { title: 'Подготовьтесь', text: 'Для допуска нужна справка от педиатра. Список вещей для бассейна — в разделе для родителей.' },
+  { title: 'Приходите на пробное', text: 'Занятие проходит вместе с группой и длится 45 минут. Пробное оплачивается отдельно и не входит в абонемент.' },
+];
+
+export function FirstLesson() {
+  return (
+    <section id="first-lesson" aria-labelledby="first-lesson-title" className="bg-surface px-4 pt-14 sm:px-6 sm:pt-16 md:pt-24">
+      <div className="mx-auto w-full max-w-6xl">
+        <p className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">Первый шаг</p>
+        <h2 id="first-lesson-title" className="mt-4 text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl">Как начать заниматься</h2>
+        <ol className="mt-8 grid gap-6 md:grid-cols-3 md:gap-8">
+          {steps.map((step, i) => (
+            <li key={step.title} className="border-t border-hairline pt-4">
+              <span className="text-sm tabular-nums text-ink-muted">0{i + 1}</span>
+              <h3 className="mt-2 text-xl text-ink">{step.title}</h3>
+              <p className="mt-2 leading-relaxed text-ink-soft">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+        <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2">
+          <ArrowLink href="#booking">Оставить заявку</ArrowLink>
+          <ArrowLink href="/roditelyam/">Что взять с собой</ArrowLink>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -5,6 +5,7 @@ import { PlanPreview } from '@/components/sections/PlanPreview';
 import { CoachPreview } from '@/components/sections/CoachPreview';
 import { GalleryPreview } from '@/components/sections/GalleryPreview';
 import { PoolPreview } from '@/components/sections/PoolPreview';
+import { FirstLesson } from '@/components/sections/FirstLesson';
 import { Faq } from '@/components/sections/Faq';
 import { Contacts } from '@/components/sections/Contacts';
 import { FinalCta } from '@/components/sections/FinalCta';
@@ -29,11 +30,12 @@ import { StructuredData } from '@/components/StructuredData';
    3. Programs        — три цели, с которыми приходят: с нуля, техника, спорт.
    4. PlanPreview     — расписание и стоимость, два первых вопроса.
    5. CoachPreview    — кто будет стоять у бортика.
-   6. GalleryPreview  — восемь кадров: школа существует и выигрывает старты.
+   6. GalleryPreview  — фотографии тренировок.
    7. PoolPreview     — куда ехать, как пройти КПП, как узнать место.
-   8. Faq             — оставшиеся сомнения, короткой выборкой.
-   9. FinalCta        — форма и мессенджеры.
-  10. Contacts        — адрес, телефон, каналы.
+   8. FirstLesson     — как начать заниматься.
+   9. Faq             — оставшиеся сомнения, короткой выборкой.
+  10. FinalCta        — форма и мессенджеры.
+  11. Contacts        — адрес, телефон, каналы.
 
   Аргументы идут от самых конкретных к самым мягким. Родитель, который
   ушёл после четвёртого блока, уже знает время, цену и место — то есть
@@ -78,6 +80,7 @@ export default function HomePage() {
         вернуть: см. инструкцию в content/reviews.ts.
       */}
       <PoolPreview />
+      <FirstLesson />
       {/*
         Короткая выборка и без разметки FAQPage: полную отдаёт /roditelyam/,
         и два адреса с одной и той же разметкой конкурировали бы друг с

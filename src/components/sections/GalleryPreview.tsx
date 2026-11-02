@@ -1,64 +1,34 @@
 import { Picture } from '../Picture';
 import { ArrowLink, Section, SectionHeading } from '../ui';
-import { galleryHighlights } from '@/content/media';
+import { galleryGridImages } from '@/content/media';
 
-/*
-  Восемь кадров на главной.
+const stories = [
+  { name: 'mgik-warmup-close.jpg', caption: 'Разминка перед тренировкой', position: 'object-[center_25%]' },
+  { name: 'mgik-kids-at-edge-kickboards.jpg', caption: 'Упражнения у бортика', position: 'object-[center_65%]' },
+  { name: 'mgik-lanes-swimmers-edge.jpg', caption: 'Плавание по дорожкам', position: 'object-[center_70%]' },
+];
 
-  Вся галерея — 30 фотографий и 3 видео — с главной вынесена не зря: она
-  одна давала треть длины страницы. Но и совсем без снимков главная теряет
-  главное доказательство: что дети действительно занимаются и действительно
-  выигрывают старты. Ссылка «Галерея» в списке разделов эту работу не
-  делала — по ней уходили единицы.
-
-  Поэтому здесь ровно восемь отобранных кадров (content/media.ts): будни в
-  воде, работа тренера с группой, результат на соревнованиях. Сетка
-  квадратная и одинаковая — снимки разного формата, и без общего кадрирования
-  блок рассыпался бы по высоте.
-
-  Все восемь ленивые: они лежат глубоко внизу страницы, и грузить их вместе
-  с первым экраном незачем.
-
-  Видео здесь нет намеренно. Три клипа весят кратно больше всех восьми
-  снимков вместе, а на главной они добавили бы вес ровно тем посетителям,
-  которые до них не долистают.
-*/
 export function GalleryPreview() {
   return (
-    <Section
-      id="gallery-preview"
-      labelledBy="gallery-preview-title"
-      className="bg-surface-alt"
-    >
-      <SectionHeading
-        id="gallery-preview-title"
-        eyebrow="Как это выглядит"
-        title="Тренировки и старты"
-        lead="Будни в бассейне МГИК, работа с группой у бортика и соревнования, куда школа возит своих учеников."
-      />
-
-      <ul className="mt-10 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-4 md:grid-cols-4">
-        {galleryHighlights.map((photo, i) => (
-          <li
-            key={photo.src}
-            className="reveal zoom-frame relative aspect-square overflow-hidden rounded-inset bg-surface"
-            style={{ ['--reveal-delay' as string]: `${(i % 4) * 60}ms` }}
-          >
-            <Picture
-              src={photo.src}
-              alt={photo.alt}
-              width={photo.width}
-              height={photo.height}
-              sizes="(max-width: 768px) 50vw, 25vw"
-              className="absolute inset-0 size-full object-cover"
-            />
-          </li>
-        ))}
+    <Section id="gallery-preview" labelledBy="gallery-preview-title" className="bg-surface-alt">
+      <SectionHeading id="gallery-preview-title" eyebrow="Как это выглядит" title="Тренировки в бассейне" lead="Разминка и занятия в воде в бассейне МГИК." />
+      <ul className="mt-10 grid gap-4 md:grid-cols-12">
+        {stories.map((story, i) => {
+          const photo = galleryGridImages.find((image) => image.src.endsWith(story.name));
+          if (!photo) return null;
+          return (
+            <li key={photo.src} className={`reveal ${i === 0 ? 'md:col-span-7 md:row-span-2' : 'md:col-span-5'}`}>
+              <figure className="flex h-full flex-col">
+                <div className={`zoom-frame relative aspect-[4/3] overflow-hidden rounded-card bg-surface ${i === 0 ? 'md:aspect-auto md:flex-1' : 'md:aspect-[16/9]'}`}>
+                  <Picture src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} sizes="(max-width: 768px) 100vw, 60vw" className={`absolute inset-0 size-full object-cover ${story.position}`} />
+                </div>
+                <figcaption className="mt-3 text-sm font-medium text-ink">{story.caption}</figcaption>
+              </figure>
+            </li>
+          );
+        })}
       </ul>
-
-      <ArrowLink href="/galereya/" className="mt-8">
-        Все фото и видео с тренировок
-      </ArrowLink>
+      <ArrowLink href="/galereya/" className="mt-8">Все фото и видео с тренировок</ArrowLink>
     </Section>
   );
 }

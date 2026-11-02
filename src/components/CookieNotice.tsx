@@ -88,8 +88,8 @@ export function CookieNotice() {
       ref={ref}
       role="dialog"
       aria-label="Использование cookie"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-surface/95 px-4 py-3 backdrop-blur sm:px-6 sm:py-4"
-      style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-surface/95 px-4 py-2 backdrop-blur sm:px-6 sm:py-4"
+      style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom))' }}
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
         <p className="max-w-[68ch] text-sm leading-snug text-ink-soft sm:leading-relaxed">
