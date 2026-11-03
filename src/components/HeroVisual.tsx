@@ -1,13 +1,12 @@
 import { MascotOrca } from './MascotOrca';
 import { OrcaMark } from './OrcaMark';
 import { Picture } from './Picture';
-import { OrcaMotion } from './OrcaMotion';
 import { heroImage, heroImageNarrow } from '@/content/media';
 
 export function HeroVisual() {
   return (
-    <OrcaMotion>
-      <MascotOrca className="absolute -top-[12%] right-0 z-20 w-[40%] drop-shadow-[0_20px_30px_rgba(11,1,20,0.5)] sm:w-[42%] lg:-top-[26%] lg:-right-[18%] lg:w-[74%]" />
+    <figure className="praimi-stage reveal relative mx-auto w-full max-w-md md:max-w-xl lg:max-w-none">
+      <MascotOrca className="absolute -top-[12%] -right-[5%] z-20 w-[30%] drop-shadow-[0_20px_30px_rgba(11,1,20,0.5)] sm:w-[32%] lg:-top-[26%] lg:-right-[18%] lg:w-[74%]" />
       <div className="zoom-frame relative overflow-hidden rounded-card border border-white/15 bg-abyss-900 shadow-[0_40px_90px_-40px_rgba(0,0,0,0.95)]">
         <Picture
           src={heroImage.src}
@@ -28,6 +27,6 @@ export function HeroVisual() {
           Тренировка PRIME SWIM · бассейн МГИК
         </figcaption>
       </div>
-    </OrcaMotion>
+    </figure>
   );
 }
