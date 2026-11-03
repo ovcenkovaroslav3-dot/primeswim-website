@@ -12,11 +12,11 @@ export function FirstLesson() {
       <div className="mx-auto w-full max-w-6xl">
         <p className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">Первый шаг</p>
         <h2 id="first-lesson-title" className="mt-4 text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl">Как начать заниматься</h2>
-        <ol className="mt-8 grid gap-6 md:grid-cols-3 md:gap-8">
+        <ol className="mt-8 grid gap-6 md:grid-cols-3 md:gap-0 md:border-t md:border-hairline">
           {steps.map((step, i) => (
-            <li key={step.title} className="border-t border-hairline pt-4">
-              <span className="text-sm tabular-nums text-ink-muted">0{i + 1}</span>
-              <h3 className="mt-2 text-xl text-ink">{step.title}</h3>
+            <li key={step.title} className="min-w-0 border-t border-hairline pt-4 md:border-t-0 md:pr-8 md:pt-6">
+              <span aria-hidden="true" className="text-4xl leading-none font-light tabular-nums text-ink-muted sm:text-5xl">0{i + 1}</span>
+              <h3 className="mt-5 text-xl text-ink">{step.title}</h3>
               <p className="mt-2 leading-relaxed text-ink-soft">{step.text}</p>
             </li>
           ))}
