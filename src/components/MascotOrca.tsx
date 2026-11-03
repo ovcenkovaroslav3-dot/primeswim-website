@@ -1,4 +1,5 @@
 import imageLoader from '@/lib/image-loader';
+import { OrcaFlex } from './OrcaFlex';
 
 /*
   Прайми — талисман PRIME SWIM, объёмная косатка.
@@ -64,7 +65,7 @@ export function MascotOrca({
   return (
     /*
       Слоёв теперь четыре, и у каждого одна работа: обёртка — прокрутка,
-      зависание — непрерывная дуга, выход — разовое появление, картинка —
+      зависание — непрерывная дуга, выход — разовое появление, картинка с бликом —
       курсор.
 
       Делить пришлось потому, что transform у элемента один: две анимации на
@@ -75,6 +76,15 @@ export function MascotOrca({
     <div
       className={`${motion === 'hero' ? 'praimi-arc' : 'praimi-leap'} pointer-events-none ${className}`.trim()}
     >
+      {motion === 'hero' && (
+        <div className="praimi-wake" aria-hidden="true">
+          <span className="praimi-ripple" />
+          <span className="praimi-ripple praimi-ripple-late" />
+          <span className="praimi-spray praimi-spray-left" />
+          <span className="praimi-spray praimi-spray-right" />
+          <span className="praimi-spray praimi-spray-high" />
+        </div>
+      )}
       <div className="praimi-hover relative">
         {/*
           Выход из воды. Проигрывается один раз, когда фигура появилась в поле
@@ -83,71 +93,82 @@ export function MascotOrca({
           движение тоже.
         */}
         <div className="praimi-enter relative">
-          <picture className="block">
-            <source
-              type="image/avif"
-              media="(min-width: 768px)"
-              srcSet={src('orca-3d.avif')}
-            />
-            <source type="image/avif" srcSet={src('orca-3d-sm.avif')} />
-            <source
-              type="image/webp"
-              media="(min-width: 768px)"
-              srcSet={src('orca-3d.webp')}
-            />
-            {/*
-              Фигура декоративная: смысл первого экрана несут заголовок, факты
-              и фотография площадки, а не она. Пустой alt убирает её из чтения
-              с экрана — иначе программа объявляла бы картинку, за которой нет
-              сведений, которых нет в тексте рядом.
-            */}
-            <img
-              src={src('orca-3d-sm.webp')}
-              alt=""
-              aria-hidden="true"
-              width={760}
-              height={760}
-              decoding="async"
-              /*
-                Не priority. Кандидат в LCP на первом экране — фотография
-                бассейна, и очередь загрузки принадлежит ей: талисман,
-                вставший в неё первым, отодвинул бы единственное
-                доказательство места ради украшения.
-              */
-              fetchPriority="low"
-              className="block h-auto w-full select-none"
-            />
-          </picture>
+          <div className="praimi-steer relative">
+            {motion === 'hero' && <OrcaFlex />}
+            {motion === 'hero' && (
+              <svg className="praimi-streams" viewBox="0 0 760 760" aria-hidden="true">
+                <path className="praimi-stream praimi-stream-one" d="M640 650 C675 668 671 700 703 717 S733 746 744 755" />
+                <path className="praimi-stream praimi-stream-two" d="M610 672 C627 700 604 722 628 747 S638 768 648 780" />
+                <path className="praimi-stream praimi-stream-three" d="M660 622 C691 641 684 665 714 679 S742 700 755 711" />
+              </svg>
+            )}
+            <div className={motion === 'hero' ? 'praimi-flex' : undefined}>
+              <picture className="block">
+                <source
+                  type="image/avif"
+                  media="(min-width: 768px)"
+                  srcSet={src('orca-3d.avif')}
+                />
+                <source type="image/avif" srcSet={src('orca-3d-sm.avif')} />
+                <source
+                  type="image/webp"
+                  media="(min-width: 768px)"
+                  srcSet={src('orca-3d.webp')}
+                />
+                {/*
+                  Фигура декоративная: смысл первого экрана несут заголовок, факты
+                  и фотография площадки, а не она. Пустой alt убирает её из чтения
+                  с экрана — иначе программа объявляла бы картинку, за которой нет
+                  сведений, которых нет в тексте рядом.
+                */}
+                <img
+                  src={src('orca-3d-sm.webp')}
+                  alt=""
+                  aria-hidden="true"
+                  width={760}
+                  height={760}
+                  decoding="async"
+                  /*
+                    Не priority. Кандидат в LCP на первом экране — фотография
+                    бассейна, и очередь загрузки принадлежит ей: талисман,
+                    вставший в неё первым, отодвинул бы единственное
+                    доказательство места ради украшения.
+                  */
+                  fetchPriority="low"
+                  className="block h-auto w-full select-none"
+                />
+              </picture>
 
-          {/*
-            Блик по кромке. Маска повторяет силуэт, поэтому светлая полоса
-            видна только там, где у фигуры непрозрачные пиксели, — свет идёт
-            по телу, а не по прямоугольнику вокруг него.
+              {/*
+                Блик по кромке. Маска повторяет силуэт, поэтому светлая полоса
+                видна только там, где у фигуры непрозрачные пиксели, — свет идёт
+                по телу, а не по прямоугольнику вокруг него.
 
-            МАСКА ОТДЕЛЬНЫМ ФАЙЛОМ, И ЭТО НЕ ЛИШНЯЯ СУЩНОСТЬ. Раньше ею служил
-            сам талисман в WebP: считалось, что телефон этот файл уже скачал и
-            возьмёт из кеша. Потом рядом лёг AVIF, <picture> стал отдавать
-            телефону его — и WebP начал грузиться вторым файлом целиком, 38 KB
-            ради одной только формы. Поймал это сетевой замер, а не глаз: на
-            экране всё выглядело правильно.
+                МАСКА ОТДЕЛЬНЫМ ФАЙЛОМ, И ЭТО НЕ ЛИШНЯЯ СУЩНОСТЬ. Раньше ею служил
+                сам талисман в WebP: считалось, что телефон этот файл уже скачал и
+                возьмёт из кеша. Потом рядом лёг AVIF, <picture> стал отдавать
+                телефону его — и WebP начал грузиться вторым файлом целиком, 38 KB
+                ради одной только формы. Поймал это сетевой замер, а не глаз: на
+                экране всё выглядело правильно.
 
-            Подставить сюда AVIF нельзя: у mask-image нет согласования
-            форматов, и браузер, который его не понял, посчитает свойство
-            пустым — градиент ляжет прямоугольником поверх фигуры. Поэтому
-            маска в PNG, который понимают все, и в 240 px: ей нужна форма, а
-            не детали. 9 KB.
+                Подставить сюда AVIF нельзя: у mask-image нет согласования
+                форматов, и браузер, который его не понял, посчитает свойство
+                пустым — градиент ляжет прямоугольником поверх фигуры. Поэтому
+                маска в PNG, который понимают все, и в 240 px: ей нужна форма, а
+                не детали. 9 KB.
 
-            Собирается там же — node scripts/make-mascot-web.mjs.
-          */}
-          <span
-            aria-hidden="true"
-            className="praimi-shine"
-            style={{
-              maskImage: `url(${maskSrc})`,
-              WebkitMaskImage: `url(${maskSrc})`,
-            }}
-          />
-
+                Собирается там же — node scripts/make-mascot-web.mjs.
+              */}
+              <span
+                aria-hidden="true"
+                className="praimi-shine"
+                style={{
+                  maskImage: `url(${maskSrc})`,
+                  WebkitMaskImage: `url(${maskSrc})`,
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
