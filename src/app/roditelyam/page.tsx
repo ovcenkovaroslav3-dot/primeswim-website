@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Faq } from '@/components/sections/Faq';
 import { Parents } from '@/components/sections/Parents';
@@ -39,6 +40,18 @@ export default function ParentsPage() {
       <Why />
       <Progress />
       <Faq />
+      {/*
+        Три статьи, отвечающие на сомнения на входе. Родитель дочитал
+        страницу до вопросов — значит, собирает детали перед решением,
+        и развёрнутые материалы здесь уместнее, чем на главной.
+      */}
+      <BlogTeaser
+        slugs={[
+          's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
+          'rebenok-boitsya-vody-chto-delat',
+          'pervoe-zanyatie-po-plavaniyu-cheklist',
+        ]}
+      />
 
       <FinalCta />
     </>

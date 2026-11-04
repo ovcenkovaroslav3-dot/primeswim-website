@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 import { site } from '@/content/site';
+import { articles } from '@/content/blog';
 
 /*
   Карта сайта.
@@ -31,11 +32,25 @@ const routes = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return routes.map((route) => ({
-    url: `${site.url}${route.path}`,
-    changeFrequency: route.changeFrequency,
-    priority: route.priority,
-  }));
+  const blogRoutes: MetadataRoute.Sitemap = [
+    { url: `${site.url}/blog/`, changeFrequency: 'weekly', priority: 0.7 },
+    ...articles.map((article) => ({
+      url: `${site.url}/blog/${article.slug}/`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+      // у статей есть настоящая дата публикации — в отличие от даты сборки, она не врёт
+      lastModified: article.datePublished,
+    })),
+  ];
+
+  return [
+    ...routes.map((route) => ({
+      url: `${site.url}${route.path}`,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+    })),
+    ...blogRoutes,
+  ];
 }
 
 // сайт собирается в статику: файл должен быть посчитан на сборке

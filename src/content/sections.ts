@@ -50,4 +50,9 @@ export const sectionLinks = [
     title: 'Соревнования',
     description: 'Старты, сборы и спортивные разряды.',
   },
+  {
+    href: '/blog/',
+    title: 'Статьи',
+    description: 'Материалы тренера о детском плавании.',
+  },
 ];
