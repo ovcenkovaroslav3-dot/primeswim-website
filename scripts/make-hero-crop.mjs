@@ -1,25 +1,54 @@
 /**
- * Фото первого экрана из выбранного владельцем оригинала.
- * Запуск: node scripts/make-hero-crop.mjs
- * Оригинал остаётся в media-source; JPEG и AVIF создаются без увеличения.
+ * Копия кадра первого экрана под телефон: public/media/pool/*-4x3.{jpg,avif}.
+ *
+ * Вертикальный снимок показывается на узком экране обрезкой 4:3. Копия
+ * содержит ровно видимый центральный пояс и не заставляет телефон скачивать
+ * части исходника, которые всё равно не попадут на экран.
+ *
+ * Десктоп получает исходный вертикальный файл без изменений. Узкий экран —
+ * копию 1000×750 через <source media> в Picture.
+ *
+ * ЗАПУСК: node scripts/make-hero-crop.mjs
  */
+
+import { readFile, stat } from 'node:fs/promises';
+import path from 'node:path';
 import sharp from 'sharp';
 
-const source = 'media-source/hero/owner-selected-2026-11-02.jpg';
-const base = 'public/media/pool/mgik-training-hero';
-const { width, height } = await sharp(source).metadata();
-if (width !== 960 || height !== 1280) {
-  throw new Error('Размер исходного фото изменился: проверьте кадрирование hero.');
+const WIDTH = 1000;
+const HEIGHT = 750;
+const JPEG_QUALITY = 78;
+const AVIF_QUALITY = 62;
+
+const content = await readFile('src/content/media.ts', 'utf8');
+const found = content.match(
+  /export const heroImage: MediaItem = \{\s*src: '([^']+)'/,
+);
+if (!found) {
+  throw new Error(
+    'В src/content/media.ts не найден heroImage — скрипт не знает, какой кадр резать.',
+  );
 }
 
-const write = async (image, output) => {
-  await image.clone().jpeg({ quality: 80, progressive: true, mozjpeg: true }).toFile(`${output}.jpg`);
-  await image.clone().avif({ quality: 62 }).toFile(`${output}.avif`);
-};
+const src = path.resolve('public', found[1].replace(/^\//, ''));
+const base = src.replace(/\.jpe?g$/i, '');
+const crop = sharp(src).rotate().resize(WIDTH, HEIGHT, {
+  fit: 'cover',
+  position: 'centre',
+});
 
-await write(sharp(source).rotate(), base);
-// На 960×1280: окно 960×720, верх 493. В кадре лица и руки у бортика.
-const cropHeight = 720;
-const top = Math.round((height - cropHeight) * 0.88);
-await write(sharp(source).rotate().extract({ left: 0, top, width, height: cropHeight }), `${base}-4x3`);
-console.log(`Hero: ${width}×${height}; mobile: ${width}×${cropHeight}, top ${top}px`);
+const jpegOut = `${base}-4x3.jpg`;
+const avifOut = `${base}-4x3.avif`;
+
+await crop
+  .clone()
+  .jpeg({ quality: JPEG_QUALITY, progressive: true, mozjpeg: true })
+  .toFile(jpegOut);
+await crop.clone().avif({ quality: AVIF_QUALITY }).toFile(avifOut);
+
+const kb = async (file) => Math.round((await stat(file)).size / 1024);
+console.log(`${path.relative('.', jpegOut)} — ${await kb(jpegOut)} KB`);
+console.log(`${path.relative('.', avifOut)} — ${await kb(avifOut)} KB`);
+console.log(
+  `исходный вертикальный кадр остаётся десктопу: ${await kb(src)} KB`,
+);

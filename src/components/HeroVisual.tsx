@@ -24,7 +24,7 @@ export function HeroVisual() {
           <span className="font-display text-xs leading-none font-extrabold tracking-tight text-white">PRIME SWIM</span>
         </div>
         <figcaption className="absolute inset-x-0 bottom-0 p-4 text-xs leading-snug text-white/85">
-          Тренировка PRIME SWIM · бассейн МГИК
+          Бассейн МГИК · Химки
         </figcaption>
       </div>
     </figure>

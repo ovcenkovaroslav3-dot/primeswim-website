@@ -10,20 +10,20 @@ export type MediaItem = {
   height: number;
 };
 
-/** Фотография тренировки PRIME SWIM в бассейне МГИК. */
+/** Зал бассейна МГИК, где проходят занятия PRIME SWIM. */
 export const heroImage: MediaItem = {
-  src: '/media/pool/mgik-training-hero.jpg',
-  alt: 'Тренировка PRIME SWIM в бассейне МГИК: дети у бортика и пловцы на дорожках',
-  width: 960,
-  height: 1280,
+  src: '/media/pool/mgik-pool-lanes.jpg',
+  alt: 'Бассейн МГИК в Химках: дорожки, стартовые тумбы и панорамное остекление зала, где проходят занятия PRIME SWIM',
+  width: 1050,
+  height: 1400,
 };
 
-/** Обрезка того же снимка для узкого экрана: node scripts/make-hero-crop.mjs. */
+/** Обрезка того же снимка для экранов уже 64rem: node scripts/make-hero-crop.mjs. */
 export const heroImageNarrow: MediaItem & { media: string } = {
-  src: '/media/pool/mgik-training-hero-4x3.jpg',
+  src: '/media/pool/mgik-pool-lanes-4x3.jpg',
   alt: heroImage.alt,
-  width: 960,
-  height: 720,
+  width: 1000,
+  height: 750,
   media: '(max-width: 63.99rem)',
 };
 
