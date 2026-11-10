@@ -4,6 +4,7 @@ import { Programs } from '@/components/sections/Programs';
 import { PlanPreview } from '@/components/sections/PlanPreview';
 import { CoachPreview } from '@/components/sections/CoachPreview';
 import { GalleryPreview } from '@/components/sections/GalleryPreview';
+import { Reviews } from '@/components/sections/Reviews';
 import { PoolPreview } from '@/components/sections/PoolPreview';
 import { FirstLesson } from '@/components/sections/FirstLesson';
 import { Faq } from '@/components/sections/Faq';
@@ -67,18 +68,7 @@ export default function HomePage() {
       <PlanPreview />
       <CoachPreview />
       <GalleryPreview />
-      {/*
-        ЗДЕСЬ БЫЛИ ОТЗЫВЫ, и они вернутся — но только настоящие.
-
-        Стояли шесть текстов, перенесённых со старого сайта, под подписью
-        «Отзывы опубликованы пользователями на Яндекс Картах» и со ссылкой
-        на карточку школы. На карточке при проверке 31 августа 2026 оказался
-        один отзыв, и ни один из шести с ним не совпадал: сайт называл
-        источник, в котором этих текстов нет.
-
-        Решение владельца — выставить блок, когда накопятся свои. Как
-        вернуть: см. инструкцию в content/reviews.ts.
-      */}
+      <Reviews />
       <PoolPreview />
       <FirstLesson />
       {/*
