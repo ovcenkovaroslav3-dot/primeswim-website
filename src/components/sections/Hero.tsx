@@ -1,3 +1,4 @@
+import { enrollmentSummary } from '@/content/enrollment';
 import Link from 'next/link';
 
 import { HeroVisual } from '../HeroVisual';
@@ -172,6 +173,11 @@ export function Hero() {
               style={{ ['--reveal-delay' as string]: '280ms' }}
             >
               {site.hero.offer}
+            </p>
+
+            <p className="reveal mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-inset border border-white/20 bg-white/5 px-4 py-3 text-sm leading-relaxed text-white">
+              <span className="font-semibold">Новый набор</span>
+              <span className="text-white/80">{enrollmentSummary}</span>
             </p>
 
             <div

@@ -1,4 +1,4 @@
-import { ArrowLink, Section, SectionHeading } from '../ui';
+import { ArrowLink, ButtonLink, Section, SectionHeading } from '../ui';
 import { reviews, reviewsSource } from '@/content/reviews';
 
 /** Static, accessible cards: no autoplay, external scripts or invented ratings. */
@@ -43,6 +43,15 @@ export function Reviews({ limit }: { limit?: number } = {}) {
           </li>
         ))}
       </ul>
+      <div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-card border border-hairline bg-surface-alt p-6 sm:flex-row sm:items-center sm:p-8">
+        <div>
+          <h3 className="text-xl font-medium text-ink">Начните со знакомства</h3>
+          <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-soft">На пробном занятии ребёнок познакомится с тренером и группой. Оставьте заявку — администратор поможет выбрать время.</p>
+        </div>
+        <ButtonLink href="#booking" data-goal="cta_booking" className="w-full shrink-0 sm:w-auto">
+          Записаться на пробное
+        </ButtonLink>
+      </div>
       <p className="mt-6 text-xs leading-relaxed text-ink-muted">
         Цитаты приведены без изменения слов. Имена и даты указаны как в источнике.
       </p>

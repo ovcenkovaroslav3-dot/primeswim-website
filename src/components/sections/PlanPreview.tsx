@@ -1,3 +1,4 @@
+import { isEnrollmentDay } from '@/content/enrollment';
 import { ArrowLink, Section, SectionHeading } from '../ui';
 import { GroupPicker } from '../GroupPicker';
 import { schedule } from '@/content/schedule';
@@ -49,7 +50,10 @@ export function PlanPreview() {
                 key={slot.id}
                 className="flex items-baseline justify-between gap-4 py-3.5 first:pt-0"
               >
-                <span className="text-ink-soft">{slot.day}</span>
+                <span className="text-ink-soft">
+                  {slot.day}
+                  {isEnrollmentDay(slot.id) && <span className="mt-1 block text-xs font-medium text-brand-600 dark:text-brand-200">Новый набор</span>}
+                </span>
                 <span className="text-right">
                   {slot.times.map((time) => (
                     <span

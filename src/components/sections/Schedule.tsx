@@ -1,3 +1,4 @@
+import { enrollmentSummary, isEnrollmentDay } from '@/content/enrollment';
 import { ButtonLink, Section, SectionHeading } from '../ui';
 import { schedule, scheduleIntro, slotValue, weekDays } from '@/content/schedule';
 import { contacts } from '@/content/contacts';
@@ -44,6 +45,12 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
         title="Расписание занятий по плаванию в Химках"
         lead={scheduleIntro}
       />
+
+      <div className="reveal mt-8 rounded-card border border-hairline bg-surface p-6">
+        <p className="text-sm font-semibold text-brand-600 dark:text-brand-200">Новый набор</p>
+        <p className="mt-2 text-xl font-medium text-ink">{enrollmentSummary}</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-soft">Выберите удобный день. Подходящую группу и свободное место подтвердит администратор.</p>
+      </div>
 
       <div
         className="reveal mt-12 grid grid-cols-7 gap-2 sm:gap-3"
@@ -129,6 +136,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
           >
             <span className="text-sm text-ink-soft">
               {slot.day}
+              {isEnrollmentDay(slot.id) && <span className="mt-1 block text-xs font-semibold text-brand-600 dark:text-brand-200">Новый набор</span>}
               <span className="mt-1 block text-xs text-ink-muted">{slot.note}</span>
             </span>
             <span className="flex flex-col items-end gap-2">
