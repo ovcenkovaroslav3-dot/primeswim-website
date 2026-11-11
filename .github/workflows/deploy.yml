@@ -3,23 +3,25 @@ name: Сборка и публикация на GitHub Pages
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
-# Pages разворачивается токеном самого воркфлоу
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # параллельные публикации не нужны: важен только последний коммит,
 # но начатую публикацию не обрываем, чтобы не оставить Pages в полусостоянии
 concurrency:
-  group: pages
+  group: ${{ github.event_name == 'pull_request' && github.ref || 'pages' }}
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
     env:
       # сайт живёт на своём домене, поэтому basePath пустой: адрес репозитория
       # в путях больше не участвует.
@@ -73,14 +75,20 @@ jobs:
         run: npm run build
 
       - uses: actions/configure-pages@v6
+        if: github.ref == 'refs/heads/master'
 
       - uses: actions/upload-pages-artifact@v5
+        if: github.ref == 'refs/heads/master'
         with:
           path: out
 
   deploy:
+    if: github.ref == 'refs/heads/master'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
