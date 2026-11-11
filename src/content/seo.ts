@@ -167,7 +167,7 @@ export const ogImage = {
  * trailingSlash, и без него og:url расходился бы с canonical.
  */
 export function pageUrl(page: PageSeo): string {
-  return page.path === '/' ? `${site.url}/` : `${site.url}${page.path}/`;
+  return `${site.url}${page.path.replace(/\/+$/, '')}/`;
 }
 
 /**

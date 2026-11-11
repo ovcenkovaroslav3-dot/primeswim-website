@@ -85,7 +85,7 @@ export function MobileCta() {
       <div className="mx-auto flex max-w-md items-center gap-3">
         <BookingLink
           data-goal="cta_booking"
-          className="inline-flex min-h-12 flex-1 items-center justify-center rounded-control bg-lime-400 px-5 text-sm font-semibold text-abyss-950"
+          className="inline-flex min-h-12 min-w-0 flex-1 [overflow-wrap:anywhere] text-center items-center justify-center rounded-control bg-lime-400 px-3 text-sm font-semibold text-abyss-950"
         >
           Записаться
         </BookingLink>

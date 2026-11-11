@@ -36,7 +36,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
     <Section
       id="schedule"
       labelledBy="schedule-title"
-      className="bg-surface-alt pb-0 sm:pb-0 md:pb-0"
+      className="bg-surface-alt pb-0 sm:pb-0 md:pb-0 [overflow-wrap:anywhere]"
     >
       <SectionHeading
         as={headingAs}
@@ -53,7 +53,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
       </div>
 
       <div
-        className="reveal mt-12 grid grid-cols-7 gap-2 sm:gap-3"
+        className="reveal mt-12 grid grid-cols-[repeat(auto-fit,minmax(2rem,1fr))] gap-2 sm:gap-3"
         role="img"
         aria-label={`Занятия проходят: ${activeDays.join(', ')}`}
       >
@@ -127,11 +127,11 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
         группе подтвердит администратор.
       </p>
 
-      <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {schedule.map((slot, i) => (
           <li
             key={slot.id}
-            className="reveal flex items-start justify-between gap-3 rounded-inset border border-hairline bg-surface px-5 py-4"
+            className="reveal flex min-w-0 flex-wrap items-start justify-between gap-3 rounded-inset border border-hairline bg-surface px-5 py-4"
             style={{ ['--reveal-delay' as string]: `${i * 60}ms` }}
           >
             <span className="text-sm text-ink-soft">

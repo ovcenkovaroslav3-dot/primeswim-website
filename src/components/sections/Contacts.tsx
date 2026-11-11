@@ -25,7 +25,7 @@ import { contacts } from '@/content/contacts';
 */
 export function Contacts() {
   return (
-    <Section id="contacts" labelledBy="contacts-title" className="bg-surface">
+    <Section id="contacts" labelledBy="contacts-title" className="bg-surface [overflow-wrap:anywhere]">
       <ViewGoal goal="view_contacts" />
       <SectionHeading
         id="contacts-title"
@@ -36,8 +36,8 @@ export function Contacts() {
 
       {/* карточки тянутся по высоте, кнопки уходят к нижнему краю:
           иначе адресная колонка выглядела наполовину пустой */}
-      <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-2">
-        <div className="flex flex-col rounded-card border border-hairline bg-surface-alt p-7">
+      <div className="mt-12 grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
+        <div className="flex min-w-0 flex-col rounded-card border border-hairline bg-surface-alt p-4 sm:p-7">
           <h3 className="text-lg font-light text-ink">Адрес</h3>
           <address className="mt-3 text-lg leading-relaxed text-ink-soft not-italic">
             {contacts.address.venue}
@@ -71,7 +71,7 @@ export function Contacts() {
           */}
         </div>
 
-        <div className="flex flex-col rounded-card border border-hairline bg-surface-alt p-7">
+        <div className="flex min-w-0 flex-col rounded-card border border-hairline bg-surface-alt p-4 sm:p-7">
           <h3 className="text-lg font-light text-ink">Связь</h3>
 
           <a
@@ -86,7 +86,7 @@ export function Contacts() {
               не относится. Отрицательный внешний отступ возвращает набранную
               высоту в вёрстку — карточка «Связь» осталась прежней.
             */
-            className="mt-1.5 -mb-1.5 inline-flex min-h-11 items-center text-2xl font-extralight text-brand-600 dark:text-brand-200 underline-offset-4 hover:underline sm:text-3xl"
+            className="mt-1.5 -mb-1.5 block min-h-11 whitespace-normal text-2xl font-extralight text-brand-600 dark:text-brand-200 underline-offset-4 hover:underline sm:text-3xl"
           >
             {contacts.phone.display}
           </a>

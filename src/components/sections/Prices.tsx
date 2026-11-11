@@ -51,7 +51,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
         lead="Занятия проходят в бассейне МГИК в Химках, мкрн. Левобережный. Цена зависит только от того, сколько раз в неделю ребёнок ходит в бассейн: чем чаще занятия, тем дешевле одно."
       />
 
-      <ul className="mt-12 grid gap-6 md:grid-cols-3">
+      <ul className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
         {prices.map((price, i) => {
           const monthly = monthlyLine(price);
           return (
@@ -63,7 +63,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
                 единственный возникал разом и на фоне остального выглядел
                 статичной вставкой.
               */
-              className={`reveal lift flex flex-col rounded-card border p-7 ${
+              className={`reveal lift flex min-w-0 flex-col rounded-card border p-4 sm:p-7 [overflow-wrap:anywhere] ${
                 price.featured
                   ? 'relative overflow-hidden border-abyss-800 bg-abyss-900 text-white'
                   : 'border-hairline bg-surface-alt'
@@ -100,7 +100,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
                 {price.note}
               </p>
 
-              <p className={`relative mt-6 flex items-baseline gap-1.5 ${monthly ? '' : 'mb-7'}`}>
+              <p className={`relative mt-6 flex flex-wrap items-baseline gap-1.5 ${monthly ? '' : 'mb-7'}`}>
                 {/* у выделенного тарифа сумма крупнее: разницу должно быть видно
                     раньше, чем читатель дойдёт до цифр */}
                 <span
