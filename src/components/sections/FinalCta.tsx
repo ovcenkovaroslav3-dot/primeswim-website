@@ -130,7 +130,7 @@ export function FinalCta({
         className="pointer-events-none absolute -top-6 -left-[12%] -z-10 w-[68%] opacity-[0.05] sm:-left-[6%] sm:w-[52%] md:-top-10 md:w-[44%]"
       />
 
-      <div className="relative mx-auto w-full max-w-3xl text-center">
+      <div className="relative mx-auto min-w-0 w-full max-w-3xl [overflow-wrap:anywhere] text-center">
         <p className="reveal text-xs font-medium tracking-[0.28em] text-white/50 uppercase">
           Первый шаг
         </p>
@@ -152,7 +152,7 @@ export function FinalCta({
         </p>
 
         <div
-          className="reveal mt-10 grid gap-4 sm:grid-cols-2"
+          className="reveal mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2"
           style={{ ['--reveal-delay' as string]: '270ms' }}
         >
           <MessengerCard

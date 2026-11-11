@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { useHydrated } from '@/lib/consent';
 
 import { MascotOrca } from '../MascotOrca';
 import { buttonClass } from '../ui';
@@ -61,7 +62,7 @@ const labelClass = 'mb-2 block text-sm font-medium text-ink';
   читаются и на светлом, и при увеличении.
 */
 const fieldClass =
-  'min-h-12 w-full rounded-control border bg-surface px-4 py-3 text-ink transition-colors placeholder:text-ink-muted focus:border-brand-500 disabled:opacity-60';
+  'min-h-12 min-w-0 max-w-full w-full rounded-control border bg-surface px-4 py-3 text-ink transition-colors placeholder:text-ink-muted focus:border-brand-500 disabled:opacity-60';
 
 /** Адрес приёмника заявок. Пустой — значит форма отправлять некуда. */
 const endpoint = process.env.NEXT_PUBLIC_LEAD_ENDPOINT?.trim() || '';
@@ -94,6 +95,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'failed';
 const SEND_TIMEOUT_MS = 20_000;
 
 export function LeadForm() {
+  const hydrated = useHydrated();
   const [values, setValues] = useState<LeadValues>(emptyLeadValues);
   const [errors, setErrors] = useState<LeadErrors>({});
   const [status, setStatus] = useState<Status>('idle');
@@ -397,9 +399,17 @@ export function LeadForm() {
       ref={formRef}
       onSubmit={onSubmit}
       noValidate
-      className="on-light scroll-mt-24 rounded-card bg-surface p-6 sm:p-8"
+      method="post"
+      className="on-light min-w-0 scroll-mt-24 rounded-card bg-surface p-4 sm:p-8 [overflow-wrap:anywhere]"
     >
-      <div className="grid gap-5">
+      <fieldset disabled={!hydrated || sending} className="m-0 grid min-w-0 grid-cols-1 gap-5 border-0 p-0">
+        {!hydrated ? (
+          <p role="status">
+            Для отправки формы нужен JavaScript. Вы можете позвонить{' '}
+            <a className="underline" href={contacts.phone.href}>{contacts.phone.display}</a>{' '}
+            или <a className="underline" href={contacts.social.telegramBooking}>написать в Telegram</a>.
+          </p>
+        ) : null}
         {note ? (
           /*
             Родитель пришёл из подбора группы. Показываем, что именно уйдёт
@@ -791,7 +801,7 @@ export function LeadForm() {
           {contacts.workingHours.display.toLowerCase()}; если заявка пришла
           позже — на следующее утро.
         </p>
-      </div>
+      </fieldset>
     </form>
   );
 }

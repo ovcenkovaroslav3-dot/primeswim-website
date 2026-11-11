@@ -29,7 +29,7 @@ import { prices, pricesNote } from '@/content/prices';
 */
 export function PlanPreview() {
   return (
-    <Section id="plan" labelledBy="plan-title" className="bg-surface">
+    <Section id="plan" labelledBy="plan-title" className="bg-surface [overflow-wrap:anywhere]">
       <SectionHeading
         id="plan-title"
         eyebrow="Когда и сколько"
@@ -37,9 +37,9 @@ export function PlanPreview() {
         lead="Занятия проходят в бассейне МГИК. Группу подберём по возрасту и уровню подготовки ребёнка."
       />
 
-      <div className="mt-10 grid gap-4 sm:mt-12 lg:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-12 lg:grid-cols-2">
         {/* расписание */}
-        <div className="reveal flex flex-col rounded-card border border-hairline bg-surface-alt p-6 sm:p-8">
+        <div className="reveal flex min-w-0 flex-col rounded-card border border-hairline bg-surface-alt p-6 sm:p-8">
           <h3 className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
             Расписание
           </h3>
@@ -48,7 +48,7 @@ export function PlanPreview() {
             {schedule.map((slot) => (
               <li
                 key={slot.id}
-                className="flex items-baseline justify-between gap-4 py-3.5 first:pt-0"
+                className="flex flex-wrap items-baseline justify-between gap-4 py-3.5 first:pt-0"
               >
                 <span className="text-ink-soft">
                   {slot.day}
@@ -81,7 +81,7 @@ export function PlanPreview() {
         </div>
 
         {/* стоимость */}
-        <div className="reveal flex flex-col rounded-card border border-hairline bg-surface-alt p-6 sm:p-8">
+        <div className="reveal flex min-w-0 flex-col rounded-card border border-hairline bg-surface-alt p-6 sm:p-8">
           <h3 className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
             Стоимость
           </h3>
@@ -90,7 +90,7 @@ export function PlanPreview() {
             {prices.map((price) => (
               <li
                 key={price.id}
-                className="flex items-baseline justify-between gap-4 py-3.5 first:pt-0"
+                className="flex flex-wrap items-baseline justify-between gap-4 py-3.5 first:pt-0"
               >
                 <span className="text-ink-soft">
                   {price.title}

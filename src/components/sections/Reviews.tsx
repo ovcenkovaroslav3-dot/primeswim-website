@@ -7,7 +7,7 @@ export function Reviews({ limit }: { limit?: number } = {}) {
   if (shown.length === 0) return null;
 
   return (
-    <Section id="reviews" labelledBy="reviews-title" className="bg-surface">
+    <Section id="reviews" labelledBy="reviews-title" className="bg-surface [overflow-wrap:anywhere]">
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <SectionHeading
           id="reviews-title"

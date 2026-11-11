@@ -66,11 +66,11 @@ export function Faq({
       />
 
       {/* Нативные details/summary: работают без JavaScript и с клавиатуры */}
-      <div className="mt-12 grid gap-3 lg:grid-cols-2">
+      <div className="mt-12 grid grid-cols-1 gap-3 lg:grid-cols-2">
         {items.map((item) => (
           <details
             key={item.id}
-            className="group rounded-card border border-hairline bg-surface px-6 open:border-brand-200 dark:open:border-brand-500"
+            className="group min-w-0 [overflow-wrap:anywhere] rounded-card border border-hairline bg-surface px-4 sm:px-6 open:border-brand-200 dark:open:border-brand-500"
           >
             <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-ink marker:content-none">
               {item.question}

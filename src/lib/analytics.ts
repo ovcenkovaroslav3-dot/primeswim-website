@@ -1,3 +1,5 @@
+import { readConsent } from './consent.ts';
+
 /**
  * Точки подключения аналитики.
  *
@@ -83,7 +85,7 @@ export function isAnalyticsEnabled(): boolean {
 type YandexMetrika = (
   id: string,
   action: string,
-  goal?: string,
+  goal?: string | Record<string, unknown>,
   params?: Record<string, unknown>,
 ) => void;
 
@@ -102,7 +104,7 @@ export function trackGoal(
   params?: Record<string, unknown>,
 ): void {
   if (typeof window === 'undefined') return;
-  if (!metrikaId || typeof window.ym !== 'function') return;
+  if (readConsent() !== 'granted' || !metrikaId || typeof window.ym !== 'function') return;
 
   try {
     window.ym(metrikaId, 'reachGoal', goal, params);

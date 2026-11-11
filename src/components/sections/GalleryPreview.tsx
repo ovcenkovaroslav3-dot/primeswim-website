@@ -10,8 +10,8 @@ const stories = [
 
 export function GalleryPreview() {
   return (
-    <Section id="gallery-preview" labelledBy="gallery-preview-title" className="bg-surface-alt">
-      <div className="grid gap-5 md:grid-cols-2 md:items-end md:gap-12">
+    <Section id="gallery-preview" labelledBy="gallery-preview-title" className="bg-surface-alt [overflow-wrap:anywhere]">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:items-end md:gap-12">
         <div>
           <p className="text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">Как это выглядит</p>
           <h2 id="gallery-preview-title" className="mt-4 text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl md:text-[44px]">Тренировки в бассейне</h2>
@@ -21,7 +21,7 @@ export function GalleryPreview() {
           <ArrowLink href="/galereya/" className="mt-4">Все фото и видео с тренировок</ArrowLink>
         </div>
       </div>
-      <ul className="mt-10 grid gap-4 md:grid-cols-12">
+      <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-12">
         {stories.map((story, i) => {
           const photo = galleryGridImages.find((image) => image.src.endsWith(story.name));
           if (!photo) return null;
