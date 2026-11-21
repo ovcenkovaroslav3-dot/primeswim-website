@@ -169,7 +169,7 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <BookingLink className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300">
+                <BookingLink data-goal="cta_booking" className="flex min-h-11 items-center transition-colors pointer-fine:min-h-0 pointer-fine:py-1 hover:text-lime-300">
                   Запись на тренировку
                 </BookingLink>
               </li>
