@@ -1,9 +1,13 @@
 import { ArrowLink, ButtonLink, Section, SectionHeading } from '../ui';
-import { reviews, reviewsSource } from '@/content/reviews';
+import { reviews, reviewsSource, type Review } from '@/content/reviews';
 
 /** Static, accessible cards: no autoplay, external scripts or invented ratings. */
 export function Reviews({ limit }: { limit?: number } = {}) {
   const shown = limit ? reviews.slice(0, limit) : reviews;
+  const extraCount = Math.max(0, shown.length - 2);
+  const reviewWord = extraCount % 100 >= 11 && extraCount % 100 <= 14
+    ? 'отзывов'
+    : extraCount % 10 === 1 ? 'отзыв' : extraCount % 10 >= 2 && extraCount % 10 <= 4 ? 'отзыва' : 'отзывов';
   if (shown.length === 0) return null;
 
   return (
@@ -21,28 +25,22 @@ export function Reviews({ limit }: { limit?: number } = {}) {
       </div>
 
       <ul className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {shown.map((review, i) => (
-          <li
-            key={review.id}
-            className={`reveal relative flex min-w-0 flex-col rounded-card p-7 sm:p-8 ${i === 0 ? 'bg-abyss-900 text-white' : 'border border-hairline bg-surface-alt text-ink'}`}
-            style={{ ['--reveal-delay' as string]: `${i * 40}ms` }}
-          >
-            <span aria-hidden="true" className={`mb-3 text-5xl leading-none ${i === 0 ? 'text-lime-300' : 'text-brand-600 dark:text-brand-200'}`}>“</span>
-            <blockquote cite={reviewsSource.href} className={`flex-1 text-base leading-relaxed ${i === 0 ? 'text-white' : 'text-ink-soft'}`}>
-              {review.text}
-            </blockquote>
-            <footer className={`mt-7 flex items-center gap-3 border-t pt-5 ${i === 0 ? 'border-white/20' : 'border-hairline'}`}>
-              <span aria-hidden="true" className={`flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-medium ${i === 0 ? 'bg-white/10 text-lime-300' : 'bg-surface-deep text-brand-600 dark:text-brand-200'}`}>
-                {review.author.charAt(0)}
-              </span>
-              <div className="min-w-0">
-                <p className="text-sm font-medium">{review.author}</p>
-                <p className={`mt-1 text-xs ${i === 0 ? 'text-white/70' : 'text-ink-muted'}`}>{review.date} · Яндекс Карты</p>
-              </div>
-            </footer>
-          </li>
+        {shown.slice(0, 2).map((review, i) => <ReviewCard key={review.id} review={review} index={i} />)}
+        {shown.slice(2).map((review, i) => (
+          <ReviewCard key={review.id} review={review} index={i + 2} className="hidden md:flex" />
         ))}
       </ul>
+      {shown.length > 2 ? (
+        <details className="group mt-4 md:hidden">
+          <summary className="inline-flex min-h-11 cursor-pointer items-center font-medium text-brand-600 underline underline-offset-4 dark:text-brand-200">
+            <span className="group-open:hidden">Ещё {extraCount} {reviewWord}</span>
+            <span className="hidden group-open:inline">Свернуть отзывы</span>
+          </summary>
+          <ul className="mt-4 grid gap-4">
+            {shown.slice(2).map((review, i) => <ReviewCard key={review.id} review={review} index={i + 2} />)}
+          </ul>
+        </details>
+      ) : null}
       <div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-card border border-hairline bg-surface-alt p-6 sm:flex-row sm:items-center sm:p-8">
         <div>
           <h3 className="text-xl font-medium text-ink">Начните со знакомства</h3>
@@ -56,5 +54,27 @@ export function Reviews({ limit }: { limit?: number } = {}) {
         Цитаты приведены без изменения слов. Имена и даты указаны как в источнике.
       </p>
     </Section>
+  );
+}
+
+function ReviewCard({ review, index, className = '' }: { review: Review; index: number; className?: string }) {
+  return (
+    <li
+      className={`relative flex min-w-0 flex-col rounded-card p-7 sm:p-8 ${index === 0 ? 'bg-abyss-900 text-white' : 'border border-hairline bg-surface-alt text-ink'} ${className}`}
+    >
+      <span aria-hidden="true" className={`mb-3 text-5xl leading-none ${index === 0 ? 'text-lime-300' : 'text-brand-600 dark:text-brand-200'}`}>“</span>
+      <blockquote cite={reviewsSource.href} className={`flex-1 text-base leading-relaxed ${index === 0 ? 'text-white' : 'text-ink-soft'}`}>
+        {review.text}
+      </blockquote>
+      <footer className={`mt-7 flex items-center gap-3 border-t pt-5 ${index === 0 ? 'border-white/20' : 'border-hairline'}`}>
+        <span aria-hidden="true" className={`flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-medium ${index === 0 ? 'bg-white/10 text-lime-300' : 'bg-surface-deep text-brand-600 dark:text-brand-200'}`}>
+          {review.author.charAt(0)}
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-medium">{review.author}</p>
+          <p className={`mt-1 text-xs ${index === 0 ? 'text-white/70' : 'text-ink-muted'}`}>{review.date} · Яндекс Карты</p>
+        </div>
+      </footer>
+    </li>
   );
 }

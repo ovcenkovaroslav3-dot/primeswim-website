@@ -95,3 +95,10 @@ export function sanitizePrefill(raw: unknown): BookingPrefill | null {
 
 export function slotFragment(value: string): string { return `booking-slot-${value.replace(':', '-')}`; }
 export function tariffFragment(id: string): string { return `booking-tariff-${id}`; }
+
+export function programFragment(id: string): string { return `booking-program-${id}`; }
+
+/** Возвращает только направление из утверждённого списка. */
+export function programFromFragment(hash: string, ids: readonly string[]): string | undefined {
+  return ids.find((id) => id !== '' && programFragment(id) === hash);
+}
