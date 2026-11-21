@@ -10,6 +10,7 @@ import { readSource } from '@/lib/campaign-source';
 import { contacts } from '@/content/contacts';
 import { programOptions, validProgramIds, ageOptions, validAgeIds } from '@/content/programs';
 import { findSlot, slotOptions } from '@/content/schedule';
+import { prices, tariffComment } from '@/content/prices';
 import {
   validateLead,
   emptyLeadValues,
@@ -20,7 +21,7 @@ import {
   type LeadValues,
 } from '@/lib/lead-schema';
 import { trackGoal } from '@/lib/analytics';
-import { BOOKING_EVENT, takePendingBooking, type BookingPrefill } from '@/lib/booking';
+import { BOOKING_EVENT, takePendingBooking, slotFragment, tariffFragment, type BookingPrefill } from '@/lib/booking';
 
 /*
   Настоящая отправка заявки — форма больше не открывает мессенджер.
@@ -106,11 +107,7 @@ export function LeadForm() {
   const [slot, setSlot] = useState('');
   /** Ответы подбора группы, если родитель пришёл из него. */
   const [note, setNote] = useState('');
-  /** Время пришло из расписания (без ответов подбора) и ещё не тронуто руками. */
-  const [slotFromSchedule, setSlotFromSchedule] = useState(false);
-  /** Текст тарифа, подставленный в комментарий со страницы цен; пусто — не подставляли. */
-  const [tariffComment, setTariffComment] = useState('');
-  const tariffRef = useRef('');
+  const [tariff, setTariff] = useState('');
   const sentRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const wishesRef = useRef<HTMLDetailsElement>(null);
@@ -124,7 +121,7 @@ export function LeadForm() {
   useEffect(() => {
     const apply = (prefill: BookingPrefill | null) => {
       if (!prefill) return;
-      if (wishesRef.current) wishesRef.current.open = true;
+      if ((prefill.slot !== undefined || prefill.tariff !== undefined) && wishesRef.current) wishesRef.current.open = false;
       setValues((v) => ({
         ...v,
         age: prefill.age && validAgeIds.has(prefill.age) ? prefill.age : v.age,
@@ -135,38 +132,32 @@ export function LeadForm() {
       }));
       if (prefill.slot !== undefined) setSlot(findSlot(prefill.slot) ? prefill.slot : '');
       if (prefill.note !== undefined) setNote(prefill.note);
+      if (prefill.tariff !== undefined && prices.some((price) => price.id === prefill.tariff)) setTariff(prefill.tariff);
       if (prefill.comment) {
-        /*
-          Тариф подставляем, только если родитель ещё ничего не писал в
-          комментарии, — либо если там лежит тариф, подставленный раньше (выбрал
-          другой). Набранное руками не затираем.
-        */
-        const next = prefill.comment;
-        const previous = tariffRef.current;
-        tariffRef.current = next;
-        setTariffComment(next);
-        setValues((v) => (v.comment === '' || v.comment === previous ? { ...v, comment: next } : v));
-      }
-      /*
-        Из расписания приходит одно время без заметки, и страница прокручивается
-        к форме: без подтверждения непонятно, что время подставилось. Из подбора
-        заметка есть — там своя плашка, вторую не показываем.
-      */
-      if (prefill.slot !== undefined || prefill.note !== undefined) {
-        setSlotFromSchedule(
-          prefill.note === undefined && prefill.slot !== undefined && Boolean(findSlot(prefill.slot)),
-        );
+        const legacyTariff = prices.find((price) => prefill.comment?.startsWith('Интересует тариф: ' + price.title + ' ('));
+        if (legacyTariff) setTariff(legacyTariff.id);
+        else setValues((v) => v.comment ? v : { ...v, comment: prefill.comment! });
       }
       setErrors({});
       setStatus((current) => (current === 'failed' ? 'idle' : current));
     };
-    apply(takePendingBooking());
+    const readHash = (): BookingPrefill | null => {
+      const hash = window.location.hash.slice(1);
+      const slotMatch = slotOptions.find((option) => slotFragment(option.value) === hash);
+      const tariffMatch = prices.find((price) => tariffFragment(price.id) === hash);
+      return slotMatch ? { slot: slotMatch.value } : tariffMatch ? { tariff: tariffMatch.id } : null;
+    };
+    const fromHash = () => apply(readHash());
+    const pending = takePendingBooking();
+    const hashSelection = readHash();
+    apply(hashSelection || pending);
+    window.addEventListener('hashchange', fromHash);
     const onBooking = (event: Event) => {
       takePendingBooking();
       apply((event as CustomEvent<BookingPrefill>).detail);
     };
     window.addEventListener(BOOKING_EVENT, onBooking);
-    return () => window.removeEventListener(BOOKING_EVENT, onBooking);
+    return () => { window.removeEventListener(BOOKING_EVENT, onBooking); window.removeEventListener('hashchange', fromHash); };
   }, []);
 
   /*
@@ -228,11 +219,17 @@ export function LeadForm() {
     setErrors((e) => ({ ...e, [key]: undefined }));
   };
 
-  const comment = composeLeadComment({
-    comment: values.comment,
-    slotLabel: findSlot(slot)?.label,
+  const selectedTariff = prices.find((price) => price.id === tariff);
+  const selectedProgram = programOptions.find((option) => option.value === values.program);
+  const selectedSlot = findSlot(slot);
+  const selectionComment = composeLeadComment({
+    comment: selectedTariff ? tariffComment(selectedTariff) : '',
+    slotLabel: selectedSlot?.label,
     note,
   });
+  const comment = [selectionComment, values.comment.trim()].filter(Boolean).join('\n');
+  const commentCapacity = Math.max(0, LEAD_COMMENT_MAX - selectionComment.length - (selectionComment ? 1 : 0));
+  const remaining = commentCapacity - values.comment.trim().length;
 
   const focusErrors = (found: LeadErrors) => {
     if ((found.program || found.comment) && wishesRef.current) wishesRef.current.open = true;
@@ -391,8 +388,15 @@ export function LeadForm() {
     );
   }
 
+  const editWish = (field: string) => {
+    if (wishesRef.current) wishesRef.current.open = true;
+    document.getElementById(field)?.focus();
+  };
+  const updateFragment = (fragment: string) => {
+    window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search + '#' + (fragment || 'booking'));
+  };
   const sending = status === 'sending';
-  const selectedSlot = findSlot(slot);
+  const summaryField = values.program ? 'lead-program' : note ? 'lead-note' : selectedSlot ? 'lead-slot' : 'lead-tariff';
 
   return (
     <form
@@ -400,7 +404,7 @@ export function LeadForm() {
       onSubmit={onSubmit}
       noValidate
       method="post"
-      className="on-light min-w-0 scroll-mt-24 rounded-card bg-surface p-4 sm:p-8 [overflow-wrap:anywhere]"
+      className="on-light min-w-0 rounded-card bg-surface p-4 sm:p-8 [overflow-wrap:anywhere]"
     >
       <fieldset disabled={!hydrated || sending} className="m-0 grid min-w-0 grid-cols-1 gap-5 border-0 p-0">
         {!hydrated ? (
@@ -410,52 +414,6 @@ export function LeadForm() {
             или <a className="underline" href={contacts.social.telegramBooking}>написать в Telegram</a>.
           </p>
         ) : null}
-        {note ? (
-          /*
-            Родитель пришёл из подбора группы. Показываем, что именно уйдёт
-            школе вместе с заявкой, — и даём это убрать: ответы подбора не
-            должны уезжать молча.
-          */
-          <div className="flex items-start justify-between gap-3 rounded-inset border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft">
-            <p>
-              <span className="font-medium text-ink">Подставили из подбора.</span>{' '}
-              Возраст, направление и время можно поменять — ответы подбора
-              уйдут школе вместе с заявкой.
-            </p>
-            <button
-              type="button"
-              onClick={() => setNote('')}
-              className="shrink-0 font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
-            >
-              Убрать
-            </button>
-          </div>
-        ) : slotFromSchedule && selectedSlot ? (
-          // тот же вид, что у плашки подбора: это один и тот же вид подтверждения
-          <div
-            role="status"
-            className="rounded-inset border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft"
-          >
-            <span className="font-medium text-ink">Время подставили:</span> {selectedSlot.label}.
-            Его можно поменять в поле «Удобное время» ниже.
-          </div>
-        ) : null}
-
-        {!note && tariffComment && values.comment === tariffComment ? (
-          /*
-            Тариф со страницы цен лёг в комментарий. Плашка того же вида, что у
-            времени из расписания; пропадает, как только родитель правит текст,
-            и не показывается вместе с плашкой подбора (там своё объяснение).
-          */
-          <div
-            role="status"
-            className="rounded-inset border border-brand-200 bg-brand-50 px-4 dark:border-brand-700 dark:bg-brand-900/40 py-3 text-sm leading-relaxed text-ink-soft"
-          >
-            <span className="font-medium text-ink">Тариф подставили</span> в комментарий — его можно
-            изменить или стереть.
-          </div>
-        ) : null}
-
         <div>
           <label htmlFor="lead-name" className={labelClass}>
             Имя <span className="text-red-600 dark:text-red-300">*</span>
@@ -513,6 +471,26 @@ export function LeadForm() {
             </p>
           )}
         </div>
+
+        {(selectedSlot || selectedTariff || note || values.program) ? (
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 rounded-inset border border-brand-200 bg-brand-50 px-4 py-1 text-sm text-ink dark:border-brand-700 dark:bg-brand-900/40">
+            <div role="status" className="min-w-0 space-y-1">
+              {selectedSlot ? <p>Время: {selectedSlot.label}</p> : null}
+              {selectedTariff ? <p>Тариф: {selectedTariff.title}</p> : null}
+              {values.program ? <p>Направление: {selectedProgram?.label}</p> : null}
+              {note ? <p>Ответы подбора сохранены.</p> : null}
+            </div>
+            <button type="button" className="min-h-11 underline" onClick={() => editWish(summaryField)}>
+              Изменить
+            </button>
+          </div>
+        ) : null}
+        {remaining < 0 ? (
+          <p role="alert" className="text-sm text-red-700 dark:text-red-300">
+            Из-за выбранных пожеланий комментарий нужно сократить на {-remaining} символов.{' '}
+            <button type="button" className="min-h-11 underline" onClick={() => editWish('lead-comment')}>Изменить комментарий</button>
+          </p>
+        ) : null}
 
         <div>
           <label htmlFor="lead-age" className={labelClass}>
@@ -600,7 +578,7 @@ export function LeadForm() {
                 onChange={(e) => {
                   markStarted();
                   setSlot(e.target.value);
-                  setSlotFromSchedule(false);
+                  updateFragment(e.target.value ? slotFragment(e.target.value) : '');
                 }}
                 aria-describedby="lead-slot-hint"
                 className={`${fieldClass} border-hairline`}
@@ -618,6 +596,41 @@ export function LeadForm() {
             </div>
 
             <div>
+              <label htmlFor="lead-tariff" className={labelClass}>Тариф</label>
+              <select
+                id="lead-tariff"
+                value={tariff}
+                disabled={sending}
+                onChange={(e) => {
+                  setTariff(e.target.value);
+                  updateFragment(e.target.value ? tariffFragment(e.target.value) : '');
+                }}
+                className={fieldClass + ' border-hairline'}
+              >
+                <option value="">Пока не выбрали</option>
+                {prices.map((price) => (
+                  <option key={price.id} value={price.id}>{price.title}</option>
+                ))}
+              </select>
+            </div>
+            {note ? (
+              <div>
+                <label htmlFor="lead-note" className={labelClass}>Ответы подбора</label>
+                <textarea
+                  id="lead-note"
+                  value={note}
+                  maxLength={240}
+                  disabled={sending}
+                  onChange={(e) => setNote(e.target.value)}
+                  className={fieldClass + ' border-hairline'}
+                />
+                <button type="button" className="min-h-11 underline" onClick={() => setNote('')}>
+                  Убрать ответы подбора
+                </button>
+              </div>
+            ) : null}
+
+            <div>
               <label htmlFor="lead-comment" className={labelClass}>
                 Комментарий
               </label>
@@ -630,10 +643,14 @@ export function LeadForm() {
                 value={values.comment}
                 onChange={(e) => set('comment', e.target.value)}
                 aria-invalid={Boolean(errors.comment)}
-                aria-describedby={errors.comment ? 'lead-comment-medical lead-comment-error' : 'lead-comment-medical'}
+                aria-describedby={errors.comment ? 'lead-comment-count lead-comment-medical lead-comment-error' : 'lead-comment-count lead-comment-medical'}
                 placeholder="Опыт занятий, вопросы"
                 className={`${fieldClass} resize-y ${fieldBorder(Boolean(errors.comment))}`}
               />
+              <p id="lead-comment-count" className="mt-2 text-sm text-ink-muted">
+                Для комментария доступно {commentCapacity} символов с учётом выбранных пожеланий.{' '}
+                {remaining >= 0 ? 'Осталось: ' + remaining + '.' : 'Сократите текст на ' + (-remaining) + ' символов.'}
+              </p>
               {/*
                 Предупреждение о медицинских сведениях.
 

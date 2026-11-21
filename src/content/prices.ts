@@ -79,3 +79,9 @@ export const pricesNote =
  */
 export const pricesDisclaimer =
   'Абонемент оплачивается вперёд за календарный месяц. Если начинаете с середины месяца — платите только за оставшиеся занятия. Сумма за месяц — цена занятия, умноженная на число занятий вашей группы в этом месяце; точную сумму администратор назовёт до оплаты.';
+
+/** Текст для заявки строится из тех же данных, что карточка тарифа. */
+export function tariffComment(price: Price): string {
+  const sum = new Intl.NumberFormat('ru-RU').format(price.amount) + ' ₽';
+  return 'Интересует тариф: ' + price.title + ' (' + (price.unit ? sum + ' за занятие' : sum) + ')';
+}

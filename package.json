@@ -14,7 +14,8 @@
     "build:lead": "node scripts/build-lead-function.mjs",
     "shot": "node scripts/shot.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
-    "check:pages": "node scripts/check-pages.mjs"
+    "check:pages": "node scripts/check-pages.mjs",
+    "check:booking": "node scripts/check-booking-mobile.mjs"
   },
   "dependencies": {
     "next": "16.4.6",

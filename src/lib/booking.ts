@@ -25,6 +25,7 @@ export type BookingPrefill = {
   note?: string;
   /** Выбранный тариф со страницы цен — встаёт в комментарий формы, если он пуст */
   comment?: string;
+  tariff?: string;
 };
 
 export const BOOKING_EVENT = 'primeswim:booking';
@@ -42,6 +43,7 @@ export function requestBooking(prefill: BookingPrefill): void {
 
   const section = document.getElementById('booking');
   if (section) {
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}#booking`);
     window.dispatchEvent(new CustomEvent<BookingPrefill>(BOOKING_EVENT, { detail: prefill }));
     /*
       Прокручиваем к самой форме, а не к началу блока записи. Над формой
@@ -87,5 +89,9 @@ export function sanitizePrefill(raw: unknown): BookingPrefill | null {
     slot: pick('slot', 40),
     note: pick('note', 240),
     comment: pick('comment', 240),
+    tariff: pick('tariff', 40),
   };
 }
+
+export function slotFragment(value: string): string { return `booking-slot-${value.replace(':', '-')}`; }
+export function tariffFragment(id: string): string { return `booking-tariff-${id}`; }

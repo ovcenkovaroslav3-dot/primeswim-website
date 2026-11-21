@@ -1,4 +1,4 @@
-import { enrollmentSummary } from '@/content/enrollment';
+import { EnrollmentLinks } from '../EnrollmentLinks';
 import Link from 'next/link';
 
 import { HeroVisual } from '../HeroVisual';
@@ -175,10 +175,10 @@ export function Hero() {
               {site.hero.offer}
             </p>
 
-            <p className="reveal mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-inset border border-white/20 bg-white/5 px-4 py-3 text-sm leading-relaxed text-white">
+            <div className="reveal mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-inset border border-white/20 bg-white/5 px-4 py-3 text-sm leading-relaxed text-white">
               <span className="font-semibold">Новый набор</span>
-              <span className="text-white/80">{enrollmentSummary}</span>
-            </p>
+              <EnrollmentLinks dark />
+            </div>
 
             <div
               className="reveal mt-6 flex flex-col sm:mt-8 gap-3 sm:flex-row sm:items-center"
