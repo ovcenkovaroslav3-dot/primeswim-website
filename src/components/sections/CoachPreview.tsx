@@ -52,6 +52,7 @@ export function CoachPreview() {
         */}
         <div className="reveal mx-auto w-full max-w-[260px]">
           <VideoCard
+            goal="play_coach_video"
             src={coachIntroVideo.src}
             poster={coachIntroVideo.poster}
             label={coachIntroVideo.alt}

@@ -41,6 +41,7 @@ export function VideoCard({
   width,
   height,
   className = '',
+  goal,
 }: {
   src: string;
   poster: string;
@@ -49,6 +50,7 @@ export function VideoCard({
   width: number;
   height: number;
   className?: string;
+  goal?: 'play_coach_video';
 }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
@@ -105,7 +107,7 @@ export function VideoCard({
         <button
           type="button"
           onClick={start}
-          data-goal="play_coach_video"
+          data-goal={goal}
           className="group absolute inset-0 flex cursor-pointer items-center justify-center bg-abyss-950/15 transition-colors duration-200 hover:bg-abyss-950/30"
         >
           <span className="sr-only">Смотреть: {label}</span>

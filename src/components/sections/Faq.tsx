@@ -88,7 +88,7 @@ export function Faq({
                 </svg>
               </span>
             </summary>
-            <p className="pb-5 leading-relaxed text-ink-soft">{item.answer}</p>
+            <p id={`faq-${item.id}`} className="scroll-mt-20 pb-5 leading-relaxed text-ink-soft">{item.answer}</p>
           </details>
         ))}
       </div>

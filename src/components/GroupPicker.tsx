@@ -255,6 +255,7 @@ export function GroupPicker() {
             <button
               type="button"
               onClick={book}
+              data-goal="cta_booking"
               className="lift inline-flex min-h-13 items-center justify-center rounded-control bg-white px-7 py-3.5 text-base font-semibold text-abyss-900 transition-colors hover:bg-lime-100"
             >
               Записаться на пробное

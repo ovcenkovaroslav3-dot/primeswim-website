@@ -22,7 +22,7 @@ export function FirstLesson() {
           ))}
         </ol>
         <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2">
-          <ArrowLink href="#booking">Оставить заявку</ArrowLink>
+          <ArrowLink href="#booking" data-goal="cta_booking">Оставить заявку</ArrowLink>
           <ArrowLink href="/roditelyam/">Что взять с собой</ArrowLink>
         </div>
       </div>
