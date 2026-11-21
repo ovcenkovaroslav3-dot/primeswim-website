@@ -102,6 +102,7 @@ export function Competitions({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } =
           </PillarHeading>
           <figure className="w-full max-w-[180px] max-[369px]:mx-auto">
             <VideoCard
+              nativeFallback
               src={imageLoader({ src: startsDrillVideo.src })}
               poster={startsDrillVideo.poster}
               label={startsDrillVideo.alt}

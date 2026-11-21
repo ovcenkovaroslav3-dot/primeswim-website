@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useHydrated } from '@/lib/consent';
 
 import { Picture } from './Picture';
 
@@ -42,6 +43,7 @@ export function VideoCard({
   height,
   className = '',
   goal,
+  nativeFallback = false,
 }: {
   src: string;
   poster: string;
@@ -51,9 +53,12 @@ export function VideoCard({
   height: number;
   className?: string;
   goal?: 'play_coach_video';
+  nativeFallback?: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
+  const hydrated = useHydrated();
+  const PlayControl = nativeFallback && !hydrated ? 'a' : 'button';
 
   const start = () => {
     setStarted(true);
@@ -104,9 +109,8 @@ export function VideoCard({
       />
 
       {started ? null : (
-        <button
-          type="button"
-          onClick={start}
+        <PlayControl
+          {...(PlayControl === 'a' ? { href: src } : { type: 'button' as const, onClick: start })}
           data-goal={goal}
           className="group absolute inset-0 flex cursor-pointer items-center justify-center bg-abyss-950/15 transition-colors duration-200 hover:bg-abyss-950/30"
         >
@@ -127,7 +131,7 @@ export function VideoCard({
               <path d="M21 10.3a2 2 0 0 1 0 3.4L3 23.7A2 2 0 0 1 0 22V2A2 2 0 0 1 3 .3Z" />
             </svg>
           </span>
-        </button>
+        </PlayControl>
       )}
     </div>
   );
