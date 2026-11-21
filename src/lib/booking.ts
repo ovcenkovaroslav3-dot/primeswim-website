@@ -23,8 +23,6 @@ export type BookingPrefill = {
   slot?: string;
   /** Что ответил родитель в подборе — уходит школе вместе с заявкой */
   note?: string;
-  /** Выбранный тариф со страницы цен — встаёт в комментарий формы, если он пуст */
-  comment?: string;
   tariff?: string;
 };
 
@@ -88,7 +86,6 @@ export function sanitizePrefill(raw: unknown): BookingPrefill | null {
     program: pick('program', 40),
     slot: pick('slot', 40),
     note: pick('note', 240),
-    comment: pick('comment', 240),
     tariff: pick('tariff', 40),
   };
 }
@@ -97,6 +94,29 @@ export function slotFragment(value: string): string { return `booking-slot-${val
 export function tariffFragment(id: string): string { return `booking-tariff-${id}`; }
 
 export function programFragment(id: string): string { return `booking-program-${id}`; }
+
+export type BookingFragmentOptions = {
+  slots: readonly string[];
+  tariffs: readonly string[];
+  programs: readonly string[];
+};
+
+/**
+ * Разбирает адресный хэш (с `#` или без) в один выбор: время, тариф или
+ * направление. Это обратная операция к slotFragment / tariffFragment /
+ * programFragment; неизвестное значение не принимается. Мультивыбор в адресе
+ * не кодируется намеренно: в нём один выбор, остальное лежит в хранилище.
+ */
+export function parseBookingFragment(hash: string, options: BookingFragmentOptions): BookingPrefill | null {
+  const value = hash.startsWith('#') ? hash.slice(1) : hash;
+  if (!value) return null;
+  const slot = options.slots.find((id) => id !== '' && slotFragment(id) === value);
+  if (slot) return { slot };
+  const tariff = options.tariffs.find((id) => id !== '' && tariffFragment(id) === value);
+  if (tariff) return { tariff };
+  const program = programFromFragment(value, options.programs);
+  return program ? { program } : null;
+}
 
 /** Возвращает только направление из утверждённого списка. */
 export function programFromFragment(hash: string, ids: readonly string[]): string | undefined {

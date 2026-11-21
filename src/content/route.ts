@@ -18,7 +18,7 @@ export type RouteStep = {
 };
 
 // Правило прохода уточнено владельцем 21 ноября 2026 года.
-export const gateDocuments = 'Покажите абонемент. Если его нет, покажите паспорт или свидетельство о рождении ребёнка.';
+export const gateDocuments = 'Покажите абонемент. Если его нет — паспорт родителя или свидетельство о рождении ребёнка.';
 export const gateInstructions = `Скажите охране, что вы к тренеру Овченкову Ярославу Сергеевичу. ${gateDocuments}`;
 
 export const routeSteps: RouteStep[] = [

@@ -36,13 +36,17 @@ async function checkChoice(path, slow) {
     const isSchedule = path === '/raspisanie/';
     let expected;
     if (isSchedule) {
-      const link = page.locator('#schedule').getByRole('link', { name: /Выбрать время/ }).first();
+      const link = page.locator('#schedule').getByRole('link', { name: /выбрать время/i }).first();
       const box = await link.boundingBox();
       assert.ok(box && box.y + box.height <= 844, 'Первое время нового набора доступно на первом экране');
+      // Имя кнопки начинается с видимого текста (WCAG 2.5.3).
       const label = await link.getAttribute('aria-label');
+      const visible = (await link.innerText()).replace('→', '').trim();
+      assert.ok(label.startsWith(visible), `Имя «${label}» начинается с видимого текста «${visible}»`);
+      const [, day, hours, minutes] = /booking-slot-([a-z]+)-(\d\d)-(\d\d)$/.exec(await link.getAttribute('href')) ?? [];
       expected = await page.locator('select[name=slot] option').evaluateAll(
-        (options, name) => options.find((o) => o.value && name.includes(o.textContent.trim()))?.textContent.trim(),
-        label,
+        (options, value) => options.find((o) => o.value === value)?.textContent.trim(),
+        `${day}-${hours}:${minutes}`,
       );
       await link.click();
     } else {
@@ -53,11 +57,12 @@ async function checkChoice(path, slow) {
     release?.();
     await page.waitForFunction(() => !document.querySelector('form fieldset')?.disabled);
     const form = page.locator('#booking form');
+    const changeName = isSchedule ? 'Изменить время' : 'Изменить тариф';
     assert.ok(expected, 'У выбранного варианта есть подпись');
-    await form.getByRole('button', { name: 'Изменить', exact: true }).waitFor();
+    await form.getByRole('button', { name: changeName, exact: true }).waitFor();
     assert.ok((await form.innerText()).includes(expected), 'Видимая сводка сохраняет первый выбор');
     assert.equal(await form.locator('details').evaluate((el) => el.open), false);
-    await form.getByRole('button', { name: 'Изменить', exact: true }).click();
+    await form.getByRole('button', { name: changeName, exact: true }).click();
     const field = isSchedule ? form.getByLabel('Удобное время', { exact: true }) : form.getByLabel('Тариф', { exact: true });
     assert.equal((await field.locator('option:checked').innerText()).trim(), expected);
     assert.ok(await field.evaluate((el) => el === document.activeElement), 'Клавиатура попадает в редактор выбора');

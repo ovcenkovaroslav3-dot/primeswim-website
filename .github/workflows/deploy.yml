@@ -74,6 +74,26 @@ jobs:
       - name: Сборка статики
         run: npm run build
 
+      # Проверка записи на телефоне против той самой сборки, которая уйдёт на
+      # сайт: выбор времени и тарифа до загрузки JavaScript и после неё.
+      # Падает шаг — падает сборка, и до деплоя дело не доходит. Тестовый
+      # адрес приёмника в продовую сборку не подставляется: скрипт заявок не
+      # отправляет. check:audit (форма, согласие, метки) требует отдельной
+      # тестовой сборки с NEXT_PUBLIC_LEAD_ENDPOINT, поэтому в CI его нет:
+      # запускать его на продовой сборке нельзя, а вторая сборка удвоила бы
+      # время прогона. Запускается вручную, см. шапку скрипта.
+      # На ubuntu-latest уже стоит Google Chrome, скрипт берёт channel: 'chrome'.
+      - name: Проверка записи на телефоне
+        run: |
+          python3 -m http.server 4322 --bind 127.0.0.1 --directory out > server.log 2>&1 &
+          server=$!
+          trap 'kill $server 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS -o /dev/null http://127.0.0.1:4322/ && break
+            sleep 1
+          done
+          BASE_URL=http://127.0.0.1:4322 npm run check:booking
+
       - uses: actions/configure-pages@v6
         if: github.ref == 'refs/heads/master'
 

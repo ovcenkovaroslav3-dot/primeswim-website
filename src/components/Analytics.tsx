@@ -7,8 +7,8 @@ import { usePathname } from 'next/navigation';
 import {
   GOAL_ATTRIBUTE,
   metrikaId,
+  isAnalyticsGoal,
   trackGoal,
-  type AnalyticsGoal,
 } from '@/lib/analytics';
 import { captureSource, pickKnownParams } from '@/lib/campaign-source';
 import { useConsent } from '@/lib/consent';
@@ -93,7 +93,7 @@ export function Analytics() {
       const target = event.target as HTMLElement | null;
       const element = target?.closest<HTMLElement>(`[${GOAL_ATTRIBUTE}]`);
       const goal = element?.getAttribute(GOAL_ATTRIBUTE);
-      if (goal) trackGoal(goal as AnalyticsGoal);
+      if (isAnalyticsGoal(goal)) trackGoal(goal);
     }
 
     document.addEventListener('click', onClick, { passive: true });

@@ -28,6 +28,17 @@ export function SlotBookButton({
   compact?: boolean;
   dark?: boolean;
 }) {
+  /*
+    Доступное имя начинается с видимого текста (WCAG 2.5.3): тот, кто управляет
+    голосом, говорит «Вт 19:45», а не пересказ. В полном варианте на кнопке
+    только время, день виден из строки расписания, поэтому в имени он идёт
+    после времени.
+  */
+  const day = label.split(',')[0]?.trim();
+  const accessibleName = compact || !day
+    ? `${time} — выбрать время, подставим в заявку`
+    : `${time}, ${day} — выбрать время, подставим в заявку`;
+
   return (
     <a
       href={`#${slotFragment(value)}`}
@@ -37,7 +48,7 @@ export function SlotBookButton({
         window.dispatchEvent(new CustomEvent(BOOKING_EVENT, { detail: { slot: value } }));
       }}
       data-goal="cta_booking"
-      aria-label={`Выбрать время: ${label} — подставим в заявку`}
+      aria-label={accessibleName}
       className={`group inline-flex min-h-11 items-center rounded-full border tabular-nums transition-colors ${compact ? 'gap-1 px-2 text-sm font-medium' : 'gap-2 px-4 text-lg font-light'} ${dark ? 'border-white/40 bg-white/10 text-white hover:bg-white/20' : 'border-brand-300 bg-surface text-ink hover:border-brand-500 hover:bg-brand-50 dark:hover:border-brand-200 dark:hover:bg-brand-900/40'}`}
     >
       {time}
