@@ -17,6 +17,10 @@ export type RouteStep = {
   description: string;
 };
 
+// Правило прохода уточнено владельцем 21 ноября 2026 года.
+export const gateDocuments = 'Покажите абонемент. Если его нет, покажите паспорт или свидетельство о рождении ребёнка.';
+export const gateInstructions = `Скажите охране, что вы к тренеру Овченкову Ярославу Сергеевичу. ${gateDocuments}`;
+
 export const routeSteps: RouteStep[] = [
   {
     id: 'gates',
@@ -26,7 +30,7 @@ export const routeSteps: RouteStep[] = [
   {
     id: 'security',
     title: 'Охрана',
-    description: 'На охране скажите, что вы к тренеру Овченкову Ярославу Сергеевичу. Этого достаточно, чтобы пройти на территорию.',
+    description: gateInstructions,
   },
   {
     id: 'walk',

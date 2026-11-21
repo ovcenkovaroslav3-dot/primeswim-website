@@ -2,6 +2,7 @@ import { Picture } from '../Picture';
 import { ArrowLink, ButtonLink } from '../ui';
 import { contacts } from '@/content/contacts';
 import { venuePreviewImages } from '@/content/media';
+import { gateInstructions } from '@/content/route';
 
 export function PoolPreview() {
   const [building, gate] = venuePreviewImages;
@@ -17,7 +18,7 @@ export function PoolPreview() {
             {contacts.address.region}, г. {contacts.address.city}, {contacts.address.district}<br />{contacts.address.street}
           </address>
           <p className="mt-4 leading-relaxed text-white/70">Шесть дорожек по 25 метров. Все группы школы занимаются здесь.</p>
-          <p className="mt-3 leading-relaxed text-white/70">Вход через проходную с Библиотечной или Совхозной улицы. На охране скажите, что вы к тренеру Овченкову Ярославу Сергеевичу.</p>
+          <p className="mt-3 leading-relaxed text-white/70">Вход через проходную с Библиотечной или Совхозной улицы. {gateInstructions}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <ButtonLink href={contacts.address.yandexMaps} external variant="outline" data-goal="click_route">Построить маршрут</ButtonLink>
             <ArrowLink href="/bassein/" tone="white">Как пройти к бассейну</ArrowLink>
