@@ -37,6 +37,8 @@ export const contacts = {
     geo: { lat: 55.896532, lon: 37.473388 },
     yandexMaps:
       'https://yandex.ru/maps/org/prime_swim_shkola_plavaniya_praym/52003694679/',
+    /** Страница отзывов школы в Яндекс Картах (та же организация, oid 52003694679). */
+    yandexReviews: 'https://yandex.ru/maps/org/52003694679/reviews/',
   },
 
   /**

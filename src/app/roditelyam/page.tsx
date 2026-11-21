@@ -2,6 +2,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Faq } from '@/components/sections/Faq';
+import { ReviewInvite } from '@/components/sections/ReviewInvite';
 import { Parents } from '@/components/sections/Parents';
 import { Progress } from '@/components/sections/Progress';
 import { Why } from '@/components/sections/Why';
@@ -52,6 +53,8 @@ export default function ParentsPage() {
           'pervoe-zanyatie-po-plavaniyu-cheklist',
         ]}
       />
+
+      <ReviewInvite />
 
       <FinalCta />
     </>
