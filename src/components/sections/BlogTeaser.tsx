@@ -39,7 +39,7 @@ export function BlogTeaser({
         title={title}
       />
 
-      <ul className={`mt-10 grid gap-3 sm:gap-4 ${picked.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+      <ul className={`mt-10 grid gap-3 sm:gap-4 ${picked.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
         {picked.map((article, i) => (
           <li key={article.slug}>
             <Link

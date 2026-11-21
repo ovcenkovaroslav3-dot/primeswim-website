@@ -1,6 +1,7 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
+import { ProgramLinks } from '@/components/sections/ProgramPage';
 import { Faq } from '@/components/sections/Faq';
 import { ReviewInvite } from '@/components/sections/ReviewInvite';
 import { Parents } from '@/components/sections/Parents';
@@ -46,7 +47,9 @@ export default function ParentsPage() {
         страницу до вопросов — значит, собирает детали перед решением,
         и развёрнутые материалы здесь уместнее, чем на главной.
       */}
+      <ProgramLinks />
       <BlogTeaser
+        tone="alt"
         slugs={[
           's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
           'rebenok-boitsya-vody-chto-delat',

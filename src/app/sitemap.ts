@@ -25,6 +25,8 @@ const routes = [
   { path: '/bassein/', priority: 0.8, changeFrequency: 'monthly' as const },
   { path: '/roditelyam/', priority: 0.7, changeFrequency: 'monthly' as const },
   { path: '/galereya/', priority: 0.6, changeFrequency: 'monthly' as const },
+  { path: '/plavanie-s-nulya/', priority: 0.7, changeFrequency: 'monthly' as const },
+  { path: '/tehnika-plavaniya/', priority: 0.7, changeFrequency: 'monthly' as const },
   { path: '/sorevnovaniya/', priority: 0.6, changeFrequency: 'monthly' as const },
   { path: '/dogovor/', priority: 0.4, changeFrequency: 'yearly' as const },
   { path: '/policy/', priority: 0.3, changeFrequency: 'yearly' as const },

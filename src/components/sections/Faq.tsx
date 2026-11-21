@@ -9,6 +9,17 @@ import { OpenDetailsOnHash } from '../OpenDetailsOnHash';
 
   Блок стоит на двух страницах, и они устроены по-разному.
 
+  На /roditelyam/ — все вопросы и разметка FAQPage (разметка собирается из
+  показанных вопросов, `items`, а не из всего списка).
+
+  Страницы направлений (/plavanie-s-nulya/, /tehnika-plavaniya/) тоже отдают
+  FAQPage, но только по своей подборке `ids` — решение владельца. Один и тот
+  же вопрос при этом размечен на нескольких адресах; если Вебмастер начнёт
+  жаловаться на дубли, withSchema убирается с этих страниц.
+
+  Старое правило ниже («ровно одна страница») относилось ко времени, когда
+  подборок не было.
+
   На /roditelyam/ — все вопросы и разметка FAQPage. Разметка допустима
   именно там: вопросы и ответы видны посетителю целиком, details/summary
   прячет их до клика, но текст лежит в разметке страницы, а не подгружается
@@ -50,7 +61,7 @@ export function Faq({
   const faqPage = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faq.map((item) => ({
+    mainEntity: items.map((item) => ({
       '@type': 'Question',
       name: item.question,
       acceptedAnswer: { '@type': 'Answer', text: item.answer },

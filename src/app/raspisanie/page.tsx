@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { ProgramLinks } from '@/components/sections/ProgramPage';
 import { Faq } from '@/components/sections/Faq';
 import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
@@ -28,7 +29,10 @@ export default function SchedulePage() {
 
       <Faq ids={faqOnSchedule} withSchema={false} moreHref="/roditelyam/" />
 
+      <ProgramLinks />
+
       <BlogTeaser
+        tone="alt"
         slugs={[
           'pervoe-zanyatie-po-plavaniyu-cheklist',
           'spravka-v-bassein-dlya-rebenka',
