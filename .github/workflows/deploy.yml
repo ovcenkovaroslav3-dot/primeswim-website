@@ -95,3 +95,50 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  # Сообщаем Яндексу и Bing об адресах сайта сразу после публикации (IndexNow).
+  # Отдельное задание: его сбой не портит саму публикацию, а continue-on-error
+  # оставляет прогон зелёным. Повторить вручную: Actions → Run workflow.
+  indexnow:
+    if: github.ref == 'refs/heads/master'
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      SITE_HOST: www.primeswim.ru
+      # ключ не секрет: он лежит в открытом виде в public/<ключ>.txt
+      INDEXNOW_KEY: ba7046a3cf6c167008eeed6750ef8b69
+    steps:
+      - name: Ждём, пока ключ станет доступен на сайте
+        run: |
+          url="https://${SITE_HOST}/${INDEXNOW_KEY}.txt"
+          for i in $(seq 1 30); do
+            body=$(curl -fsS --max-time 15 "$url" 2>/dev/null | tr -d '\r\n ' || true)
+            if [ "$body" = "$INDEXNOW_KEY" ]; then
+              echo "Ключ доступен (попытка $i)"
+              exit 0
+            fi
+            echo "Ключ пока не отдаётся (попытка $i из 30), ждём 20 с"
+            sleep 20
+          done
+          echo "::error::Ключ IndexNow не появился на сайте за 10 минут"
+          exit 1
+
+      - name: Отправляем адреса из sitemap.xml в IndexNow
+        run: |
+          curl -fsS --max-time 30 "https://${SITE_HOST}/sitemap.xml" -o sitemap.xml
+          grep -oE '<loc>[^<]+</loc>' sitemap.xml | sed -E 's#</?loc>##g' > urls.txt
+          echo "Адресов в sitemap: $(wc -l < urls.txt)"
+          test -s urls.txt
+          jq -n --arg host "$SITE_HOST" --arg key "$INDEXNOW_KEY"             --arg loc "https://${SITE_HOST}/${INDEXNOW_KEY}.txt"             --rawfile urls urls.txt             '{host: $host, key: $key, keyLocation: $loc, urlList: ($urls | split("\n") | map(select(length > 0)))}' > payload.json
+          fail=0
+          for endpoint in https://yandex.com/indexnow https://api.indexnow.org/indexnow; do
+            code=$(curl -sS --max-time 30 -o response.txt -w '%{http_code}'               -H 'Content-Type: application/json; charset=utf-8'               --data @payload.json "$endpoint" || echo 000)
+            echo "$endpoint -> HTTP $code"
+            cat response.txt; echo
+            if [ "$code" != "200" ] && [ "$code" != "202" ]; then fail=1; fi
+          done
+          exit $fail

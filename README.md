@@ -538,6 +538,23 @@ NEXT_PUBLIC_ALLOW_INDEXING=false
 
 ---
 
+## IndexNow (быстрое уведомление поисковиков)
+
+После каждой публикации в `master` задание `indexnow` в
+`.github/workflows/deploy.yml` отправляет все адреса из `/sitemap.xml` в
+IndexNow (Яндекс и Bing), чтобы страницы переобходились быстрее.
+
+- Ключ: `ba7046a3cf6c167008eeed6750ef8b69`. Файл `public/ba7046a3cf6c167008eeed6750ef8b69.txt` с этим ключом
+  попадает в корень сайта: https://www.primeswim.ru/ba7046a3cf6c167008eeed6750ef8b69.txt.
+  Ключ не секрет, он должен быть открыт. Тот же ключ записан в `INDEXNOW_KEY` в воркфлоу.
+- Задание ждёт до 10 минут, пока ключ появится на сайте (кэш Pages), затем
+  отправляет адреса на `yandex.com/indexnow` и `api.indexnow.org`. Успех — HTTP 200 или 202.
+- Сбой IndexNow не отменяет публикацию: задание отдельное, с `continue-on-error`.
+- Повторить вручную: Actions → «Сборка и публикация на GitHub Pages» → Run workflow
+  (ветка `master`); воркфлоу пройдёт целиком, включая `indexnow`.
+
+---
+
 ## Откат
 
 Сайт на Tilda не изменялся, поэтому вернуться к нему можно в любой момент.
