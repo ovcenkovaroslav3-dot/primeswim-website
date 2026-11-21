@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { requestBooking, sanitizePrefill, takePendingBooking } from './booking.ts';
+import { requestBooking, sanitizePrefill, takePendingBooking, slotFragment, tariffFragment } from './booking.ts';
 
 test('из хранилища берутся только строки известных полей', () => {
   assert.deepEqual(sanitizePrefill({ age: '9-10', program: 'sport', slot: 'mon-19:00', note: 'x', comment: 'тариф', phone: '+7999' }), {
@@ -10,6 +10,7 @@ test('из хранилища берутся только строки изве�
     slot: 'mon-19:00',
     note: 'x',
     comment: 'тариф',
+    tariff: undefined,
   });
 });
 
@@ -32,7 +33,9 @@ test('выбор до подключения формы сохраняется �
   const store = new Map<string, string>();
   const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
   const originalDocument = Object.getOwnPropertyDescriptor(globalThis, 'document');
-  const fakeWindow = new EventTarget() as EventTarget & { sessionStorage: Storage };
+  const fakeWindow = new EventTarget() as EventTarget & { sessionStorage: Storage; history: { state: null; replaceState: () => void }; location: { pathname: string; search: string } };
+  fakeWindow.history = { state: null, replaceState() {} };
+  fakeWindow.location = { pathname: '/', search: '?utm_source=test' };
   fakeWindow.sessionStorage = {
     getItem: (key: string) => store.get(key) ?? null,
     setItem: (key: string, value: string) => { store.set(key, value); },
@@ -64,4 +67,10 @@ test('выбор до подключения формы сохраняется �
     if (originalDocument) Object.defineProperty(globalThis, 'document', originalDocument);
     else Reflect.deleteProperty(globalThis, 'document');
   }
+});
+
+test('фрагменты содержат только выбранный идентификатор', () => {
+  assert.equal(slotFragment('tue-19:45'), 'booking-slot-tue-19-45');
+  assert.equal(tariffFragment('once-a-week'), 'booking-tariff-once-a-week');
+  assert.equal(sanitizePrefill({ tariff: 'trial' })?.tariff, 'trial');
 });

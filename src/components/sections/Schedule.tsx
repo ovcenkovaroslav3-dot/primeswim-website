@@ -1,4 +1,5 @@
-import { enrollmentSummary, isEnrollmentDay } from '@/content/enrollment';
+import { isEnrollmentDay } from '@/content/enrollment';
+import { EnrollmentLinks } from '../EnrollmentLinks';
 import { ButtonLink, Section, SectionHeading } from '../ui';
 import { schedule, scheduleIntro, slotValue, weekDays } from '@/content/schedule';
 import { contacts } from '@/content/contacts';
@@ -48,12 +49,12 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
 
       <div className="reveal mt-8 rounded-card border border-hairline bg-surface p-6">
         <p className="text-sm font-semibold text-brand-600 dark:text-brand-200">Новый набор</p>
-        <p className="mt-2 text-xl font-medium text-ink">{enrollmentSummary}</p>
+        <div className="mt-2"><EnrollmentLinks /></div>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">Выберите удобный день. Подходящую группу и свободное место подтвердит администратор.</p>
       </div>
 
       <div
-        className="reveal mt-12 grid grid-cols-[repeat(auto-fit,minmax(2rem,1fr))] gap-2 sm:gap-3"
+        className="reveal mt-12 hidden sm:grid grid-cols-[repeat(auto-fit,minmax(2rem,1fr))] gap-2 sm:gap-3"
         role="img"
         aria-label={`Занятия проходят: ${activeDays.join(', ')}`}
       >

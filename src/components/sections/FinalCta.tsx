@@ -2,6 +2,9 @@ import { LeadForm } from './LeadForm';
 import { OrcaMark } from '../OrcaMark';
 import { WaterScene } from '../WaterScene';
 import { contacts } from '@/content/contacts';
+import { slotOptions } from '@/content/schedule';
+import { prices } from '@/content/prices';
+import { slotFragment, tariffFragment } from '@/lib/booking';
 
 /*
   Финальный экран и запись — один блок.
@@ -31,51 +34,6 @@ import { contacts } from '@/content/contacts';
   в Progress/Pool/Competitions — тот же язык, но без WebGL.
 */
 
-function MessengerCard({
-  href,
-  title,
-  description,
-  goal,
-}: {
-  href: string;
-  title: string;
-  description: string;
-  goal: string;
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-goal={goal}
-      className="group lift glass flex min-h-24 flex-col justify-center rounded-inset p-6 text-left transition-colors duration-200 hover:border-white/35"
-    >
-      <span className="flex items-center gap-2 text-lg font-medium text-white">
-        {title}
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 18 18"
-          fill="none"
-          aria-hidden="true"
-          className="text-white/60 transition-transform duration-200 group-hover:translate-x-1"
-        >
-          <path
-            d="M4 14 14 4M6 4h8v8"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-      <span className="mt-1.5 text-sm leading-relaxed text-white/65">
-        {description}
-      </span>
-    </a>
-  );
-}
-
 export function FinalCta({
   variant = 'plain',
 }: {
@@ -83,7 +41,6 @@ export function FinalCta({
 } = {}) {
   return (
     <section
-      id="booking"
       aria-labelledby="booking-title"
       className="on-dark relative isolate overflow-hidden bg-abyss-950 px-4 py-20 text-white sm:px-6 sm:py-24 md:py-36"
     >
@@ -131,50 +88,22 @@ export function FinalCta({
       />
 
       <div className="relative mx-auto min-w-0 w-full max-w-3xl [overflow-wrap:anywhere] text-center">
-        <p className="reveal text-xs font-medium tracking-[0.28em] text-white/50 uppercase">
-          Первый шаг
-        </p>
-
-        <h2
-          id="booking-title"
-          className="reveal mt-6 text-[clamp(2.2rem,7vw,4.2rem)] leading-[1.02] font-normal tracking-[-0.02em]"
-          style={{ ['--reveal-delay' as string]: '90ms' }}
-        >
-          Начните с первой тренировки
-        </h2>
-
-        <p
-          className="reveal mx-auto mt-6 max-w-[48ch] text-lg leading-relaxed text-white/75"
-          style={{ ['--reveal-delay' as string]: '180ms' }}
-        >
-          Заполните форму или напишите в мессенджер — подберём группу по возрасту
-          и уровню подготовки и назовём ближайшее свободное время.
-        </p>
-
-        <div
-          className="reveal mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2"
-          style={{ ['--reveal-delay' as string]: '270ms' }}
-        >
-          <MessengerCard
-            href={contacts.social.telegramBooking}
-            title="Telegram"
-            description={`Ответим ${contacts.workingHours.display.toLowerCase()}`}
-            goal="click_telegram_booking"
-          />
-          <MessengerCard
-            href={contacts.social.max}
-            title="MAX"
-            description="Если удобнее — пишите сюда"
-            goal="click_max_booking"
-          />
-        </div>
-
-        <div
-          className="reveal mt-10 text-left"
-          style={{ ['--reveal-delay' as string]: '340ms' }}
-        >
+        <div id="booking" className="relative text-left">
+          {slotOptions.map((slot) => (
+            <span key={slot.value} id={slotFragment(slot.value)} className="absolute top-0 h-px w-px" />
+          ))}
+          {prices.map((price) => (
+            <span key={price.id} id={tariffFragment(price.id)} className="absolute top-0 h-px w-px" />
+          ))}
+          <h2 id="booking-title" className="mb-4 text-2xl font-medium text-white sm:text-3xl">
+            Запись на пробное занятие
+          </h2>
           <LeadForm />
         </div>
+        <p className="mt-6 text-sm text-white/75">Написать администратору: {' '}
+          <a href={contacts.social.telegramBooking} target="_blank" rel="noopener noreferrer" data-goal="click_telegram_booking" className="inline-flex min-h-11 items-center underline">Telegram</a>{' · '}
+          <a href={contacts.social.max} target="_blank" rel="noopener noreferrer" data-goal="click_max_booking" className="inline-flex min-h-11 items-center underline">MAX</a>
+        </p>
 
         <p className="reveal mt-8 border-t border-white/15 pt-8 text-white/75">
           Удобнее голосом? Позвоните{' '}

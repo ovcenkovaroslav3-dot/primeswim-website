@@ -23,15 +23,6 @@ function monthlyLine(price: Price): string | null {
   return `В месяц: ${from}–${to} ₽ (${m.min}–${m.max} занятий)`;
 }
 
-/*
-  Что уходит в комментарий формы при выборе тарифа. Собирается из тех же
-  данных, что и карточка, чтобы строка не разошлась с ценой на экране.
-*/
-function tariffComment(price: Price): string {
-  const sum = `${formatter.format(price.amount)} ₽`;
-  return `Интересует тариф: ${price.title} (${price.unit ? `${sum} за занятие` : sum})`;
-}
-
 export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   // название тарифа на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
   const PriceHeading = headingAs === 'h1' ? 'h2' : 'h3';
@@ -133,7 +124,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
               ) : null}
 
               <TariffBookButton
-                comment={tariffComment(price)}
+                tariff={price.id}
                 variant={price.featured ? 'secondary' : 'ghost'}
                 data-goal="cta_booking"
                 className="relative mt-auto w-full"
