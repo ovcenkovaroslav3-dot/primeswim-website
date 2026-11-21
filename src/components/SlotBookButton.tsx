@@ -36,6 +36,7 @@ export function SlotBookButton({
         trackGoal('pick_slot', { slot: value });
         window.dispatchEvent(new CustomEvent(BOOKING_EVENT, { detail: { slot: value } }));
       }}
+      data-goal="cta_booking"
       aria-label={`Выбрать время: ${label} — подставим в заявку`}
       className={`group inline-flex min-h-11 items-center rounded-full border tabular-nums transition-colors ${compact ? 'gap-1 px-2 text-sm font-medium' : 'gap-2 px-4 text-lg font-light'} ${dark ? 'border-white/40 bg-white/10 text-white hover:bg-white/20' : 'border-brand-300 bg-surface text-ink hover:border-brand-500 hover:bg-brand-50 dark:hover:border-brand-200 dark:hover:bg-brand-900/40'}`}
     >

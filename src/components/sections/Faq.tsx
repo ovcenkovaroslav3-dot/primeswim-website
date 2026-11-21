@@ -2,6 +2,7 @@ import { ArrowLink, Section, SectionHeading } from '../ui';
 import { JsonLd } from '../StructuredData';
 import { faq } from '@/content/faq';
 import { contacts } from '@/content/contacts';
+import { OpenDetailsOnHash } from '../OpenDetailsOnHash';
 
 /*
   Частые вопросы.
@@ -92,6 +93,8 @@ export function Faq({
           </details>
         ))}
       </div>
+
+      <OpenDetailsOnHash />
 
       {hasMore ? (
         <ArrowLink href={moreHref as string} className="mt-8">
