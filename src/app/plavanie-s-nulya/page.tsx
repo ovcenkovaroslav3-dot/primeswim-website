@@ -70,7 +70,7 @@ export default function BeginnersPage() {
 
       <CoachPreview />
 
-      <Faq ids={page.faqIds} moreHref="/roditelyam/" />
+      <Faq ids={page.faqIds} withSchema={false} moreHref="/roditelyam/" />
 
       <BlogTeaser title="Читайте также" slugs={[...page.articles]} />
 
