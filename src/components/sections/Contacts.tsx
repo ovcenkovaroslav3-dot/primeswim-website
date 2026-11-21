@@ -62,6 +62,15 @@ export function Contacts() {
             >
               Построить маршрут на Яндекс Картах
             </ButtonLink>
+            <a
+              href={contacts.address.yandexReviews}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-goal="review_click"
+              className="mt-2 flex min-h-11 items-center text-sm text-ink-soft underline underline-offset-4 transition-colors hover:text-brand-600 dark:hover:text-brand-200"
+            >
+              Оставить отзыв на Яндекс Картах
+            </a>
           </div>
 
           {/*

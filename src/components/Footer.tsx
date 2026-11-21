@@ -64,6 +64,17 @@ export function Footer() {
                   Посмотреть на Яндекс Картах
                 </a>
               </li>
+              <li>
+                <a
+                  href={contacts.address.yandexReviews}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-goal="review_click"
+                  className="-my-2 inline-flex min-h-11 items-center underline underline-offset-4 transition-colors hover:text-lime-300"
+                >
+                  Оставить отзыв на Яндекс Картах
+                </a>
+              </li>
             </ul>
             {/*
               Подпись «Каналы школы» нужна с 19 сентября 2026, когда одноимённый
