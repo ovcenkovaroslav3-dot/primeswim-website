@@ -1,6 +1,9 @@
 import { ProgramBookButton } from '../ProgramBookButton';
 import { ArrowLink, Section } from '../ui';
 import { programs } from '@/content/programs';
+import { Picture } from '../Picture';
+import { coachIntroVideo } from '@/content/media';
+import Link from 'next/link';
 
 export function Programs() {
   return (
@@ -11,6 +14,30 @@ export function Programs() {
           <h2 id="programs-title" className="mt-4 max-w-xl text-3xl leading-[1.08] font-normal tracking-[-0.02em] sm:text-4xl md:text-[44px]">Три цели, с которыми к нам приходят</h2>
         </div>
         <p className="max-w-lg leading-relaxed text-ink-soft">Обучение плаванию детей с нуля и спортивная секция в одной школе: ребёнок попадает в группу по возрасту и уровню подготовки.</p>
+      </div>
+
+      <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5">
+        <a href="#podbor" className="inline-flex min-h-11 items-center rounded-control border border-brand-500 px-4 font-medium text-brand-600 dark:text-brand-200">
+          Подобрать по возрасту и уровню →
+        </a>
+
+        <div className="flex min-w-0 items-center gap-4 rounded-inset border border-hairline bg-surface p-3">
+          <Picture
+            src={coachIntroVideo.poster}
+            alt={coachIntroVideo.alt}
+            width={coachIntroVideo.width}
+            height={coachIntroVideo.height}
+            sizes="80px"
+            className="h-24 w-20 rounded-inset object-cover object-[50%_76%]"
+          />
+          <div className="min-w-0">
+            <p className="text-sm text-ink-muted">Ваш тренер</p>
+            <p className="font-medium text-ink">Ярослав Сергеевич Овченков</p>
+            <Link href="/blog/pervoe-zanyatie-po-plavaniyu-cheklist/" className="inline-flex min-h-11 items-center text-sm font-medium text-brand-600 underline underline-offset-4 dark:text-brand-200">
+              Как проходит пробное →
+            </Link>
+          </div>
+        </div>
       </div>
 
       <ul className="mt-10">

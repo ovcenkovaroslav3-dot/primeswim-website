@@ -21,7 +21,7 @@ import {
   type LeadValues,
 } from '@/lib/lead-schema';
 import { trackGoal } from '@/lib/analytics';
-import { BOOKING_EVENT, takePendingBooking, slotFragment, tariffFragment, type BookingPrefill } from '@/lib/booking';
+import { BOOKING_EVENT, takePendingBooking, slotFragment, tariffFragment, programFragment, programFromFragment, type BookingPrefill } from '@/lib/booking';
 
 /*
   Настоящая отправка заявки — форма больше не открывает мессенджер.
@@ -121,7 +121,7 @@ export function LeadForm() {
   useEffect(() => {
     const apply = (prefill: BookingPrefill | null) => {
       if (!prefill) return;
-      if ((prefill.slot !== undefined || prefill.tariff !== undefined) && wishesRef.current) wishesRef.current.open = false;
+      if ((prefill.slot !== undefined || prefill.tariff !== undefined || prefill.program !== undefined) && wishesRef.current) wishesRef.current.open = false;
       setValues((v) => ({
         ...v,
         age: prefill.age && validAgeIds.has(prefill.age) ? prefill.age : v.age,
@@ -145,7 +145,8 @@ export function LeadForm() {
       const hash = window.location.hash.slice(1);
       const slotMatch = slotOptions.find((option) => slotFragment(option.value) === hash);
       const tariffMatch = prices.find((price) => tariffFragment(price.id) === hash);
-      return slotMatch ? { slot: slotMatch.value } : tariffMatch ? { tariff: tariffMatch.id } : null;
+      const programMatch = programFromFragment(hash, programOptions.map((option) => option.value));
+      return slotMatch ? { slot: slotMatch.value } : tariffMatch ? { tariff: tariffMatch.id } : programMatch ? { program: programMatch } : null;
     };
     const fromHash = () => apply(readHash());
     const pending = takePendingBooking();
@@ -544,7 +545,10 @@ export function LeadForm() {
                 name="program"
                 disabled={sending}
                 value={values.program}
-                onChange={(e) => set('program', e.target.value)}
+                onChange={(e) => {
+                  set('program', e.target.value);
+                  updateFragment(e.target.value ? programFragment(e.target.value) : '');
+                }}
                 aria-invalid={Boolean(errors.program)}
                 aria-describedby={errors.program ? 'lead-program-error' : undefined}
                 className={`${fieldClass} ${fieldBorder(Boolean(errors.program))}`}

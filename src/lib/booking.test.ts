@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { requestBooking, sanitizePrefill, takePendingBooking, slotFragment, tariffFragment } from './booking.ts';
+import { programs } from '../content/programs.ts';
+
+import { requestBooking, sanitizePrefill, takePendingBooking, slotFragment, tariffFragment, programFragment, programFromFragment } from './booking.ts';
 
 test('из хранилища берутся только строки известных полей', () => {
   assert.deepEqual(sanitizePrefill({ age: '9-10', program: 'sport', slot: 'mon-19:00', note: 'x', comment: 'тариф', phone: '+7999' }), {
@@ -73,4 +75,11 @@ test('фрагменты содержат только выбранный иде
   assert.equal(slotFragment('tue-19:45'), 'booking-slot-tue-19-45');
   assert.equal(tariffFragment('once-a-week'), 'booking-tariff-once-a-week');
   assert.equal(sanitizePrefill({ tariff: 'trial' })?.tariff, 'trial');
+});
+
+test('фрагменты всех программ восстанавливают только известное направление', () => {
+  const ids = programs.map((program) => program.id);
+  for (const id of ids) assert.equal(programFromFragment(programFragment(id), ids), id);
+  assert.equal(programFromFragment('booking-program-unknown', ids), undefined);
+  assert.equal(programFromFragment('booking-program-', ['', ...ids]), undefined);
 });

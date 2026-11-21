@@ -223,6 +223,7 @@ export function MobileMenu() {
                   >
                     {contacts.phone.display}
                   </a>
+                  <p className="text-center text-sm text-ink-muted">Каналы школы</p>
                   <SocialLinks align="center" />
                 </div>
               </div>

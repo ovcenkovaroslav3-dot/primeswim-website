@@ -4,7 +4,8 @@ import { WaterScene } from '../WaterScene';
 import { contacts } from '@/content/contacts';
 import { slotOptions } from '@/content/schedule';
 import { prices } from '@/content/prices';
-import { slotFragment, tariffFragment } from '@/lib/booking';
+import { programs } from '@/content/programs';
+import { slotFragment, tariffFragment, programFragment } from '@/lib/booking';
 
 /*
   Финальный экран и запись — один блок.
@@ -94,6 +95,9 @@ export function FinalCta({
           ))}
           {prices.map((price) => (
             <span key={price.id} id={tariffFragment(price.id)} className="absolute top-0 h-px w-px" />
+          ))}
+          {programs.map((program) => (
+            <span key={program.id} id={programFragment(program.id)} className="absolute top-0 h-px w-px" />
           ))}
           <h2 id="booking-title" className="mb-4 text-2xl font-medium text-white sm:text-3xl">
             Запись на пробное занятие
