@@ -1,5 +1,9 @@
 import { OrcaMark } from "../OrcaMark";
+import { VideoCard } from "../VideoCard";
 import { competitionPillars } from "@/content/journey";
+import { startsDrillVideo } from "@/content/media";
+import imageLoader from "@/lib/image-loader";
+import Link from "next/link";
 
 /*
   Соревнования и развитие.
@@ -90,6 +94,34 @@ export function Competitions({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } =
             толкаем. Но если появляется интерес и получается — школа умеет вести
             дальше: к стартам, сборам и разрядам.
           </p>
+        </div>
+
+        <div className="mt-10 grid gap-4 rounded-card border border-white/15 bg-white/5 p-5 min-[370px]:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-x-7 sm:p-7">
+          <PillarHeading className="text-2xl leading-tight font-medium text-white min-[370px]:col-span-2">
+            Готов ли ребёнок к первому старту?
+          </PillarHeading>
+          <figure className="w-full max-w-[180px] max-[369px]:mx-auto">
+            <VideoCard
+              src={imageLoader({ src: startsDrillVideo.src })}
+              poster={startsDrillVideo.poster}
+              label={startsDrillVideo.alt}
+              width={startsDrillVideo.width}
+              height={startsDrillVideo.height}
+            />
+            <figcaption className="mt-2 text-xs leading-normal text-white/75">Старт с тумбы на тренировке</figcaption>
+            <noscript>
+              <a href={imageLoader({ src: startsDrillVideo.src })} className="inline-flex min-h-11 items-center text-sm text-lime-300 underline">
+                Открыть видео тренировки
+              </a>
+            </noscript>
+          </figure>
+          <div className="max-w-[54ch] self-center text-sm leading-relaxed text-white/85 sm:text-base">
+            <p>Обсудите с тренером, посильна ли ребёнку дистанция и освоил ли он старт, повороты и финиш.</p>
+            <p className="mt-3">Важно, чтобы ребёнок понимал правила и сам хотел участвовать. Условия допуска зависят от соревнования.</p>
+            <Link href="/blog/pervye-sorevnovaniya-po-plavaniyu-deti/" className="mt-2 inline-flex min-h-11 items-center font-medium text-lime-300 underline underline-offset-4">
+              Подробнее о первом старте
+            </Link>
+          </div>
         </div>
 
         <ol className="mt-16 grid gap-5 sm:grid-cols-3 sm:gap-6">

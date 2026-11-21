@@ -1,4 +1,5 @@
 import { Section, SectionHeading } from '../ui';
+import Link from 'next/link';
 import { startingPoints, firstLesson } from '@/content/journey';
 
 /*
@@ -33,6 +34,14 @@ export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         title={headingAs === 'h1' ? 'Обучение плаванию детей: с каким уровнем можно приходить' : 'С каким уровнем можно приходить'}
         lead="Практически с любым. Разница только в том, с чего начнётся работа."
       />
+
+      {headingAs === 'h1' ? (
+        <nav aria-label="Быстрые ответы родителям" className="mt-6 flex flex-wrap gap-2">
+          <Link href="/blog/pervoe-zanyatie-po-plavaniyu-cheklist/" className="inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 dark:text-brand-200">Первое занятие</Link>
+          <Link href="/blog/spravka-v-bassein-dlya-rebenka/" className="inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 dark:text-brand-200">Справка</Link>
+          <a href="#faq-missed" className="inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 dark:text-brand-200">Пропуски и отработки</a>
+        </nav>
+      ) : null}
 
       <ul className="mt-10 grid gap-3 sm:mt-14 sm:gap-4 sm:grid-cols-2">
         {startingPoints.map((p, i) => (

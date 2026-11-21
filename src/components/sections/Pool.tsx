@@ -3,7 +3,7 @@ import { ButtonLink, buttonClass, sectionTitleClass } from '../ui';
 
 import { site } from '@/content/site';
 import { contacts } from '@/content/contacts';
-import { poolMainImage, poolPreviewImages, venuePreviewImages } from '@/content/media';
+import { poolMainImage, poolPreviewImages, venueBuildingPreview, venuePreviewImages } from '@/content/media';
 import { routeSteps, routeTransit } from '@/content/route';
 
 /*
@@ -20,6 +20,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   const Heading = headingAs;
   // «Как добраться» на своей странице идёт сразу за h1 — без промежуточного h2 это был бы пропуск уровня
   const RouteHeading = headingAs === 'h1' ? 'h2' : 'h3';
+  const RouteSubheading = headingAs === 'h1' ? 'h3' : 'h4';
 
   /*
     Крупная плитка берёт оригинал, мелкие — уменьшенные копии.
@@ -30,6 +31,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
   */
   const mainPhoto = poolMainImage;
   const restPhotos = poolPreviewImages;
+  const gatePhotos = venuePreviewImages.filter((photo) => photo.src !== venueBuildingPreview.src);
 
   return (
     <section
@@ -134,38 +136,32 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           у ворот с ребёнком. Это и есть та самая локальная тревога перед
           первым визитом, ради которой блок написан.
 
-          Шаги пронумерованы, потому что порядок настоящий, а не оформление.
-
-          Про дорогу от КПП до самого бассейна здесь ничего нет намеренно —
-          владелец её пока не описал, а придумывать путь к месту, куда
-          человек везёт ребёнка, нельзя. Пока эту работу делает фотография
-          корпуса ниже: здание узнаваемое. См. content/route.ts.
+          Путь от КПП подтверждён до расстояния и внешнего вида корпуса.
+          Фотография помогает узнать здание. Подробности — в content/route.ts.
         */}
         <div className="reveal mt-10 rounded-card border border-white/12 p-6 sm:p-7">
           <RouteHeading className="text-xs font-medium tracking-[0.2em] text-white/50 uppercase">
             Как добраться
           </RouteHeading>
 
-          <ol className="mt-6 grid gap-6 sm:grid-cols-3">
-            {routeSteps.map((step, i) => (
-              <li key={step.id} className="flex gap-4">
-                <span
-                  aria-hidden="true"
-                  className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-lime-400/50 text-sm tabular-nums text-lime-300"
-                >
-                  {i + 1}
-                </span>
-                <span>
-                  <span className="block font-medium text-white">
-                    {step.title}
-                  </span>
-                  <span className="mt-2 block text-sm leading-relaxed text-white/70">
-                    {step.description}
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ol>
+          <RouteSubheading className="mt-5 text-xl font-medium text-white">От проходной на Совхозной</RouteSubheading>
+          <div className="mt-5 grid gap-6 sm:grid-cols-[minmax(0,1fr)_minmax(0,260px)] sm:items-start">
+            <ol aria-label="Путь от проходной на Совхозной" className="border-l border-lime-400/50 pl-5">
+              {routeSteps.map((step, index) => (
+                <li key={step.id} className={`relative before:absolute before:-left-[25px] before:top-1.5 before:size-2 before:rounded-full before:bg-lime-300 ${index < routeSteps.length - 1 ? 'pb-5' : ''}`}>
+                  <span className="block font-medium text-white">{step.title}</span>
+                  <span className="mt-1 block text-sm leading-relaxed text-white/80">{step.description}</span>
+                </li>
+              ))}
+            </ol>
+            <figure>
+              <Picture src={venueBuildingPreview.src} alt={venueBuildingPreview.alt} width={venueBuildingPreview.width} height={venueBuildingPreview.height} sizes="(max-width: 640px) 100vw, 260px" className="w-full rounded-inset" />
+              <figcaption className="mt-2 text-xs text-white/70">Корпус бассейна с синей отделкой и арочной крышей</figcaption>
+            </figure>
+          </div>
+          <p className="mt-5 text-sm leading-relaxed text-white/70">
+            Можно также пройти через центральную проходную со стороны Библиотечной улицы.
+          </p>
 
           <p className="mt-6 border-t border-white/12 pt-5 text-sm leading-relaxed text-white/70">
             Ближайшая остановка — «{routeTransit.stop}»: {routeTransit.note}.
@@ -204,7 +200,7 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
             </div>
           ))}
 
-          {venuePreviewImages.map((photo, i) => (
+          {gatePhotos.map((photo, i) => (
             <div
               key={photo.src}
               className="reveal zoom-frame relative aspect-[4/3] overflow-hidden rounded-card bg-abyss-800"

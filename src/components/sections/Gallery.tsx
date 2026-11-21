@@ -69,6 +69,7 @@ export function Gallery({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
         {galleryVideos.map((video) => (
           <li key={video.src}>
             <VideoCard
+              goal="play_coach_video"
               src={video.src}
               poster={video.poster}
               label={video.alt}

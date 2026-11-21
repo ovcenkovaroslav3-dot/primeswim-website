@@ -63,14 +63,17 @@ export const poolImages: MediaItem[] = [
   },
 ];
 
+/** Корпус бассейна — ориентир при проходе от КПП. */
+export const venueBuildingImage: MediaItem = {
+  src: '/media/pool/mgik-building.jpg',
+  alt: 'Здание бассейна МГИК в Химках: белый корпус с синей отделкой и арочной крышей',
+  width: 1400,
+  height: 788,
+};
+
 /** Фотографии здания и входа — помогают родителю найти бассейн. */
 export const venueImages: MediaItem[] = [
-  {
-    src: '/media/pool/mgik-building.jpg',
-    alt: 'Здание бассейна МГИК в Химках: белый корпус с синей отделкой и арочной крышей',
-    width: 1400,
-    height: 788,
-  },
+  venueBuildingImage,
   {
     src: '/media/pool/mgik-entrance-gate.jpg',
     /*
@@ -418,6 +421,12 @@ export const poolPreviewImages: MediaItem[] = poolImages
  * Здание и ворота. Обрезаны в 4:3 — ровно так они и показываются и на
  * главной, и на /bassein/, поэтому одна копия работает в обоих местах.
  */
+export const venueBuildingPreview: MediaItem = {
+  ...derivative(venueBuildingImage, 'venue', 720),
+  width: 720,
+  height: 540,
+};
+
 export const venuePreviewImages: MediaItem[] = venueImages.map((image) => ({
   ...derivative(image, 'venue', 720),
   width: 720,
@@ -440,14 +449,17 @@ export type VideoItem = {
  * плавание) и без клипа с вопросом-ответом для соцсетей (реплика обрывается
  * на кадре, вне приложения не читается).
  */
+/** Запись подготовки к старту на тренировке. */
+export const startsDrillVideo: VideoItem = {
+  src: '/media/video/starts-drill.mp4',
+  poster: '/media/video/starts-drill-poster.jpg',
+  alt: 'Дети готовятся к старту с тумб на тренировке',
+  width: 720,
+  height: 1280,
+};
+
 export const galleryVideos: VideoItem[] = [
-  {
-    src: '/media/video/starts-drill.mp4',
-    poster: '/media/video/starts-drill-poster.jpg',
-    alt: 'Дети готовятся к старту с тумб на тренировке',
-    width: 720,
-    height: 1280,
-  },
+  startsDrillVideo,
   {
     src: '/media/video/coach-poolside.mp4',
     poster: '/media/video/coach-poolside-poster.jpg',
