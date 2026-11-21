@@ -64,3 +64,6 @@ graphify-out/
 /.claude/memory.db
 /.claude/proven-config.json
 /.claude/.proven-config-version
+
+# копия скиллов для Codex CLI — источник в .claude/skills
+/.agents/
