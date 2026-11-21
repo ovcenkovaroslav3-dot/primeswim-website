@@ -9,6 +9,7 @@ import { PoolPreview } from '@/components/sections/PoolPreview';
 import { FirstLesson } from '@/components/sections/FirstLesson';
 import { Faq } from '@/components/sections/Faq';
 import { Contacts } from '@/components/sections/Contacts';
+import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { StructuredData } from '@/components/StructuredData';
 
@@ -77,6 +78,14 @@ export default function HomePage() {
         другом за расширенный сниппет. Подробности — в самом компоненте.
       */}
       <Faq limit={4} withSchema={false} moreHref="/roditelyam/" />
+      <BlogTeaser
+        title="Полезно родителям"
+        slugs={[
+          's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
+          'kakoj-sport-vybrat-rebenku-himki',
+          'plavanie-dlya-osanki-i-spiny-detej',
+        ]}
+      />
       <FinalCta variant="water" />
       <Contacts />
     </>

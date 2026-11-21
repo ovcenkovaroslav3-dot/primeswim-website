@@ -6,7 +6,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { JsonLd, schemaId } from '@/components/StructuredData';
 import { RichText } from '@/components/RichText';
 import { FinalCta } from '@/components/sections/FinalCta';
-import { articles, getArticle } from '@/content/blog';
+import { articles, getArticle, getRelatedArticles } from '@/content/blog';
 import { coaches } from '@/content/coaches';
 import { ogImage } from '@/content/seo';
 import { site } from '@/content/site';
@@ -74,6 +74,7 @@ export default async function BlogArticlePage({
   const article = getArticle(slug);
   if (!article) notFound();
 
+  const related = getRelatedArticles(article.slug);
   const coach = coaches[0];
   const url = `${site.url}/blog/${article.slug}/`;
 
@@ -200,6 +201,51 @@ export default async function BlogArticlePage({
             ))}
           </div>
         </section>
+
+        {related.length > 0 && (
+          <section aria-labelledby="blog-related-title" className="mt-14">
+            <h2
+              id="blog-related-title"
+              className="text-2xl leading-snug font-normal tracking-[-0.01em] text-ink"
+            >
+              Читайте также
+            </h2>
+            <ul className="mt-6 space-y-3">
+              {related.map((item) => (
+                <li key={item.slug}>
+                  <Link
+                    href={`/blog/${item.slug}/`}
+                    className="group block rounded-card border border-hairline bg-surface-alt px-6 py-4 transition-colors hover:border-brand-300"
+                  >
+                    <span className="font-medium text-ink group-hover:text-brand-600 dark:group-hover:text-brand-200">
+                      {item.h1}
+                    </span>
+                    <span className="mt-1 line-clamp-2 block text-sm leading-relaxed text-ink-soft">
+                      {item.description}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 text-sm leading-relaxed text-ink-soft">
+              Хотите попробовать сами? Выберите время в{' '}
+              <Link
+                href="/raspisanie/"
+                className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-500 dark:text-brand-200"
+              >
+                расписании
+              </Link>{' '}
+              и посмотрите{' '}
+              <Link
+                href="/price/"
+                className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-500 dark:text-brand-200"
+              >
+                цены на занятия
+              </Link>
+              .
+            </p>
+          </section>
+        )}
 
         <footer className="mt-14 rounded-card bg-surface-alt p-6 sm:p-7">
           <p className="text-sm leading-relaxed text-ink-soft">

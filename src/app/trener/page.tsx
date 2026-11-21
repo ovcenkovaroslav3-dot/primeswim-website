@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Coaches } from '@/components/sections/Coaches';
 import { Strokes } from '@/components/sections/Strokes';
@@ -28,6 +29,14 @@ export default function CoachPage() {
 
       <Coaches headingAs="h1" />
       <Strokes />
+
+      <BlogTeaser
+        tone="alt"
+        title="О стилях плавания для детей"
+        slugs={[
+          'stili-plavaniya-dlya-detej',
+        ]}
+      />
 
       <FinalCta />
     </>

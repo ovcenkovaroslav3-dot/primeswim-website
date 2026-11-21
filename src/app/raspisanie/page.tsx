@@ -1,5 +1,6 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Faq } from '@/components/sections/Faq';
+import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Schedule } from '@/components/sections/Schedule';
 import { faqOnSchedule } from '@/content/faq';
@@ -26,6 +27,13 @@ export default function SchedulePage() {
       <Schedule headingAs="h1" />
 
       <Faq ids={faqOnSchedule} withSchema={false} moreHref="/roditelyam/" />
+
+      <BlogTeaser
+        slugs={[
+          'pervoe-zanyatie-po-plavaniyu-cheklist',
+          'spravka-v-bassein-dlya-rebenka',
+        ]}
+      />
 
       <FinalCta />
     </>

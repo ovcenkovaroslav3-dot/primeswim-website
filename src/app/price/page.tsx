@@ -1,5 +1,6 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Faq } from '@/components/sections/Faq';
+import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Prices } from '@/components/sections/Prices';
 import { faqOnPrices } from '@/content/faq';
@@ -25,6 +26,13 @@ export default function PricesPage() {
       <Prices headingAs="h1" />
 
       <Faq ids={faqOnPrices} withSchema={false} moreHref="/roditelyam/" />
+
+      <BlogTeaser
+        slugs={[
+          'skolko-vremeni-nauchit-rebenka-plavat',
+          'pervoe-zanyatie-po-plavaniyu-cheklist',
+        ]}
+      />
 
       <FinalCta />
     </>

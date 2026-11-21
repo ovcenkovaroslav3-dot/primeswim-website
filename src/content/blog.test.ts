@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { articles } from './blog.ts';
+import { articles, getRelatedArticles, relatedSlugs } from './blog.ts';
 
 /*
   Инварианты статейного раздела.
@@ -82,5 +82,19 @@ test('ссылки между статьями ведут на существу�
         `${article.slug}: ссылка на несуществующую статью /blog/${match[1]}/`,
       );
     }
+  }
+});
+
+test('у каждой статьи 2–3 связанные: существующие, не она сама, без дублей', () => {
+  const slugs = new Set(articles.map((a) => a.slug));
+  for (const article of articles) {
+    const related = relatedSlugs[article.slug] ?? [];
+    assert.ok(related.length >= 2 && related.length <= 3, `${article.slug}: нужно 2–3 связанные`);
+    assert.equal(new Set(related).size, related.length, `${article.slug}: дубль в связанных`);
+    for (const r of related) {
+      assert.ok(slugs.has(r), `${article.slug}: нет статьи ${r}`);
+      assert.notEqual(r, article.slug, `${article.slug}: ссылка на себя`);
+    }
+    assert.equal(getRelatedArticles(article.slug).length, related.length);
   }
 });
