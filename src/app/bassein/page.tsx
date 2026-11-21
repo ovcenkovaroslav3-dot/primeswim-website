@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Pool } from '@/components/sections/Pool';
 import { Training } from '@/components/sections/Training';
@@ -35,6 +36,16 @@ export default function PoolPage() {
 
       <Pool headingAs="h1" />
       <Training />
+
+      <BlogTeaser
+        tone="alt"
+        title="Что взять и как выбрать бассейн"
+        slugs={[
+          'basseiny-v-himkah-dlya-detej-kak-vybrat',
+          'spravka-v-bassein-dlya-rebenka',
+          'kak-vybrat-ochki-i-shapochku-dlya-plavaniya',
+        ]}
+      />
 
       <FinalCta />
     </>

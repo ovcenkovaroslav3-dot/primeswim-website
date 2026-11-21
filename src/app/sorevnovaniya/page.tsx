@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { Competitions } from '@/components/sections/Competitions';
 import { pageMetadata, seo } from '@/content/seo';
@@ -21,6 +22,14 @@ export default function CompetitionsPage() {
       </div>
 
       <Competitions headingAs="h1" />
+
+      <BlogTeaser
+        title="О разрядах и первых стартах"
+        slugs={[
+          'razryady-po-plavaniyu-normativy-detej',
+          'pervye-sorevnovaniya-po-plavaniyu-deti',
+        ]}
+      />
 
       <FinalCta />
     </>

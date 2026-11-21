@@ -11,7 +11,16 @@ import { getArticle } from '@/content/blog';
   бы в кроличью нору рядом с кнопкой записи. Какие статьи уместны, знает
   страница — она и передаёт slugs. Ссылка «Все статьи» ведёт в раздел.
 */
-export function BlogTeaser({ slugs }: { slugs: string[] }) {
+export function BlogTeaser({
+  slugs,
+  title = 'Почитать перед записью',
+  tone = 'surface',
+}: {
+  slugs: string[];
+  title?: string;
+  /* Фон секции: страница выбирает тот, что чередуется с соседней секцией. */
+  tone?: 'surface' | 'alt';
+}) {
   const picked = slugs.flatMap((slug) => {
     const article = getArticle(slug);
     return article ? [article] : [];
@@ -19,20 +28,24 @@ export function BlogTeaser({ slugs }: { slugs: string[] }) {
   if (picked.length === 0) return null;
 
   return (
-    <Section id="blog-teaser" labelledBy="blog-teaser-title" className="bg-surface">
+    <Section
+      id="blog-teaser"
+      labelledBy="blog-teaser-title"
+      className={tone === 'alt' ? 'bg-surface-alt' : 'bg-surface'}
+    >
       <SectionHeading
         id="blog-teaser-title"
         eyebrow="Статьи"
-        title="Почитать перед записью"
+        title={title}
       />
 
-      <ul className="mt-10 grid gap-3 sm:gap-4 md:grid-cols-3">
+      <ul className={`mt-10 grid gap-3 sm:gap-4 ${picked.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
         {picked.map((article, i) => (
           <li key={article.slug}>
             <Link
               href={`/blog/${article.slug}/`}
               prefetch={false}
-              className="reveal group flex h-full flex-col rounded-card border border-hairline bg-surface-alt p-6 transition-colors hover:border-brand-300"
+              className={`reveal group flex h-full flex-col rounded-card border border-hairline p-6 transition-colors hover:border-brand-300 ${tone === 'alt' ? 'bg-surface' : 'bg-surface-alt'}`}
               style={{ ['--reveal-delay' as string]: `${i * 70}ms` }}
             >
               <span className="text-base leading-snug font-medium text-ink group-hover:text-brand-600 dark:group-hover:text-brand-200">

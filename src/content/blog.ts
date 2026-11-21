@@ -78,3 +78,79 @@ export const articles: BlogArticle[] = [
 export function getArticle(slug: string): BlogArticle | undefined {
   return articles.find((article) => article.slug === slug);
 }
+
+/*
+  Перелинковка внутри раздела: у каждой статьи 3 соседние по теме. Блок
+  «Читайте также» на странице статьи строится отсюда, а не из текста, —
+  так статья не остаётся тупиком, и порядок ссылок виден в одном месте.
+  Инварианты стережёт blog.test.ts.
+*/
+export const relatedSlugs: Record<string, string[]> = {
+  's-kakogo-vozrasta-otdavat-rebenka-v-bassein': [
+    'rebenok-boitsya-vody-chto-delat',
+    'pervoe-zanyatie-po-plavaniyu-cheklist',
+    'kakoj-sport-vybrat-rebenku-himki',
+  ],
+  'rebenok-boitsya-vody-chto-delat': [
+    's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
+    'pervoe-zanyatie-po-plavaniyu-cheklist',
+    'skolko-vremeni-nauchit-rebenka-plavat',
+  ],
+  'pervoe-zanyatie-po-plavaniyu-cheklist': [
+    'spravka-v-bassein-dlya-rebenka',
+    'kak-vybrat-ochki-i-shapochku-dlya-plavaniya',
+    'rebenok-boitsya-vody-chto-delat',
+  ],
+  'spravka-v-bassein-dlya-rebenka': [
+    'pervoe-zanyatie-po-plavaniyu-cheklist',
+    'basseiny-v-himkah-dlya-detej-kak-vybrat',
+    's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
+  ],
+  'stili-plavaniya-dlya-detej': [
+    'skolko-vremeni-nauchit-rebenka-plavat',
+    'razryady-po-plavaniyu-normativy-detej',
+    'kak-vybrat-ochki-i-shapochku-dlya-plavaniya',
+  ],
+  'skolko-vremeni-nauchit-rebenka-plavat': [
+    'stili-plavaniya-dlya-detej',
+    'pervoe-zanyatie-po-plavaniyu-cheklist',
+    'rebenok-boitsya-vody-chto-delat',
+  ],
+  'plavanie-dlya-osanki-i-spiny-detej': [
+    'kakoj-sport-vybrat-rebenku-himki',
+    'stili-plavaniya-dlya-detej',
+    's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
+  ],
+  'kak-vybrat-ochki-i-shapochku-dlya-plavaniya': [
+    'pervoe-zanyatie-po-plavaniyu-cheklist',
+    'stili-plavaniya-dlya-detej',
+    'basseiny-v-himkah-dlya-detej-kak-vybrat',
+  ],
+  'razryady-po-plavaniyu-normativy-detej': [
+    'pervye-sorevnovaniya-po-plavaniyu-deti',
+    'stili-plavaniya-dlya-detej',
+    'skolko-vremeni-nauchit-rebenka-plavat',
+  ],
+  'pervye-sorevnovaniya-po-plavaniyu-deti': [
+    'razryady-po-plavaniyu-normativy-detej',
+    'stili-plavaniya-dlya-detej',
+    'kakoj-sport-vybrat-rebenku-himki',
+  ],
+  'basseiny-v-himkah-dlya-detej-kak-vybrat': [
+    'spravka-v-bassein-dlya-rebenka',
+    'kak-vybrat-ochki-i-shapochku-dlya-plavaniya',
+    'kakoj-sport-vybrat-rebenku-himki',
+  ],
+  'kakoj-sport-vybrat-rebenku-himki': [
+    'plavanie-dlya-osanki-i-spiny-detej',
+    's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
+    'basseiny-v-himkah-dlya-detej-kak-vybrat',
+  ],
+};
+
+export function getRelatedArticles(slug: string): BlogArticle[] {
+  return (relatedSlugs[slug] ?? []).flatMap((s) => {
+    const found = getArticle(s);
+    return found ? [found] : [];
+  });
+}
