@@ -23,7 +23,7 @@
 
 import { chromium } from 'playwright';
 
-const PAGES = ['/', '/raspisanie/', '/price/', '/trener/', '/bassein/', '/roditelyam/', '/galereya/', '/sorevnovaniya/', '/plavanie-s-nulya/', '/tehnika-plavaniya/', '/dogovor/', '/policy/', '/soglasie/'];
+const PAGES = ['/', '/probnoe-zanyatie/', '/raspisanie/', '/price/', '/trener/', '/bassein/', '/roditelyam/', '/galereya/', '/sorevnovaniya/', '/plavanie-s-nulya/', '/tehnika-plavaniya/', '/dogovor/', '/policy/', '/soglasie/'];
 const BASE = process.env.BASE_URL || 'http://localhost:3000';
 
 // SHOT_EXECUTABLE — путь к браузеру в облачной среде, где канала chrome нет (см. shot.mjs)

@@ -4,6 +4,9 @@ import { Unbounded, Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { LandingHeader } from '@/components/LandingHeader';
+import { LandingFooter } from '@/components/LandingFooter';
+import { ChromeSwitch } from '@/components/ChromeSwitch';
 import { Analytics } from '@/components/Analytics';
 import { CookieNotice } from '@/components/CookieNotice';
 import { ChunkErrorRecovery } from '@/components/ChunkErrorRecovery';
@@ -97,11 +100,12 @@ export default function RootLayout({
         >
           Перейти к содержанию
         </a>
-        <Header />
+        {/* посадочная для рекламы живёт без меню: см. ChromeSwitch */}
+        <ChromeSwitch full={<Header />} landing={<LandingHeader />} />
         <main id="main" className="flex-1">
           {children}
         </main>
-        <Footer />
+        <ChromeSwitch full={<Footer />} landing={<LandingFooter />} />
         <Analytics />
         <ScrollReveal />
         <MobileCta />
