@@ -84,7 +84,7 @@ export function Programs() {
             <div className="-mt-6 flex min-w-0 flex-col items-start lg:mt-0 lg:items-end">
               <ProgramBookButton id={program.id} title={program.title} />
               {program.href ? (
-                <ArrowLink href={program.href} className="mt-4">Старты, сборы и разряды</ArrowLink>
+                <ArrowLink href={program.href} tone={i === 0 ? 'white' : 'brand'} className="mt-4" aria-label={`Подробнее о направлении: ${program.title}`}>Подробнее о направлении</ArrowLink>
               ) : null}
             </div>
           </li>

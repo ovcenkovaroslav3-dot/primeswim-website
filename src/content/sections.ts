@@ -51,6 +51,16 @@ export const sectionLinks = [
     description: 'Старты, сборы и спортивные разряды.',
   },
   {
+    href: '/plavanie-s-nulya/',
+    title: 'Обучение с нуля',
+    description: 'Как ребёнок начинает плавать с нуля.',
+  },
+  {
+    href: '/tehnika-plavaniya/',
+    title: 'Техника плавания',
+    description: 'Четыре стиля, ошибки и дистанция.',
+  },
+  {
     href: '/blog/',
     title: 'Статьи',
     description: 'Материалы тренера о детском плавании.',
