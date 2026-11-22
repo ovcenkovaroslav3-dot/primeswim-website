@@ -1,17 +1,18 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { programs } from '../content/programs.ts';
+import { programOptions } from '../content/programs.ts';
+import { slotOptions } from '../content/schedule.ts';
+import { prices } from '../content/prices.ts';
 
-import { requestBooking, sanitizePrefill, takePendingBooking, slotFragment, tariffFragment, programFragment, programFromFragment } from './booking.ts';
+import { requestBooking, sanitizePrefill, takePendingBooking, slotFragment, tariffFragment, programFragment, programFromFragment, parseBookingFragment } from './booking.ts';
 
 test('из хранилища берутся только строки известных полей', () => {
-  assert.deepEqual(sanitizePrefill({ age: '9-10', program: 'sport', slot: 'mon-19:00', note: 'x', comment: 'тариф', phone: '+7999' }), {
+  assert.deepEqual(sanitizePrefill({ age: '9-10', program: 'sport', slot: 'mon-19:00', note: 'x', phone: '+7999' }), {
     age: '9-10',
     program: 'sport',
     slot: 'mon-19:00',
     note: 'x',
-    comment: 'тариф',
     tariff: undefined,
   });
 });
@@ -23,11 +24,6 @@ test('мусор не превращается в подстановку', () =>
   assert.equal(odd?.age, undefined);
   assert.equal(odd?.program, undefined);
   assert.equal(odd?.note?.length, 240);
-});
-
-test('комментарий тарифа — только строка и не длиннее 240 знаков', () => {
-  assert.equal(sanitizePrefill({ comment: 'a'.repeat(1000) })?.comment?.length, 240);
-  assert.equal(sanitizePrefill({ comment: 42 })?.comment, undefined);
 });
 
 
@@ -78,8 +74,32 @@ test('фрагменты содержат только выбранный иде
 });
 
 test('фрагменты всех программ восстанавливают только известное направление', () => {
-  const ids = programs.map((program) => program.id);
+  const ids = programOptions.map((option) => option.value).filter((id) => id !== '');
   for (const id of ids) assert.equal(programFromFragment(programFragment(id), ids), id);
   assert.equal(programFromFragment('booking-program-unknown', ids), undefined);
   assert.equal(programFromFragment('booking-program-', ['', ...ids]), undefined);
+});
+
+test('фрагмент каждого времени, тарифа и направления разбирается в тот же выбор', () => {
+  const options = {
+    slots: slotOptions.map((option) => option.value),
+    tariffs: prices.map((price) => price.id),
+    programs: programOptions.map((option) => option.value),
+  };
+  assert.ok(options.slots.length > 0 && options.tariffs.length > 0 && options.programs.length > 0);
+  for (const slot of options.slots) {
+    assert.deepEqual(parseBookingFragment(slotFragment(slot), options), { slot });
+    assert.deepEqual(parseBookingFragment('#' + slotFragment(slot), options), { slot });
+  }
+  for (const tariff of options.tariffs) assert.deepEqual(parseBookingFragment(tariffFragment(tariff), options), { tariff });
+  for (const program of options.programs.filter((id) => id !== '')) {
+    assert.deepEqual(parseBookingFragment(programFragment(program), options), { program });
+  }
+});
+
+test('чужой или пустой хэш не даёт выбора', () => {
+  const options = { slots: ['tue-19:45'], tariffs: ['trial'], programs: ['', 'sport'] };
+  for (const hash of ['', '#', 'booking', '#booking', 'booking-slot-unknown', 'booking-tariff-', 'booking-program-']) {
+    assert.equal(parseBookingFragment(hash, options), null, hash);
+  }
 });

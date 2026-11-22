@@ -9,13 +9,14 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node --test \"src/**/*.test.ts\" \"server/**/*.test.ts\"",
+    "test": "node --test \"src/**/*.test.ts\" \"server/**/*.test.ts\" \"scripts/**/*.test.mjs\"",
     "check": "npm run typecheck && npm run lint && npm test",
     "build:lead": "node scripts/build-lead-function.mjs",
     "shot": "node scripts/shot.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:pages": "node scripts/check-pages.mjs",
-    "check:booking": "node scripts/check-booking-mobile.mjs"
+    "check:booking": "node scripts/check-booking-mobile.mjs",
+    "check:audit": "node scripts/check-audit-regressions.mjs"
   },
   "dependencies": {
     "next": "16.4.6",

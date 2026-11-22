@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react';
 import { useHydrated } from '@/lib/consent';
+import imageLoader from '@/lib/image-loader';
+import type { AnalyticsGoal } from '@/lib/analytics';
 
 import { Picture } from './Picture';
 
@@ -43,7 +45,6 @@ export function VideoCard({
   height,
   className = '',
   goal,
-  nativeFallback = false,
 }: {
   src: string;
   poster: string;
@@ -52,13 +53,18 @@ export function VideoCard({
   width: number;
   height: number;
   className?: string;
-  goal?: 'play_coach_video';
-  nativeFallback?: boolean;
+  goal?: Extract<AnalyticsGoal, 'play_coach_video' | 'play_video'>;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
   const hydrated = useHydrated();
-  const PlayControl = nativeFallback && !hydrated ? 'a' : 'button';
+  /*
+    До гидрации кнопка — ссылка на сам файл: нажатие до загрузки скриптов
+    всё равно откроет ролик. Адрес строится одним загрузчиком (basePath), как
+    у картинок.
+  */
+  const videoSrc = imageLoader({ src });
+  const PlayControl = !hydrated ? 'a' : 'button';
 
   const start = () => {
     setStarted(true);
@@ -97,7 +103,7 @@ export function VideoCard({
 
       <video
         ref={ref}
-        src={src}
+        src={videoSrc}
         aria-label={label}
         width={width}
         height={height}
@@ -110,7 +116,7 @@ export function VideoCard({
 
       {started ? null : (
         <PlayControl
-          {...(PlayControl === 'a' ? { href: src } : { type: 'button' as const, onClick: start })}
+          {...(PlayControl === 'a' ? { href: videoSrc } : { type: 'button' as const, onClick: start })}
           data-goal={goal}
           className="group absolute inset-0 flex cursor-pointer items-center justify-center bg-abyss-950/15 transition-colors duration-200 hover:bg-abyss-950/30"
         >

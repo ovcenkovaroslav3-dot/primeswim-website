@@ -132,7 +132,7 @@ export function Training() {
               >
                 <div className="flex items-baseline gap-4">
                   <span
-                    className={`text-sm font-medium tabular-nums transition-colors duration-300 ${
+                    className={`shrink-0 text-sm font-medium tabular-nums transition-colors duration-300 ${
                       i === active ? 'text-brand-600 dark:text-brand-200' : 'text-ink-muted'
                     }`}
                   >

@@ -73,9 +73,18 @@ export const goalTitles = {
   /** Сервер подтвердил: заявка доставлена в MAX и получила номер. */
   lead_delivered: 'Заявка доставлена',
   view_contacts: 'Контакты на экране',
+  /** Нажали «смотреть» на ролике тренера (блок «Тренер»). */
+  play_coach_video: 'Запустили ролик тренера',
+  /** Нажали «смотреть» на любом другом ролике: старты, тренировки. */
+  play_video: 'Запустили ролик (не тренера)',
 } as const;
 
 export type AnalyticsGoal = keyof typeof goalTitles;
+
+/** Проверка имени цели, пришедшего из атрибута data-goal: приведение типа не нужно. */
+export function isAnalyticsGoal(value: string | null | undefined): value is AnalyticsGoal {
+  return typeof value === 'string' && Object.hasOwn(goalTitles, value);
+}
 
 export const metrikaId = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID?.trim() || null;
 

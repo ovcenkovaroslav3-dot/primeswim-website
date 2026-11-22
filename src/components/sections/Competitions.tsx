@@ -2,7 +2,6 @@ import { OrcaMark } from "../OrcaMark";
 import { VideoCard } from "../VideoCard";
 import { competitionPillars } from "@/content/journey";
 import { startsDrillVideo } from "@/content/media";
-import imageLoader from "@/lib/image-loader";
 import Link from "next/link";
 
 /*
@@ -102,19 +101,14 @@ export function Competitions({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } =
           </PillarHeading>
           <figure className="w-full max-w-[180px] max-[369px]:mx-auto">
             <VideoCard
-              nativeFallback
-              src={imageLoader({ src: startsDrillVideo.src })}
+              goal="play_video"
+              src={startsDrillVideo.src}
               poster={startsDrillVideo.poster}
               label={startsDrillVideo.alt}
               width={startsDrillVideo.width}
               height={startsDrillVideo.height}
             />
             <figcaption className="mt-2 text-xs leading-normal text-white/75">Старт с тумбы на тренировке</figcaption>
-            <noscript>
-              <a href={imageLoader({ src: startsDrillVideo.src })} className="inline-flex min-h-11 items-center text-sm text-lime-300 underline">
-                Открыть видео тренировки
-              </a>
-            </noscript>
           </figure>
           <div className="max-w-[54ch] self-center text-sm leading-relaxed text-white/85 sm:text-base">
             <p>Обсудите с тренером, посильна ли ребёнку дистанция и освоил ли он старт, повороты и финиш.</p>

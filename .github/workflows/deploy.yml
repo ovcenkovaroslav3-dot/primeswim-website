@@ -22,6 +22,11 @@ jobs:
     permissions:
       contents: read
       pages: read
+    # что отправлять в IndexNow: all — весь sitemap, list — адреса из urls,
+    # none — ничего (шаг «Какие адреса изменились», только master)
+    outputs:
+      indexnow_mode: ${{ steps.changed.outputs.mode }}
+      indexnow_urls: ${{ steps.changed.outputs.urls }}
     env:
       # сайт живёт на своём домене, поэтому basePath пустой: адрес репозитория
       # в путях больше не участвует.
@@ -74,6 +79,64 @@ jobs:
       - name: Сборка статики
         run: npm run build
 
+      # Проверка записи на телефоне против той самой сборки, которая уйдёт на
+      # сайт: выбор времени и тарифа до загрузки JavaScript и после неё.
+      # Падает шаг — падает сборка, и до деплоя дело не доходит. Тестовый
+      # адрес приёмника в продовую сборку не подставляется: скрипт заявок не
+      # отправляет. check:audit (форма, согласие, метки) требует отдельной
+      # тестовой сборки с NEXT_PUBLIC_LEAD_ENDPOINT, поэтому в CI его нет:
+      # запускать его на продовой сборке нельзя, а вторая сборка удвоила бы
+      # время прогона. Запускается вручную, см. шапку скрипта.
+      # На ubuntu-latest уже стоит Google Chrome, скрипт берёт channel: 'chrome'.
+      - name: Проверка записи на телефоне
+        run: |
+          python3 -m http.server 4322 --bind 127.0.0.1 --directory out > server.log 2>&1 &
+          server=$!
+          trap 'kill $server 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do
+            curl -fsS -o /dev/null http://127.0.0.1:4322/ && break
+            sleep 1
+          done
+          BASE_URL=http://127.0.0.1:4322 npm run check:booking
+
+      # Манифест страниц для IndexNow: адрес -> хэш того, что видит поисковик
+      # (scripts/indexnow-manifest.mjs). Он должен попасть в артефакт Pages,
+      # поэтому строится до upload-pages-artifact: следующая сборка скачает
+      # его с живого сайта и сравнит со своим. Манифест публичный: в нём
+      # только адреса и хэши.
+      - name: Манифест страниц для IndexNow
+        run: node scripts/indexnow-manifest.mjs out
+
+      # Прежний манифест берём с живого сайта ДО деплоя (после него там уже
+      # новый). Нет манифеста (первый запуск после выпуска этой схемы) или он
+      # битый — скрипт печатает ALL, и indexnow отправит весь sitemap, как
+      # раньше. Список передаётся заданию indexnow через outputs задания:
+      # 24 адреса в них умещаются с запасом, а лишнего артефакта не нужно.
+      # Только для push в master: PR ничего не скачивает и не отправляет.
+      - name: Какие адреса изменились
+        id: changed
+        if: github.ref == 'refs/heads/master'
+        run: |
+          curl -fsS --max-time 30 -H 'Cache-Control: no-cache' \
+            https://www.primeswim.ru/indexnow-manifest.json -o old-manifest.json || true
+          node scripts/indexnow-diff.mjs old-manifest.json out/indexnow-manifest.json > changed-urls.txt
+          if [ "$(head -n 1 changed-urls.txt)" = "ALL" ]; then
+            mode=all
+          elif [ -s changed-urls.txt ]; then
+            mode=list
+          else
+            mode=none
+          fi
+          echo "Режим IndexNow: $mode"
+          if [ "$mode" = none ]; then echo "IndexNow: изменений нет, ничего не отправляем"; fi
+          cat changed-urls.txt
+          {
+            echo "mode=$mode"
+            echo 'urls<<URLS_EOF'
+            if [ "$mode" = list ]; then cat changed-urls.txt; fi
+            echo 'URLS_EOF'
+          } >> "$GITHUB_OUTPUT"
+
       - uses: actions/configure-pages@v6
         if: github.ref == 'refs/heads/master'
 
@@ -96,12 +159,17 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v5
 
-  # Сообщаем Яндексу и Bing об адресах сайта сразу после публикации (IndexNow).
+  # Сообщаем Яндексу и Bing об изменённых адресах сайта сразу после публикации
+  # (IndexNow). Уходят только новые, изменившиеся и удалённые страницы: список
+  # строит задание build по манифесту (см. шаг «Какие адреса изменились»).
+  # Нет прежнего манифеста — отправляется весь sitemap; так будет при первом
+  # запуске после выпуска этой схемы, на живом сайте манифеста ещё нет.
   # Отдельное задание: его сбой не портит саму публикацию, а continue-on-error
-  # оставляет прогон зелёным. Повторить вручную: Actions → Run workflow.
+  # оставляет прогон зелёным. Повторить вручную: Actions → Run workflow
+  # (при ручном запуске список считается так же).
   indexnow:
-    if: github.ref == 'refs/heads/master'
-    needs: deploy
+    if: github.ref == 'refs/heads/master' && needs.build.outputs.indexnow_mode != 'none'
+    needs: [build, deploy]
     runs-on: ubuntu-latest
     continue-on-error: true
     timeout-minutes: 20
@@ -127,16 +195,35 @@ jobs:
           echo "::error::Ключ IndexNow не появился на сайте за 10 минут"
           exit 1
 
-      - name: Отправляем адреса из sitemap.xml в IndexNow
+      - name: Отправляем изменённые адреса в IndexNow
+        env:
+          INDEXNOW_MODE: ${{ needs.build.outputs.indexnow_mode }}
+          INDEXNOW_URLS: ${{ needs.build.outputs.indexnow_urls }}
         run: |
-          curl -fsS --max-time 30 "https://${SITE_HOST}/sitemap.xml" -o sitemap.xml
-          grep -oE '<loc>[^<]+</loc>' sitemap.xml | sed -E 's#</?loc>##g' > urls.txt
-          echo "Адресов в sitemap: $(wc -l < urls.txt)"
+          if [ "$INDEXNOW_MODE" = list ]; then
+            printf '%s\n' "$INDEXNOW_URLS" | grep -v '^$' > urls.txt || true
+            echo "Изменённых адресов: $(wc -l < urls.txt)"
+          elif [ "$INDEXNOW_MODE" = all ]; then
+            echo "Прежнего манифеста нет — отправляем весь sitemap"
+            curl -fsS --max-time 30 "https://${SITE_HOST}/sitemap.xml" -o sitemap.xml
+            grep -oE '<loc>[^<]+</loc>' sitemap.xml | sed -E 's#</?loc>##g' > urls.txt
+            echo "Адресов в sitemap: $(wc -l < urls.txt)"
+          else
+            echo "IndexNow: изменений нет, ничего не отправляем"
+            exit 0
+          fi
           test -s urls.txt
-          jq -n --arg host "$SITE_HOST" --arg key "$INDEXNOW_KEY"             --arg loc "https://${SITE_HOST}/${INDEXNOW_KEY}.txt"             --rawfile urls urls.txt             '{host: $host, key: $key, keyLocation: $loc, urlList: ($urls | split("\n") | map(select(length > 0)))}' > payload.json
+          echo "Отправляем адреса:"
+          cat urls.txt
+          jq -n --arg host "$SITE_HOST" --arg key "$INDEXNOW_KEY" \
+            --arg loc "https://${SITE_HOST}/${INDEXNOW_KEY}.txt" \
+            --rawfile urls urls.txt \
+            '{host: $host, key: $key, keyLocation: $loc, urlList: ($urls | split("\n") | map(select(length > 0)))}' > payload.json
           fail=0
           for endpoint in https://yandex.com/indexnow https://api.indexnow.org/indexnow; do
-            code=$(curl -sS --max-time 30 -o response.txt -w '%{http_code}'               -H 'Content-Type: application/json; charset=utf-8'               --data @payload.json "$endpoint" || echo 000)
+            code=$(curl -sS --max-time 30 -o response.txt -w '%{http_code}' \
+              -H 'Content-Type: application/json; charset=utf-8' \
+              --data @payload.json "$endpoint" || echo 000)
             echo "$endpoint -> HTTP $code"
             cat response.txt; echo
             if [ "$code" != "200" ] && [ "$code" != "202" ]; then fail=1; fi

@@ -21,7 +21,7 @@ import {
   type LeadValues,
 } from '@/lib/lead-schema';
 import { trackGoal } from '@/lib/analytics';
-import { BOOKING_EVENT, takePendingBooking, slotFragment, tariffFragment, programFragment, programFromFragment, type BookingPrefill } from '@/lib/booking';
+import { BOOKING_EVENT, takePendingBooking, slotFragment, tariffFragment, programFragment, parseBookingFragment, type BookingPrefill } from '@/lib/booking';
 
 /*
   Настоящая отправка заявки — форма больше не открывает мессенджер.
@@ -95,6 +95,18 @@ type Status = 'idle' | 'sending' | 'sent' | 'failed';
 */
 const SEND_TIMEOUT_MS = 20_000;
 
+/** Строка сводки выбора со своей кнопкой «Изменить»: имя кнопки говорит, что именно меняется. */
+function SummaryRow({ text, change, onChange }: { text: string; change: string; onChange: () => void }) {
+  return (
+    <li className="flex items-center justify-between gap-2">
+      <span className="min-w-0">{text}</span>
+      <button type="button" aria-label={change} className="min-h-11 shrink-0 underline" onClick={onChange}>
+        Изменить
+      </button>
+    </li>
+  );
+}
+
 export function LeadForm() {
   const hydrated = useHydrated();
   const [values, setValues] = useState<LeadValues>(emptyLeadValues);
@@ -112,6 +124,9 @@ export function LeadForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const wishesRef = useRef<HTMLDetailsElement>(null);
   const pendingErrorFocus = useRef<string | null>(null);
+  const summaryRef = useRef<HTMLDivElement>(null);
+  /** Растёт при каждом применении выбора из адреса; 0 — выбора из адреса не было. */
+  const [summaryFocusTick, setSummaryFocusTick] = useState(0);
 
   /*
     Подстановка из подбора группы и из расписания. Источник один — событие
@@ -119,7 +134,7 @@ export function LeadForm() {
     спискам, что и при отправке, и неизвестное просто не подставляется.
   */
   useEffect(() => {
-    const apply = (prefill: BookingPrefill | null) => {
+    const apply = (prefill: BookingPrefill | null, fromHash = false) => {
       if (!prefill) return;
       if ((prefill.slot !== undefined || prefill.tariff !== undefined || prefill.program !== undefined) && wishesRef.current) wishesRef.current.open = false;
       setValues((v) => ({
@@ -133,25 +148,28 @@ export function LeadForm() {
       if (prefill.slot !== undefined) setSlot(findSlot(prefill.slot) ? prefill.slot : '');
       if (prefill.note !== undefined) setNote(prefill.note);
       if (prefill.tariff !== undefined && prices.some((price) => price.id === prefill.tariff)) setTariff(prefill.tariff);
-      if (prefill.comment) {
-        const legacyTariff = prices.find((price) => prefill.comment?.startsWith('Интересует тариф: ' + price.title + ' ('));
-        if (legacyTariff) setTariff(legacyTariff.id);
-        else setValues((v) => v.comment ? v : { ...v, comment: prefill.comment! });
-      }
+      // Переход по якорю: после подстановки читаем сводку, см. эффект ниже.
+      if (fromHash) setSummaryFocusTick((tick) => tick + 1);
       setErrors({});
       setStatus((current) => (current === 'failed' ? 'idle' : current));
     };
-    const readHash = (): BookingPrefill | null => {
-      const hash = window.location.hash.slice(1);
-      const slotMatch = slotOptions.find((option) => slotFragment(option.value) === hash);
-      const tariffMatch = prices.find((price) => tariffFragment(price.id) === hash);
-      const programMatch = programFromFragment(hash, programOptions.map((option) => option.value));
-      return slotMatch ? { slot: slotMatch.value } : tariffMatch ? { tariff: tariffMatch.id } : programMatch ? { program: programMatch } : null;
+    const readHash = (): BookingPrefill | null => parseBookingFragment(window.location.hash, {
+      slots: slotOptions.map((option) => option.value),
+      tariffs: prices.map((price) => price.id),
+      programs: programOptions.map((option) => option.value),
+    });
+    const fromHash = () => {
+      const selection = readHash();
+      if (selection) apply(selection, true);
     };
-    const fromHash = () => apply(readHash());
     const pending = takePendingBooking();
     const hashSelection = readHash();
-    apply(hashSelection || pending);
+    /*
+      Выбор из адреса и отложенный выбор из хранилища не заменяют друг друга:
+      возраст и ответы подбора лежат в хранилище, а в адресе кодируется один
+      выбор. Адрес важнее только в своём поле.
+    */
+    apply(pending || hashSelection ? { ...pending, ...hashSelection } : null, Boolean(hashSelection));
     window.addEventListener('hashchange', fromHash);
     const onBooking = (event: Event) => {
       takePendingBooking();
@@ -231,6 +249,17 @@ export function LeadForm() {
   const comment = [selectionComment, values.comment.trim()].filter(Boolean).join('\n');
   const commentCapacity = Math.max(0, LEAD_COMMENT_MAX - selectionComment.length - (selectionComment ? 1 : 0));
   const remaining = commentCapacity - values.comment.trim().length;
+
+  /*
+    Выбор из адреса применяется молча: человек нажал на время или тариф и
+    оказался у формы, а скринридер не знает, что в ней уже заполнено. Фокус
+    на сводку заставит её прочитать. На первой загрузке без такого выбора
+    (tick = 0) фокус не трогаем.
+  */
+  useEffect(() => {
+    if (summaryFocusTick === 0) return;
+    summaryRef.current?.focus();
+  }, [summaryFocusTick]);
 
   const focusErrors = (found: LeadErrors) => {
     if ((found.program || found.comment) && wishesRef.current) wishesRef.current.open = true;
@@ -397,7 +426,6 @@ export function LeadForm() {
     window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search + '#' + (fragment || 'booking'));
   };
   const sending = status === 'sending';
-  const summaryField = values.program ? 'lead-program' : note ? 'lead-note' : selectedSlot ? 'lead-slot' : 'lead-tariff';
 
   return (
     <form
@@ -474,16 +502,20 @@ export function LeadForm() {
         </div>
 
         {(selectedSlot || selectedTariff || note || values.program) ? (
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 rounded-inset border border-brand-200 bg-brand-50 px-4 py-1 text-sm text-ink dark:border-brand-700 dark:bg-brand-900/40">
-            <div role="status" className="min-w-0 space-y-1">
-              {selectedSlot ? <p>Время: {selectedSlot.label}</p> : null}
-              {selectedTariff ? <p>Тариф: {selectedTariff.title}</p> : null}
-              {values.program ? <p>Направление: {selectedProgram?.label}</p> : null}
-              {note ? <p>Ответы подбора сохранены.</p> : null}
-            </div>
-            <button type="button" className="min-h-11 underline" onClick={() => editWish(summaryField)}>
-              Изменить
-            </button>
+          <div
+            ref={summaryRef}
+            tabIndex={-1}
+            role="group"
+            aria-labelledby="lead-summary-title"
+            className="scroll-mt-24 rounded-inset border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-ink dark:border-brand-700 dark:bg-brand-900/40"
+          >
+            <p id="lead-summary-title" className="text-xs font-semibold tracking-[0.12em] text-ink-muted uppercase">Ваш выбор</p>
+            <ul role="status" className="mt-1">
+              {selectedSlot ? <SummaryRow text={`Время: ${selectedSlot.label}`} change="Изменить время" onChange={() => editWish('lead-slot')} /> : null}
+              {selectedTariff ? <SummaryRow text={`Тариф: ${selectedTariff.title}`} change="Изменить тариф" onChange={() => editWish('lead-tariff')} /> : null}
+              {values.program ? <SummaryRow text={`Направление: ${selectedProgram?.label}`} change="Изменить программу" onChange={() => editWish('lead-program')} /> : null}
+              {note ? <SummaryRow text="Ответы подбора сохранены." change="Изменить ответы подбора" onChange={() => editWish('lead-note')} /> : null}
+            </ul>
           </div>
         ) : null}
         {remaining < 0 ? (
