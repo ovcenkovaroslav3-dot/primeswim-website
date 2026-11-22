@@ -37,13 +37,16 @@ import { slotFragment, tariffFragment, programFragment } from '@/lib/booking';
 
 export function FinalCta({
   variant = 'plain',
+  compact = false,
 }: {
   variant?: 'water' | 'plain';
+  /** Тесная посадка: на посадочной странице форма стоит высоко. */
+  compact?: boolean;
 } = {}) {
   return (
     <section
       aria-labelledby="booking-title"
-      className="on-dark relative isolate overflow-hidden bg-abyss-950 px-4 py-20 text-white sm:px-6 sm:py-24 md:py-36"
+      className={`on-dark relative isolate overflow-hidden bg-abyss-950 px-4 text-white sm:px-6 ${compact ? 'border-t border-white/10 py-10 sm:py-14' : 'py-20 sm:py-24 md:py-36'}`}
     >
       {variant === 'water' ? (
         <>
