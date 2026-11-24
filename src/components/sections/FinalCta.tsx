@@ -38,10 +38,12 @@ import { slotFragment, tariffFragment, programFragment } from '@/lib/booking';
 export function FinalCta({
   variant = 'plain',
   compact = false,
+  intro,
 }: {
   variant?: 'water' | 'plain';
   /** Тесная посадка: на посадочной странице форма стоит высоко. */
   compact?: boolean;
+  intro?: string;
 } = {}) {
   return (
     <section
@@ -105,6 +107,7 @@ export function FinalCta({
           <h2 id="booking-title" className="mb-4 text-2xl font-medium text-white sm:text-3xl">
             Запись на пробное занятие
           </h2>
+          {intro ? <p className="mb-4 max-w-prose text-white/85">{intro}</p> : null}
           <LeadForm />
         </div>
         <p className="mt-6 text-sm text-white/75">Написать администратору: {' '}
