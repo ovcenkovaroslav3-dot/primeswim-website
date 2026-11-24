@@ -86,7 +86,10 @@ export default function HomePage() {
           'plavanie-dlya-osanki-i-spiny-detej',
         ]}
       />
-      <FinalCta variant="water" />
+      <FinalCta
+        variant="water"
+        intro="Пробное плавание для детей от 7 лет в бассейне МГИК, Химки, Левобережный. 45 минут в группе с тренером, 1 100 ₽. Подберём группу по возрасту и уровню ребёнка."
+      />
       <Contacts />
     </>
   );
