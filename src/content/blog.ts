@@ -21,10 +21,7 @@ import { article as pervoeZanyatie } from './blog/pervoe-zanyatie.ts';
 import { article as spravka } from './blog/spravka.ts';
 import { article as stili } from './blog/stili.ts';
 import { article as sroki } from './blog/sroki.ts';
-import { article as osanka } from './blog/osanka.ts';
-import { article as ochkiShapochka } from './blog/ochki-shapochka.ts';
 import { article as razryady } from './blog/razryady.ts';
-import { article as sorevnovaniya } from './blog/sorevnovaniya.ts';
 import { article as basseinyHimki } from './blog/basseiny-himki.ts';
 import { article as pervySport } from './blog/pervy-sport.ts';
 
@@ -49,6 +46,12 @@ export type BlogArticle = {
   description: string;
   /** Дата первой публикации, YYYY-MM-DD. Идёт в Article.datePublished. */
   datePublished: string;
+  /**
+   * Дата последней существенной правки, YYYY-MM-DD. Идёт в Article.dateModified,
+   * в подпись под заголовком, в article:modified_time и в lastmod карты сайта.
+   * Нет значения: везде берётся datePublished.
+   */
+  dateModified?: string;
   /** Первый абзац — он же ответ на запрос, важен для быстрого ответа поиска. */
   lead: string;
   blocks: BlogBlock[];
@@ -67,10 +70,7 @@ export const articles: BlogArticle[] = [
   spravka,
   stili,
   sroki,
-  osanka,
-  ochkiShapochka,
   razryady,
-  sorevnovaniya,
   basseinyHimki,
   pervySport,
 ];
@@ -80,7 +80,32 @@ export function getArticle(slug: string): BlogArticle | undefined {
 }
 
 /*
-  Перелинковка внутри раздела: у каждой статьи 3 соседние по теме. Блок
+  Статьи, слитые в другие. Адрес остаётся живым: на него могли ссылаться
+  поисковики и другие сайты, а GitHub Pages не умеет серверных редиректов.
+  Для каждого ключа сборка отдаёт заглушку /blog/<ключ>/ с мгновенным
+  переходом на статью-преемника (см. app/blog/[slug]/page.tsx). В карту
+  сайта, список /blog/ и «Читайте также» такие адреса не попадают, а ссылки
+  на них из текстов запрещает blog.test.ts.
+*/
+export const blogRedirects: Record<string, string> = {
+  'kak-vybrat-ochki-i-shapochku-dlya-plavaniya': 'pervoe-zanyatie-po-plavaniyu-cheklist',
+  'pervye-sorevnovaniya-po-plavaniyu-deti': 'razryady-po-plavaniyu-normativy-detej',
+  'plavanie-dlya-osanki-i-spiny-detej': 'kakoj-sport-vybrat-rebenku-himki',
+};
+
+/** Статья-преемник, если slug уже слит в другую; иначе undefined. */
+export function getRedirectTarget(slug: string): BlogArticle | undefined {
+  const target = blogRedirects[slug];
+  return target ? getArticle(target) : undefined;
+}
+
+/** Дата, которую показываем как «обновлено»: правка, а при её отсутствии публикация. */
+export function lastModified(article: BlogArticle): string {
+  return article.dateModified ?? article.datePublished;
+}
+
+/*
+  Перелинковка внутри раздела: у каждой статьи 2–3 соседние по теме. Блок
   «Читайте также» на странице статьи строится отсюда, а не из текста, —
   так статья не остаётся тупиком, и порядок ссылок виден в одном месте.
   Инварианты стережёт blog.test.ts.
@@ -98,8 +123,8 @@ export const relatedSlugs: Record<string, string[]> = {
   ],
   'pervoe-zanyatie-po-plavaniyu-cheklist': [
     'spravka-v-bassein-dlya-rebenka',
-    'kak-vybrat-ochki-i-shapochku-dlya-plavaniya',
     'rebenok-boitsya-vody-chto-delat',
+    'basseiny-v-himkah-dlya-detej-kak-vybrat',
   ],
   'spravka-v-bassein-dlya-rebenka': [
     'pervoe-zanyatie-po-plavaniyu-cheklist',
@@ -109,42 +134,26 @@ export const relatedSlugs: Record<string, string[]> = {
   'stili-plavaniya-dlya-detej': [
     'skolko-vremeni-nauchit-rebenka-plavat',
     'razryady-po-plavaniyu-normativy-detej',
-    'kak-vybrat-ochki-i-shapochku-dlya-plavaniya',
   ],
   'skolko-vremeni-nauchit-rebenka-plavat': [
     'stili-plavaniya-dlya-detej',
     'pervoe-zanyatie-po-plavaniyu-cheklist',
     'rebenok-boitsya-vody-chto-delat',
   ],
-  'plavanie-dlya-osanki-i-spiny-detej': [
-    'kakoj-sport-vybrat-rebenku-himki',
-    'stili-plavaniya-dlya-detej',
-    's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
-  ],
-  'kak-vybrat-ochki-i-shapochku-dlya-plavaniya': [
-    'pervoe-zanyatie-po-plavaniyu-cheklist',
-    'stili-plavaniya-dlya-detej',
-    'basseiny-v-himkah-dlya-detej-kak-vybrat',
-  ],
   'razryady-po-plavaniyu-normativy-detej': [
-    'pervye-sorevnovaniya-po-plavaniyu-deti',
     'stili-plavaniya-dlya-detej',
     'skolko-vremeni-nauchit-rebenka-plavat',
-  ],
-  'pervye-sorevnovaniya-po-plavaniyu-deti': [
-    'razryady-po-plavaniyu-normativy-detej',
-    'stili-plavaniya-dlya-detej',
     'kakoj-sport-vybrat-rebenku-himki',
   ],
   'basseiny-v-himkah-dlya-detej-kak-vybrat': [
     'spravka-v-bassein-dlya-rebenka',
-    'kak-vybrat-ochki-i-shapochku-dlya-plavaniya',
+    'pervoe-zanyatie-po-plavaniyu-cheklist',
     'kakoj-sport-vybrat-rebenku-himki',
   ],
   'kakoj-sport-vybrat-rebenku-himki': [
-    'plavanie-dlya-osanki-i-spiny-detej',
     's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
     'basseiny-v-himkah-dlya-detej-kak-vybrat',
+    'stili-plavaniya-dlya-detej',
   ],
 };
 

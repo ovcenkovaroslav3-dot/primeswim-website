@@ -27,7 +27,7 @@ export default function CompetitionsPage() {
         title="О разрядах и первых стартах"
         slugs={[
           'razryady-po-plavaniyu-normativy-detej',
-          'pervye-sorevnovaniya-po-plavaniyu-deti',
+          'stili-plavaniya-dlya-detej',
         ]}
       />
 

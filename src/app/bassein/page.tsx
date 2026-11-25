@@ -43,7 +43,7 @@ export default function PoolPage() {
         slugs={[
           'basseiny-v-himkah-dlya-detej-kak-vybrat',
           'spravka-v-bassein-dlya-rebenka',
-          'kak-vybrat-ochki-i-shapochku-dlya-plavaniya',
+          'pervoe-zanyatie-po-plavaniyu-cheklist',
         ]}
       />
 

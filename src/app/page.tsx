@@ -83,7 +83,7 @@ export default function HomePage() {
         slugs={[
           's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
           'kakoj-sport-vybrat-rebenku-himki',
-          'plavanie-dlya-osanki-i-spiny-detej',
+          'skolko-vremeni-nauchit-rebenka-plavat',
         ]}
       />
       <FinalCta
