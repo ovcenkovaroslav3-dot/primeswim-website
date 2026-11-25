@@ -8,6 +8,7 @@ import { RichText } from '@/components/RichText';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { articles, getArticle, getRelatedArticles } from '@/content/blog';
 import { coaches } from '@/content/coaches';
+import { logo } from '@/content/media';
 import { ogImage } from '@/content/seo';
 import { site } from '@/content/site';
 
@@ -90,7 +91,13 @@ export default async function BlogArticlePage({
       jobTitle: coach.role,
       url: `${site.url}/trener/`,
     },
-    publisher: { '@id': schemaId.organization },
+    publisher: {
+      '@type': 'Organization',
+      '@id': schemaId.organization,
+      name: site.name,
+      url: site.url,
+      logo: { '@type': 'ImageObject', url: `${site.url}${logo.src}` },
+    },
     mainEntityOfPage: url,
     datePublished: article.datePublished,
     dateModified: article.datePublished,
@@ -129,12 +136,18 @@ export default async function BlogArticlePage({
         <h1 className="text-3xl leading-[1.12] font-normal tracking-[-0.02em] text-ink sm:text-4xl">
           {article.h1}
         </h1>
-        <time
-          dateTime={article.datePublished}
-          className="mt-4 block text-sm text-ink-muted"
-        >
-          {dateFormatter.format(new Date(article.datePublished))}
-        </time>
+        <p className="mt-4 text-sm text-ink-muted">
+          <time dateTime={article.datePublished}>
+            {dateFormatter.format(new Date(article.datePublished))}
+          </time>
+          {' · Автор — '}
+          <Link
+            href="/trener/"
+            className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-500 dark:text-brand-200"
+          >
+            {coach.name}
+          </Link>
+        </p>
 
         <p className="mt-8 text-lg leading-relaxed text-ink">
           <RichText text={article.lead} />
