@@ -420,7 +420,7 @@
   */
   @media (prefers-reduced-motion: no-preference) {
     .quiz-fill {
-      transition: transform 420ms var(--ease-out-soft);
+      transition: scale 420ms var(--ease-out-soft), transform 420ms var(--ease-out-soft);
     }
 
     .quiz-options > * {
