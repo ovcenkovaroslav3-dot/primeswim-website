@@ -2,8 +2,28 @@ import { ArrowLink, ButtonLink, Section, SectionHeading } from '../ui';
 import { reviews, reviewsSource, type Review } from '@/content/reviews';
 
 /** Static, accessible cards: no autoplay, external scripts or invented ratings. */
-export function Reviews({ limit }: { limit?: number } = {}) {
-  const shown = limit ? reviews.slice(0, limit) : reviews;
+export function Reviews({
+  limit,
+  ids,
+  eyebrow = 'Родители о PRIME SWIM',
+  title = 'Доверие. В их словах.',
+  lead = 'Фрагменты настоящих отзывов на Яндекс Картах. Полные тексты можно прочитать в карточке школы.',
+  tone = 'surface',
+  showCta = true,
+}: {
+  limit?: number;
+  /** Показать только отзывы с этими id, в порядке списка reviews */
+  ids?: readonly string[];
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  /** Фон секции: страница берёт тот, что чередуется с соседними */
+  tone?: 'surface' | 'alt';
+  /** Блок «Начните со знакомства». Там, где ниже и так форма записи, он лишний. */
+  showCta?: boolean;
+} = {}) {
+  const pool = ids ? reviews.filter((review) => ids.includes(review.id)) : reviews;
+  const shown = limit ? pool.slice(0, limit) : pool;
   const extraCount = Math.max(0, shown.length - 2);
   const reviewWord = extraCount % 100 >= 11 && extraCount % 100 <= 14
     ? 'отзывов'
@@ -11,13 +31,13 @@ export function Reviews({ limit }: { limit?: number } = {}) {
   if (shown.length === 0) return null;
 
   return (
-    <Section id="reviews" labelledBy="reviews-title" className="bg-surface [overflow-wrap:anywhere]">
+    <Section id="reviews" labelledBy="reviews-title" className={`${tone === 'alt' ? 'bg-surface-alt' : 'bg-surface'} [overflow-wrap:anywhere]`}>
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <SectionHeading
           id="reviews-title"
-          eyebrow="Родители о PRIME SWIM"
-          title="Доверие. В их словах."
-          lead="Фрагменты настоящих отзывов на Яндекс Картах. Полные тексты можно прочитать в карточке школы."
+          eyebrow={eyebrow}
+          title={title}
+          lead={lead}
         />
         <ArrowLink href={reviewsSource.href} external className="shrink-0 self-start md:self-auto">
           Читать на Яндекс Картах
@@ -25,9 +45,9 @@ export function Reviews({ limit }: { limit?: number } = {}) {
       </div>
 
       <ul className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {shown.slice(0, 2).map((review, i) => <ReviewCard key={review.id} review={review} index={i} />)}
+        {shown.slice(0, 2).map((review, i) => <ReviewCard key={review.id} review={review} index={i} alt={tone === 'alt'} />)}
         {shown.slice(2).map((review, i) => (
-          <ReviewCard key={review.id} review={review} index={i + 2} className="hidden md:flex" />
+          <ReviewCard key={review.id} review={review} index={i + 2} alt={tone === 'alt'} className="hidden md:flex" />
         ))}
       </ul>
       {shown.length > 2 ? (
@@ -37,10 +57,11 @@ export function Reviews({ limit }: { limit?: number } = {}) {
             <span className="hidden group-open:inline">Свернуть отзывы</span>
           </summary>
           <ul className="mt-4 grid gap-4">
-            {shown.slice(2).map((review, i) => <ReviewCard key={review.id} review={review} index={i + 2} />)}
+            {shown.slice(2).map((review, i) => <ReviewCard key={review.id} review={review} index={i + 2} alt={tone === 'alt'} />)}
           </ul>
         </details>
       ) : null}
+      {showCta ? (
       <div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-card border border-hairline bg-surface-alt p-6 sm:flex-row sm:items-center sm:p-8">
         <div>
           <h3 className="text-xl font-medium text-ink">Начните со знакомства</h3>
@@ -50,6 +71,7 @@ export function Reviews({ limit }: { limit?: number } = {}) {
           Записаться на пробное
         </ButtonLink>
       </div>
+      ) : null}
       <p className="mt-6 text-xs leading-relaxed text-ink-muted">
         Цитаты приведены без изменения слов. Имена и даты указаны как в источнике.
       </p>
@@ -57,10 +79,10 @@ export function Reviews({ limit }: { limit?: number } = {}) {
   );
 }
 
-function ReviewCard({ review, index, className = '' }: { review: Review; index: number; className?: string }) {
+function ReviewCard({ review, index, alt = false, className = '' }: { review: Review; index: number; alt?: boolean; className?: string }) {
   return (
     <li
-      className={`relative flex min-w-0 flex-col rounded-card p-7 sm:p-8 ${index === 0 ? 'bg-abyss-900 text-white' : 'border border-hairline bg-surface-alt text-ink'} ${className}`}
+      className={`relative flex min-w-0 flex-col rounded-card p-7 sm:p-8 ${index === 0 ? 'bg-abyss-900 text-white' : `border border-hairline ${alt ? 'bg-surface' : 'bg-surface-alt'} text-ink`} ${className}`}
     >
       <span aria-hidden="true" className={`mb-3 text-5xl leading-none ${index === 0 ? 'text-lime-300' : 'text-brand-600 dark:text-brand-200'}`}>“</span>
       <blockquote cite={reviewsSource.href} className={`flex-1 text-base leading-relaxed ${index === 0 ? 'text-white' : 'text-ink-soft'}`}>
