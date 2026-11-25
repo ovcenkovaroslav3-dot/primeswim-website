@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 import { site } from '@/content/site';
-import { articles } from '@/content/blog';
+import { articles, lastModified } from '@/content/blog';
 
 /*
   Карта сайта.
@@ -40,8 +40,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${site.url}/blog/${article.slug}/`,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
-      // у статей есть настоящая дата публикации — в отличие от даты сборки, она не врёт
-      lastModified: article.datePublished,
+      // у статей есть настоящая дата правки (или публикации) — в отличие от даты сборки, она не врёт
+      lastModified: lastModified(article),
     })),
   ];
 

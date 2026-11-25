@@ -85,7 +85,7 @@ export const techniquePage = {
   articles: [
     'stili-plavaniya-dlya-detej',
     'razryady-po-plavaniyu-normativy-detej',
-    'pervye-sorevnovaniya-po-plavaniyu-deti',
+    'skolko-vremeni-nauchit-rebenka-plavat',
   ],
 } as const;
 

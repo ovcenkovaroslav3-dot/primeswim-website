@@ -113,7 +113,7 @@ export function Competitions({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } =
           <div className="max-w-[54ch] self-center text-sm leading-relaxed text-white/85 sm:text-base">
             <p>Обсудите с тренером, посильна ли ребёнку дистанция и освоил ли он старт, повороты и финиш.</p>
             <p className="mt-3">Важно, чтобы ребёнок понимал правила и сам хотел участвовать. Условия допуска зависят от соревнования.</p>
-            <Link href="/blog/pervye-sorevnovaniya-po-plavaniyu-deti/" className="mt-2 inline-flex min-h-11 items-center font-medium text-lime-300 link-draw underline-offset-4">
+            <Link href="/blog/razryady-po-plavaniyu-normativy-detej/" className="mt-2 inline-flex min-h-11 items-center font-medium text-lime-300 link-draw underline-offset-4">
               Подробнее о первом старте
             </Link>
           </div>

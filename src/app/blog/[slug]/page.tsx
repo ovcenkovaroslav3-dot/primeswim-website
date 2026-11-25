@@ -6,7 +6,15 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { JsonLd, schemaId } from '@/components/StructuredData';
 import { RichText } from '@/components/RichText';
 import { FinalCta } from '@/components/sections/FinalCta';
-import { articles, getArticle, getRelatedArticles } from '@/content/blog';
+import {
+  type BlogArticle,
+  articles,
+  blogRedirects,
+  getArticle,
+  getRedirectTarget,
+  getRelatedArticles,
+  lastModified,
+} from '@/content/blog';
 import { coaches } from '@/content/coaches';
 import { logo } from '@/content/media';
 import { ogImage } from '@/content/seo';
@@ -27,8 +35,18 @@ import { site } from '@/content/site';
 // сборка в статику: адреса статей известны на билде, других нет
 export const dynamicParams = false;
 
+/*
+  Слитые статьи (blogRedirects) тоже получают страницу: GitHub Pages не
+  умеет серверных редиректов, а встроенный redirect() в статической сборке
+  отдаёт переход с задержкой в секунду и без canonical. Поэтому заглушка
+  пишется явно: мгновенный meta refresh, canonical на преемника, noindex,
+  follow и видимая ссылка для тех, у кого refresh отключён.
+*/
 export function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }));
+  return [
+    ...articles.map((article) => ({ slug: article.slug })),
+    ...Object.keys(blogRedirects).map((slug) => ({ slug })),
+  ];
 }
 
 export async function generateMetadata({
@@ -37,6 +55,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const target = getRedirectTarget(slug);
+  if (target) {
+    return {
+      title: target.title,
+      alternates: { canonical: `${site.url}/blog/${target.slug}/` },
+      robots: { index: false, follow: true },
+    };
+  }
   const article = getArticle(slug);
   if (!article) return {};
 
@@ -55,6 +81,7 @@ export async function generateMetadata({
       url,
       images: [ogImage],
       publishedTime: article.datePublished,
+      modifiedTime: lastModified(article),
       authors: [coaches[0].name],
     },
   };
@@ -66,12 +93,40 @@ const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
   year: 'numeric',
 });
 
+function RedirectStub({ target }: { target: BlogArticle }) {
+  const href = `/blog/${target.slug}/`;
+  return (
+    <>
+      {/* React 19 сам поднимает meta в head; 0 секунд — переход без паузы */}
+      <meta httpEquiv="refresh" content={`0; url=${site.url}${href}`} />
+      <div className="mx-auto w-full max-w-3xl px-4 py-24 sm:px-6">
+        <h1 className="text-3xl leading-[1.12] font-normal tracking-[-0.02em] text-ink sm:text-4xl">
+          Статья переехала
+        </h1>
+        <p className="mt-6 leading-relaxed text-ink-soft">
+          Этот материал объединён с другим и теперь называется{' '}
+          <Link
+            href={href}
+            className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-4 hover:text-brand-500 dark:text-brand-200"
+          >
+            {target.h1}
+          </Link>
+          . Если переход не сработал, откройте статью по ссылке.
+        </p>
+      </div>
+    </>
+  );
+}
+
 export default async function BlogArticlePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const target = getRedirectTarget(slug);
+  if (target) return <RedirectStub target={target} />;
+
   const article = getArticle(slug);
   if (!article) notFound();
 
@@ -100,7 +155,7 @@ export default async function BlogArticlePage({
     },
     mainEntityOfPage: url,
     datePublished: article.datePublished,
-    dateModified: article.datePublished,
+    dateModified: lastModified(article),
     image: ogImage.url,
   };
 
@@ -137,8 +192,9 @@ export default async function BlogArticlePage({
           {article.h1}
         </h1>
         <p className="mt-4 text-sm text-ink-muted">
-          <time dateTime={article.datePublished}>
-            {dateFormatter.format(new Date(article.datePublished))}
+          {article.dateModified ? 'Обновлено ' : null}
+          <time dateTime={lastModified(article)}>
+            {dateFormatter.format(new Date(lastModified(article)))}
           </time>
           {' · Автор — '}
           <Link
