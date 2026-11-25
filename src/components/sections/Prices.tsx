@@ -155,7 +155,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
         <Link
           href="/dogovor/"
           prefetch={false}
-          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 link-draw underline-offset-4"
         >
           в договоре
         </Link>
@@ -165,7 +165,7 @@ export function Prices({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
           target="_blank"
           rel="noopener noreferrer"
           data-goal="click_telegram_booking"
-          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 link-draw underline-offset-4"
         >
           напишите нам в Telegram
         </a>

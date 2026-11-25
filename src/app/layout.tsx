@@ -96,7 +96,7 @@ export default function RootLayout({
             height, а не min-height), поэтому 44 px держатся независимо от
             того, в каком порядке Tailwind разложит утилиты.
           */
-          className="sr-only rounded-lg bg-brand-600 text-white focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:inline-flex focus:min-h-11 focus:items-center focus:px-4"
+          className="sr-only rounded-control bg-brand-600 text-white focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:inline-flex focus:min-h-11 focus:items-center focus:px-4"
         >
           Перейти к содержанию
         </a>

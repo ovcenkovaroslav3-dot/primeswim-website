@@ -24,8 +24,11 @@ function openTarget(): void {
   const details = target?.closest('details');
   if (!target || !details) return;
 
+  // ответ нужен сразу, а не через 320 мс анимации: иначе прокрутка промахнётся
+  details.setAttribute('data-instant', '');
   details.open = true;
   target.scrollIntoView({ block: 'center' });
+  details.removeAttribute('data-instant');
 }
 
 export function OpenDetailsOnHash() {

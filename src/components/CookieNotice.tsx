@@ -110,7 +110,7 @@ export function CookieNotice() {
           <Link
             href="/policy/"
             prefetch={false}
-            className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
+            className="font-medium text-brand-600 dark:text-brand-200 link-draw underline-offset-4"
           >
             политике
             <span className="hidden lg:inline"> обработки персональных данных</span>
@@ -123,14 +123,14 @@ export function CookieNotice() {
           <button
             type="button"
             onClick={() => writeConsent('denied')}
-            className="lift inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-control border border-hairline px-3 py-2 text-center text-sm leading-snug font-semibold [overflow-wrap:anywhere] text-ink-soft transition-colors hover:bg-surface-alt sm:flex-none sm:px-5"
+            className="lift inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-control border border-hairline px-3 py-2 text-center text-sm leading-snug font-semibold [overflow-wrap:anywhere] text-ink-soft hover:bg-surface-alt sm:flex-none sm:px-5"
           >
             Без аналитики
           </button>
           <button
             type="button"
             onClick={() => writeConsent('granted')}
-            className="lift inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-control bg-lime-400 px-4 py-2 text-center text-sm leading-snug font-semibold [overflow-wrap:anywhere] text-abyss-950 transition-colors hover:bg-lime-300 sm:flex-none sm:px-5"
+            className="lift inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-control bg-lime-400 px-4 py-2 text-center text-sm leading-snug font-semibold [overflow-wrap:anywhere] text-abyss-950 hover:bg-lime-300 sm:flex-none sm:px-5"
           >
             Принять
           </button>

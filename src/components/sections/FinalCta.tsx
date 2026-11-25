@@ -111,8 +111,8 @@ export function FinalCta({
           <LeadForm />
         </div>
         <p className="mt-6 text-sm text-white/75">Написать администратору: {' '}
-          <a href={contacts.social.telegramBooking} target="_blank" rel="noopener noreferrer" data-goal="click_telegram_booking" className="inline-flex min-h-11 items-center underline">Telegram</a>{' · '}
-          <a href={contacts.social.max} target="_blank" rel="noopener noreferrer" data-goal="click_max_booking" className="inline-flex min-h-11 items-center underline">MAX</a>
+          <a href={contacts.social.telegramBooking} target="_blank" rel="noopener noreferrer" data-goal="click_telegram_booking" className="inline-flex min-h-11 items-center link-draw underline-offset-4">Telegram</a>{' · '}
+          <a href={contacts.social.max} target="_blank" rel="noopener noreferrer" data-goal="click_max_booking" className="inline-flex min-h-11 items-center link-draw underline-offset-4">MAX</a>
         </p>
 
         <p className="reveal mt-8 border-t border-white/15 pt-8 text-white/75">
@@ -120,7 +120,7 @@ export function FinalCta({
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="text-lg font-light text-white underline underline-offset-4 decoration-white/40 hover:decoration-white"
+            className="text-lg font-light text-white link-draw underline-offset-4 decoration-white/40 hover:decoration-white"
           >
             {contacts.phone.display}
           </a>

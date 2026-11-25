@@ -73,7 +73,7 @@ export function Faq({
             key={item.id}
             className="group min-w-0 [overflow-wrap:anywhere] rounded-card border border-hairline bg-surface px-4 sm:px-6 open:border-brand-200 dark:open:border-brand-500"
           >
-            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-ink marker:content-none">
+            <summary className="press -mx-4 flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 rounded-card px-4 py-4 font-medium text-ink marker:content-none hover:bg-surface-alt sm:-mx-6 sm:px-6 [--press-scale:0.99]">
               {item.question}
               <span
                 aria-hidden="true"
@@ -109,7 +109,7 @@ export function Faq({
           target="_blank"
           rel="noopener noreferrer"
           data-goal="click_telegram_booking"
-          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 link-draw underline-offset-4"
         >
           Telegram
         </a>{' '}
@@ -117,7 +117,7 @@ export function Faq({
         <a
           href={contacts.phone.href}
           data-goal="click_phone"
-          className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
+          className="font-medium text-brand-600 dark:text-brand-200 link-draw underline-offset-4"
         >
           {contacts.phone.display}
         </a>

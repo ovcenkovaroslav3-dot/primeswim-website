@@ -60,7 +60,7 @@ export function MobileCta() {
 
   return (
     <div
-      className={`fixed inset-x-0 z-40 border-t border-hairline bg-surface/92 px-4 pt-2 backdrop-blur transition-[transform,bottom] duration-300 lg:hidden ${
+      className={`fixed inset-x-0 z-40 border-t border-hairline bg-surface/92 px-4 pt-2 backdrop-blur transition-transform duration-300 lg:hidden ${
         shown ? 'translate-y-0' : 'translate-y-full'
       }`}
       /*
@@ -85,7 +85,7 @@ export function MobileCta() {
       <div className="mx-auto flex max-w-md items-center gap-3">
         <BookingLink
           data-goal="cta_booking"
-          className="inline-flex min-h-12 min-w-0 flex-1 [overflow-wrap:anywhere] text-center items-center justify-center rounded-control bg-lime-400 px-3 text-sm font-semibold text-abyss-950"
+          className="inline-flex min-h-12 min-w-0 flex-1 [overflow-wrap:anywhere] text-center items-center justify-center press rounded-control bg-lime-400 px-3 text-sm font-semibold text-abyss-950 hover:bg-lime-300"
         >
           Записаться
         </BookingLink>
@@ -93,7 +93,7 @@ export function MobileCta() {
           href={contacts.phone.href}
           data-goal="click_phone"
           aria-label={`Позвонить: ${contacts.phone.display}`}
-          className="inline-flex size-12 shrink-0 items-center justify-center rounded-control border border-hairline text-ink"
+          className="press inline-flex size-12 shrink-0 items-center justify-center rounded-control border border-hairline text-ink hover:bg-surface-alt"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path

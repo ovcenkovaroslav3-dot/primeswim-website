@@ -32,7 +32,7 @@ export function Reviews({ limit }: { limit?: number } = {}) {
       </ul>
       {shown.length > 2 ? (
         <details className="group mt-4 md:hidden">
-          <summary className="inline-flex min-h-11 cursor-pointer items-center font-medium text-brand-600 underline underline-offset-4 dark:text-brand-200">
+          <summary className="inline-flex min-h-11 cursor-pointer items-center font-medium text-brand-600 link-draw underline-offset-4 dark:text-brand-200">
             <span className="group-open:hidden">Ещё {extraCount} {reviewWord}</span>
             <span className="hidden group-open:inline">Свернуть отзывы</span>
           </summary>

@@ -56,7 +56,7 @@ export function LandingFooter() {
           </ul>
         </div>
 
-        <div className="mt-10 space-y-3 border-t border-white/15 pt-6 text-xs leading-relaxed text-white/55">
+        <div className="mt-10 space-y-3 border-t border-white/15 pt-6 text-sm leading-relaxed text-white/55">
           <p>
             {contacts.legal.operator}. ОГРНИП {contacts.legal.ogrnip}, ИНН {contacts.legal.inn}.
             Зарегистрирован: {contacts.legal.registrar}.

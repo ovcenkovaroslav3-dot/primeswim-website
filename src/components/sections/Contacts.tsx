@@ -47,7 +47,7 @@ export function Contacts() {
               target="_blank"
               rel="noopener noreferrer"
               data-goal="review_click"
-              className="mt-2 flex min-h-11 items-center text-sm text-ink-soft underline underline-offset-4 transition-colors hover:text-brand-600 dark:hover:text-brand-200"
+              className="mt-2 flex min-h-11 items-center text-sm text-ink-soft link-draw underline-offset-4 hover:text-brand-600 dark:hover:text-brand-200"
             >
               Оставить отзыв на Яндекс Картах
             </a>

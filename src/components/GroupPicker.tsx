@@ -67,7 +67,7 @@ const choices: Record<Step, { value: string; label: string }[]> = {
 };
 
 const chipClass =
-  'min-h-12 rounded-control border border-white/25 bg-white/5 px-3 py-3 text-left text-base text-white sm:px-4 transition-colors hover:border-lime-300 hover:bg-white/10';
+  'press min-h-12 rounded-control border border-white/25 bg-white/5 px-3 py-3 text-left text-base text-white sm:px-4 hover:border-lime-300 hover:bg-white/10';
 
 export function GroupPicker() {
   const [answers, setAnswers] = useState<Partial<PickerAnswers>>({});
@@ -137,7 +137,7 @@ export function GroupPicker() {
         <a
           href="#booking"
           data-goal="cta_booking"
-          className="inline-flex min-h-11 items-center text-sm font-medium text-white/80 underline underline-offset-4 hover:text-white"
+          className="inline-flex min-h-11 items-center text-sm font-medium text-white/80 link-draw underline-offset-4 hover:text-white"
         >
           Уже решили? Сразу к заявке
         </a>
@@ -161,24 +161,27 @@ export function GroupPicker() {
           {/* полоса шагов: видно, что вопросов немного и сколько осталось */}
           <div aria-hidden="true" className="mt-3 grid grid-cols-4 gap-1.5">
             {steps.map((step, i) => (
-              <span
-                key={step}
-                className={`h-1 rounded-full ${i <= index ? 'bg-lime-300' : 'bg-white/20'}`}
-              />
+              <span key={step} className="relative h-1 overflow-hidden rounded-full bg-white/20">
+                <span
+                  className={`quiz-fill absolute inset-0 origin-left rounded-full bg-lime-300 ${i <= index ? 'scale-x-100' : 'scale-x-0'}`}
+                />
+              </span>
             ))}
           </div>
 
           <div
+            key={steps[index]}
             role="group"
             aria-labelledby="podbor-question"
-            className={`mt-5 grid gap-2.5 ${
+            className={`quiz-options mt-5 grid gap-2.5 ${
               steps[index] === 'age' ? 'grid-cols-2 sm:grid-cols-3' : 'sm:grid-cols-3'
             }`}
           >
-            {choices[steps[index]].map((choice) => (
+            {choices[steps[index]].map((choice, i) => (
               <button
                 key={choice.value}
                 type="button"
+                style={{ ['--i' as string]: i }}
                 onClick={() => answer(steps[index], choice.value)}
                 className={chipClass}
               >
@@ -194,7 +197,7 @@ export function GroupPicker() {
                 moved.current = true;
                 setIndex((i) => Math.max(0, i - 1));
               }}
-              className="mt-4 min-h-11 text-sm text-white/70 underline underline-offset-4 hover:text-white"
+              className="mt-4 min-h-11 text-sm text-white/70 link-draw underline-offset-4 hover:text-white"
             >
               ← Назад
             </button>
@@ -233,7 +236,7 @@ export function GroupPicker() {
                     aria-pressed={active}
                     aria-label={option.label}
                     onClick={() => setSlot(active ? '' : option.value)}
-                    className={`min-h-11 rounded-full border px-4 text-sm tabular-nums transition-colors ${
+                    className={`press min-h-11 rounded-full border px-4 text-sm tabular-nums ${
                       active
                         ? 'border-lime-300 bg-lime-300 text-abyss-950'
                         : 'border-white/30 text-white hover:border-lime-300'
@@ -256,14 +259,14 @@ export function GroupPicker() {
               type="button"
               onClick={book}
               data-goal="cta_booking"
-              className="lift inline-flex min-h-13 items-center justify-center rounded-control bg-white px-7 py-3.5 text-base font-semibold text-abyss-900 transition-colors hover:bg-lime-100"
+              className="lift inline-flex min-h-13 items-center justify-center rounded-control bg-white px-7 py-3.5 text-base font-semibold text-abyss-900 hover:bg-lime-100"
             >
               Записаться на пробное
             </button>
             <button
               type="button"
               onClick={restart}
-              className="min-h-11 text-sm text-white/70 underline underline-offset-4 hover:text-white"
+              className="min-h-11 text-sm text-white/70 link-draw underline-offset-4 hover:text-white"
             >
               Пройти заново
             </button>

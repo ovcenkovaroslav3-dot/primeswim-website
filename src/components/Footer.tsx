@@ -59,7 +59,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-goal="click_route"
-                  className="-my-2 inline-flex min-h-11 items-center underline underline-offset-4 transition-colors hover:text-lime-300"
+                  className="-my-2 inline-flex min-h-11 items-center link-draw underline-offset-4 hover:text-lime-300"
                 >
                   Посмотреть на Яндекс Картах
                 </a>
@@ -70,7 +70,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-goal="review_click"
-                  className="-my-2 inline-flex min-h-11 items-center underline underline-offset-4 transition-colors hover:text-lime-300"
+                  className="-my-2 inline-flex min-h-11 items-center link-draw underline-offset-4 hover:text-lime-300"
                 >
                   Оставить отзыв на Яндекс Картах
                 </a>
@@ -210,7 +210,7 @@ export function Footer() {
           в политике: ФИО предпринимателя, данные о госрегистрации,
           наименование зарегистрировавшего органа и режим работы.
         */}
-        <div className="mt-12 space-y-3 border-t border-white/15 pt-6 text-xs leading-relaxed text-white/55">
+        <div className="mt-12 space-y-3 border-t border-white/15 pt-6 text-sm leading-relaxed text-white/55">
           <p>
             {contacts.legal.operator}. ОГРНИП {contacts.legal.ogrnip}, ИНН{' '}
             {contacts.legal.inn}. Зарегистрирован:{' '}

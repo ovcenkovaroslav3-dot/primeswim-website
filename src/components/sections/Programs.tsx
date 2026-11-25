@@ -1,5 +1,5 @@
 import { ProgramBookButton } from '../ProgramBookButton';
-import { ArrowLink, Section } from '../ui';
+import { ArrowIcon, ArrowLink, Section } from '../ui';
 import { programs } from '@/content/programs';
 import { Picture } from '../Picture';
 import { coachIntroVideo } from '@/content/media';
@@ -17,8 +17,9 @@ export function Programs() {
       </div>
 
       <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5">
-        <a href="#podbor" className="inline-flex min-h-11 items-center rounded-control border border-brand-500 px-4 font-medium text-brand-600 dark:text-brand-200">
-          Подобрать по возрасту и уровню →
+        <a href="#podbor" className="press inline-flex min-h-11 items-center gap-2 rounded-control border border-brand-500 px-4 font-medium text-brand-600 hover:bg-brand-50 dark:text-brand-200 dark:hover:bg-brand-900/40">
+          Подобрать по возрасту и уровню
+          <ArrowIcon />
         </a>
 
         <div className="flex min-w-0 items-center gap-4 rounded-inset border border-hairline bg-surface p-3">
@@ -33,8 +34,9 @@ export function Programs() {
           <div className="min-w-0">
             <p className="text-sm text-ink-muted">Ваш тренер</p>
             <p className="font-medium text-ink">Ярослав Сергеевич Овченков</p>
-            <Link href="/blog/pervoe-zanyatie-po-plavaniyu-cheklist/" className="inline-flex min-h-11 items-center text-sm font-medium text-brand-600 underline underline-offset-4 dark:text-brand-200">
-              Как проходит пробное →
+            <Link href="/blog/pervoe-zanyatie-po-plavaniyu-cheklist/" className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-brand-600 dark:text-brand-200">
+              <span className="link-draw underline-offset-4">Как проходит пробное</span>
+              <ArrowIcon />
             </Link>
           </div>
         </div>

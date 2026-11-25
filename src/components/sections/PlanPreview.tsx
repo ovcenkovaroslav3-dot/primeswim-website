@@ -71,13 +71,11 @@ export function PlanPreview() {
             ))}
           </ul>
 
-          <ArrowLink
-            href="/raspisanie/"
-            data-goal="cta_schedule"
-            className="mt-6 self-start"
-          >
-            Всё расписание
-          </ArrowLink>
+          <div className="mt-auto pt-6">
+            <ArrowLink href="/raspisanie/" data-goal="cta_schedule">
+              Всё расписание
+            </ArrowLink>
+          </div>
         </div>
 
         {/* стоимость */}
@@ -120,9 +118,9 @@ export function PlanPreview() {
             {pricesNote}
           </p>
 
-          <ArrowLink href="/price/" className="mt-5 self-start">
-            Условия оплаты и абонемента
-          </ArrowLink>
+          <div className="mt-auto pt-5">
+            <ArrowLink href="/price/">Условия оплаты и абонемента</ArrowLink>
+          </div>
         </div>
       </div>
 
