@@ -67,7 +67,7 @@ export function TrialHero() {
               <Link
                 href="#booking"
                 data-goal="cta_booking"
-                className="lift glow-accent inline-flex min-h-13 w-full items-center justify-center rounded-control bg-lime-400 px-7 text-center text-base font-semibold text-abyss-950 transition-colors duration-200 hover:bg-lime-300 sm:w-auto"
+                className="lift glow-accent inline-flex min-h-13 w-full items-center justify-center rounded-control bg-lime-400 px-7 text-center text-base font-semibold text-abyss-950 hover:bg-lime-300 sm:w-auto"
               >
                 Записаться на пробное
               </Link>
@@ -79,7 +79,7 @@ export function TrialHero() {
             <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-inset border border-white/20 bg-white/5 px-4 py-3 text-sm leading-relaxed text-white">
               <span className="font-semibold">Новый набор</span>
               <EnrollmentLinks dark />
-              <span className="w-full text-xs text-white/65">
+              <span className="w-full text-sm text-white/65">
                 Выберите время, и мы подставим его в заявку.
               </span>
             </div>

@@ -100,7 +100,7 @@ function SummaryRow({ text, change, onChange }: { text: string; change: string; 
   return (
     <li className="flex items-center justify-between gap-2">
       <span className="min-w-0">{text}</span>
-      <button type="button" aria-label={change} className="min-h-11 shrink-0 underline" onClick={onChange}>
+      <button type="button" aria-label={change} className="min-h-11 shrink-0 link-draw underline-offset-4" onClick={onChange}>
         Изменить
       </button>
     </li>
@@ -409,7 +409,7 @@ export function LeadForm() {
           <a
             href={contacts.phone.href}
             data-goal="click_phone"
-            className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
+            className="font-medium text-brand-600 dark:text-brand-200 link-draw underline-offset-4"
           >
             {contacts.phone.display}
           </a>
@@ -439,8 +439,8 @@ export function LeadForm() {
         {!hydrated ? (
           <p role="status">
             Для отправки формы нужен JavaScript. Вы можете позвонить{' '}
-            <a className="underline" href={contacts.phone.href}>{contacts.phone.display}</a>{' '}
-            или <a className="underline" href={contacts.social.telegramBooking}>написать в Telegram</a>.
+            <a className="link-draw underline-offset-4" href={contacts.phone.href}>{contacts.phone.display}</a>{' '}
+            или <a className="link-draw underline-offset-4" href={contacts.social.telegramBooking}>написать в Telegram</a>.
           </p>
         ) : null}
         <div>
@@ -521,7 +521,7 @@ export function LeadForm() {
         {remaining < 0 ? (
           <p role="alert" className="text-sm text-red-700 dark:text-red-300">
             Из-за выбранных пожеланий комментарий нужно сократить на {-remaining} символов.{' '}
-            <button type="button" className="min-h-11 underline" onClick={() => editWish('lead-comment')}>Изменить комментарий</button>
+            <button type="button" className="min-h-11 link-draw underline-offset-4" onClick={() => editWish('lead-comment')}>Изменить комментарий</button>
           </p>
         ) : null}
 
@@ -560,7 +560,7 @@ export function LeadForm() {
         </div>
 
         <details ref={wishesRef} className="group rounded-inset border border-hairline px-4">
-          <summary className="flex min-h-11 cursor-pointer items-center justify-between gap-3 py-3 font-medium text-ink">
+          <summary className="press -mx-4 flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-inset px-4 py-3 font-medium text-ink hover:bg-surface-alt [--press-scale:0.99]">
             Дополнительные пожелания
             <svg aria-hidden="true" className="size-5 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="none">
               <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -660,7 +660,7 @@ export function LeadForm() {
                   onChange={(e) => setNote(e.target.value)}
                   className={fieldClass + ' border-hairline'}
                 />
-                <button type="button" className="min-h-11 underline" onClick={() => setNote('')}>
+                <button type="button" className="min-h-11 link-draw underline-offset-4" onClick={() => setNote('')}>
                   Убрать ответы подбора
                 </button>
               </div>
@@ -769,7 +769,7 @@ export function LeadForm() {
               <Link
                 href="/soglasie/"
                 prefetch={false}
-                className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
+                className="font-medium text-brand-600 dark:text-brand-200 link-draw underline-offset-4"
               >
                 согласие на обработку
               </Link>{' '}
@@ -778,7 +778,7 @@ export function LeadForm() {
               <Link
                 href="/policy/"
                 prefetch={false}
-                className="font-medium text-brand-600 dark:text-brand-200 underline underline-offset-4"
+                className="font-medium text-brand-600 dark:text-brand-200 link-draw underline-offset-4"
               >
                 политики обработки персональных данных
               </Link>
@@ -805,7 +805,7 @@ export function LeadForm() {
               <a
                 href={contacts.phone.href}
                 data-goal="click_phone"
-                className="font-medium underline underline-offset-4"
+                className="font-medium link-draw underline-offset-4"
               >
                 {contacts.phone.display}
               </a>
@@ -815,7 +815,7 @@ export function LeadForm() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-goal="click_max_booking"
-                className="font-medium underline underline-offset-4"
+                className="font-medium link-draw underline-offset-4"
               >
                 MAX
               </a>
@@ -825,7 +825,7 @@ export function LeadForm() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-goal="click_telegram_booking"
-                className="font-medium underline underline-offset-4"
+                className="font-medium link-draw underline-offset-4"
               >
                 Telegram
               </a>

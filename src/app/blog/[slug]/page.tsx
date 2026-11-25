@@ -191,7 +191,7 @@ export default async function BlogArticlePage({
                 key={item.question}
                 className="group rounded-card border border-hairline bg-surface-alt px-6 py-4"
               >
-                <summary className="cursor-pointer font-medium text-ink">
+                <summary className="press -mx-6 -mt-4 -mb-4 cursor-pointer rounded-card px-6 py-4 font-medium text-ink hover:bg-surface [--press-scale:0.99]">
                   {item.question}
                 </summary>
                 <p className="mt-3 text-sm leading-relaxed text-ink-soft">
@@ -231,14 +231,14 @@ export default async function BlogArticlePage({
               Хотите попробовать сами? Выберите время в{' '}
               <Link
                 href="/raspisanie/"
-                className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-500 dark:text-brand-200"
+                className="font-medium text-brand-600 link-draw underline-offset-4 hover:text-brand-500 dark:text-brand-200"
               >
                 расписании
               </Link>{' '}
               и посмотрите{' '}
               <Link
                 href="/price/"
-                className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-500 dark:text-brand-200"
+                className="font-medium text-brand-600 link-draw underline-offset-4 hover:text-brand-500 dark:text-brand-200"
               >
                 цены на занятия
               </Link>
@@ -252,7 +252,7 @@ export default async function BlogArticlePage({
             Автор статьи —{' '}
             <Link
               href="/trener/"
-              className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-500 dark:text-brand-200"
+              className="font-medium text-brand-600 link-draw underline-offset-4 hover:text-brand-500 dark:text-brand-200"
             >
               {coach.name}
             </Link>

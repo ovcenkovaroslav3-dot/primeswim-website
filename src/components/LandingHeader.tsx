@@ -27,7 +27,7 @@ export function LandingHeader() {
             href={contacts.phone.href}
             data-goal="click_phone"
             aria-label={`Позвонить: ${contacts.phone.display}`}
-            className="inline-flex size-11 items-center justify-center rounded-control border border-hairline text-ink sm:hidden"
+            className="press inline-flex size-11 items-center justify-center rounded-control border border-hairline text-ink hover:bg-surface-alt sm:hidden"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path

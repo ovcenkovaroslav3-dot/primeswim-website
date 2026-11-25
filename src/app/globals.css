@@ -106,6 +106,7 @@
   --dur-fast: 220ms;
   --dur-base: 420ms;
   --dur-slow: 900ms;
+  --dur-press: 120ms;
 }
 
 @layer base {
@@ -217,7 +218,6 @@
     outline-width: 3px;
     outline-color: var(--color-brand-500);
     outline-offset: 3px;
-    border-radius: 4px;
   }
 
   /*
@@ -290,25 +290,180 @@
     Указателю без наведения (телефон, планшет) эти правила не достаются:
     иначе состояние «наведено» залипает после касания.
   */
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .lift {
+  /*
+    «Вода отвечает на касание»: каждый элемент управления отзывается на
+    нажатие, как поверхность на прикосновение. Три состояния одним набором
+    свойств: покой, наведение (подъём на 2 px) и нажатие (оседает и чуть
+    сжимается). Нажатие не завязано на hover: на телефоне оно единственное.
+    Только transform и цвета; при reduce-motion ничего этого нет.
+
+    Цвета входят в переход здесь же, поэтому классы `transition-colors` на
+    элементах с `.lift` не нужны: утилита Tailwind перебивала бы этот набор
+    и отключала бы плавность подъёма.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    .lift,
+    .press {
       transition:
         transform var(--dur-fast) var(--ease-out-soft),
-        box-shadow var(--dur-fast) var(--ease-out-soft);
+        box-shadow var(--dur-fast) var(--ease-out-soft),
+        background-color var(--dur-fast) var(--ease-out-soft),
+        border-color var(--dur-fast) var(--ease-out-soft),
+        color var(--dur-fast) var(--ease-out-soft);
     }
 
+    /* карточки с .lift не кнопки: оседают только ссылки и кнопки */
+    .lift:is(a, button):active,
+    .press:active {
+      transform: translateY(0) scale(var(--press-scale, 0.97));
+      transition-duration: var(--dur-press);
+    }
+
+    /* стрелка в ссылке сдвигается, сама ссылка стоит на месте */
+    .arrow-nudge {
+      transition: transform var(--dur-fast) var(--ease-out-soft);
+    }
+
+    :is(a, button):is(:hover, :focus-visible) .arrow-nudge {
+      transform: translateX(3px);
+    }
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .lift:hover {
       transform: translateY(-2px);
     }
 
     /* снимок в рамке слегка приближается, сама рамка не двигается */
     .zoom-frame img {
-      transition: transform var(--dur-slow) var(--ease-out-soft);
+      transition: transform 600ms var(--ease-out-soft);
       will-change: transform;
     }
 
     .zoom-frame:hover img {
-      transform: scale(1.04);
+      transform: scale(1.03);
+    }
+  }
+
+  /*
+    Подчёркнутая ссылка внутри текста. Линия видна всегда (это признак
+    ссылки), а при наведении набирает полный цвет текста: плавно, без
+    сдвига. Один приём на весь сайт — переход text-decoration-color.
+  */
+  .link-draw {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .link-draw {
+      transition:
+        text-decoration-color var(--dur-fast) var(--ease-out-soft),
+        color var(--dur-fast) var(--ease-out-soft);
+    }
+  }
+
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    text-decoration-color: currentColor;
+  }
+
+  /*
+    Мобильное меню появляется, а не возникает: фон проявляется, панель
+    выезжает на 16 px справа, пункты подтягиваются по одному с шагом 30 мс
+    (потолок задержки 180 мс). Работает на @starting-style: компонент
+    монтирует узлы уже открытыми, и браузер сам берёт стартовые значения.
+    Закрытие остаётся мгновенным: узлы просто снимаются.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    .menu-backdrop {
+      transition: opacity var(--dur-fast) var(--ease-out-soft);
+    }
+
+    .menu-panel {
+      transition:
+        opacity 320ms var(--ease-out-soft),
+        transform 320ms var(--ease-out-soft);
+    }
+
+    .menu-item {
+      transition:
+        opacity 320ms var(--ease-out-soft),
+        transform 320ms var(--ease-out-soft);
+      transition-delay: min(calc(var(--i, 0) * 30ms), 180ms);
+    }
+
+    @starting-style {
+      .menu-backdrop {
+        opacity: 0;
+      }
+
+      .menu-panel {
+        opacity: 0;
+        transform: translateX(16px);
+      }
+
+      .menu-item {
+        opacity: 0;
+        transform: translateX(8px);
+      }
+    }
+  }
+
+  /*
+    Подбор группы. Заливка сегмента растёт слева направо (transform, а не
+    ширина), варианты следующего вопроса поднимаются на 8 px и проявляются
+    со сдвигом 25 мс (потолок 150 мс). Контейнер вариантов пересоздаётся на
+    каждом шаге (key), поэтому анимация идёт заново. fill-mode backwards:
+    после окончания анимация ничего не удерживает, hover и нажатие свободны.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    .quiz-fill {
+      transition: transform 420ms var(--ease-out-soft);
+    }
+
+    .quiz-options > * {
+      animation: quiz-rise var(--dur-fast) var(--ease-out-soft) backwards;
+      animation-delay: min(calc(var(--i, 0) * 25ms), 150ms);
+    }
+
+    @keyframes quiz-rise {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+    }
+  }
+
+  /*
+    Раскрытие details. Прогрессивное улучшение: где браузер не знает
+    ::details-content или interpolate-size, блок раскрывается мгновенно, как
+    раньше. В открытом состоянии block-size всегда auto, ответ не прячется.
+    На печати и при reduce-motion анимации нет. data-instant ставит
+    OpenDetailsOnHash, чтобы прокрутка к якорю шла по уже раскрытому ответу.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (interpolate-size: allow-keywords) {
+      :root {
+        interpolate-size: allow-keywords;
+      }
+    }
+
+    details::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size 320ms var(--ease-out-soft),
+        content-visibility 320ms allow-discrete;
+    }
+
+    details[open]::details-content {
+      block-size: auto;
+    }
+
+    details[data-instant]::details-content {
+      transition: none;
     }
   }
 

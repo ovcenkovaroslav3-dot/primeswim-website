@@ -37,9 +37,9 @@ export function Parents({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) 
 
       {headingAs === 'h1' ? (
         <nav aria-label="Быстрые ответы родителям" className="mt-6 flex flex-wrap gap-2">
-          <Link href="/blog/pervoe-zanyatie-po-plavaniyu-cheklist/" className="inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 dark:text-brand-200">Первое занятие</Link>
-          <Link href="/blog/spravka-v-bassein-dlya-rebenka/" className="inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 dark:text-brand-200">Справка</Link>
-          <a href="#faq-missed" className="inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 dark:text-brand-200">Пропуски и отработки</a>
+          <Link href="/blog/pervoe-zanyatie-po-plavaniyu-cheklist/" className="press inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 hover:border-brand-500 hover:bg-brand-50 dark:text-brand-200 dark:hover:bg-brand-900/40">Первое занятие</Link>
+          <Link href="/blog/spravka-v-bassein-dlya-rebenka/" className="press inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 hover:border-brand-500 hover:bg-brand-50 dark:text-brand-200 dark:hover:bg-brand-900/40">Справка</Link>
+          <a href="#faq-missed" className="press inline-flex min-h-11 items-center rounded-full border border-hairline px-4 text-sm font-medium text-brand-600 hover:border-brand-500 hover:bg-brand-50 dark:text-brand-200 dark:hover:bg-brand-900/40">Пропуски и отработки</a>
         </nav>
       ) : null}
 

@@ -58,7 +58,7 @@ export function ProgramFirstLesson({ programId, tone = 'surface' }: { programId:
         <div className={`reveal min-w-0 rounded-card border border-hairline ${card} p-6 sm:p-7`} style={{ ['--reveal-delay' as string]: '70ms' }}>
           <h3 className="text-lg font-medium text-ink">{firstLessonBlock.gateTitle}</h3>
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">{firstLessonBlock.gate}</p>
-          <Link href="/bassein/" prefetch={false} className="mt-3 inline-flex min-h-11 items-center text-sm font-medium text-brand-600 underline underline-offset-4 dark:text-brand-200">
+          <Link href="/bassein/" prefetch={false} className="mt-3 inline-flex min-h-11 items-center text-sm font-medium text-brand-600 link-draw underline-offset-4 dark:text-brand-200">
             Маршрут к бассейну
           </Link>
         </div>

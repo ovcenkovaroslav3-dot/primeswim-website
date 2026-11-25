@@ -36,7 +36,7 @@ export function RichText({ text }: { text: string }) {
     if (link) {
       const [, label, href] = link;
       const className =
-        'font-medium text-brand-600 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-500 dark:text-brand-200 dark:decoration-brand-400';
+        'font-medium text-brand-600 link-draw underline-offset-4 hover:text-brand-500 dark:text-brand-200';
       if (href.startsWith('/')) {
         return (
           <Link key={index} href={href} className={className}>

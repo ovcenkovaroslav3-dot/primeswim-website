@@ -107,7 +107,7 @@ export function MobileMenu() {
         onClick={() => setOpen(true)}
         aria-expanded={open}
         aria-controls="mobile-menu"
-        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-hairline text-ink lg:hidden"
+        className="press inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-hairline text-ink hover:bg-surface-alt lg:hidden"
       >
         <span className="sr-only">Открыть меню</span>
         <svg
@@ -133,7 +133,7 @@ export function MobileMenu() {
                 type="button"
                 aria-label="Закрыть меню"
                 onClick={() => setOpen(false)}
-                className="absolute inset-0 h-full w-full bg-ink/50"
+                className="menu-backdrop absolute inset-0 h-full w-full bg-ink/50"
               />
 
               <div
@@ -142,7 +142,7 @@ export function MobileMenu() {
                 role="dialog"
                 aria-modal="true"
                 aria-label="Меню сайта"
-                className="absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-surface p-6 shadow-xl"
+                className="menu-panel absolute inset-y-0 right-0 flex w-full max-w-sm flex-col overflow-y-auto bg-surface p-6 shadow-xl"
               >
                 <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
                   {/*
@@ -169,7 +169,7 @@ export function MobileMenu() {
                       setOpen(false);
                       triggerRef.current?.focus();
                     }}
-                    className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-hairline text-ink"
+                    className="press inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-hairline text-ink hover:bg-surface-alt"
                   >
                     <span className="sr-only">Закрыть меню</span>
                     <svg
@@ -191,12 +191,12 @@ export function MobileMenu() {
 
                 <nav aria-label="Меню в мобильной версии">
                   <ul className="flex flex-col gap-1">
-                    {navLinks.map((link) => (
-                      <li key={link.href}>
+                    {navLinks.map((link, i) => (
+                      <li key={link.href} className="menu-item" style={{ ['--i' as string]: i }}>
                         <Link
                           href={link.href}
                           onClick={() => setOpen(false)}
-                          className="flex min-h-12 items-center rounded-xl px-3 text-lg font-medium text-ink transition-colors hover:bg-surface-alt hover:text-brand-600 dark:hover:text-brand-200"
+                          className="flex min-h-12 items-center press [--press-scale:0.98] rounded-control px-3 text-lg font-medium text-ink hover:bg-surface-alt hover:text-brand-600 dark:hover:text-brand-200"
                         >
                           {link.label}
                         </Link>
@@ -219,7 +219,7 @@ export function MobileMenu() {
                     /* 44 px, как у пунктов меню выше: номер стоит в том же
                        столбце действий, что и кнопка записи, и промахиваться
                        по нему из-за строчной высоты 28 не должен */
-                    className="flex min-h-11 items-center justify-center text-lg font-light text-ink"
+                    className="press flex min-h-11 items-center justify-center rounded-control text-lg font-light text-ink hover:bg-surface-alt hover:text-brand-600 dark:hover:text-brand-200"
                   >
                     {contacts.phone.display}
                   </a>

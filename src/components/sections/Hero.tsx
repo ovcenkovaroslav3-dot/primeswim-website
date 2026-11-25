@@ -175,7 +175,7 @@ export function Hero() {
               {site.hero.offer}
             </p>
 
-            <div className="reveal mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-inset border border-white/20 bg-white/5 px-4 py-3 text-sm leading-relaxed text-white">
+            <div className="reveal mt-5 flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-inset border border-white/20 bg-white/5 px-4 py-3 text-sm leading-relaxed text-white">
               <span className="font-semibold">Новый набор</span>
               <EnrollmentLinks dark />
             </div>
@@ -187,7 +187,7 @@ export function Hero() {
               <Link
                 href="#booking"
                 data-goal="cta_booking"
-                className="lift glow-accent inline-flex min-h-13 items-center justify-center rounded-control bg-lime-400 px-7 text-center text-base font-semibold text-abyss-950 transition-colors duration-200 hover:bg-lime-300"
+                className="lift glow-accent inline-flex min-h-13 items-center justify-center rounded-control bg-lime-400 px-7 text-center text-base font-semibold text-abyss-950 hover:bg-lime-300"
               >
                 {site.cta.primary}
               </Link>
@@ -200,7 +200,7 @@ export function Hero() {
               <Link
                 href="/raspisanie/"
                 data-goal="cta_schedule"
-                className="lift inline-flex min-h-13 items-center justify-center rounded-control border border-white/25 px-7 text-center text-base font-semibold text-white transition-colors duration-200 hover:border-white/50 hover:bg-white/10"
+                className="lift inline-flex min-h-13 items-center justify-center rounded-control border border-white/25 px-7 text-center text-base font-semibold text-white hover:border-white/50 hover:bg-white/10"
               >
                 Расписание занятий
               </Link>

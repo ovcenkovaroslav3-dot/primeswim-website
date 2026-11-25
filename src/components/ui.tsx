@@ -5,7 +5,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline';
 type ButtonSize = 'md' | 'lg';
 
 const base =
-  'lift inline-flex items-center justify-center gap-2 rounded-control text-center font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-60';
+  'lift inline-flex items-center justify-center gap-2 rounded-control text-center font-semibold disabled:cursor-not-allowed disabled:opacity-60';
 
 const variants: Record<ButtonVariant, string> = {
   /*
@@ -200,6 +200,33 @@ export function SectionHeading({
   Отрицательный внешний отступ возвращает набранный рост обратно в вёрстку:
   нажимать стало удобнее, а ритм абзацев остался прежним.
 */
+/*
+  Стрелка из ArrowLink отдельным компонентом: та же разметка нужна кнопкам и
+  ссылкам, где раньше стоял символ «→» — он рисовался другим шрифтом и другой
+  толщиной. При наведении и фокусе родительской ссылки или кнопки стрелка
+  сдвигается на 3 px (.arrow-nudge в globals.css), сама ссылка не двигается.
+*/
+export function ArrowIcon({ size = 15, className = '' }: { size?: number; className?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 18 18"
+      fill="none"
+      aria-hidden="true"
+      className={`arrow-nudge shrink-0 ${className}`.trim()}
+    >
+      <path
+        d="M3 9h12M10 4l5 5-5 5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function ArrowLink({
   href,
   children,
@@ -216,7 +243,7 @@ export function ArrowLink({
   className?: string;
 } & Omit<ComponentProps<'a'>, 'href' | 'children'>) {
   const classes = [
-    'lift group -my-2 inline-flex min-h-11 items-center gap-2 py-2 text-sm font-medium',
+    'press group -my-2 inline-flex min-h-11 items-center gap-2 py-2 text-sm font-medium',
     tone === 'white' ? 'text-white' : 'text-brand-600 dark:text-brand-200',
     className,
   ]
@@ -226,22 +253,7 @@ export function ArrowLink({
   const inner = (
     <>
       {children}
-      <svg
-        width="15"
-        height="15"
-        viewBox="0 0 18 18"
-        fill="none"
-        aria-hidden="true"
-        className="shrink-0 transition-transform duration-200 group-hover:translate-x-1"
-      >
-        <path
-          d="M3 9h12M10 4l5 5-5 5"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <ArrowIcon />
     </>
   );
 

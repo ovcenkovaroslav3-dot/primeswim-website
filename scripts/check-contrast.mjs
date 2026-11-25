@@ -126,7 +126,12 @@ for (const p of pages) {
       for (let n = el; n; n = n.parentElement) {
         const c = rgba(getComputedStyle(n).backgroundColor);
         if (c[3] === 0) continue;
-        acc = acc === null ? c : acc.map((v, i) => (i < 3 ? v * acc[3] + c[i] * (1 - acc[3]) : 1));
+        if (acc === null) acc = c;
+        else {
+          // слой c лежит под накопленным acc: обычное «over» с предумноженными цветами
+          const a = acc[3] + c[3] * (1 - acc[3]);
+          acc = [0, 1, 2].map((i) => (acc[i] * acc[3] + c[i] * c[3] * (1 - acc[3])) / a).concat(a);
+        }
         if (acc[3] >= 0.99) return acc.slice(0, 3);
       }
       return acc ? acc.slice(0, 3) : [255, 255, 255];
