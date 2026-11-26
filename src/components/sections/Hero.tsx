@@ -101,6 +101,79 @@ const coachShortName =
     ? coachNameParts.slice(1, 3).join(' ')
     : (coach?.name ?? '');
 
+/*
+  Строка-ссылка на тренера. Одна разметка на два места: стеклянная карточка
+  фактов ниже xl и компактная плашка рядом с «Новым набором» с xl
+  (см. Hero). Из двух экземпляров виден всегда ровно один, второй
+  скрыт через display: none — экранный диктор не прочтёт тренера дважды.
+  Снаружи задаются display, рамка и отступы: display целиком на вызывающей
+  стороне, иначе flex и hidden в одном списке классов спорили бы.
+*/
+function CoachLink({
+  className,
+  compact = false,
+}: {
+  className: string;
+  /* плашка на xl: фото 44 px и имя 14 px, чтобы встать в ряд с «Новым набором» */
+  compact?: boolean;
+}) {
+  if (!coach) return null;
+  return (
+    <Link
+      href="/trener/"
+      data-goal="hero_coach"
+      className={`group min-h-11 min-w-0 flex-wrap items-center gap-3 ${className}`}
+    >
+      {/*
+        Размер и shrink-0 — на обёртке: флекс сжимает <picture>, а
+        не <img>, и с классами на картинке кружок на 320 px
+        сплющивался в овал 45×56. Размер в px, а не в rem: при
+        крупном шрифте фото не растёт до 112 px и не отнимает
+        место у имени. alt пустой — имя уже есть в тексте ссылки,
+        и экранный диктор не прочтёт его дважды.
+      */}
+      <span
+        className={`${compact ? 'size-[44px]' : 'size-[56px]'} shrink-0 overflow-hidden rounded-full [&>picture]:size-full`}
+      >
+        <Picture
+          src={coach.photo.src}
+          alt=""
+          width={coach.photo.width}
+          height={coach.photo.height}
+          sizes={compact ? '44px' : '56px'}
+          className="size-full object-cover object-[50%_20%]"
+        />
+      </span>
+      {/*
+        Текст не уже 9em: при крупном шрифте на 320 px рядом с
+        фото оставалось ~170 px, и имя рвалось на буквы. Теперь
+        в таком случае текст уходит под фото (flex-wrap у ссылки),
+        а при обычном шрифте стоит рядом, как задумано.
+      */}
+      <span className="flex min-w-[min(9em,100%)] flex-1 flex-col">
+        <span className="text-xs leading-snug text-white/70">
+          Ведёт занятия лично
+        </span>
+        {/*
+          «· 13 лет опыта» держится вместе: на 320 px «13» уходило
+          в конец строки, а «лет опыта» — на следующую. Перенос
+          по слогам — запасной, там, где браузер его умеет.
+        */}
+        <span
+          className={`text-sm leading-snug text-white hyphens-auto group-hover:text-lime-200 ${compact ? '' : 'sm:text-base'}`}
+        >
+          <span className="underline-offset-4 group-hover:underline">
+            {coachShortName}
+          </span>
+          {/* неразрывные пробелы, а не nowrap: при шрифте 200 %
+              nowrap вытолкнул бы строку за край карточки */}
+          {coachYears ? ` ·\u00a0${coachYears}\u00a0лет опыта` : null}
+        </span>
+      </span>
+    </Link>
+  );
+}
+
 export function Hero() {
   return (
     <section
@@ -196,9 +269,32 @@ export function Hero() {
               {site.hero.offer}
             </p>
 
-            <div className="reveal mt-5 flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-inset border border-white/20 bg-white/5 px-4 py-3 text-sm leading-relaxed text-white">
-              <span className="font-semibold">Новый набор</span>
-              <EnrollmentLinks dark />
+            {/*
+              Тренер в первом экране десктопа — 26 ноября 2026.
+
+              Карточка с тренером стоит под кадром бассейна, и на десктопе
+              она оказывалась на 850–960 px от верха — ниже сгиба на любом
+              распространённом экране, от 1280×720 до 1920×1080. Главное
+              отличие школы видели только те, кто прокрутил.
+
+              Поэтому с xl (1280 px) тренер встаёт компактной плашкой в один
+              ряд с «Новым набором» и ничего не сдвигает: кнопки остаются
+              там же, где были. На lg (1024–1279) ряд узкий, плашка ушла бы
+              строкой ниже и вытолкнула кнопки за сгиб на 1024×768 —
+              кнопка записи важнее, поэтому там тренер остаётся в
+              стеклянной карточке, как и на телефоне.
+            */}
+            <div className="reveal mt-5 flex flex-wrap items-stretch gap-3">
+              <div className="flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-inset border border-white/20 bg-white/5 px-4 py-3 text-sm leading-relaxed text-white">
+                <span className="font-semibold">Новый набор</span>
+                <EnrollmentLinks dark />
+              </div>
+              {coach ? (
+                <CoachLink
+                  compact
+                  className="hidden rounded-inset border border-white/20 bg-white/5 py-2 pr-4 pl-2 transition-colors hover:border-white/40 xl:flex"
+                />
+              ) : null}
             </div>
 
             <div
@@ -248,12 +344,19 @@ export function Hero() {
 
           <div className="min-w-0">
             {/*
+              С xl карточки нет: тренер стоит рядом с «Новым набором»
+              (см. выше), а «45 мин» уже сказано в подзаголовке — «Тренировка
+              45 минут». Одинокий факт в широкой стеклянной карточке ниже
+              сгиба был бы просто повтором. Ниже xl карточка осталась как
+              была.
+            */}
+            {/*
               Карточка осталась стеклянной, но теперь в две ячейки: «45 мин» и
               строка тренера. min-w-0 и перенос нужны, чтобы на 320 px и при
               увеличенном шрифте имя не вылезало за край карточки.
             */}
             <div
-              className="reveal glass grid max-w-xl gap-x-6 gap-y-5 rounded-card p-5 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:p-6"
+              className="reveal glass grid max-w-xl gap-x-6 xl:hidden gap-y-5 rounded-card p-5 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:p-6"
               style={{ ['--reveal-delay' as string]: '480ms' }}
             >
               <dl className="flex min-w-0 flex-col gap-y-5">
@@ -272,54 +375,7 @@ export function Hero() {
               </dl>
 
               {coach ? (
-                <Link
-                  href="/trener/"
-                  data-goal="hero_coach"
-                  className="group flex min-h-11 min-w-0 flex-wrap items-center gap-3 border-t border-white/15 pt-4 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-6"
-                >
-                  {/*
-                    Размер и shrink-0 — на обёртке: флекс сжимает <picture>, а
-                    не <img>, и с классами на картинке кружок на 320 px
-                    сплющивался в овал 45×56. Размер в px, а не в rem: при
-                    крупном шрифте фото не растёт до 112 px и не отнимает
-                    место у имени. alt пустой — имя уже есть в тексте ссылки,
-                    и экранный диктор не прочтёт его дважды.
-                  */}
-                  <span className="size-[56px] shrink-0 overflow-hidden rounded-full [&>picture]:size-full">
-                    <Picture
-                      src={coach.photo.src}
-                      alt=""
-                      width={coach.photo.width}
-                      height={coach.photo.height}
-                      sizes="56px"
-                      className="size-full object-cover object-[50%_20%]"
-                    />
-                  </span>
-                  {/*
-                    Текст не уже 9em: при крупном шрифте на 320 px рядом с
-                    фото оставалось ~170 px, и имя рвалось на буквы. Теперь
-                    в таком случае текст уходит под фото (flex-wrap у ссылки),
-                    а при обычном шрифте стоит рядом, как задумано.
-                  */}
-                  <span className="flex min-w-[min(9em,100%)] flex-1 flex-col">
-                    <span className="text-xs leading-snug text-white/70">
-                      Ведёт занятия лично
-                    </span>
-                    {/*
-                      «· 13 лет опыта» держится вместе: на 320 px «13» уходило
-                      в конец строки, а «лет опыта» — на следующую. Перенос
-                      по слогам — запасной, там, где браузер его умеет.
-                    */}
-                    <span className="text-sm leading-snug text-white hyphens-auto group-hover:text-lime-200 sm:text-base">
-                      <span className="underline-offset-4 group-hover:underline">
-                        {coachShortName}
-                      </span>
-                      {/* неразрывные пробелы, а не nowrap: при шрифте 200 %
-                          nowrap вытолкнул бы строку за край карточки */}
-                      {coachYears ? ` ·\u00a0${coachYears}\u00a0лет опыта` : null}
-                    </span>
-                  </span>
-                </Link>
+                <CoachLink className="flex border-t border-white/15 pt-4 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-6" />
               ) : null}
             </div>
 
