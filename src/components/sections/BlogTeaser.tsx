@@ -48,7 +48,19 @@ export function BlogTeaser({
               className={`reveal group flex h-full flex-col rounded-card border border-hairline p-6 transition-colors hover:border-brand-300 ${tone === 'alt' ? 'bg-surface' : 'bg-surface-alt'}`}
               style={{ ['--reveal-delay' as string]: `${i * 70}ms` }}
             >
-              <span className="text-base leading-snug font-medium text-ink group-hover:text-brand-600 dark:group-hover:text-brand-200">
+              {/*
+                26 ноября 2026: заголовок переносится по слогам, а не рвётся на
+                случайной букве. На body стоит overflow-wrap: anywhere (защита
+                от горизонтальной прокрутки при крупном шрифте), и слово, не
+                влезшее в узкую карточку, ломалось без дефиса — «PRIME SWI» на
+                одной строке, «M» на другой. hyphens-auto даёт браузеру
+                переносы по правилам русского языка (lang="ru" на <html>), а
+                anywhere остаётся запасным выходом для слова, которое не
+                разбить и по слогам. text-pretty не оставляет одно слово в
+                последней строке. Обрезки у заголовка нет и не будет — его
+                читают целиком; line-clamp-3 остался только у отрывка.
+              */}
+              <span className="text-base leading-snug font-medium text-pretty hyphens-auto text-ink group-hover:text-brand-600 dark:group-hover:text-brand-200">
                 {article.h1}
               </span>
               <span className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-ink-soft">

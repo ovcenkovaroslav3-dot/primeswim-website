@@ -156,7 +156,12 @@ export function Footer() {
               везде останется 44 — то есть сломается в сторону доступности,
               а не от неё.
             */}
-            <ul className="mt-4 space-y-1 text-sm text-white/80">
+            {/*
+              26 ноября 2026: на телефоне «Разделы» в две колонки — подвал
+              вдвое ниже, а ссылки целы (они нужны для SEO). Высота 44 px у
+              каждой сохранена, колонки её не трогают.
+            */}
+            <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-white/80 md:block md:space-y-1">
               {sectionLinks.map((link) => (
                 <li key={link.href}>
                   <Link

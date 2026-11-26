@@ -1,6 +1,7 @@
 import { EnrollmentLinks } from '../EnrollmentLinks';
 import Link from 'next/link';
 
+import { Picture } from '../Picture';
 import { HeroVisual } from '../HeroVisual';
 import { WaterScene } from '../WaterScene';
 import { site } from '@/content/site';
@@ -66,8 +67,14 @@ const rub = (amount: number) => `${amount.toLocaleString('ru-RU')} ₽`;
   странице /bassein/.
 
   Фактов немного намеренно: цена переехала в строку под кнопками — см.
-  комментарий выше. Стаж берётся из того же файла, что и страница тренера, —
-  иначе первый экран однажды остался бы с числом, которого уже нет.
+  комментарий выше.
+
+  26 ноября 2026: стаж («опыт тренера») ушёл из полосы фактов в строку
+  тренера рядом с фото — см. coach ниже. Голое «13 лет · опыт тренера» без
+  лица и имени было числом без источника, а тренер — главное, чем школа
+  отличается от соседних, и на первом экране его не было вовсе. Стаж берётся из того же
+  файла, что и страница тренера, — иначе первый экран однажды остался бы с
+  числом, которого уже нет.
 */
 const facts = [
   { value: '45 мин', label: 'тренировка' },
@@ -75,10 +82,24 @@ const facts = [
     Факт «до 12 детей на дорожке» убран 28 сентября 2026 по просьбе
     владельца: численность группы на первом экране больше не обещаем.
   */
-  { value: coachYears ? `${coachYears} лет` : null, label: 'опыт тренера' },
-].filter((fact): fact is { value: string; label: string } =>
-  Boolean(fact.value),
-);
+];
+
+/*
+  Тренер на первом экране — 26 ноября 2026, по итогам разбора сайта.
+
+  Раньше лицо школы появлялось только ниже по странице, а на первом экране
+  стояло безымянное «13 лет · опыт тренера». Теперь это строка-ссылка: круглое фото,
+  «Ведёт занятия лично» и имя с отчеством. Фамилия опущена намеренно —
+  родителю с ребёнком привычнее «Ярослав Сергеевич». Имя выводится из данных
+  (в файле порядок «Фамилия Имя Отчество»), а при неожиданном формате
+  берётся строка целиком — экран не сломается.
+*/
+const coach = coaches[0];
+const coachNameParts = coach?.name.split(/\s+/).filter(Boolean) ?? [];
+const coachShortName =
+  coachNameParts.length >= 3
+    ? coachNameParts.slice(1, 3).join(' ')
+    : (coach?.name ?? '');
 
 export function Hero() {
   return (
@@ -130,7 +151,7 @@ export function Hero() {
         <div className="flex flex-col gap-8 sm:gap-10 lg:grid lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-center lg:gap-x-12 lg:gap-y-10 xl:gap-x-16">
           <div className="min-w-0 lg:max-w-none md:max-w-[46rem]">
             <p
-              className="reveal text-xs font-medium tracking-[0.14em] text-white/55 sm:tracking-[0.28em] uppercase"
+              className="reveal text-xs font-medium tracking-[0.14em] text-white/70 sm:tracking-[0.28em] uppercase"
               style={{ ['--reveal-delay' as string]: '80ms' }}
             >
               {site.hero.kicker}
@@ -226,23 +247,81 @@ export function Hero() {
           </div>
 
           <div className="min-w-0">
-            <dl
-              className="reveal glass grid max-w-xl grid-cols-2 gap-x-4 gap-y-5 rounded-card p-5 sm:p-6"
+            {/*
+              Карточка осталась стеклянной, но теперь в две ячейки: «45 мин» и
+              строка тренера. min-w-0 и перенос нужны, чтобы на 320 px и при
+              увеличенном шрифте имя не вылезало за край карточки.
+            */}
+            <div
+              className="reveal glass grid max-w-xl gap-x-6 gap-y-5 rounded-card p-5 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:p-6"
               style={{ ['--reveal-delay' as string]: '480ms' }}
             >
-              {facts.map((f) => (
-                <div key={f.label} className="flex flex-col">
-                  <dt className="order-2 mt-1 text-xs leading-snug text-white/55">
-                    {f.label}
-                  </dt>
-                  {/* значения короткие и переносу не подлежат: на 768 «45 мин»
-                      ломалось на «45» и «мин» и читалось как два факта */}
-                  <dd className="order-1 text-xl font-light whitespace-nowrap tabular-nums text-white sm:text-2xl">
-                    {f.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+              <dl className="flex min-w-0 flex-col gap-y-5">
+                {facts.map((f) => (
+                  <div key={f.label} className="flex flex-col">
+                    <dt className="order-2 mt-1 text-xs leading-snug text-white/70">
+                      {f.label}
+                    </dt>
+                    {/* значения короткие и переносу не подлежат: на 768 «45 мин»
+                        ломалось на «45» и «мин» и читалось как два факта */}
+                    <dd className="order-1 text-xl font-light whitespace-nowrap tabular-nums text-white sm:text-2xl">
+                      {f.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              {coach ? (
+                <Link
+                  href="/trener/"
+                  data-goal="hero_coach"
+                  className="group flex min-h-11 min-w-0 flex-wrap items-center gap-3 border-t border-white/15 pt-4 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-6"
+                >
+                  {/*
+                    Размер и shrink-0 — на обёртке: флекс сжимает <picture>, а
+                    не <img>, и с классами на картинке кружок на 320 px
+                    сплющивался в овал 45×56. Размер в px, а не в rem: при
+                    крупном шрифте фото не растёт до 112 px и не отнимает
+                    место у имени. alt пустой — имя уже есть в тексте ссылки,
+                    и экранный диктор не прочтёт его дважды.
+                  */}
+                  <span className="size-[56px] shrink-0 overflow-hidden rounded-full [&>picture]:size-full">
+                    <Picture
+                      src={coach.photo.src}
+                      alt=""
+                      width={coach.photo.width}
+                      height={coach.photo.height}
+                      sizes="56px"
+                      className="size-full object-cover object-[50%_20%]"
+                    />
+                  </span>
+                  {/*
+                    Текст не уже 9em: при крупном шрифте на 320 px рядом с
+                    фото оставалось ~170 px, и имя рвалось на буквы. Теперь
+                    в таком случае текст уходит под фото (flex-wrap у ссылки),
+                    а при обычном шрифте стоит рядом, как задумано.
+                  */}
+                  <span className="flex min-w-[min(9em,100%)] flex-1 flex-col">
+                    <span className="text-xs leading-snug text-white/70">
+                      Ведёт занятия лично
+                    </span>
+                    {/*
+                      «· 13 лет опыта» держится вместе: на 320 px «13» уходило
+                      в конец строки, а «лет опыта» — на следующую. Перенос
+                      по слогам — запасной, там, где браузер его умеет.
+                    */}
+                    <span className="text-sm leading-snug text-white hyphens-auto group-hover:text-lime-200 sm:text-base">
+                      <span className="underline-offset-4 group-hover:underline">
+                        {coachShortName}
+                      </span>
+                      {/* неразрывные пробелы, а не nowrap: при шрифте 200 %
+                          nowrap вытолкнул бы строку за край карточки */}
+                      {coachYears ? ` ·\u00a0${coachYears}\u00a0лет опыта` : null}
+                    </span>
+                  </span>
+                </Link>
+              ) : null}
+            </div>
 
             <p
               className="reveal mt-6 text-sm text-white/65"
