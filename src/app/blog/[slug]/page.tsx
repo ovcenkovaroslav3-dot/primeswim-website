@@ -142,6 +142,7 @@ export default async function BlogArticlePage({
     inLanguage: 'ru-RU',
     author: {
       '@type': 'Person',
+      '@id': schemaId.person,
       name: coach.name,
       jobTitle: coach.role,
       url: `${site.url}/trener/`,

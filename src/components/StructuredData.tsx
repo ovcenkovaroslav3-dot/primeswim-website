@@ -18,6 +18,8 @@ import { ogImage, seo } from '@/content/seo';
 export const schemaId = {
   organization: `${site.url}/#organization`,
   website: `${site.url}/#website`,
+  /** Тренер: на него ссылаются страница /trener/ и автор каждой статьи блога */
+  person: `${site.url}/trener/#person`,
 };
 
 /**
