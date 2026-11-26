@@ -96,17 +96,16 @@ async function checkHomeBooking() {
   }
 }
 
-async function checkWednesdayUnavailable() {
+async function checkWednesdayAvailable() {
   const page = await browser.newPage(devices['iPhone 13']);
   try {
     for (const path of ['/', '/price/', '/raspisanie/', '/probnoe-zanyatie/']) {
       await page.goto(base + path + '#booking-slot-wed-19-45');
       await page.waitForFunction(() => !document.querySelector('form fieldset')?.disabled);
       const time = page.locator('#booking select[name=slot]');
-      assert.equal(await time.locator('option[value="wed-19:45"]').count(), 0, path);
+      assert.equal(await time.locator('option[value="wed-19:45"]').count(), 1, path);
       assert.equal(await time.locator('option[value="fri-19:45"]').count(), 1, path);
-      assert.equal(await time.inputValue(), '', 'Старая ссылка не выбирает среду');
-      assert.equal(await page.locator('a[href*="booking-slot-wed-19-45"]').count(), 0, path);
+      assert.equal(await time.inputValue(), 'wed-19:45', 'Ссылка выбирает среду');
       const intro = page.locator('#booking').getByText(
         'Пробное плавание для детей от 7 лет в бассейне МГИК, Химки, Левобережный. 45 минут в группе с тренером, 1 100 ₽. Подберём группу по возрасту и уровню ребёнка.',
         { exact: true },
@@ -119,7 +118,7 @@ async function checkWednesdayUnavailable() {
 }
 
 try {
-  await checkWednesdayUnavailable();
+  await checkWednesdayAvailable();
   await checkHomeBooking();
   console.log('Главная: контакты видны при открытом уведомлении о cookie');
   for (const path of ['/raspisanie/', '/price/']) {
