@@ -121,6 +121,7 @@ export function LeadForm() {
   const [note, setNote] = useState('');
   const [tariff, setTariff] = useState('');
   const sentRef = useRef<HTMLDivElement>(null);
+  const failedRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const wishesRef = useRef<HTMLDetailsElement>(null);
   const pendingErrorFocus = useRef<string | null>(null);
@@ -214,6 +215,13 @@ export function LeadForm() {
   */
   useEffect(() => {
     if (status === 'sent') sentRef.current?.focus();
+    /*
+      Неудача — тот же случай, что и успех. Пока заявка уходила, fieldset
+      был отключён, и фокус с кнопки «Отправить» падал на <body>: проверка
+      26 ноября 2026 (обрыв сети, 500, 429) каждый раз оставляла клавиатуру
+      в начале страницы. Теперь фокус встаёт на сообщение с контактами.
+    */
+    if (status === 'failed') failedRef.current?.focus();
   }, [status]);
 
   /*
@@ -339,7 +347,7 @@ export function LeadForm() {
       setFailure(
         typeof data?.message === 'string'
           ? data.message
-          : 'Не получилось передать заявку. Напишите или позвоните нам напрямую.',
+          : 'Не получилось передать заявку. Всё заполненное сохранилось — попробуйте отправить ещё раз через минуту или напишите и позвоните нам напрямую.',
       );
       setStatus('failed');
     } catch {
@@ -348,7 +356,7 @@ export function LeadForm() {
       setFailure(
         controller.signal.aborted
           ? 'Сервер долго не отвечает. Попробуйте отправить ещё раз — дубля не будет — или напишите нам напрямую.'
-          : 'Заявка не ушла — похоже, пропала связь. Напишите или позвоните нам напрямую.',
+          : 'Заявка не ушла — похоже, пропала связь. Всё заполненное сохранилось: проверьте интернет и нажмите «Отправить» ещё раз — дубля не будет. Или напишите и позвоните нам напрямую.',
       );
       setStatus('failed');
     } finally {
@@ -755,6 +763,7 @@ export function LeadForm() {
               checked={values.consent}
               onChange={(e) => set('consent', e.target.checked)}
               aria-invalid={Boolean(errors.consent)}
+              aria-describedby={errors.consent ? 'lead-consent-error' : undefined}
               className="mt-0.5 size-6 shrink-0 accent-brand-600 dark:accent-brand-300"
             />
             {/*
@@ -795,7 +804,7 @@ export function LeadForm() {
             </span>
           </label>
           {errors.consent ? (
-            <p className="mt-2 text-sm text-red-700 dark:text-red-300">{errors.consent}</p>
+            <p id="lead-consent-error" className="mt-2 text-sm text-red-700 dark:text-red-300">{errors.consent}</p>
           ) : null}
         </div>
 
@@ -806,7 +815,9 @@ export function LeadForm() {
             тот же, так что повтор не создаст вторую заявку.
           */
           <div
+            ref={failedRef}
             role="alert"
+            tabIndex={-1}
             className="rounded-inset border border-red-300 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-900 dark:border-red-400 dark:bg-red-950/40 dark:text-red-200"
           >
             <p>{failure}</p>
