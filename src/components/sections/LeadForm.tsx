@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useHydrated } from '@/lib/consent';
 
 import { MascotOrca } from '../MascotOrca';
-import { buttonClass } from '../ui';
+import { ArrowLink, buttonClass } from '../ui';
 import { readSource } from '@/lib/campaign-source';
 import { contacts } from '@/content/contacts';
 import { programOptions, validProgramIds, ageOptions, validAgeIds } from '@/content/programs';
@@ -404,6 +404,15 @@ export function LeadForm() {
           Заявка у школы — перезвоним и подберём время. Обычно отвечаем в
           рабочие часы: {contacts.workingHours.display.toLowerCase()}.
         </p>
+        {/*
+          26 ноября 2026: пока родитель ждёт звонка, он спрашивает себя, что
+          брать в бассейн. Отвечаем сразу: якорь ведёт в ответ «Что взять с
+          собой» в FAQ на странице родителям (details раскрывается по хэшу —
+          см. OpenDetailsOnHash).
+        */}
+        <div className="mt-4 flex justify-center">
+          <ArrowLink href="/roditelyam/#faq-what-to-bring">Что взять с собой на пробное</ArrowLink>
+        </div>
         <p className="mt-6 text-sm text-ink-muted">
           Не дождались звонка? Позвоните сами:{' '}
           <a

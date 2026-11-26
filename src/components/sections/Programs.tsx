@@ -63,7 +63,12 @@ export function Programs() {
                 {program.description}
               </p>
               {program.steps ? (
-                <ol className="mt-5 grid gap-x-5 gap-y-2 sm:grid-cols-2">
+                /* 26 ноября 2026: на телефоне списки шагов и пунктов скрыты. Они
+                   делали секцию самой длинной на главной (вся главная — около
+                   16 500 px на мобильном); полные списки живут на страницах
+                   направлений, куда ведёт «Подробнее о направлении».
+                   Описание и кнопки остались. */
+                <ol className="mt-5 hidden gap-x-5 gap-y-2 md:grid md:grid-cols-2">
                   {program.steps.map((step, index) => (
                     <li key={step} className="flex min-w-0 gap-3 text-sm leading-relaxed">
                       <span aria-hidden="true" className="w-4 shrink-0 text-white/60">{index + 1}</span>
@@ -73,7 +78,7 @@ export function Programs() {
                 </ol>
               ) : null}
               {program.points ? (
-                <ul className="mt-5 grid gap-x-5 gap-y-2 sm:grid-cols-2">
+                <ul className="mt-5 hidden gap-x-5 gap-y-2 md:grid md:grid-cols-2">
                   {program.points.map((point) => (
                     <li key={point} className="flex min-w-0 gap-3 text-sm leading-relaxed">
                       <span aria-hidden="true" className="w-4 shrink-0 text-ink-muted">—</span>

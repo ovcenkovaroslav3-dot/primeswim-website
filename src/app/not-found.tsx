@@ -48,7 +48,7 @@ export default function NotFound() {
             На главную
           </ButtonLink>
           <ButtonLink href="/#booking" variant="outline" size="lg" data-goal="cta_booking">
-            Записаться на тренировку
+            Записаться на пробное занятие
           </ButtonLink>
         </div>
 
