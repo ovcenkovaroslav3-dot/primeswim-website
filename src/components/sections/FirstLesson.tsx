@@ -15,8 +15,8 @@ export function FirstLesson() {
         <ol className="mt-8 grid gap-6 md:grid-cols-3 md:gap-0 md:border-t md:border-hairline">
           {steps.map((step, i) => (
             <li key={step.title} className="min-w-0 border-t border-hairline pt-4 md:border-t-0 md:pr-8 md:pt-6">
-              <span aria-hidden="true" className="text-4xl leading-none font-light tabular-nums text-ink-muted sm:text-5xl">0{i + 1}</span>
-              <h3 className="mt-5 text-xl text-ink">{step.title}</h3>
+              <span aria-hidden="true" className="text-2xl leading-none font-light tabular-nums text-ink-muted sm:text-5xl">0{i + 1}</span>
+              <h3 className="mt-2 text-xl text-ink sm:mt-5">{step.title}</h3>
               <p className="mt-2 leading-relaxed text-ink-soft">{step.text}</p>
             </li>
           ))}

@@ -9,7 +9,6 @@ import { PoolPreview } from '@/components/sections/PoolPreview';
 import { FirstLesson } from '@/components/sections/FirstLesson';
 import { Faq } from '@/components/sections/Faq';
 import { Contacts } from '@/components/sections/Contacts';
-import { BlogTeaser } from '@/components/sections/BlogTeaser';
 import { FinalCta } from '@/components/sections/FinalCta';
 import { StructuredData } from '@/components/StructuredData';
 
@@ -78,14 +77,13 @@ export default function HomePage() {
         другом за расширенный сниппет. Подробности — в самом компоненте.
       */}
       <Faq limit={4} withSchema={false} moreHref="/roditelyam/" />
-      <BlogTeaser
-        title="Полезно родителям"
-        slugs={[
-          's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
-          'kakoj-sport-vybrat-rebenku-himki',
-          'skolko-vremeni-nauchit-rebenka-plavat',
-        ]}
-      />
+      {/*
+        Блок статей «Полезно родителям» снят с главной 26 ноября 2026: на
+        телефоне это 823 px между FAQ и формой, а статьи и так доступны из
+        подвала (/blog/), с /roditelyam/, страниц направлений, расписания и
+        цен. «Какой спорт выбрать», на которую вела только главная, переехала
+        на /roditelyam/.
+      */}
       <FinalCta
         variant="water"
         intro="Пробное плавание для детей от 7 лет в бассейне МГИК, Химки, Левобережный. 45 минут в группе с тренером, 1 100 ₽. Подберём группу по возрасту и уровню ребёнка."

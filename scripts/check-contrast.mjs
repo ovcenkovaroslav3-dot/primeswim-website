@@ -27,7 +27,7 @@
 
 import { chromium } from 'playwright';
 const base = process.env.BASE_URL || 'http://localhost:3000';
-const pages = ['/', '/raspisanie/', '/price/', '/trener/', '/bassein/', '/roditelyam/', '/galereya/', '/sorevnovaniya/', '/dogovor/', '/policy/'];
+const pages = ['/', '/raspisanie/', '/price/', '/trener/', '/bassein/', '/roditelyam/', '/galereya/', '/sorevnovaniya/', '/dogovor/', '/policy/', '/probnoe-zanyatie/', '/plavanie-s-nulya/', '/tehnika-plavaniya/', '/blog/'];
 // SHOT_EXECUTABLE — путь к браузеру в облачной среде, где канала chrome нет (см. shot.mjs)
 const browser = await chromium.launch(
   process.env.SHOT_EXECUTABLE ? { executablePath: process.env.SHOT_EXECUTABLE } : { channel: 'chrome' },

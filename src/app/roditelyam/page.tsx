@@ -54,6 +54,7 @@ export default function ParentsPage() {
           's-kakogo-vozrasta-otdavat-rebenka-v-bassein',
           'rebenok-boitsya-vody-chto-delat',
           'pervoe-zanyatie-po-plavaniyu-cheklist',
+          'kakoj-sport-vybrat-rebenku-himki',
         ]}
       />
 

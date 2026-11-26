@@ -116,11 +116,12 @@ export function Pool({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {}) {
             >
               Построить маршрут на Яндекс Картах
             </ButtonLink>
-            {/* tel: — обычная ссылка, как и везде на сайте: маршрутизатору тут делать нечего */}
+            {/* tel: — обычная ссылка, как и везде на сайте: маршрутизатору тут делать нечего.
+                max-w-full — при тексте 200 % номер вылезал за край на 4 px (26.11.2026). */}
             <a
               href={contacts.phone.href}
               data-goal="click_phone"
-              className={buttonClass('outline')}
+              className={buttonClass('outline', 'md', 'max-w-full')}
             >
               {contacts.phone.display}
             </a>
