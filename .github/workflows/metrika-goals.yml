@@ -27,6 +27,12 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: npm
+
+      # Скрипт берёт список целей из src/lib/analytics.ts, а тот через
+      # consent.ts тянет react. Без установки пакетов запуск падал с
+      # ERR_MODULE_NOT_FOUND ещё до обращения к API (26 ноября 2026).
+      - run: npm ci
 
       - name: Цели Метрики
         env:
