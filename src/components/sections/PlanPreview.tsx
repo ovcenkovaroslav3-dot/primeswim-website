@@ -58,7 +58,7 @@ export function PlanPreview() {
                   {slot.times.map((time) => (
                     <span
                       key={time}
-                      className="block text-lg font-light tabular-nums text-ink"
+                      className="block text-lg font-light text-ink"
                     >
                       {time}
                     </span>
@@ -98,7 +98,7 @@ export function PlanPreview() {
                 </span>
                 <span className="shrink-0 text-right">
                   <span
-                    className={`text-lg font-light tabular-nums ${
+                    className={`text-lg font-light ${
                       price.featured ? 'text-brand-600 dark:text-brand-200' : 'text-ink'
                     }`}
                   >
