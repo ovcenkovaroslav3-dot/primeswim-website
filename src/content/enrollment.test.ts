@@ -5,8 +5,8 @@ import { readFileSync } from 'node:fs';
 import { enrollmentSlots, isEnrollmentDay } from './enrollment.ts';
 import { schedule } from './schedule.ts';
 
-test('enrollment selects Tuesday and Thursday and derives times from schedule', () => {
-  assert.deepEqual(enrollmentSlots.map(slot => slot.id), ['tue', 'thu']);
+test('enrollment selects Tue–Thu and derives times from schedule', () => {
+  assert.deepEqual(enrollmentSlots.map(slot => slot.id), ['tue', 'wed', 'thu']);
   for (const slot of enrollmentSlots) assert.equal(slot, schedule.find(item => item.id === slot.id));
   assert.equal(isEnrollmentDay('mon'), false);
   assert.equal(isEnrollmentDay('tue'), true);

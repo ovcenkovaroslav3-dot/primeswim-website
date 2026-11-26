@@ -1,7 +1,7 @@
 import { schedule } from './schedule.ts';
 
 /** Owner-requested campaign. No seat counts or start dates are promised. */
-export const enrollmentDayIds = ['tue', 'thu'] as const;
+export const enrollmentDayIds = ['tue', 'wed', 'thu'] as const;
 export const enrollmentSlots = schedule.filter((slot) =>
   enrollmentDayIds.some((id) => id === slot.id),
 );
