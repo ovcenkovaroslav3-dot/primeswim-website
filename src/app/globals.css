@@ -93,7 +93,7 @@
 
   /* 'PS Ruble' стоит первым намеренно — разбор над блоком @theme */
   --font-display: 'PS Ruble', var(--font-unbounded), "Segoe UI", system-ui, sans-serif;
-  --font-sans: 'PS Ruble', var(--font-inter), "Segoe UI", system-ui, sans-serif;
+  --font-sans: 'PS Ruble', var(--font-onest), "Segoe UI", system-ui, sans-serif;
 
   /* ── ритм и форма ── */
   --radius-card: 20px;

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Unbounded, Inter } from 'next/font/google';
+import { Unbounded, Onest } from 'next/font/google';
 
 import './globals.css';
 import { Header } from '@/components/Header';
@@ -28,9 +28,15 @@ const unbounded = Unbounded({
   display: 'swap',
 });
 
-const inter = Inter({
+/*
+  Основной шрифт — Onest, с 26 ноября 2026 вместо Inter. Выбран владельцем
+  по снимкам главной в трёх вариантах (Inter, Onest, Golos Text): Onest
+  теплее Inter, кириллица у него родная, и в отличие от Golos Text у него
+  есть тонкое начертание, которым набраны цифры времени и фактов.
+*/
+const onest = Onest({
   subsets: ['latin', 'cyrillic'],
-  variable: '--font-inter',
+  variable: '--font-onest',
   display: 'swap',
 });
 
@@ -83,7 +89,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ru" className={`${unbounded.variable} ${inter.variable} h-full`}>
+    <html lang="ru" className={`${unbounded.variable} ${onest.variable} h-full`}>
       <body className="flex min-h-full flex-col overflow-x-clip">
         <a
           href="#main"

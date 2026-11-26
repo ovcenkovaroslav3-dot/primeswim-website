@@ -98,7 +98,7 @@ export function Schedule({ headingAs = 'h2' }: { headingAs?: 'h1' | 'h2' } = {})
                 дня и список ниже, а не сам знак.
               */}
               <span
-                className="mt-2 hidden text-sm tabular-nums sm:block sm:text-base"
+                className="mt-2 hidden text-sm sm:block sm:text-base"
               >
                 {slot ? (
                   slot.times.map((time) => (

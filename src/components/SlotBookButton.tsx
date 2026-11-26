@@ -50,7 +50,7 @@ export function SlotBookButton({
       }}
       data-goal="cta_booking"
       aria-label={accessibleName}
-      className={`press inline-flex min-h-11 items-center rounded-full border tabular-nums ${compact ? 'gap-1 px-2 text-sm font-medium' : 'gap-2 px-4 text-lg font-light'} ${dark ? 'border-white/40 bg-white/10 text-white hover:bg-white/20' : 'border-brand-300 bg-surface text-ink hover:border-brand-500 hover:bg-brand-50 dark:hover:border-brand-200 dark:hover:bg-brand-900/40'}`}
+      className={`press inline-flex min-h-11 items-center rounded-full border ${compact ? 'gap-1 px-2 text-sm font-medium' : 'gap-2 px-4 text-lg font-light'} ${dark ? 'border-white/40 bg-white/10 text-white hover:bg-white/20' : 'border-brand-300 bg-surface text-ink hover:border-brand-500 hover:bg-brand-50 dark:hover:border-brand-200 dark:hover:bg-brand-900/40'}`}
     >
       {time}
       {compact ? null : <ArrowIcon size={13} className="text-brand-600 dark:text-brand-200" />}
